@@ -1,0 +1,163 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - "release"
+
+jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
+      change_log: ${{ steps.changelog.outputs.changelog }}
+      version: ${{ steps.changelog.outputs.version }}
+      tag: ${{ steps.changelog.outputs.tag }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Generate Changelog for Release
+        id: changelog
+        uses: Tormak9970/reliable-changelog@v1.1
+        with:
+          github-token: ${{ secrets.github_token }}
+          current-version: "./package.json"
+          version-path: "version"
+          patch-version-bump-interval: "10"
+
+      - name: Create Release
+        id: create-release
+        uses: actions/github-script@v6
+        env:
+          RELEASE_TAG: ${{ steps.changelog.outputs.tag }}
+          RELEASE_LOG: ${{ steps.changelog.outputs.changelog }}
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `${process.env.RELEASE_TAG}`,
+              name: `Tunistic ${process.env.RELEASE_TAG}`,
+              body: `${process.env.RELEASE_LOG}`,
+              draft: true,
+              prerelease: false
+            });
+            return data.id
+
+  build-app:
+    needs: create-release
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: release
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Setup Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.11
+
+      - name: Install Frontend Dependencies
+        run: pnpm install
+
+      - name: Build App
+        # TODO: build the app here and deploy it
+            
+  publish-release:
+    needs: [create-release, build-app]
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: release
+
+      - name: Update Release Assets
+        uses: ./.github/workflows/create-release-assets
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          release_id: ${{ needs.create-release.outputs.release_id }}
+          release_tag: ${{ needs.create-release.outputs.tag }}
+          git_branch: "release"
+          change_log: ${{ needs.create-release.outputs.change_log }}
+
+      - name: "Update CHANGELOG.md"
+        uses: actions/github-script@v6
+        env:
+          git_branch: "release"
+          release_id: ${{ needs.create-release.outputs.release_id }}
+          release_tag: ${{ needs.create-release.outputs.tag }}
+          change_log: ${{ needs.create-release.outputs.change_log }}
+        with:
+          script: |
+            const fs = require("fs");
+            const child_process = require("child_process");
+            const path = require("path");
+            
+            const config = (prop, value) => exec.exec(`git config ${prop} "${value}"`);
+            const add = (file) => exec.exec(`git add ${file}`);
+            const commit = (message) => exec.exec(`git commit -m "${message}"`);
+            const push = (branch) => exec.exec(`git push origin ${branch} --follow-tags`);
+            const updateOrigin = (repo) => exec.exec(`git remote set-url origin ${repo}`);
+            
+            core.setSecret(process.env.GITHUB_TOKEN);
+            
+            updateOrigin(`https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`);
+            config('user.email', "tunistic.release.action@github.com");
+            config('user.name', "Tunistic Release Action");
+
+            const cwdPath = path.resolve(process.cwd());
+            const changelogFilePath = path.join(cwdPath, "CHANGELOG.md");
+            let changelogFileContents = fs.readFileSync(changelogFilePath, 'utf8');
+
+            const changelogReplacer = `<!-- replace me with new updates! -->
+
+            ## ${process.env.release_tag}
+
+            ${process.env.change_log}`;
+
+            changelogFileContents = changelogFileContents.replace("<!-- replace me with new updates! -->", changelogReplacer);
+            fs.writeFileSync(changelogFilePath, changelogFileContents);
+
+            await add(".");
+            await commit("chore(release): updated changelog file");
+            await push(process.env.git_branch);
+   
+      - name: Publish Release
+        id: publish-release
+        uses: actions/github-script@v6
+        env:
+          release_id: ${{ needs.create-release.outputs.release_id }}
+        with:
+          script: |
+            github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: process.env.release_id,
+              draft: false,
+              prerelease: false
+            })
+  

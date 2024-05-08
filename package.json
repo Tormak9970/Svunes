@@ -1,0 +1,44 @@
+{
+  "name": "tunistic",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "author": {
+    "email": "Tormak9970@gmail.com",
+    "name": "Travis Lane (Tormak)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tormak9970/Tunistic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Tormak9970/Tunistic/issues"
+  },
+  "homepage": "https://tunistic.org",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.5.1",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@tsconfig/svelte": "^5.0.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "svelte": "^4.2.12",
+    "svelte-check": "^3.6.7",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "svelte-preprocess": "^5.1.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,svelte}": "pnpm run lint"
+  }
+}
