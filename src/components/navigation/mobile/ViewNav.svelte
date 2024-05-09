@@ -6,8 +6,6 @@
   function setSelectedView(view: View) {
     $selectedView = view;
   }
-  
-  // TODO: no more than 5 at once
 </script>
 
 <div class="view-nav">
