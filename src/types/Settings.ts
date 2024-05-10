@@ -1,7 +1,20 @@
 import type { Album } from "../lib/models/Album";
+import type { Artist } from "../lib/models/Artist";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { View } from "./View";
+
+export enum NowPlayingLayout {
+  NORMAL
+}
+
+export enum NowPlayingAlbumTheme {
+  NORMAL,
+  FULL,
+  FULL_CARD,
+  CARD,
+  CIRCULAR
+}
 
 export enum GridSize {
   LIST,
@@ -9,48 +22,134 @@ export enum GridSize {
   THEE
 }
 
+export enum GridStyle {
+  NORMAL,
+  CARD,
+  CIRCULAR,
+  SQUARE
+}
+
 export type PlaylistSortOrder = "Alphabetical" | "Last Played";
 export type AlbumSortOrder = "Alphabetical" | "Last Played" | "Year" | "Length" | "Song Count";
 export type SongSortOrder = "Alphabetical" | "Last Played" | "Year" | "Length";
+export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Song Count";
 
 export type Settings = {
   version: string,
   themePrimaryColor: string,
   selectedView: View,
-  viewsToRender: View[],
 
   nowPlaying: {
-    progress: number,
-    layout: number // ! This is a potential feature for the future
+    songProgress: number,
+    songInfo: boolean,
+    circularPlayButton: boolean,
+    layout: NowPlayingLayout,
+    albumTheme: NowPlayingAlbumTheme,
+    controls: {
+      dismissMiniWithSwipe: boolean,
+      extraControls: boolean,
+      volumeControls: boolean,
+    }
   },
+
+  audio: {
+    fade: boolean,
+    autoPlay: boolean,
+    autoPlayBluetooth: boolean
+  },
+
+  personalization: {
+    viewsToRender: View[],
+    showSuggestions: boolean,
+    trackHistory: boolean,
+    showAlbumOnLockScreen: boolean
+  },
+
+  playlists: Playlist[],
 
   queue: Song[],
 
+  cache: {
+    albums: Album[],
+    songs: Song[],
+    artists: Artist[]
+  },
+
   playlistsView: {
     gridSize: GridSize,
-    sortOrder: PlaylistSortOrder,
-    playlists: Playlist[]
+    sortOrder: PlaylistSortOrder
   },
   albumsView: {
     gridSize: GridSize,
-    sortOrder: AlbumSortOrder,
-    albums: Album[]
+    sortOrder: AlbumSortOrder
   },
   songsView: {
     gridSize: GridSize,
-    sortOrder: SongSortOrder,
-    albums: Song[]
+    sortOrder: SongSortOrder
   },
-  // genresView: {
-  //   gridSize: GridSize
-  // },
-  // artistsView: {
-  //   gridSize: GridSize
-  // }
+  artistsView: {
+    gridSize: GridSize,
+    gridStyle: GridStyle,
+    sortOrder: ArtistSortOrder
+  }
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   "version": "",
+  "themePrimaryColor": "#7bdd69",
   "selectedView": 0,
-  "viewsToRender": [0, 1, 2, 3, 5]
+
+  "nowPlaying": {
+    "songProgress": 0,
+    "songInfo": false,
+    "circularPlayButton": false,
+    "layout": NowPlayingLayout.NORMAL,
+    "albumTheme": NowPlayingAlbumTheme.NORMAL,
+    "controls": {
+      "dismissMiniWithSwipe": true,
+      "extraControls": true,
+      "volumeControls": false,
+    }
+  },
+
+  "audio": {
+    "fade": false,
+    "autoPlay": false,
+    "autoPlayBluetooth": false
+  },
+
+  "personalization": {
+    "viewsToRender": [0, 1, 2, 3, 5],
+    "showSuggestions": true,
+    "trackHistory": true,
+    "showAlbumOnLockScreen": true
+  },
+
+  "playlists": [],
+
+  "queue": [],
+
+  "cache": {
+    "albums": [],
+    "songs": [],
+    "artists": []
+  },
+
+  "playlistsView": {
+    "gridSize": GridSize.TWO,
+    "sortOrder": "Alphabetical"
+  },
+  "albumsView": {
+    "gridSize": GridSize.TWO,
+    "sortOrder": "Alphabetical"
+  },
+  "songsView": {
+    "gridSize": GridSize.LIST,
+    "sortOrder": "Alphabetical"
+  },
+  "artistsView": {
+    "gridSize": GridSize.TWO,
+    "gridStyle": GridStyle.CIRCULAR,
+    "sortOrder": "Alphabetical"
+  }
 };

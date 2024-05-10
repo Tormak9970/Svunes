@@ -1,3 +1,23 @@
+
+@font-face {
+  font-family: "Google-sans";
+  src: url("/font/google_sans_regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Google-sans";
+  src: url("/font/google_sans_medium.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Google-sans";
+  src: url("/font/google_sans_bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 html,
 body {
   margin: 0;
@@ -5,6 +25,8 @@ body {
 
   height: 100%;
   width: 100%;
+
+  font-family: 'Google-sans';
 }
 
 #app {

@@ -15,8 +15,41 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type Settings, DEFAULT_SETTINGS } from "../../types/Settings";
+import { type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, nowPlayingAlbumTheme, nowPlayingLayout, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor } from "../../stores/State";
+import type { View } from "../../types/View";
+import type { Playlist } from "../models/Playlist";
+import type { Song } from "../models/Song";
+import type { Artist } from "../models/Artist";
+import type { Album } from "../models/Album";
+import type { Unsubscriber } from "svelte/store";
+
+function setIfNotExist(object: any, defaults: any): any {
+  const currentKeys = Object.keys(object);
+  const defaultEntries = Object.entries(defaults);
+  const defaultKeys = Object.keys(object);
+
+  for (const key in object) {
+    if (!defaultKeys.includes(key)) {
+      // @ts-ignore
+      delete object[key];
+    }
+  }
+
+  for (const [ key, val ] of defaultEntries) {
+    if (!currentKeys.includes(key)) {
+      // @ts-ignore
+      object[key] = val;
+    }
+
+    if (typeof object[key] === "object") {
+      object[key] = setIfNotExist(object[key], defaults[key])
+    }
+  }
+
+  return object;
+}
 
 /**
  * The controller for settings.
@@ -24,6 +57,43 @@ import { LogController } from "../controllers/LogController";
 export class SettingsController {
   private static settingsPath = "";
   private static settings: Settings;
+
+  private static themePrimaryColorUnsub: Unsubscriber;
+  private static selectedViewUnsub: Unsubscriber;
+
+  private static songProgressUnsub: Unsubscriber;
+  private static showSongInfoUnsub: Unsubscriber;
+  private static circularPlayButtonUnsub: Unsubscriber;
+  private static nowPlayingLayoutUnsub: Unsubscriber;
+  private static nowPlayingAlbumThemeUnsub: Unsubscriber;
+
+  private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
+  private static showExtraControlsUnsub: Unsubscriber;
+  private static showVolumeControlsUnsub: Unsubscriber;
+
+  private static fadeAudioOnPauseUnsub: Unsubscriber;
+  private static autoPlayOnConnectUnsub: Unsubscriber;
+  private static autoPlayOnBluetoothUnsub: Unsubscriber;
+
+  private static playlistsUnsub: Unsubscriber;
+  private static queueUnsub: Unsubscriber;
+
+  private static albumsUnsub: Unsubscriber;
+  private static songsUnsub: Unsubscriber;
+  private static artistsUnsub: Unsubscriber;
+
+  private static playlistGridSizeUnsub: Unsubscriber;
+  private static playlistSortOrderUnsub: Unsubscriber;
+
+  private static albumGridSizeUnsub: Unsubscriber;
+  private static albumSortOrderUnsub: Unsubscriber;
+
+  private static songGridSizeUnsub: Unsubscriber;
+  private static songSortOrderUnsub: Unsubscriber;
+
+  private static artistGridSizeUnsub: Unsubscriber;
+  private static artistGridStyleUnsub: Unsubscriber;
+  private static artistSortOrderUnsub: Unsubscriber;
 
   /**
    * Initializes the SettingsController.
@@ -39,7 +109,8 @@ export class SettingsController {
 
     this.settingsPath = setsPath;
     
-    this.settings = await this.loadSettings();
+    this.settings = await this.loadSettingsFromDevice();
+    this.setStores();
     this.registerSubs();
   }
 
@@ -57,28 +128,11 @@ export class SettingsController {
   }
 
   /**
-   * Gets the default value for the given settings field.
-   * @param field The settings property to get.
-   * @returns The default value for the field.
-   */
-  static getDefault<T>(field: string): T {
-    const settings: any = structuredClone(DEFAULT_SETTINGS);
-    const fieldPath = field.split(".");
-    let parentObject = settings;
-
-    for (let i = 0; i < fieldPath. length - 1; i++) {
-      parentObject = parentObject[fieldPath[i]];
-    }
-
-    return parentObject[fieldPath[fieldPath.length - 1]];
-  }
-
-  /**
    * Gets the given settings field.
    * @param field The settings property to get.
    * @returns The given setting, or its default value if it does not exist.
    */
-  static getSetting<T>(field: string): T {
+  private static getSetting<T>(field: string): T {
     const settings: any = structuredClone(this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
@@ -86,23 +140,11 @@ export class SettingsController {
     for (let i = 0; i < fieldPath. length - 1; i++) {
       const key = fieldPath[i];
       
-      if (Object.keys(parentObject).includes(key)) {
-        parentObject = parentObject[key];
-      } else {
-        const defaultValue = this.getDefault<T>(field);
-        LogController.log(`Field ${field} didn't exist. Returning default value ${defaultValue}.`);
-        return defaultValue;
-      }
+      parentObject = parentObject[key];
     }
 
     const finalKey = fieldPath[fieldPath.length - 1];
-    if (Object.keys(parentObject).includes(finalKey)) {
-      return parentObject[finalKey];
-    } else {
-      const defaultValue = this.getDefault<T>(field);
-      LogController.log(`Field ${field} didn't exist. Returning default value ${defaultValue}.`);
-      return defaultValue;
-    }
+    return parentObject[finalKey];
   }
 
   /**
@@ -110,7 +152,7 @@ export class SettingsController {
    * @param field The setting to update.
    * @param val The new value.
    */
-  static async updateSetting<T>(field: string, val: T): Promise<void> {
+  private static async updateSetting<T>(field: string, val: T): Promise<void> {
     const settings = structuredClone(this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
@@ -130,33 +172,31 @@ export class SettingsController {
   }
 
   /**
-   * Loads the settings.
+   * Returns a function that updates the given setting if the value has changed.
+   * @param field The setting to update.
+   * @returns A function that updates the given setting if the value has changed.
    */
-  private static async loadSettings(): Promise<Settings> {
+  private static updateStoreIfChanged<T>(field: string): (val: T) => void {
+    return (val: T) => {
+      const original = this.getSetting<T>(field);
+
+      if (original !== val) {
+        this.updateSetting(field, val);
+      }
+    }
+  }
+
+  /**
+   * Loads the settings from the device.
+   */
+  private static async loadSettingsFromDevice(): Promise<Settings> {
     const currentSettings: any = JSON.parse(await fs.readTextFile(this.settingsPath));
 
     let settings: Settings = { ...currentSettings };
     
     const defaultSettings = structuredClone(DEFAULT_SETTINGS);
 
-    const curKeys = Object.keys(currentSettings);
-    const defEntries = Object.entries(defaultSettings);
-    const defKeys = Object.keys(defaultSettings);
-
-    for (const [ key, val ] of defEntries) {
-      if (!curKeys.includes(key)) {
-        // @ts-ignore
-        settings[key] = val;
-      }
-    }
-
-    for (const key in currentSettings) {
-      if (!defKeys.includes(key)) {
-        // @ts-ignore
-        delete settings[key];
-      }
-    }
-    
+    settings = setIfNotExist(settings, defaultSettings);
     settings = this.migrateSettingsStructure(settings);
 
     settings.version = APP_VERSION;
@@ -169,10 +209,113 @@ export class SettingsController {
   }
 
   /**
+   * Sets the Svelte stores associated with the settings.
+   */
+  private static setStores(): void {
+    themePrimaryColor.set(this.settings.themePrimaryColor);
+    selectedView.set(this.settings.selectedView);
+
+
+    const nowPlaying = this.settings.nowPlaying;
+    songProgress.set(nowPlaying.songProgress);
+    showSongInfo.set(nowPlaying.songInfo);
+    circularPlayButton.set(nowPlaying.circularPlayButton);
+    nowPlayingLayout.set(nowPlaying.layout);
+    nowPlayingAlbumTheme.set(nowPlaying.albumTheme);
+
+    const controls = nowPlaying.controls;
+    dismissMiniPlayerWithSwipe.set(controls.dismissMiniWithSwipe);
+    showExtraControls.set(controls.extraControls);
+    showVolumeControls.set(controls.volumeControls);
+
+
+    const audio = this.settings.audio;
+    fadeAudioOnPause.set(audio.fade);
+    autoPlayOnConnect.set(audio.autoPlay);
+    autoPlayOnBluetooth.set(audio.autoPlayBluetooth);
+
+
+    playlists.set(this.settings.playlists);
+
+    queue.set(this.settings.queue);
+
+
+    const cache = this.settings.cache;
+    albums.set(cache.albums);
+    songs.set(cache.songs);
+    artists.set(cache.artists);
+
+
+    const playlistsView = this.settings.playlistsView;
+    playlistGridSize.set(playlistsView.gridSize);
+    playlistSortOrder.set(playlistsView.sortOrder);
+
+
+    const albumsView = this.settings.albumsView;
+    albumGridSize.set(albumsView.gridSize);
+    albumSortOrder.set(albumsView.sortOrder);
+
+
+    const songsView = this.settings.songsView;
+    songGridSize.set(songsView.gridSize);
+    songSortOrder.set(songsView.sortOrder);
+
+
+    const artistsView = this.settings.artistsView;
+    artistGridSize.set(artistsView.gridSize);
+    artistGridStyle.set(artistsView.gridStyle);
+    artistSortOrder.set(artistsView.sortOrder);
+  }
+
+  /**
    * Registers the subscriptions to stores.
    */
   private static registerSubs() {
+    this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
+    this.selectedViewUnsub = selectedView.subscribe(this.updateStoreIfChanged<View>("selectedView"));
 
+
+    this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("nowPlaying.songProgress"));
+    this.showSongInfoUnsub = showSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
+    this.circularPlayButtonUnsub = circularPlayButton.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.circularPlayButton"));
+    this.nowPlayingLayoutUnsub = nowPlayingLayout.subscribe(this.updateStoreIfChanged<NowPlayingLayout>("nowPlaying.layout"));
+    this.nowPlayingAlbumThemeUnsub = nowPlayingAlbumTheme.subscribe(this.updateStoreIfChanged<NowPlayingAlbumTheme>("nowPlaying.albumTheme"));
+
+    this.dismissMiniPlayerWithSwipeUnsub = dismissMiniPlayerWithSwipe.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.dismissMiniWithSwipe"));
+    this.showExtraControlsUnsub = showExtraControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.extraControls"));
+    this.showVolumeControlsUnsub = showVolumeControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.volumeControls"));
+
+
+    this.fadeAudioOnPauseUnsub = fadeAudioOnPause.subscribe(this.updateStoreIfChanged<boolean>("audio.fade"));
+    this.autoPlayOnConnectUnsub = autoPlayOnConnect.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlay"));
+    this.autoPlayOnBluetoothUnsub = autoPlayOnBluetooth.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlayBluetooth"));
+
+
+    this.playlistsUnsub = playlists.subscribe(this.updateStoreIfChanged<Playlist[]>("playlists"));
+
+    this.queueUnsub = queue.subscribe(this.updateStoreIfChanged<Song[]>("queue"));
+
+
+    this.albumsUnsub = albums.subscribe(this.updateStoreIfChanged<Album[]>("cache.albums"));
+    this.songsUnsub = songs.subscribe(this.updateStoreIfChanged<Song[]>("cache.songs"));
+    this.artistsUnsub = artists.subscribe(this.updateStoreIfChanged<Artist[]>("cache.artists"));
+
+
+    this.playlistGridSizeUnsub = playlistGridSize.subscribe(this.updateStoreIfChanged<GridSize>("playlistsView.gridSize"));
+    this.playlistSortOrderUnsub = playlistSortOrder.subscribe(this.updateStoreIfChanged<string>("playlistsView."));
+
+
+    this.albumGridSizeUnsub = albumGridSize.subscribe(this.updateStoreIfChanged<GridSize>("albumsView.gridSize"));
+    this.albumSortOrderUnsub = albumSortOrder.subscribe(this.updateStoreIfChanged<string>("albumsView.sortOrder"));
+
+
+    this.songGridSizeUnsub = songGridSize.subscribe(this.updateStoreIfChanged<GridSize>("songsView.gridSize"));
+    this.songSortOrderUnsub = songSortOrder.subscribe(this.updateStoreIfChanged<string>("songsView.sortOrder"));
+
+
+    this.artistGridSizeUnsub = artistGridSize.subscribe(this.updateStoreIfChanged<GridSize>("artistsView.gridSize"));
+    this.artistGridStyleUnsub = artistGridStyle.subscribe(this.updateStoreIfChanged<GridStyle>("artistsView.gridStyle"));
+    this.artistSortOrderUnsub = artistSortOrder.subscribe(this.updateStoreIfChanged<string>("artistsView.sortOrder"));
   }
 
   /**
@@ -191,6 +334,41 @@ export class SettingsController {
   static destroy() {
     this.save();
 
-    // TODO: unregister subscriptions
+    if (this.themePrimaryColorUnsub) this.themePrimaryColorUnsub();
+    if (this.selectedViewUnsub) this.selectedViewUnsub();
+
+    if (this.songProgressUnsub) this.songProgressUnsub();
+    if (this.showSongInfoUnsub) this.showSongInfoUnsub();
+    if (this.circularPlayButtonUnsub) this.circularPlayButtonUnsub();
+    if (this.nowPlayingLayoutUnsub) this.nowPlayingLayoutUnsub();
+    if (this.nowPlayingAlbumThemeUnsub) this.nowPlayingAlbumThemeUnsub();
+
+    if (this.dismissMiniPlayerWithSwipeUnsub) this.dismissMiniPlayerWithSwipeUnsub();
+    if (this.showExtraControlsUnsub) this.showExtraControlsUnsub();
+    if (this.showVolumeControlsUnsub) this.showVolumeControlsUnsub();
+
+    if (this.fadeAudioOnPauseUnsub) this.fadeAudioOnPauseUnsub();
+    if (this.autoPlayOnConnectUnsub) this.autoPlayOnConnectUnsub();
+    if (this.autoPlayOnBluetoothUnsub) this.autoPlayOnBluetoothUnsub();
+
+    if (this.playlistsUnsub) this.playlistsUnsub();
+    if (this.queueUnsub) this.queueUnsub();
+
+    if (this.albumsUnsub) this.albumsUnsub();
+    if (this.songsUnsub) this.songsUnsub();
+    if (this.artistsUnsub) this.artistsUnsub();
+
+    if (this.playlistGridSizeUnsub) this.playlistGridSizeUnsub();
+    if (this.playlistSortOrderUnsub) this.playlistSortOrderUnsub();
+
+    if (this.albumGridSizeUnsub) this.albumGridSizeUnsub();
+    if (this.albumSortOrderUnsub) this.albumSortOrderUnsub();
+
+    if (this.songGridSizeUnsub) this.songGridSizeUnsub();
+    if (this.songSortOrderUnsub) this.songSortOrderUnsub();
+
+    if (this.artistGridSizeUnsub) this.artistGridSizeUnsub();
+    if (this.artistGridStyleUnsub) this.artistGridStyleUnsub();
+    if (this.artistSortOrderUnsub) this.artistSortOrderUnsub();
   }
 }

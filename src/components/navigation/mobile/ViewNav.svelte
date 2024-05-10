@@ -22,7 +22,7 @@
 
     border-radius: 10px 10px 0px 0px;
 
-    background-color: var(--md-sys-color-surface-container-highest);
+    background-color: var(--md-sys-color-surface-container);
 
     display: flex;
     align-items: center;

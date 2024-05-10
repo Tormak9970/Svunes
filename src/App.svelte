@@ -1,23 +1,29 @@
 <script lang="ts">
   import ViewNav from "./components/navigation/mobile/ViewNav.svelte";
-  import NowPlayingSmall from "./components/NowPlayingSmall.svelte";
+  import MiniPlayer from "./components/MiniPlayer.svelte";
+  import Titlebar from "./components/Titlebar.svelte";
   import { ThemeController } from "./lib/controllers/ThemeController";
   import "./lib/external/md3-index";
-  import { showNowPlayingSmall, showViewNav } from "./stores/State";
+  import { showMiniPlayer, showViewNav } from "./stores/State";
 
   ThemeController.init();
+
+  let isDesktop = false;
 </script>
 
 <main>
   {#if $showViewNav}
     <ViewNav />
   {/if}
-  {#if $showNowPlayingSmall}
-    <NowPlayingSmall />
+  {#if $showMiniPlayer}
+    <MiniPlayer />
   {/if}
   <div class="content">
-    
+    Hello World
   </div>
+  {#if isDesktop}
+    <Titlebar title="Tunistic" />
+  {/if}
 </main>
 
 <style>
@@ -25,9 +31,11 @@
     height: 100%;
     width: 100%;
 
-    background-color: var(--md-sys-color-surface-container-low);
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
 
     display: flex;
+    align-items: center;
     flex-direction: column-reverse;
   }
 
