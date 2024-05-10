@@ -20,6 +20,7 @@ tauri = { version = "1.6.1", features = ["devtools", "dialog-all", "fs-all", "ht
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
 chrono = "0.4.34"
 panic-message = "0.3.0"
+symphonia = { version = "0.5.4", features = [ "flac", "wav", "mpa" ]}
 
 [features]
 # by default Tauri runs in production mode

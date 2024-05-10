@@ -4,7 +4,7 @@ mod reader;
 mod writer;
 mod logger;
 
-use std::{path::PathBuf, panic::{self, Location}, process::exit};
+use std::{fs::{self, DirEntry}, io::Error, panic::{self, Location}, path::PathBuf, process::exit};
 
 use serde;
 use panic_message::get_panic_info_message;
@@ -16,6 +16,81 @@ use tauri::{
 struct Payload {
   args: Vec<String>,
   cwd: String,
+}
+
+/// Reads a .flac file and returns the info.
+async fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> String {
+  return String::from("");
+}
+
+/// Reads a .mp3 file and returns the info.
+async fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> String {
+  return String::from("");
+}
+
+/// Reads a .wav file and returns the info.
+async fn read_wav(app_handle: AppHandle, file_path: PathBuf) -> String {
+  return String::from("");
+}
+
+
+/// Reads a music file and returns the info.
+async fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String) -> String {
+  if file_type.eq_ignore_ascii_case("mp3") {
+    return read_mp3(app_handle, file_path).await;
+  } else if file_type.eq_ignore_ascii_case("flac") {
+    return read_flac(app_handle, file_path).await;
+  } else {
+    return read_wav(app_handle, file_path).await;
+  } 
+}
+
+/// Reads the content of the provided directory.
+async fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> String {
+  let contents_res = fs::read_dir(folder_path);
+  
+  if contents_res.is_ok() {
+    let contents = contents_res.ok().unwrap();
+
+    let mut result = String::from("");
+
+    for file_entry_res in contents {
+      let file_entry: DirEntry = file_entry_res.ok().expect("File entry should have been ok.");
+      let file_path: PathBuf = file_entry.path();
+
+      if file_path.is_dir() {
+        let folder_result = read_music_folder(app_handle.to_owned(), file_path.to_owned()).await;
+        result.push_str(&folder_result);
+        result.push_str(",");
+      } else {
+        let file_type_str = file_path.extension().expect("Should have been able to get extension.").to_owned();
+        let file_type = file_type_str.into_string().ok().expect("Should have been able to convert the file extension to a String.");
+        
+        if file_type.eq_ignore_ascii_case("mp3") || file_type.eq_ignore_ascii_case("flac") || file_type.eq_ignore_ascii_case("wav") {
+          let file_result = read_music_file(app_handle.to_owned(), file_path, file_type).await;
+          result.push_str(&file_result);
+          result.push_str(",");
+        }
+      }
+    }
+
+    return result;
+  } else {
+    let err: Error = contents_res.err().unwrap();
+    logger::log_to_file(app_handle, format!("Encountered error while reading {}. Error: {}", folder_path_str, err.to_string()).as_str(), 2);
+    return String::from("");
+  }
+}
+
+#[tauri::command]
+/// Reads the contents of the provided directories.
+async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String) -> String {
+  let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Should have been able to deserialize music folders array.");
+  
+  // add_path_to_scope(app_handle.to_owned(), folder_path_str.to_owned()).await; // TODO
+  // let folder_path: PathBuf = PathBuf::from(folder_path_str.to_owned());
+
+  return String::from("");
 }
 
 #[tauri::command]
