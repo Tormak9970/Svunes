@@ -1,11 +1,11 @@
 {
   "name": "tunistic",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "author": {
     "email": "Tormak9970@gmail.com",
-    "name": "Travis Lane (Tormak)"
+    "name": "Travis Lane"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,9 @@
     "@commitlint/config-conventional": "^17.4.4",
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tsconfig/svelte": "^5.0.2",
+    "@sveltejs/svelte-virtual-list": "^3.0.1",
+    "@tauri-apps/api": "^1.5.3",
+    "svelte-lazy": "^1.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "svelte": "^4.2.12",
@@ -36,6 +39,7 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
+    "@tauri-apps/cli": "^1.5.10",
     "@material/material-color-utilities": "^0.2.7",
     "@material/web": "^1.4.1",
     "svelte-icons": "^2.1.0",

@@ -1,5 +1,4 @@
 /**
- * Steam Art Manager is a tool for setting the artwork of your Steam library.
  * Copyright (C) 2023 Travis Lane (Tormak)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
+import { fs, path } from "@tauri-apps/api";
 import { type Settings, DEFAULT_SETTINGS } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
 
@@ -22,13 +22,24 @@ import { LogController } from "../controllers/LogController";
  * The controller for settings.
  */
 export class SettingsController {
+  private static settingsPath = "";
   private static settings: Settings;
 
   /**
    * Initializes the SettingsController.
    */
-  static init() {
-    this.settings = this.loadSettings();
+  static async init() {
+    const appDir = await path.appConfigDir();
+    if (!(await fs.exists(appDir))) await fs.createDir(appDir);
+
+    const setsPath = await path.join(appDir, "settings.json");
+    if (!(await fs.exists(setsPath))) {
+      await fs.writeTextFile(setsPath, JSON.stringify(DEFAULT_SETTINGS, null, "\t"));
+    }
+
+    this.settingsPath = setsPath;
+    
+    this.settings = await this.loadSettings();
     this.registerSubs();
   }
 
@@ -121,8 +132,8 @@ export class SettingsController {
   /**
    * Loads the settings.
    */
-  private static loadSettings(): Settings {
-    const currentSettings: any = JSON.parse(localStorage.getItem("tunistic-settings") ?? JSON.stringify(DEFAULT_SETTINGS));
+  private static async loadSettings(): Promise<Settings> {
+    const currentSettings: any = JSON.parse(await fs.readTextFile(this.settingsPath));
 
     let settings: Settings = { ...currentSettings };
     
@@ -168,7 +179,10 @@ export class SettingsController {
    * Saves the settings object.
    */
   private static async save() {
-    localStorage.setItem("tunistic-settings", JSON.stringify(this.settings));
+    await fs.writeFile({
+      path: this.settingsPath,
+      contents: JSON.stringify(this.settings),
+    });
   }
 
   /**
