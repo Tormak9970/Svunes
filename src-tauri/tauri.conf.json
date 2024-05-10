@@ -1,0 +1,160 @@
+{
+	"build": {
+		"beforeDevCommand": "pnpm run dev",
+		"beforeBuildCommand": "pnpm run build",
+		"devPath": "http://localhost:1420",
+		"distDir": "../dist",
+		"withGlobalTauri": false
+	},
+	"package": {
+		"productName": "Tunistic",
+		"version": "../package.json"
+	},
+	"tauri": {
+		"allowlist": {
+			"dialog": { "all": true },
+			"path": { "all": true },
+			"os": { "all": true },
+			"fs": {
+				"all": true,
+				"scope": {
+          "allow": [
+            "$APPCONFIG",
+            "/var/home/*/.config/dev.travislane.tunistic",
+            "$APPCONFIG/**",
+            "/var/home/*/.config/dev.travislane.tunistic/**",
+            "$Home/**",
+            "/var/home/*/**",
+            "$APPLOG",
+            "$APPLOG/**",
+            "$APPCACHE",
+            "/var/home/*/.cache/dev.travislane.tunistic",
+            "$APPCACHE/**",
+            "/var/home/*/.cache/dev.travislane.tunistic/**"
+          ],
+          "requireLiteralLeadingDot": false
+        }
+			},
+			"http": {
+				"all": false,
+				"request": true,
+				"scope": []
+			},
+			"protocol": {
+				"all": true,
+				"asset": true,
+				"assetScope": {
+          "allow": [
+            "$APPCONFIG",
+            "/var/home/*/.config/dev.travislane.tunistic",
+            "$APPCONFIG/**",
+            "/var/home/*/.config/dev.travislane.tunistic/**",
+            "$Home/**",
+            "/var/home/*/**",
+            "$APPLOG",
+            "$APPLOG/**",
+            "$APPCACHE",
+            "/var/home/*/.cache/dev.travislane.tunistic",
+            "$APPCACHE/**",
+            "/var/home/*/.cache/dev.travislane.tunistic/**"
+          ],
+          "requireLiteralLeadingDot": false
+        }
+			},
+			"shell": {
+				"all": false,
+				"open": ".*"
+			},
+			"window": {
+				"all": true
+			},
+			"process": {
+				"all": false,
+				"exit": true,
+				"relaunch": true,
+				"relaunchDangerousAllowSymlinkMacos": false
+			}
+		},
+		"bundle": {
+			"active": true,
+			"category": "Utility",
+			"copyright": "Copyright Travis Lane 2024",
+			"deb": {
+				"depends": []
+			},
+			"externalBin": [],
+			"icon": [
+				"icons/32x32.png",
+				"icons/64x64.png",
+				"icons/128x128.png",
+				"icons/128x128@2x.png",
+				"icons/256x256.png",
+				"icons/icon.icns",
+				"icons/icon.ico",
+        "icons/icon.png"
+			],
+			"identifier": "dev.travislane.tunistic",
+			"longDescription": "A robust, offline first Material Design music player.",
+			"resources": [],
+			"shortDescription": "A robust, offline first Material Design music player.",
+			"targets": [
+				"appimage",
+        "deb",
+				"msi",
+				"updater"
+			],
+			"windows": {
+				"certificateThumbprint": null,
+				"digestAlgorithm": "sha256",
+				"timestampUrl": "",
+				"webviewInstallMode": {
+					"type": "offlineInstaller"
+				},
+        "wix": {
+          "language": {
+            "en-US": {
+              "localePath": "wix/locales/en-US.wxl"
+            }
+          },
+          "license": "wix/short-license.txt",
+          "bannerPath": "wix/bannerImage.jpg",
+          "dialogImagePath": "wix/dialogImage.jpg"
+        }
+			},
+			"appimage": {
+				"bundleMediaFramework": false
+			}
+		},
+		"security": {
+			"csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost https://*.steamgriddb.com; media-src 'self' asset: https://asset.localhost https://*.steamgriddb.com; style-src 'self' 'unsafe-inline'",
+			"dangerousDisableAssetCspModification": [
+				"style-src"
+			]
+		},
+		"updater": {
+			"active": true,
+			"endpoints": [
+				"https://raw.githubusercontent.com/Tormak9970/Tunistic/release/latest.json"
+			],
+			"dialog": false,
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIxRjcwRDQ0QzczMjAzMUMKUldRY0F6TEhSQTMzc2F0VWxEOUJyTTBQVUY2Ui94dkNXUGVBZW1PZ0RZTmVPUlhFcXFpb1djM1MK"
+		},
+		"windows": [
+			{
+				"label": "main",
+				"title": "Tunistic",
+				"url": "src/main.html",
+				"height": 802,
+				"minHeight": 740,
+				"width": 1400,
+				"minWidth": 1150,
+				"fullscreen": false,
+				"resizable": true,
+				"decorations": false,
+        "transparent": true,
+				"center": true,
+				"visible": true
+			}
+		]
+	}
+}
