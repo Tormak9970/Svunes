@@ -51,6 +51,9 @@ fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> String {
     }
 
     // result.push_str(format!("\"filepath\":\"{}\"", file_path.as_os_str().to_str().unwrap()).as_str()); // TODO save the file path
+
+    // TODO: copy albumn art to temp location and then save the path in the object
+
     result = (&result[..result.len() - 1]).to_owned();
     result.push_str("}");
     return result;
