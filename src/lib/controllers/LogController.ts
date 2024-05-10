@@ -23,7 +23,7 @@ import { LogLevel, RustInterop } from "./RustInterop";
  */
 export class LogController {
   private static APP_NAME = "Tunistic";
-  private static APP_THEME_COLOR = "#7bdd69";
+  private static APP_THEME_COLOR = "#73169e";
   private static APP_INFO_COLOR = "#1abc9c";
   private static APP_WARN_COLOR = "#e3c907";
   private static APP_ERROR_COLOR = "#c70808";
@@ -44,7 +44,7 @@ export class LogController {
     if (IS_DEBUG) {
       console.log(
         `%c ${LogController.APP_NAME} %c INFO %c`,
-        `background: ${LogController.APP_THEME_COLOR}; color: black;`,
+        `background: ${LogController.APP_THEME_COLOR}; color: white;`,
         `background: ${LogController.APP_INFO_COLOR}; color: black;`,
         "background: transparent;",
         message
@@ -62,7 +62,7 @@ export class LogController {
     if (IS_DEBUG) {
       console.warn(
         `%c ${LogController.APP_NAME} %c WARNING %c`,
-        `background: ${LogController.APP_THEME_COLOR}; color: black;`,
+        `background: ${LogController.APP_THEME_COLOR}; color: white;`,
         `background: ${LogController.APP_WARN_COLOR}; color: black;`,
         "background: transparent;",
         message
@@ -80,7 +80,7 @@ export class LogController {
     if (IS_DEBUG) {
       console.error(
         `%c ${LogController.APP_NAME} %c ERROR %c`,
-        `background: ${LogController.APP_THEME_COLOR}; color: black;`,
+        `background: ${LogController.APP_THEME_COLOR}; color: white;`,
         `background: ${LogController.APP_ERROR_COLOR}; color: black;`,
         "background: transparent;",
         message

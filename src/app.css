@@ -73,7 +73,13 @@ body {
   --md-sys-color-tertiary-container: #005d9e;
   --md-sys-color-on-tertiary-container: #ffffff;
   --md-sys-color-error: #ffb4ab;
-  --md-sys-color-on-error: #690005;
-  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error: #4e0004;
+  --md-sys-color-error-container: #a3000b;
   --md-sys-color-on-error-container: #ffdad6;
 }
+
+/* ::-webkit-scrollbar { width: 6px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--md-sys-color-primary); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--md-sys-color-primary); }
+::-webkit-scrollbar-corner { background: transparent; } */

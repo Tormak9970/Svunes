@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { selectedView, viewsToRender } from "../../../stores/State";
+  import { selectedView, showMiniPlayer, viewsToRender } from "../../../stores/State";
   import type { View } from "../../../types/View";
   import ViewButton from "./ViewButton.svelte";
 
@@ -8,7 +8,7 @@
   }
 </script>
 
-<div class="view-nav">
+<div class="view-nav" class:rounded={!$showMiniPlayer}>
   {#each $viewsToRender as viewsToRender}
     <ViewButton view={viewsToRender} onSelect={setSelectedView} />
   {/each}
@@ -20,12 +20,14 @@
 
     padding: 10px 10px;
 
-    border-radius: 10px 10px 0px 0px;
-
     background-color: var(--md-sys-color-surface-container);
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .rounded {
+    border-radius: 10px 10px 0px 0px;
   }
 </style>

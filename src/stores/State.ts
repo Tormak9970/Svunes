@@ -6,8 +6,11 @@ import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
 import type { Artist } from "../lib/models/Artist";
 
+export const hasLoaded = writable(false);
+
 // * View stores
 export const showViewNav = writable(true);
+export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(0);
 
 export const showMiniPlayer = writable(true);

@@ -17,13 +17,14 @@
 import { fs, path } from "@tauri-apps/api";
 import { type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, nowPlayingAlbumTheme, nowPlayingLayout, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor } from "../../stores/State";
 import type { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
 import type { Artist } from "../models/Artist";
 import type { Album } from "../models/Album";
 import type { Unsubscriber } from "svelte/store";
+import { showEditMusicFolders } from "../../stores/Overlays";
 
 function setIfNotExist(object: any, defaults: any): any {
   const currentKeys = Object.keys(object);
@@ -59,6 +60,7 @@ export class SettingsController {
   private static settings: Settings;
 
   private static themePrimaryColorUnsub: Unsubscriber;
+  private static musicDirectoriesUnsub: Unsubscriber;
   private static selectedViewUnsub: Unsubscriber;
 
   private static songProgressUnsub: Unsubscriber;
@@ -178,6 +180,7 @@ export class SettingsController {
    */
   private static updateStoreIfChanged<T>(field: string): (val: T) => void {
     return (val: T) => {
+      console.log("updating", field);
       const original = this.getSetting<T>(field);
 
       if (original !== val) {
@@ -213,6 +216,8 @@ export class SettingsController {
    */
   private static setStores(): void {
     themePrimaryColor.set(this.settings.themePrimaryColor);
+    musicDirectories.set(this.settings.musicDirectories);
+    if (this.settings.musicDirectories.length === 0) showEditMusicFolders.set(true);
     selectedView.set(this.settings.selectedView);
 
 
@@ -272,6 +277,7 @@ export class SettingsController {
    */
   private static registerSubs() {
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
+    this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
     this.selectedViewUnsub = selectedView.subscribe(this.updateStoreIfChanged<View>("selectedView"));
 
 
@@ -335,6 +341,7 @@ export class SettingsController {
     this.save();
 
     if (this.themePrimaryColorUnsub) this.themePrimaryColorUnsub();
+    if (this.musicDirectoriesUnsub) this.musicDirectoriesUnsub();
     if (this.selectedViewUnsub) this.selectedViewUnsub();
 
     if (this.songProgressUnsub) this.songProgressUnsub();

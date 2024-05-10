@@ -37,6 +37,7 @@ export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Song Count";
 export type Settings = {
   version: string,
   themePrimaryColor: string,
+  musicDirectories: string[],
   selectedView: View,
 
   nowPlaying: {
@@ -97,6 +98,7 @@ export type Settings = {
 export const DEFAULT_SETTINGS: Settings = {
   "version": "",
   "themePrimaryColor": "#7bdd69",
+  "musicDirectories": [],
   "selectedView": 0,
 
   "nowPlaying": {
