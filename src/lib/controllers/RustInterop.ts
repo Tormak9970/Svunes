@@ -61,4 +61,17 @@ export class RustInterop {
     await invoke("toggle_dev_tools", { enable: enable });
   }
 
+  /**
+   * Reads the contents of the provided folders.
+   * @param folders The folders to read.
+   */
+  static async readMusicFolders(folders: string[]): Promise<String> {
+    const results = await invoke("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders) });
+
+    console.log(results);
+    console.log(JSON.parse(results as string));
+
+    return "";
+  }
+
 }

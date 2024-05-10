@@ -25,6 +25,7 @@ import type { Artist } from "../models/Artist";
 import type { Album } from "../models/Album";
 import type { Unsubscriber } from "svelte/store";
 import { showEditMusicFolders } from "../../stores/Overlays";
+import { RustInterop } from "./RustInterop";
 
 function setIfNotExist(object: any, defaults: any): any {
   const currentKeys = Object.keys(object);
@@ -217,7 +218,11 @@ export class SettingsController {
   private static setStores(): void {
     themePrimaryColor.set(this.settings.themePrimaryColor);
     musicDirectories.set(this.settings.musicDirectories);
-    if (this.settings.musicDirectories.length === 0) showEditMusicFolders.set(true);
+    if (this.settings.musicDirectories.length === 0) {
+      showEditMusicFolders.set(true);
+    } else {
+      RustInterop.readMusicFolders(this.settings.musicDirectories);
+    }
     selectedView.set(this.settings.selectedView);
 
 
