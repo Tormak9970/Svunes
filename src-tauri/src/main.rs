@@ -4,12 +4,12 @@ mod reader;
 mod writer;
 mod logger;
 
-use std::{fs::{self, DirEntry, File}, io::Error, io::Write, panic::{self, Location}, path::PathBuf, process::exit};
+use std::{fs::{self, DirEntry, File}, io::{Error, Write}, panic::{self, Location}, path::PathBuf, process::exit};
 
 use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
-use symphonia::{core::{formats::{FormatOptions, FormatReader}, io::MediaSourceStream, meta::{StandardVisualKey, Visual}}, default::formats::FlacReader};
+use symphonia::{core::{formats::{FormatOptions, FormatReader}, io::MediaSourceStream, meta::{MetadataOptions, StandardVisualKey, Visual}, probe::Hint, units::TimeBase}, default::formats::FlacReader};
 use tauri::{
   api::{dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, path::cache_dir}, AppHandle, FsScope, Manager
 };
@@ -28,7 +28,7 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
   let mut file_path = app_cache_dir.join(&bundle_id).join("albums");
 
   if !file_path.exists() {
-    fs::create_dir_all(file_path.to_owned());
+    let _ = fs::create_dir_all(file_path.to_owned());
   }
 
   let file_type = &visual.media_type[6..];
@@ -57,13 +57,10 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
 fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
   let file_src = fs::File::open(file_path.to_owned()).expect("failed to open file");
   let file_metadata = file_src.metadata().unwrap();
-  // Create the media source stream.
+  
   let mss = MediaSourceStream::new(Box::new(file_src), Default::default());
-
-  // Use the default options for metadata and format readers.
   let fmt_opts: FormatOptions = Default::default();
 
-  // Probe the media source.
   let flac_reader_res = FlacReader::try_new(mss, &fmt_opts);
 
   let mut entry: Map<String, Value> = Map::new();
@@ -98,6 +95,27 @@ fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
       }
     }
 
+    let default_track = flac_reader.default_track().unwrap();
+    let code_params = &default_track.codec_params;
+    entry.insert(String::from("bitrate"), Value::String(code_params.sample_rate.unwrap().to_string()));
+
+    let time_base = code_params.time_base.unwrap();
+    let num_framse = code_params.n_frames.unwrap();
+    let length: symphonia::core::units::Time = TimeBase::calc_time(&time_base, num_framse);
+    let time = length.seconds;
+    let minutes = time / 60;
+    let seconds = time % 60;
+
+    let mut time_str = minutes.to_string();
+    time_str.push_str(":");
+
+    if seconds < 10 {
+      time_str.push_str("0");
+    }
+    time_str.push_str(seconds.to_string().as_str());
+
+    entry.insert(String::from("length"), Value::String(time_str));
+
     entry.insert(String::from("size"), Value::String(file_metadata.len().to_string()));
   } else {
     logger::log_to_file(app_handle.to_owned(), format!("Failed to parse {} with flac parser.", file_path.as_os_str().to_str().unwrap()).as_str(), 2);
@@ -108,7 +126,71 @@ fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
 
 /// Reads a .mp3 file and returns the info.
 fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
-  return Map::new();
+  let file_src = fs::File::open(file_path.to_owned()).expect("failed to open file");
+  let file_metadata = file_src.metadata().unwrap();
+  
+  let mss = MediaSourceStream::new(Box::new(file_src), Default::default());
+  let meta_opts: MetadataOptions = Default::default();
+  let fmt_opts: FormatOptions = Default::default();
+
+  let mut hint = Hint::new();
+  hint.with_extension("mp3");
+  
+  let mut probed = symphonia::default::get_probe()
+    .format(&hint, mss, &fmt_opts, &meta_opts)
+    .expect("unsupported format");
+
+  let mut tags = vec![];
+  let mut visuals = vec![];
+  if let Some(metadata_rev) = probed.format.metadata().current() {
+    tags = metadata_rev.tags().to_owned();
+    visuals = metadata_rev.visuals().to_owned();
+  } else if let Some(metadata_rev) = probed.metadata.get().as_ref().and_then(|m| m.current()) {
+    tags = metadata_rev.tags().to_owned();
+    visuals = metadata_rev.visuals().to_owned();
+  }
+
+  let mut entry: Map<String, Value> = Map::new();
+
+  for tag in tags {
+    if !tag.key.eq_ignore_ascii_case("lyrics") && !tag.key.eq_ignore_ascii_case("lyricist") && !tag.key.eq_ignore_ascii_case("albumartist") && !tag.key.eq_ignore_ascii_case("location") {
+      entry.insert(tag.key.to_ascii_lowercase().to_owned(), Value::String(tag.value.to_string()));
+    }
+  }
+
+  for visual in visuals {
+    let usage = visual.usage;
+    
+    if usage.is_some() && usage.unwrap() == StandardVisualKey::FrontCover {
+      let album_title = entry.get("talb").unwrap().to_string();
+      entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), &visual, album_title)));
+    }
+  }
+
+  let default_track = probed.format.default_track().unwrap();
+  let code_params = &default_track.codec_params;
+  entry.insert(String::from("bitrate"), Value::String(code_params.sample_rate.unwrap().to_string()));
+
+  let time_base = code_params.time_base.unwrap();
+  let num_framse = code_params.n_frames.unwrap();
+  let length: symphonia::core::units::Time = TimeBase::calc_time(&time_base, num_framse);
+  let time = length.seconds;
+  let minutes = time / 60;
+  let seconds = time % 60;
+
+  let mut time_str = minutes.to_string();
+  time_str.push_str(":");
+
+  if seconds < 10 {
+    time_str.push_str("0");
+  }
+  time_str.push_str(seconds.to_string().as_str());
+
+  entry.insert(String::from("length"), Value::String(time_str));
+
+  entry.insert(String::from("size"), Value::String(file_metadata.len().to_string()));
+  
+  return entry;
 }
 
 /// Reads a .wav file and returns the info.
