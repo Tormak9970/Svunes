@@ -4,13 +4,14 @@ mod reader;
 mod writer;
 mod logger;
 
-use std::{fs::{self, DirEntry}, io::Error, panic::{self, Location}, path::PathBuf, process::exit};
+use std::{fs::{self, DirEntry, File}, io::Error, io::Write, panic::{self, Location}, path::PathBuf, process::exit};
 
 use serde;
 use panic_message::get_panic_info_message;
-use symphonia::{core::{formats::{FormatOptions, FormatReader}, io::MediaSourceStream}, default::formats::FlacReader};
+use serde_json::{Map, Value};
+use symphonia::{core::{formats::{FormatOptions, FormatReader}, io::MediaSourceStream, meta::{StandardVisualKey, Visual}}, default::formats::FlacReader};
 use tauri::{
-  api::dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, AppHandle, FsScope, Manager
+  api::{dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, path::cache_dir}, AppHandle, FsScope, Manager
 };
 
 #[derive(Clone, serde::Serialize)]
@@ -19,9 +20,43 @@ struct Payload {
   cwd: String,
 }
 
+/// Writes the album visual to the cache folder and returns the path
+fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: String) -> String {
+  let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
+  
+  let app_cache_dir = cache_dir().expect("Couldn't resolve app cache dir.");
+  let mut file_path = app_cache_dir.join(&bundle_id).join("albums");
+
+  if !file_path.exists() {
+    fs::create_dir_all(file_path.to_owned());
+  }
+
+  let file_type = &visual.media_type[6..];
+  let mut file_name = (&album_title[1..album_title.len() - 1]).to_owned();
+  file_name.push_str(".");
+  file_name.push_str(file_type);
+
+  file_path = file_path.join(file_name.to_owned());
+
+  if !file_path.exists() {
+    let mut dest_file: File = File::create(&file_path).expect("Dest path should have existed.");
+    let write_res = dest_file.write_all(visual.data.as_ref());
+
+    if write_res.is_ok() {
+      logger::log_to_file(app_handle.to_owned(), format!("Writing of {} finished.", file_name).as_str(), 0);
+    } else {
+      let err = write_res.err().expect("Request failed, error should have existed.");
+      logger::log_to_file(app_handle.to_owned(), format!("Writing of {} failed with {}.", file_name, err.to_string()).as_str(), 0);
+    }
+  }
+
+  return file_path.as_mut_os_string().to_str().unwrap().to_owned();
+}
+
 /// Reads a .flac file and returns the info.
-fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> String {
+fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
   let file_src = fs::File::open(file_path.to_owned()).expect("failed to open file");
+  let file_metadata = file_src.metadata().unwrap();
   // Create the media source stream.
   let mss = MediaSourceStream::new(Box::new(file_src), Default::default());
 
@@ -31,51 +66,59 @@ fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> String {
   // Probe the media source.
   let flac_reader_res = FlacReader::try_new(mss, &fmt_opts);
 
+  let mut entry: Map<String, Value> = Map::new();
+
   if flac_reader_res.is_ok() {
     let mut flac_reader = flac_reader_res.ok().unwrap();
-
     let mut metadata = flac_reader.metadata();
-    let newest_res = metadata.skip_to_latest();
 
-    let mut result = String::from("{");
+    let newest_res = metadata.skip_to_latest();
 
     if newest_res.is_some() {
       let newest = newest_res.unwrap();
       let tags = newest.tags();
 
+      // ? We want songTitle, albumName, artist, genre, releaseYear, and trackNumber
+
       for tag in tags {
         if !tag.key.eq_ignore_ascii_case("lyrics") && !tag.key.eq_ignore_ascii_case("lyricist") && !tag.key.eq_ignore_ascii_case("albumartist") && !tag.key.eq_ignore_ascii_case("location") {
-          result.push_str(format!("\"{}\":\"{}\",", tag.key.to_ascii_lowercase().as_str(), tag.value.to_string()).as_str());
+          entry.insert(tag.key.to_ascii_lowercase().to_owned(), Value::String(tag.value.to_string()));
+        }
+      }
+      
+      let visuals = newest.visuals();
+
+      for visual in visuals {
+        let usage = visual.usage;
+        
+        if usage.is_some() && usage.unwrap() == StandardVisualKey::FrontCover {
+          let album_title = entry.get("album").unwrap().to_string();
+          entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), visual, album_title)));
         }
       }
     }
 
-    // result.push_str(format!("\"filepath\":\"{}\"", file_path.as_os_str().to_str().unwrap()).as_str()); // TODO save the file path
-
-    // TODO: copy albumn art to temp location and then save the path in the object
-
-    result = (&result[..result.len() - 1]).to_owned();
-    result.push_str("}");
-    return result;
+    entry.insert(String::from("size"), Value::String(file_metadata.len().to_string()));
   } else {
     logger::log_to_file(app_handle.to_owned(), format!("Failed to parse {} with flac parser.", file_path.as_os_str().to_str().unwrap()).as_str(), 2);
-    return String::from("");
   }
+  
+  return entry;
 }
 
 /// Reads a .mp3 file and returns the info.
-fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> String {
-  return String::from("{}");
+fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
+  return Map::new();
 }
 
 /// Reads a .wav file and returns the info.
-fn read_wav(app_handle: AppHandle, file_path: PathBuf) -> String {
-  return String::from("{}");
+fn read_wav(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
+  return Map::new();
 }
 
 
 /// Reads a music file and returns the info.
-fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String) -> String {
+fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String) -> Map<String, Value> {
   if file_type.eq_ignore_ascii_case("mp3") {
     return read_mp3(app_handle, file_path);
   } else if file_type.eq_ignore_ascii_case("flac") {
@@ -86,21 +129,21 @@ fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String)
 }
 
 /// Reads the content of the provided directory.
-fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> String {
+fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> Vec<Value> {
   let contents_res = fs::read_dir(folder_path.to_owned());
   
+  let mut entries: Vec<Value> = vec![];
+
   if contents_res.is_ok() {
     let contents = contents_res.ok().unwrap();
-
-    let mut result = String::from("");
 
     for file_entry_res in contents {
       let file_entry: DirEntry = file_entry_res.ok().expect("File entry should have been ok.");
       let file_path: PathBuf = file_entry.path();
 
       if file_path.is_dir() {
-        let folder_result = read_music_folder(app_handle.to_owned(), file_path.to_owned());
-        result.push_str(&folder_result);
+        let mut folder_entries = read_music_folder(app_handle.to_owned(), file_path.to_owned());
+        entries.append(&mut folder_entries);
       } else {
         let file_type_str_res = file_path.extension();
         
@@ -109,20 +152,23 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> String {
           let file_type = file_type_str.into_string().ok().expect("Should have been able to convert the file extension to a String.");
         
           if file_type.eq_ignore_ascii_case("mp3") || file_type.eq_ignore_ascii_case("flac") || file_type.eq_ignore_ascii_case("wav") {
-            let file_result = read_music_file(app_handle.to_owned(), file_path, file_type);
-            result.push_str(&file_result);
-            result.push_str(",");
+            let mut file_entry = read_music_file(app_handle.to_owned(), file_path.to_owned(), file_type);
+            
+            if !file_entry.is_empty() {
+              let file_path_str = file_path.as_os_str().to_str().unwrap().to_owned();
+              file_entry.insert(String::from("filename"), Value::String(file_path_str));
+              entries.push(Value::Object(file_entry));
+            }
           }
         }
       }
     }
-
-    return result;
   } else {
     let err: Error = contents_res.err().unwrap();
     logger::log_to_file(app_handle, format!("Encountered error while reading {}. Error: {}", folder_path.to_owned().to_str().unwrap(), err.to_string()).as_str(), 2);
-    return String::from("");
   }
+  
+  return entries;
 }
 
 #[tauri::command]
@@ -130,20 +176,17 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> String {
 async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String) -> String {
   let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Should have been able to deserialize music folders array.");
 
-  let mut result = String::from("[");
+  let mut entries: Vec<Value> = vec![];
 
   for music_folder in music_folder_paths {
     add_path_to_scope(app_handle.to_owned(), music_folder.to_owned()).await;
     let folder_path: PathBuf = PathBuf::from(music_folder.to_owned());
 
-    let file_result: String = read_music_folder(app_handle.to_owned(), folder_path);
-    result.push_str(&file_result);
+    let mut folder_entries = read_music_folder(app_handle.to_owned(), folder_path);
+    entries.append(&mut folder_entries);
   }
 
-  result = (&result[..result.len() - 1]).to_owned();
-  result.push_str("]");
-
-  return result;
+  return serde_json::to_string(&entries).expect("Can't serialize entries to string.");
 }
 
 #[tauri::command]
