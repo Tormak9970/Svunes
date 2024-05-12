@@ -34,6 +34,8 @@ export type AlbumSortOrder = "Alphabetical" | "Last Played" | "Year" | "Length" 
 export type SongSortOrder = "Alphabetical" | "Last Played" | "Year" | "Length";
 export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Song Count";
 
+export type NowPlayingType = "Playlist" | "Album" | "Songs" | "Genre";
+
 export type Settings = {
   version: string,
   themePrimaryColor: string,
@@ -41,7 +43,6 @@ export type Settings = {
   selectedView: View,
 
   nowPlaying: {
-    songProgress: number,
     songInfo: boolean,
     circularPlayButton: boolean,
     layout: NowPlayingLayout,
@@ -72,8 +73,11 @@ export type Settings = {
 
   cache: {
     albums: Album[],
-    songs: Song[],
-    artists: Artist[]
+    numSongs: number,
+    songProgress: number,
+    songName: string,
+    nowPlayingListName: string,
+    nowPlayingType: NowPlayingType
   },
 
   playlistsView: {
@@ -102,7 +106,6 @@ export const DEFAULT_SETTINGS: Settings = {
   "selectedView": 0,
 
   "nowPlaying": {
-    "songProgress": 0,
     "songInfo": false,
     "circularPlayButton": false,
     "layout": NowPlayingLayout.NORMAL,
@@ -133,8 +136,11 @@ export const DEFAULT_SETTINGS: Settings = {
 
   "cache": {
     "albums": [],
-    "songs": [],
-    "artists": []
+    "numSongs": 0,
+    "songProgress": 0,
+    "songName": "",
+    "nowPlayingListName": "",
+    "nowPlayingType": "Songs"
   },
 
   "playlistsView": {

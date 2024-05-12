@@ -67,6 +67,7 @@ name = "app"
 version = "0.0.0"
 dependencies = [
  "chrono",
+ "id3",
  "panic-message",
  "serde",
  "serde_json",
@@ -1655,6 +1656,17 @@ checksum = "e3804960be0bb5e4edb1e1ad67afd321a9ecfd875c3e65c099468fd2717d7cae"
 dependencies = [
  "byteorder",
  "png",
+]
+
+[[package]]
+name = "id3"
+version = "1.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "79f41f7e5ad125c63d55b112a98afb753742fa7f97692bfbbc52544b89e1ff1f"
+dependencies = [
+ "bitflags 2.4.2",
+ "byteorder",
+ "flate2",
 ]
 
 [[package]]

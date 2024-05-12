@@ -1,6 +1,6 @@
 import { writable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout, type AlbumSortOrder, type ArtistSortOrder, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -18,11 +18,12 @@ export const showMiniPlayer = writable(true);
 export const playlists: Writable<Playlist[]> = writable([]);
 export const queue: Writable<Song[]> = writable([]);
 
+export const artists: Writable<Artist[]> = writable([]);
+
 // * Settings stores
 export const themePrimaryColor = writable("#7bdd69");
 
 // # Now Playing Settings
-export const songProgress = writable(0);
 export const showSongInfo = writable(false);
 export const circularPlayButton = writable(false);
 export const nowPlayingLayout = writable(NowPlayingLayout.NORMAL);
@@ -46,7 +47,10 @@ export const showAlbumOnLockScreen = writable(true);
 // # Cache Settings
 export const albums: Writable<Album[]> = writable([]);
 export const songs: Writable<Song[]> = writable([]);
-export const artists: Writable<Artist[]> = writable([]);
+export const songProgress = writable(0);
+export const songName: Writable<string> = writable("");
+export const nowPlayingListName: Writable<string> = writable("");
+export const nowPlayingType: Writable<NowPlayingType> = writable("Songs");
 
 // # View Settings
 export const playlistGridSize: Writable<GridSize> = writable(GridSize.TWO);

@@ -15,19 +15,18 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
+import { type NowPlayingType, type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor } from "../../stores/State";
 import type { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
-import type { Artist } from "../models/Artist";
 import type { Album } from "../models/Album";
 import type { Unsubscriber } from "svelte/store";
-import { showEditMusicFolders } from "../../stores/Overlays";
-import { RustInterop } from "./RustInterop";
 
 function setIfNotExist(object: any, defaults: any): any {
+  if (object?.length || object?.length === 0) return object;
+
   const currentKeys = Object.keys(object);
   const defaultEntries = Object.entries(defaults);
   const defaultKeys = Object.keys(object);
@@ -45,7 +44,7 @@ function setIfNotExist(object: any, defaults: any): any {
       object[key] = val;
     }
 
-    if (typeof object[key] === "object") {
+    if (typeof defaults[key] === "object") {
       object[key] = setIfNotExist(object[key], defaults[key])
     }
   }
@@ -64,7 +63,6 @@ export class SettingsController {
   private static musicDirectoriesUnsub: Unsubscriber;
   private static selectedViewUnsub: Unsubscriber;
 
-  private static songProgressUnsub: Unsubscriber;
   private static showSongInfoUnsub: Unsubscriber;
   private static circularPlayButtonUnsub: Unsubscriber;
   private static nowPlayingLayoutUnsub: Unsubscriber;
@@ -83,7 +81,10 @@ export class SettingsController {
 
   private static albumsUnsub: Unsubscriber;
   private static songsUnsub: Unsubscriber;
-  private static artistsUnsub: Unsubscriber;
+  private static songProgressUnsub: Unsubscriber;
+  private static songNameUnsub: Unsubscriber;
+  private static nowPlayingListNameUnsub: Unsubscriber;
+  private static nowPlayingTypeUnsub: Unsubscriber;
 
   private static playlistGridSizeUnsub: Unsubscriber;
   private static playlistSortOrderUnsub: Unsubscriber;
@@ -135,7 +136,7 @@ export class SettingsController {
    * @param field The settings property to get.
    * @returns The given setting, or its default value if it does not exist.
    */
-  private static getSetting<T>(field: string): T {
+  static getSetting<T>(field: string): T {
     const settings: any = structuredClone(this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
@@ -171,7 +172,8 @@ export class SettingsController {
     this.settings = settings;
     this.save();
 
-    LogController.log(`Updated setting ${field} to ${JSON.stringify(val)}.`);
+    const stringified = JSON.stringify(val);
+    LogController.log(stringified.length < 200 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
   }
 
   /**
@@ -181,7 +183,6 @@ export class SettingsController {
    */
   private static updateStoreIfChanged<T>(field: string): (val: T) => void {
     return (val: T) => {
-      console.log("updating", field);
       const original = this.getSetting<T>(field);
 
       if (original !== val) {
@@ -194,9 +195,10 @@ export class SettingsController {
    * Loads the settings from the device.
    */
   private static async loadSettingsFromDevice(): Promise<Settings> {
-    const currentSettings: any = JSON.parse(await fs.readTextFile(this.settingsPath));
+    const contents = await fs.readTextFile(this.settingsPath);
+    const currentSettings: any = contents !== "" ? JSON.parse(contents) : structuredClone(DEFAULT_SETTINGS);
 
-    let settings: Settings = { ...currentSettings };
+    let settings: Settings = structuredClone(currentSettings);
     
     const defaultSettings = structuredClone(DEFAULT_SETTINGS);
 
@@ -218,16 +220,10 @@ export class SettingsController {
   private static setStores(): void {
     themePrimaryColor.set(this.settings.themePrimaryColor);
     musicDirectories.set(this.settings.musicDirectories);
-    if (this.settings.musicDirectories.length === 0) {
-      showEditMusicFolders.set(true);
-    } else {
-      RustInterop.readMusicFolders(this.settings.musicDirectories);
-    }
     selectedView.set(this.settings.selectedView);
 
 
     const nowPlaying = this.settings.nowPlaying;
-    songProgress.set(nowPlaying.songProgress);
     showSongInfo.set(nowPlaying.songInfo);
     circularPlayButton.set(nowPlaying.circularPlayButton);
     nowPlayingLayout.set(nowPlaying.layout);
@@ -252,8 +248,10 @@ export class SettingsController {
 
     const cache = this.settings.cache;
     albums.set(cache.albums);
-    songs.set(cache.songs);
-    artists.set(cache.artists);
+    songProgress.set(cache.songProgress);
+    songName.set(cache.songName);
+    nowPlayingListName.set(cache.nowPlayingListName);
+    nowPlayingType.set(cache.nowPlayingType);
 
 
     const playlistsView = this.settings.playlistsView;
@@ -286,7 +284,6 @@ export class SettingsController {
     this.selectedViewUnsub = selectedView.subscribe(this.updateStoreIfChanged<View>("selectedView"));
 
 
-    this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("nowPlaying.songProgress"));
     this.showSongInfoUnsub = showSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
     this.circularPlayButtonUnsub = circularPlayButton.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.circularPlayButton"));
     this.nowPlayingLayoutUnsub = nowPlayingLayout.subscribe(this.updateStoreIfChanged<NowPlayingLayout>("nowPlaying.layout"));
@@ -308,8 +305,13 @@ export class SettingsController {
 
 
     this.albumsUnsub = albums.subscribe(this.updateStoreIfChanged<Album[]>("cache.albums"));
-    this.songsUnsub = songs.subscribe(this.updateStoreIfChanged<Song[]>("cache.songs"));
-    this.artistsUnsub = artists.subscribe(this.updateStoreIfChanged<Artist[]>("cache.artists"));
+    this.songsUnsub = songs.subscribe((songs) => {
+      this.updateSetting<number>("cache.numSongs", songs.length);
+    });
+    this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
+    this.songNameUnsub = songName.subscribe(this.updateStoreIfChanged<string>("cache.songName"));
+    this.nowPlayingListNameUnsub = nowPlayingListName.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingListName"));
+    this.nowPlayingTypeUnsub = nowPlayingType.subscribe(this.updateStoreIfChanged<NowPlayingType>("cache.nowPlayingType"));
 
 
     this.playlistGridSizeUnsub = playlistGridSize.subscribe(this.updateStoreIfChanged<GridSize>("playlistsView.gridSize"));
@@ -349,7 +351,6 @@ export class SettingsController {
     if (this.musicDirectoriesUnsub) this.musicDirectoriesUnsub();
     if (this.selectedViewUnsub) this.selectedViewUnsub();
 
-    if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.showSongInfoUnsub) this.showSongInfoUnsub();
     if (this.circularPlayButtonUnsub) this.circularPlayButtonUnsub();
     if (this.nowPlayingLayoutUnsub) this.nowPlayingLayoutUnsub();
@@ -368,7 +369,10 @@ export class SettingsController {
 
     if (this.albumsUnsub) this.albumsUnsub();
     if (this.songsUnsub) this.songsUnsub();
-    if (this.artistsUnsub) this.artistsUnsub();
+    if (this.songProgressUnsub) this.songProgressUnsub();
+    if (this.songNameUnsub) this.songNameUnsub();
+    if (this.nowPlayingListNameUnsub) this.nowPlayingListNameUnsub();
+    if (this.nowPlayingTypeUnsub) this.nowPlayingTypeUnsub();
 
     if (this.playlistGridSizeUnsub) this.playlistGridSizeUnsub();
     if (this.playlistSortOrderUnsub) this.playlistSortOrderUnsub();

@@ -13,6 +13,7 @@ use symphonia::{core::{formats::{FormatOptions, FormatReader}, io::MediaSourceSt
 use tauri::{
   api::{dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, path::cache_dir}, AppHandle, FsScope, Manager
 };
+// use id3::{frame::Picture, Tag, TagLike};
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
@@ -31,10 +32,19 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
     let _ = fs::create_dir_all(file_path.to_owned());
   }
 
-  let file_type = &visual.media_type[6..];
+  let mut file_type;
+  let lower_case = visual.media_type.to_ascii_lowercase();
+
+  if visual.media_type.contains("/") {
+    file_type = &visual.media_type[6..];
+  } else {
+    file_type = &lower_case;
+  }
+
   let mut file_name = (&album_title[1..album_title.len() - 1]).to_owned();
   file_name.push_str(".");
   file_name.push_str(file_type);
+  file_name = file_name.replace(&[':'][..], "");
 
   file_path = file_path.join(file_name.to_owned());
 
@@ -45,7 +55,7 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
     if write_res.is_ok() {
       logger::log_to_file(app_handle.to_owned(), format!("Writing of {} finished.", file_name).as_str(), 0);
     } else {
-      let err = write_res.err().expect("Request failed, error should have existed.");
+      let err = write_res.err().unwrap();
       logger::log_to_file(app_handle.to_owned(), format!("Writing of {} failed with {}.", file_name, err.to_string()).as_str(), 0);
     }
   }
@@ -153,7 +163,7 @@ fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
   let mut entry: Map<String, Value> = Map::new();
 
   for tag in tags {
-    if !tag.key.eq_ignore_ascii_case("lyrics") && !tag.key.eq_ignore_ascii_case("lyricist") && !tag.key.eq_ignore_ascii_case("albumartist") && !tag.key.eq_ignore_ascii_case("location") {
+    if !tag.key.eq_ignore_ascii_case("lyrics") {
       entry.insert(tag.key.to_ascii_lowercase().to_owned(), Value::String(tag.value.to_string()));
     }
   }
@@ -161,9 +171,15 @@ fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
   for visual in visuals {
     let usage = visual.usage;
     
-    if usage.is_some() && usage.unwrap() == StandardVisualKey::FrontCover {
+    if entry.contains_key("talb") {
       let album_title = entry.get("talb").unwrap().to_string();
       entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), &visual, album_title)));
+    } else if entry.contains_key("tal") {
+      let album_title = entry.get("tal").unwrap().to_string();
+      entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), &visual, album_title)));
+    } else {
+      // entry.insert(String::from("albumpath"), Value::String());
+      // println!("{}", write_visual_to_cache(app_handle.to_owned(), &visual, "test".to_owned()));
     }
   }
 
