@@ -1,11 +1,13 @@
 import { showEditMusicFolders } from "../../stores/Overlays";
 import { RustInterop } from "./RustInterop";
-import { albums, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { albums, artists, genres, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
 import { SettingsController } from "./SettingsController";
 import { LogController } from "./LogController";
+import { Genre } from "../models/Genre";
+import { Artist } from "../models/Artist";
 
 /**
  * The core app controller.
@@ -54,7 +56,6 @@ export class AppController {
         const listAlbum = albumsList.find((a) => a.name === song.album);
         const album = new Album(song.album, song.albumPath, song.releaseYear, listAlbum?.lastPlayedOn);
         album.songNames.push(song.title);
-        album.trackCount++;
         
         if (song.artist) album.artists.add(song.artist);
 
@@ -62,7 +63,6 @@ export class AppController {
       } else {
         const album = albumMap.get(song.album)!;
         album.songNames.push(song.title);
-        album.trackCount++;
         
         if (song.artist) album.artists.add(song.artist);
       }
@@ -72,27 +72,62 @@ export class AppController {
     albums.set(newAlbumsList);
     
     LogController.log(`Loaded ${newAlbumsList.length} albums.`);
-    
-    this.loadArtistsFromSongs(newAlbumsList);
-    this.loadGenresFromSongs(newAlbumsList);
   }
 
   /**
-   * Generates all of the artists from the loaded albums.
-   * @param albums The loaded albums.
+   * Generates all of the artists from the loaded songs.
+   * @param songs The loaded songs.
    */
-  private static loadArtistsFromSongs(albums: Album[]) {
-    
-    // LogController.log(`Loaded ${newAlbumsList.length} artists.`);
+  private static loadArtistsFromSongs(songs: Song[]) {
+    const artistMap = new Map<string, Artist>();
+
+    for (const song of songs) {
+      if (song.artist) {
+        if (!artistMap.get(song.artist)) {
+          const artist = new Artist(song.artist);
+          artist.songNames.push(song.title);
+          artist.albumNames.add(song.album);
+  
+          artistMap.set(song.artist, artist);
+        } else {
+          const artist = artistMap.get(song.artist)!;
+          artist.songNames.push(song.title);
+          artist.albumNames.add(song.album);
+        }
+      }
+    }
+
+    const artistList = Array.from(artistMap.values());
+    artists.set(artistList);
+
+    LogController.log(`Loaded ${artistList.length} artists.`);
   }
 
   /**
-   * Generates all of the genres from the loaded albums.
-   * @param albums The loaded albums.
+   * Generates all of the genres from the loaded songs.
+   * @param songs The loaded songs.
    */
-  private static loadGenresFromSongs(albums: Album[]) {
-    
-    // LogController.log(`Loaded ${newAlbumsList.length} genres.`);
+  private static loadGenresFromSongs(songs: Song[]) {
+    const genreMap = new Map<string, Genre>();
+
+    for (const song of songs) {
+      const songGenre = song.genre ?? "Other";
+
+      if (!genreMap.get(songGenre)) {
+        const genre = new Genre(songGenre, song.albumPath);
+        genre.songNames.push(song.title);
+
+        genreMap.set(songGenre, genre);
+      } else {
+        const genre = genreMap.get(songGenre)!;
+        genre.songNames.push(song.title);
+      }
+    }
+
+    const genreList = Array.from(genreMap.values());
+    genres.set(genreList);
+
+    LogController.log(`Loaded ${genreList.length} genres.`);
   }
 
   /**
@@ -111,6 +146,8 @@ export class AppController {
       LogController.log(`Loaded ${loadedSongs.length} songs.`);
 
       this.loadAlbumsFromSongs(loadedSongs);
+      this.loadGenresFromSongs(loadedSongs);
+      this.loadArtistsFromSongs(loadedSongs);
     }
   }
 }

@@ -71,4 +71,13 @@ export class RustInterop {
     return JSON.parse(results as string);
   }
 
+  /**
+   * Gets the two primary colors from an image.
+   * @param imagePath The path to the image.
+   * @returns The background and text color.
+   */
+  static async getColorsFromImage(imagePath: string): Promise<[string, string]> {
+    const results = await invoke("get_colors_from_image", { imagePath: imagePath });
+    return JSON.parse(results as string);
+  }
 }

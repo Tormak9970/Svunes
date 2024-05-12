@@ -6,6 +6,7 @@ mod logger;
 
 use std::{fs::{self, DirEntry, File}, io::{Error, Write}, panic::{self, Location}, path::PathBuf, process::exit};
 
+use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
@@ -13,12 +14,17 @@ use symphonia::{core::{formats::{FormatOptions, FormatReader}, io::MediaSourceSt
 use tauri::{
   api::{dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, path::cache_dir}, AppHandle, FsScope, Manager
 };
+use image::io::Reader as ImageReader;
 // use id3::{frame::Picture, Tag, TagLike};
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
   args: Vec<String>,
   cwd: String,
+}
+
+fn color_to_hex(color: Color) -> String {
+  return String::from("#") + format!("{:x}{:x}{:x}", color.r, color.g, color.b).as_str();
 }
 
 /// Writes the album visual to the cache folder and returns the path
@@ -335,6 +341,37 @@ async fn toggle_dev_tools(app_handle: AppHandle, enable: bool) {
   }
 }
 
+#[tauri::command]
+/// Gets the two primary colors from an image
+async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> String {
+  let image_reader_res = ImageReader::open(image_path.to_owned());
+  
+  if image_reader_res.is_ok() {
+    let image_reader = image_reader_res.ok().unwrap();
+
+    let image_res = image_reader.decode();
+
+    if image_res.is_ok() {
+      let img = image_res.ok().unwrap();
+
+      let color_palette = get_palette_with_options(img.as_bytes(),
+        PixelEncoding::Rgb,
+        Quality::new(1),
+        MaxColors::new(2), // ! try different values
+        PixelFilter::White);
+
+      let colors = vec![Value::String(color_to_hex(color_palette[0])), Value::String(color_to_hex(color_palette[1]))];
+      return serde_json::to_string(&colors).expect("Couldn't serialize json!");
+    } else {
+      logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}.", image_path).as_str(), 2);
+      return serde_json::to_string::<Vec::<Value>>(&vec![]).expect("Couldn't serialize json!");
+    }
+  } else {
+    logger::log_to_file(app_handle.to_owned(), format!("failed to read {}.", image_path).as_str(), 2);
+    return serde_json::to_string::<Vec::<Value>>(&vec![]).expect("Couldn't serialize json!");
+  }
+}
+
 /// This app's main function.
 fn main() {
   tauri::Builder::default()
@@ -343,7 +380,8 @@ fn main() {
       logger::log_to_file,
       add_path_to_scope,
       toggle_dev_tools,
-      read_music_folders
+      read_music_folders,
+      get_colors_from_image
     ])
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);

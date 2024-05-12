@@ -5,6 +5,7 @@ import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
 import type { Artist } from "../lib/models/Artist";
+import type { Genre } from "../lib/models/Genre";
 
 export const hasLoaded = writable(false);
 
@@ -19,6 +20,7 @@ export const playlists: Writable<Playlist[]> = writable([]);
 export const queue: Writable<Song[]> = writable([]);
 
 export const artists: Writable<Artist[]> = writable([]);
+export const genres: Writable<Genre[]> = writable([]);
 
 // * Settings stores
 export const themePrimaryColor = writable("#7bdd69");
