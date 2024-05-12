@@ -1,5 +1,5 @@
 <script lang="ts">
-  import IconButton from "../../interactables/IconButton.svelte";
+  import SelectableIconButton from "../../interactables/SelectableIconButton.svelte";
   
   import QueueMusic from "svelte-icons/md/MdQueueMusic.svelte";
   import Album from "svelte-icons/md/MdAlbum.svelte";
@@ -27,7 +27,7 @@
   }
 </script>
 
-<IconButton width="60px" onClick={() => onSelect(view)} selected={$selectedView === view}>
+<SelectableIconButton width="60px" onClick={() => onSelect(view)} selected={$selectedView === view}>
   {#if view === views.playlists}
     <QueueMusic />
   {:else if view === views.albumns}
@@ -45,4 +45,4 @@
   {:else if view === views.home}
     <Home />
   {/if}
-</IconButton>
+</SelectableIconButton>

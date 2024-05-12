@@ -27,6 +27,8 @@ body {
   width: 100%;
 
   font-family: 'Google-sans';
+
+  overflow: hidden;
 }
 
 #app {
