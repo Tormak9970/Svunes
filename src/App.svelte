@@ -4,11 +4,13 @@
   import MiniPlayer from "./components/MiniPlayer.svelte";
   import Titlebar from "./components/Titlebar.svelte";
   import "./lib/external/md3-index";
-  import { showMiniPlayer, showViewNav } from "./stores/State";
+  import { isLoading, showMiniPlayer, showViewNav } from "./stores/State";
   import Overlays from "./components/overlays/Overlays.svelte";
   import { AppController } from "./lib/controllers/AppController";
   import { SettingsController } from "./lib/controllers/SettingsController";
   import { ThemeController } from "./lib/controllers/ThemeController";
+  import View from "./components/views/View.svelte";
+  import HomeLoadingAnimation from "./components/layout/HomeLoadingAnimation.svelte";
 
   let isDesktop = false;
 
@@ -33,7 +35,11 @@
     <MiniPlayer />
   {/if}
   <div class="content">
-    Hello World
+    {#if $isLoading}
+      <HomeLoadingAnimation />
+    {:else}
+      <View />
+    {/if}
   </div>
   {#if isDesktop}
     <Titlebar title="Tunistic" />
@@ -55,5 +61,6 @@
 
   .content {
     flex-grow: 1;
+    width: 100%;
   }
 </style>

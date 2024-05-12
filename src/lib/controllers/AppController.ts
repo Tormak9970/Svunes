@@ -1,6 +1,6 @@
 import { showEditMusicFolders } from "../../stores/Overlays";
 import { RustInterop } from "./RustInterop";
-import { albums, artists, genres, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { albums, artists, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
@@ -20,6 +20,7 @@ export class AppController {
   static async init() {
     this.musicFoldersSub = musicDirectories.subscribe((folders) => {
       this.loadSongs(folders);
+      isLoading.set(false);
     });
   }
 

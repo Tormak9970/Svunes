@@ -4,5 +4,7 @@ export enum View {
   SONGS,
   ARTISTS,
   GENRES,
-  SETTINGS
+  SETTINGS,
+  HOME,
+  SEARCH
 }

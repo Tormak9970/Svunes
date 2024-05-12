@@ -17,7 +17,7 @@
 import { fs, path } from "@tauri-apps/api";
 import { type NowPlayingType, type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, viewsToRender } from "../../stores/State";
 import type { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
@@ -69,6 +69,8 @@ export class SettingsController {
   private static nowPlayingAlbumThemeUnsub: Unsubscriber;
   private static nowPlayingUseAlbumColorsUnsub: Unsubscriber;
   private static nowPlayingMiniUseAlbumColorsUnsub: Unsubscriber;
+
+  private static viewsToRenderUnsub: Unsubscriber;
 
   private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
   private static showExtraControlsUnsub: Unsubscriber;
@@ -241,6 +243,9 @@ export class SettingsController {
     showVolumeControls.set(controls.volumeControls);
 
 
+    const personalization = this.settings.personalization;
+    viewsToRender.set(personalization.viewsToRender);
+
     const audio = this.settings.audio;
     fadeAudioOnPause.set(audio.fade);
     autoPlayOnConnect.set(audio.autoPlay);
@@ -304,6 +309,7 @@ export class SettingsController {
     this.showExtraControlsUnsub = showExtraControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.extraControls"));
     this.showVolumeControlsUnsub = showVolumeControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.volumeControls"));
 
+    this.viewsToRenderUnsub = viewsToRender.subscribe(this.updateStoreIfChanged<View[]>("personalization.viewsToRender"));
 
     this.fadeAudioOnPauseUnsub = fadeAudioOnPause.subscribe(this.updateStoreIfChanged<boolean>("audio.fade"));
     this.autoPlayOnConnectUnsub = autoPlayOnConnect.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlay"));
@@ -369,10 +375,14 @@ export class SettingsController {
     if (this.circularPlayButtonUnsub) this.circularPlayButtonUnsub();
     if (this.nowPlayingLayoutUnsub) this.nowPlayingLayoutUnsub();
     if (this.nowPlayingAlbumThemeUnsub) this.nowPlayingAlbumThemeUnsub();
+    if (this.nowPlayingUseAlbumColorsUnsub) this.nowPlayingUseAlbumColorsUnsub();
+    if (this.nowPlayingMiniUseAlbumColorsUnsub) this.nowPlayingMiniUseAlbumColorsUnsub();
 
     if (this.dismissMiniPlayerWithSwipeUnsub) this.dismissMiniPlayerWithSwipeUnsub();
     if (this.showExtraControlsUnsub) this.showExtraControlsUnsub();
     if (this.showVolumeControlsUnsub) this.showVolumeControlsUnsub();
+    
+    if (this.viewsToRenderUnsub) this.viewsToRenderUnsub();
 
     if (this.fadeAudioOnPauseUnsub) this.fadeAudioOnPauseUnsub();
     if (this.autoPlayOnConnectUnsub) this.autoPlayOnConnectUnsub();
@@ -380,6 +390,7 @@ export class SettingsController {
 
     if (this.playlistsUnsub) this.playlistsUnsub();
     if (this.queueUnsub) this.queueUnsub();
+    if (this.hiddenSongsUnsub) this.hiddenSongsUnsub();
 
     if (this.albumsUnsub) this.albumsUnsub();
     if (this.songsUnsub) this.songsUnsub();
@@ -393,6 +404,7 @@ export class SettingsController {
 
     if (this.albumGridSizeUnsub) this.albumGridSizeUnsub();
     if (this.albumSortOrderUnsub) this.albumSortOrderUnsub();
+    if (this.useAlbumColorsUnsub) this.useAlbumColorsUnsub();
 
     if (this.songGridSizeUnsub) this.songGridSizeUnsub();
     if (this.songSortOrderUnsub) this.songSortOrderUnsub();

@@ -7,12 +7,12 @@ import type { Album } from "../lib/models/Album";
 import type { Artist } from "../lib/models/Artist";
 import type { Genre } from "../lib/models/Genre";
 
-export const hasLoaded = writable(false);
+export const isLoading = writable(true);
 
 // * View stores
 export const showViewNav = writable(true);
 export const musicDirectories: Writable<string[]> = writable([]);
-export const selectedView: Writable<View> = writable(0);
+export const selectedView: Writable<View> = writable(-1 as View);
 
 export const showMiniPlayer = writable(true);
 
@@ -45,7 +45,7 @@ export const autoPlayOnConnect = writable(false);
 export const autoPlayOnBluetooth = writable(false);
 
 // # Personalization Settings
-export const viewsToRender: Writable<View[]> = writable([ View.PLAYLISTS, View.ALBUMS, View.SONGS, View.GENRES, View.SETTINGS])
+export const viewsToRender: Writable<View[]> = writable([])
 export const showSuggestions = writable(true);
 export const trackHistory = writable(true);
 export const showAlbumOnLockScreen = writable(true);
