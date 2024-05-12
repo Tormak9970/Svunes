@@ -47,6 +47,8 @@ export type Settings = {
     circularPlayButton: boolean,
     layout: NowPlayingLayout,
     albumTheme: NowPlayingAlbumTheme,
+    useAlbumColors: boolean,
+    useAlbumColorsForMini: boolean,
     controls: {
       dismissMiniWithSwipe: boolean,
       extraControls: boolean,
@@ -71,6 +73,8 @@ export type Settings = {
 
   queue: Song[],
 
+  hiddenSongs: Song[],
+
   cache: {
     albums: Album[],
     numSongs: number,
@@ -86,7 +90,8 @@ export type Settings = {
   },
   albumsView: {
     gridSize: GridSize,
-    sortOrder: AlbumSortOrder
+    sortOrder: AlbumSortOrder,
+    useAlbumColors: boolean
   },
   songsView: {
     gridSize: GridSize,
@@ -110,6 +115,8 @@ export const DEFAULT_SETTINGS: Settings = {
     "circularPlayButton": false,
     "layout": NowPlayingLayout.NORMAL,
     "albumTheme": NowPlayingAlbumTheme.NORMAL,
+    "useAlbumColors": true,
+    "useAlbumColorsForMini": false,
     "controls": {
       "dismissMiniWithSwipe": true,
       "extraControls": true,
@@ -134,6 +141,8 @@ export const DEFAULT_SETTINGS: Settings = {
 
   "queue": [],
 
+  "hiddenSongs": [],
+
   "cache": {
     "albums": [],
     "numSongs": 0,
@@ -149,7 +158,8 @@ export const DEFAULT_SETTINGS: Settings = {
   },
   "albumsView": {
     "gridSize": GridSize.TWO,
-    "sortOrder": "Alphabetical"
+    "sortOrder": "Alphabetical",
+    "useAlbumColors": true
   },
   "songsView": {
     "gridSize": GridSize.LIST,

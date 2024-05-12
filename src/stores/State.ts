@@ -18,6 +18,7 @@ export const showMiniPlayer = writable(true);
 
 export const playlists: Writable<Playlist[]> = writable([]);
 export const queue: Writable<Song[]> = writable([]);
+export const hiddenSongs: Writable<Song[]> = writable([]);
 
 export const artists: Writable<Artist[]> = writable([]);
 export const genres: Writable<Genre[]> = writable([]);
@@ -34,6 +35,9 @@ export const nowPlayingAlbumTheme = writable(NowPlayingAlbumTheme.NORMAL);
 export const dismissMiniPlayerWithSwipe = writable(true);
 export const showExtraControls = writable(true);
 export const showVolumeControls = writable(false);
+
+export const nowPlayingUseAlbumColors = writable(true);
+export const nowPlayingMiniUseAlbumColors = writable(false);
 
 // # Audio Settings
 export const fadeAudioOnPause = writable(false);
@@ -60,6 +64,7 @@ export const playlistSortOrder: Writable<PlaylistSortOrder> = writable("Alphabet
 
 export const albumGridSize: Writable<GridSize> = writable(GridSize.TWO);
 export const albumSortOrder: Writable<AlbumSortOrder> = writable("Alphabetical");
+export const useAlbumColors: Writable<boolean> = writable(true);
 
 export const songGridSize: Writable<GridSize> = writable(GridSize.LIST);
 export const songSortOrder: Writable<SongSortOrder> = writable("Alphabetical");

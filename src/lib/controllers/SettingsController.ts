@@ -17,7 +17,7 @@
 import { fs, path } from "@tauri-apps/api";
 import { type NowPlayingType, type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors } from "../../stores/State";
 import type { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
@@ -67,6 +67,8 @@ export class SettingsController {
   private static circularPlayButtonUnsub: Unsubscriber;
   private static nowPlayingLayoutUnsub: Unsubscriber;
   private static nowPlayingAlbumThemeUnsub: Unsubscriber;
+  private static nowPlayingUseAlbumColorsUnsub: Unsubscriber;
+  private static nowPlayingMiniUseAlbumColorsUnsub: Unsubscriber;
 
   private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
   private static showExtraControlsUnsub: Unsubscriber;
@@ -78,6 +80,7 @@ export class SettingsController {
 
   private static playlistsUnsub: Unsubscriber;
   private static queueUnsub: Unsubscriber;
+  private static hiddenSongsUnsub: Unsubscriber;
 
   private static albumsUnsub: Unsubscriber;
   private static songsUnsub: Unsubscriber;
@@ -91,6 +94,7 @@ export class SettingsController {
 
   private static albumGridSizeUnsub: Unsubscriber;
   private static albumSortOrderUnsub: Unsubscriber;
+  private static useAlbumColorsUnsub: Unsubscriber;
 
   private static songGridSizeUnsub: Unsubscriber;
   private static songSortOrderUnsub: Unsubscriber;
@@ -228,6 +232,8 @@ export class SettingsController {
     circularPlayButton.set(nowPlaying.circularPlayButton);
     nowPlayingLayout.set(nowPlaying.layout);
     nowPlayingAlbumTheme.set(nowPlaying.albumTheme);
+    nowPlayingUseAlbumColors.set(nowPlaying.useAlbumColors);
+    nowPlayingMiniUseAlbumColors.set(nowPlaying.useAlbumColorsForMini);
 
     const controls = nowPlaying.controls;
     dismissMiniPlayerWithSwipe.set(controls.dismissMiniWithSwipe);
@@ -244,6 +250,8 @@ export class SettingsController {
     playlists.set(this.settings.playlists);
 
     queue.set(this.settings.queue);
+
+    hiddenSongs.set(this.settings.hiddenSongs);
 
 
     const cache = this.settings.cache;
@@ -262,6 +270,7 @@ export class SettingsController {
     const albumsView = this.settings.albumsView;
     albumGridSize.set(albumsView.gridSize);
     albumSortOrder.set(albumsView.sortOrder);
+    useAlbumColors.set(albumsView.useAlbumColors);
 
 
     const songsView = this.settings.songsView;
@@ -288,6 +297,8 @@ export class SettingsController {
     this.circularPlayButtonUnsub = circularPlayButton.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.circularPlayButton"));
     this.nowPlayingLayoutUnsub = nowPlayingLayout.subscribe(this.updateStoreIfChanged<NowPlayingLayout>("nowPlaying.layout"));
     this.nowPlayingAlbumThemeUnsub = nowPlayingAlbumTheme.subscribe(this.updateStoreIfChanged<NowPlayingAlbumTheme>("nowPlaying.albumTheme"));
+    this.nowPlayingUseAlbumColorsUnsub = nowPlayingUseAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.useAlbumColors"));
+    this.nowPlayingMiniUseAlbumColorsUnsub = nowPlayingMiniUseAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.useAlbumColorsForMini"));
 
     this.dismissMiniPlayerWithSwipeUnsub = dismissMiniPlayerWithSwipe.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.dismissMiniWithSwipe"));
     this.showExtraControlsUnsub = showExtraControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.extraControls"));
@@ -302,6 +313,8 @@ export class SettingsController {
     this.playlistsUnsub = playlists.subscribe(this.updateStoreIfChanged<Playlist[]>("playlists"));
 
     this.queueUnsub = queue.subscribe(this.updateStoreIfChanged<Song[]>("queue"));
+    
+    this.hiddenSongsUnsub = hiddenSongs.subscribe(this.updateStoreIfChanged<Song[]>("hiddenSongs"));
 
 
     this.albumsUnsub = albums.subscribe(this.updateStoreIfChanged<Album[]>("cache.albums"));
@@ -320,6 +333,7 @@ export class SettingsController {
 
     this.albumGridSizeUnsub = albumGridSize.subscribe(this.updateStoreIfChanged<GridSize>("albumsView.gridSize"));
     this.albumSortOrderUnsub = albumSortOrder.subscribe(this.updateStoreIfChanged<string>("albumsView.sortOrder"));
+    this.useAlbumColorsUnsub = useAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("albumsView.useAlbumColors"));
 
 
     this.songGridSizeUnsub = songGridSize.subscribe(this.updateStoreIfChanged<GridSize>("songsView.gridSize"));
