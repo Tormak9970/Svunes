@@ -31,7 +31,7 @@
     </div>
   </md-icon-button>
   <md-menu bind:this={menuElement} positioning="popover" has-overflow={hasOverflow}>
-    <slot />
+    <slot menuElement={menuElement} />
   </md-menu>
 </div>
 

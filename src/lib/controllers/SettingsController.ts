@@ -18,7 +18,7 @@ import { fs, path } from "@tauri-apps/api";
 import { type NowPlayingType, type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, viewsToRender } from "../../stores/State";
-import type { View } from "../../types/View";
+import { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
 import type { Album } from "../models/Album";
@@ -296,7 +296,7 @@ export class SettingsController {
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
     this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
     this.selectedViewUnsub = selectedView.subscribe((view: View) => {
-      if (this.settings.personalization.viewsToRender.includes(view)) {
+      if (this.settings.personalization.viewsToRender.includes(view) && view !== View.SETTINGS && view !== View.SEARCH) {
         this.updateSetting<View>("selectedView", view);
       }
     });

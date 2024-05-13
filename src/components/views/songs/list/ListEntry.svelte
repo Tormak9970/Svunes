@@ -60,7 +60,7 @@
         {song.title}
       </div>
       <div class="artist">
-        {song.artist}
+        {song.artist}{song.releaseYear ? ` - ${song.releaseYear}` : ""}
       </div>
     </div>
   </div>

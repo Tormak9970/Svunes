@@ -5,11 +5,15 @@
   import MoreVert from "svelte-icons/md/MdMoreVert.svelte";
   import SongsOptions from "./SongsOptions.svelte";
   import MenuButton from "../../../interactables/MenuButton.svelte";
+  import { selectedView } from "../../../../stores/State";
+  import { View } from "../../../../types/View";
+  import { selectedChip } from "../../../../stores/Search";
 
   export let highlight: boolean;
 
   function openSearch() {
-
+    $selectedChip = "song";
+    $selectedView = View.SEARCH;
   }
 </script>
 
@@ -20,11 +24,11 @@
     </IconButton>
   </div>
   <div slot="right">
-    <MenuButton hasOverflow>
+    <MenuButton hasOverflow let:menuElement>
       <span slot="icon">
         <MoreVert />
       </span>
-      <SongsOptions />
+      <SongsOptions menuElement={menuElement} />
     </MenuButton>
   </div>
 </ViewHeader>

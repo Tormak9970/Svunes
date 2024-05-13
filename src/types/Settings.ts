@@ -1,5 +1,4 @@
 import type { Album } from "../lib/models/Album";
-import type { Artist } from "../lib/models/Artist";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { View } from "./View";
@@ -30,8 +29,8 @@ export enum GridStyle {
 }
 
 export type PlaylistSortOrder = "Alphabetical" | "Last Played";
-export type AlbumSortOrder = "Alphabetical" | "Last Played" | "Year" | "Length" | "Song Count";
-export type SongSortOrder = "Alphabetical" | "Last Played" | "Year" | "Length";
+export type AlbumSortOrder = "Alphabetical" | "Year" | "Length" | "Song Count" | "Last Played";
+export type SongSortOrder = "Alphabetical" | "Album" | "Artist" | "Year" | "Last Played";
 export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Song Count";
 
 export type NowPlayingType = "Playlist" | "Album" | "Songs" | "Genre";
