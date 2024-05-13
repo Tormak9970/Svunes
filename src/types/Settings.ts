@@ -17,8 +17,9 @@ export enum NowPlayingAlbumTheme {
 
 export enum GridSize {
   LIST,
-  TWO,
-  THEE
+  LARGE,
+  MEDIUM,
+  SMALL
 }
 
 export enum GridStyle {
@@ -152,11 +153,11 @@ export const DEFAULT_SETTINGS: Settings = {
   },
 
   "playlistsView": {
-    "gridSize": GridSize.TWO,
+    "gridSize": GridSize.LARGE,
     "sortOrder": "Alphabetical"
   },
   "albumsView": {
-    "gridSize": GridSize.TWO,
+    "gridSize": GridSize.LARGE,
     "sortOrder": "Alphabetical",
     "useAlbumColors": true
   },
@@ -165,7 +166,7 @@ export const DEFAULT_SETTINGS: Settings = {
     "sortOrder": "Alphabetical"
   },
   "artistsView": {
-    "gridSize": GridSize.TWO,
+    "gridSize": GridSize.LARGE,
     "gridStyle": GridStyle.CIRCULAR,
     "sortOrder": "Alphabetical"
   }

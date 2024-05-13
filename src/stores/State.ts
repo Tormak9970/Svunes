@@ -79,16 +79,16 @@ export const nowPlayingListName: Writable<string> = writable("");
 export const nowPlayingType: Writable<NowPlayingType> = writable("Songs");
 
 // # View Settings
-export const playlistGridSize: Writable<GridSize> = writable(GridSize.TWO);
+export const playlistGridSize: Writable<GridSize> = writable(GridSize.LARGE);
 export const playlistSortOrder: Writable<PlaylistSortOrder> = writable("Alphabetical");
 
-export const albumGridSize: Writable<GridSize> = writable(GridSize.TWO);
+export const albumGridSize: Writable<GridSize> = writable(GridSize.LARGE);
 export const albumSortOrder: Writable<AlbumSortOrder> = writable("Alphabetical");
 export const useAlbumColors: Writable<boolean> = writable(true);
 
 export const songGridSize: Writable<GridSize> = writable(GridSize.LIST);
 export const songSortOrder: Writable<SongSortOrder> = writable("Alphabetical");
 
-export const artistGridSize: Writable<GridSize> = writable(GridSize.TWO);
+export const artistGridSize: Writable<GridSize> = writable(GridSize.LARGE);
 export const artistGridStyle: Writable<GridStyle> = writable(GridStyle.CIRCULAR);
 export const artistSortOrder: Writable<ArtistSortOrder> = writable("Alphabetical");

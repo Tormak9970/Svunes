@@ -186,7 +186,8 @@
 	}
 
 	svelte-virtual-list-row {
-		display: inline;
+    margin-left: 10px;
+		display: flex;
 		overflow: hidden;
 	}
 </style>

@@ -8,7 +8,7 @@
 
   export let menuElement: MdMenu;
 
-  function gridSizeChange(value: number) {
+  function gridSizeChange(value: GridSize) {
     $songGridSize = value;
     menuElement.close();
   }
@@ -38,18 +38,23 @@
     <div class="sub-menu-header">Grid Size</div>
     <div class="radio-container">
       <div class="radio">
-        <label for="1-radio">1</label>
-        <md-radio id="1-radio" name="gridSize" value="1" checked={$songGridSize === GridSize.LIST} on:input={() => gridSizeChange(1)}></md-radio>
+        <label for="1-radio">List</label>
+        <md-radio id="1-radio" name="gridSize" value="1" checked={$songGridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)}></md-radio>
       </div>
 
       <div class="radio">
-        <label for="2-radio">2</label>
-        <md-radio id="2-radio" name="gridSize" value="2" checked={$songGridSize === GridSize.TWO} on:input={() => gridSizeChange(2)}></md-radio>
+        <label for="2-radio">Large</label>
+        <md-radio id="2-radio" name="gridSize" value="2" checked={$songGridSize === GridSize.LARGE} on:input={() => gridSizeChange(GridSize.LARGE)}></md-radio>
       </div>
 
       <div class="radio">
-        <label for="3-radio">3</label>
-        <md-radio id="3-radio" name="gridSize" value="3" checked={$songGridSize === GridSize.THEE} on:input={() => gridSizeChange(3)}></md-radio>
+        <label for="3-radio">Medium</label>
+        <md-radio id="3-radio" name="gridSize" value="3" checked={$songGridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)}></md-radio>
+      </div>
+
+      <div class="radio">
+        <label for="4-radio">Small</label>
+        <md-radio id="4-radio" name="gridSize" value="3" checked={$songGridSize === GridSize.SMALL} on:input={() => gridSizeChange(GridSize.SMALL)}></md-radio>
       </div>
     </div>
   </md-menu>

@@ -14,7 +14,7 @@
   <div slot="headline">Add to queue</div>
 </md-menu-item>
 <md-menu-item>
-  <div slot="headline">Add to playlists</div>
+  <div slot="headline">Add to playlist</div>
 </md-menu-item>
 <md-menu-item>
   <div slot="headline">Go to album</div>

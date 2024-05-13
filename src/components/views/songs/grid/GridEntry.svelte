@@ -7,9 +7,11 @@
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
   import SongOptions from "../SongOptions.svelte";
   import MenuButton from "../../../interactables/MenuButton.svelte";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
+  import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
   import Lazy from "svelte-lazy";
   import MusicNote from "svelte-icons/md/MdMusicNote.svelte";
+  import { songGridSize } from "../../../../stores/State";
+    import { GridSize } from "../../../../types/Settings";
 
   export let song: Song;
 
@@ -40,21 +42,21 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="song" class:highlight={highlighted} on:click={onClick} use:holdEvent={{ onHold: select, duration: 300 }}>
-  <div class="left">
-    <div class="album">
-      {#if convertedPath !== ""}
-        <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS}>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" />
-        </Lazy>
-      {:else}
-        <div class="placeholder-background">
-          <div class="icon-container">
-            <MusicNote />
-          </div>
+  <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;">
+    {#if convertedPath !== ""}
+      <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height - 5} fadeOption={IMAGE_FADE_OPTIONS}>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" />
+      </Lazy>
+    {:else}
+      <div class="placeholder-background">
+        <div class="icon-container">
+          <MusicNote />
         </div>
-      {/if}
-    </div>
+      </div>
+    {/if}
+  </div>
+  <div class="bottom" class:expand={$songGridSize !== GridSize.LARGE}>
     <div class="info">
       <div class="name">
         {song.title}
@@ -63,52 +65,58 @@
         {song.artist}{song.releaseYear ? ` - ${song.releaseYear}` : ""}
       </div>
     </div>
+    {#if !highlighted && $songGridSize === GridSize.LARGE}
+      <div class="options">
+        <MenuButton>
+          <span slot="icon">
+            <MoreVert />
+          </span>
+          <SongOptions song={song} />
+        </MenuButton>
+      </div>
+    {/if}
   </div>
-  {#if !highlighted}
-    <div class="options">
-      <MenuButton>
-        <span slot="icon">
-          <MoreVert />
-        </span>
-        <SongOptions song={song} />
-      </MenuButton>
-    </div>
-  {/if}
   <md-ripple></md-ripple>
 </div>
 
 <style>
   .song {
-    width: 100%;
+    width: calc(100% - 10px);
 
     display: flex;
+    flex-direction: column;
     align-items: center;
 
     position: relative;
 
-    padding: 10px 0px;
+    padding: 5px;
 
     transition: background-color 0.2s ease-in-out;
 
     border-radius: 10px;
-    margin: 2px 0px;
+
+    margin-top: 2px;
   }
 
   .highlight {
     background-color: var(--md-sys-color-surface-variant);
   }
 
-  .left {
+  .bottom {
+    padding-top: 9px;
+    padding-bottom: 4px;
+    width: calc(100% - 20px);
     display: flex;
     align-items: center;
-    width: calc(100% - 36px);
+    justify-content: space-between;
   }
 
   .info {
-    max-width: calc(100% - 75px - 30px);
+    width: calc(100% - 40px);
   }
 
-  .highlight .left {
+  .highlight .info,
+  .expand .info {
     width: 100%;
   }
 
@@ -127,13 +135,8 @@
   }
 
   .album {
-    border-radius: 4px;
+    border-radius: 10px;
     overflow: hidden;
-    height: 40px;
-    width: 40px;
-
-    margin-left: 10px;
-    margin-right: 15px;
   }
 
   .placeholder-background {
@@ -147,7 +150,7 @@
     align-items: center;
   }
   .icon-container {
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
   }
 </style>

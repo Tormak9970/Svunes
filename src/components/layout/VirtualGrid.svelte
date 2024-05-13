@@ -163,7 +163,7 @@
   });
 </script>
 
-<div class="overflow-shadow-container" style="width: {width}; height: {height};">
+<div style="width: calc({width} - 10px); height: {height}; margin-left: 10px;">
   <svelte-virtual-grid-viewport
     style="height: {height}; --img-width: {itemWidth}px; --img-height: {itemHeight}px; --column-gap: {columnGap}px; --row-gap: {rowGap}px;"
     on:scroll={handleScroll}
@@ -190,7 +190,15 @@
 		overflow-y: auto;
 		-webkit-overflow-scrolling:touch;
 		display: block;
+
+    scrollbar-color: transparent transparent;
+
+    transition: scrollbar-color 0.2s ease-in-out;
 	}
+
+  svelte-virtual-grid-viewport:hover {
+    scrollbar-color: var(--md-sys-color-primary) transparent;
+  }
 
 	svelte-virtual-grid-contents {
 		width: 100%;
