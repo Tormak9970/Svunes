@@ -151,4 +151,21 @@ export class AppController {
       this.loadArtistsFromSongs(loadedSongs);
     }
   }
+
+  /**
+   * Deletes the provided songs from the device.
+   * @param songNames The names of the songs to delete.
+   */
+  static async deleteFromDevice(songNames: string[]) {
+    // TODO: show popup to confirm if they really want to.
+    // TODO: update relevant stores (recalc genres, albums, artists, remove from playlists)
+  }
+
+  /**
+   * Shares the provided songs.
+   * @param songNames The names of the songs to share.
+   */
+  static async share(songNames: string[]) {
+    // TODO: implement per platform.
+  }
 }

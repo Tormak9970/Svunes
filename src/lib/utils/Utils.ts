@@ -47,9 +47,18 @@ export function debounce(func: any, wait:number, immediate?:boolean) {
 }
 
 /**
- * 
- * @param type The type to pre select.
+ * Renders the provided date in short form.
+ * @param formattedDate The date in ISO format.
  */
-export function openSearch(type: View) {
+export function renderDate(formattedDate: string): string {
+  const date = new Date(formattedDate);
+  return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
+}
 
+/**
+ * Gets the ISO formatted string for a given date.
+ * @param date The date to format.
+ */
+export function getISODate(date: Date): string {
+  return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay();
 }

@@ -1,10 +1,17 @@
 <script lang="ts">
+  import { albumFrom, artistFrom, genreFrom, songDetailsFrom } from "../../../stores/Navigation";
   import { selectedView, showMiniPlayer, viewsToRender } from "../../../stores/State";
+  import { selected } from "../../../stores/Select";
   import type { View } from "../../../types/View";
   import ViewButton from "./ViewButton.svelte";
 
   function setSelectedView(view: View) {
     $selectedView = view;
+    $songDetailsFrom = "View";
+    $albumFrom = "View";
+    $artistFrom = "View";
+    $genreFrom = "View";
+    $selected = [];
   }
 </script>
 

@@ -92,7 +92,7 @@
   }
 
   .highlight {
-    background-color: var(--md-sys-color-surface-container-highest);
+    background-color: var(--md-sys-color-surface-variant);
   }
 
   .left {

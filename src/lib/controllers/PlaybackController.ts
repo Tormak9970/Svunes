@@ -9,4 +9,18 @@ export class PlaybackController {
   static playSong(filename: string) {
 
   }
+
+  /**
+   * Pauses the playback.
+   */
+  static pause() {
+
+  }
+
+  /**
+   * Resumes the playback.
+   */
+  static resume() {
+
+  }
 }

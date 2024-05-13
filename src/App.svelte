@@ -12,6 +12,7 @@
   import View from "./components/views/View.svelte";
   import HomeLoadingAnimation from "./components/layout/HomeLoadingAnimation.svelte";
     import SelectHeader from "./components/SelectHeader.svelte";
+    import { inSelectMode } from "./stores/Select";
 
   let isDesktop = false;
 
@@ -39,7 +40,9 @@
     {#if $isLoading}
       <HomeLoadingAnimation />
     {:else}
-      <SelectHeader />
+      {#if $inSelectMode}
+        <SelectHeader />
+      {/if}
       <View />
     {/if}
   </div>
