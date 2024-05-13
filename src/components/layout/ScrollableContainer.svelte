@@ -18,11 +18,12 @@
     height: 100%;
 
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   /* .scroller { margin-right: 3px; } */
   ::-webkit-scrollbar-corner { background: transparent; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--md-sys-color-primary); border-radius: 4px; }
-  ::-webkit-scrollbar { width: 6px; height: 8px; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
 </style>

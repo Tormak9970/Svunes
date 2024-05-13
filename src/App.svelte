@@ -11,6 +11,7 @@
   import { ThemeController } from "./lib/controllers/ThemeController";
   import View from "./components/views/View.svelte";
   import HomeLoadingAnimation from "./components/layout/HomeLoadingAnimation.svelte";
+    import SelectHeader from "./components/SelectHeader.svelte";
 
   let isDesktop = false;
 
@@ -38,6 +39,7 @@
     {#if $isLoading}
       <HomeLoadingAnimation />
     {:else}
+      <SelectHeader />
       <View />
     {/if}
   </div>
@@ -62,5 +64,7 @@
   .content {
     flex-grow: 1;
     width: 100%;
+    
+    position: relative;
   }
 </style>

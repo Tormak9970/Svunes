@@ -5,3 +5,5 @@ declare const APP_VERSION: string;
 declare const IS_DEBUG: string;
 
 type DialogModalType = "INFO" | "WARNING" | "ERROR";
+
+declare module "svelte-icons/md/*.svelte";

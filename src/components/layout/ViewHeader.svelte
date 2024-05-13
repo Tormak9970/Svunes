@@ -35,11 +35,11 @@
 
   .left {
     height: 100%;
-    margin-left: 5px;
+    margin-left: 10px;
   }
 
   .right {
     height: 100%;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 </style>

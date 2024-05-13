@@ -10,10 +10,8 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div>
-  <md-icon-button style="--_state-layer-width: {width}; --_state-layer-height: {height}; --md--icon-button-icon-size: {iconSize};" on:click={onClick}>
-    <div style="width: {iconSize}; height: {iconSize};">
-      <slot />
-    </div>
-  </md-icon-button>
-</div>
+<md-icon-button style="--_state-layer-width: {width}; --_state-layer-height: {height}; --md--icon-button-icon-size: {iconSize};" on:click|stopPropagation={onClick}>
+  <div style="width: {iconSize}; height: {iconSize};">
+    <slot />
+  </div>
+</md-icon-button>

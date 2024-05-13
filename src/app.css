@@ -29,6 +29,8 @@ body {
   font-family: 'Google-sans';
 
   overflow: hidden;
+
+  user-select: none;
 }
 
 #app {

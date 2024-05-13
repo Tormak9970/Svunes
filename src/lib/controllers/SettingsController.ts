@@ -295,7 +295,11 @@ export class SettingsController {
   private static registerSubs() {
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
     this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
-    this.selectedViewUnsub = selectedView.subscribe(this.updateStoreIfChanged<View>("selectedView"));
+    this.selectedViewUnsub = selectedView.subscribe((view: View) => {
+      if (this.settings.personalization.viewsToRender.includes(view)) {
+        this.updateSetting<View>("selectedView", view);
+      }
+    });
 
 
     this.showSongInfoUnsub = showSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));

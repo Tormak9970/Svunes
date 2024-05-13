@@ -1,8 +1,5 @@
 <script>
   import { fade } from "svelte/transition";
-  import ScrollableContainer from "../layout/ScrollableContainer.svelte";
-
-  export let scrollTop = 0;
 </script>
 
 <div class="view-container" in:fade={{ duration: 200 }}>
@@ -10,9 +7,7 @@
     <slot name="header" />
   </div>
   <div class="content">
-    <ScrollableContainer bind:scrollTop={scrollTop}>
-      <slot name="content" />
-    </ScrollableContainer>
+    <slot name="content" />
   </div>
 </div>
 

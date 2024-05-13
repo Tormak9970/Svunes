@@ -1,16 +1,14 @@
 <script lang="ts">
-  import ViewHeader from "../../layout/ViewHeader.svelte";
-  import IconButton from "../../interactables/IconButton.svelte";
+  import ViewHeader from "../../../layout/ViewHeader.svelte";
+  import IconButton from "../../../interactables/IconButton.svelte";
   import Search from "svelte-icons/md/MdSearch.svelte";
   import MoreVert from "svelte-icons/md/MdMoreVert.svelte";
+  import SongsOptions from "./SongsOptions.svelte";
+  import MenuButton from "../../../interactables/MenuButton.svelte";
 
   export let highlight: boolean;
 
   function openSearch() {
-
-  }
-
-  function songOptions() {
 
   }
 </script>
@@ -22,8 +20,11 @@
     </IconButton>
   </div>
   <div slot="right">
-    <IconButton onClick={songOptions}>
-      <MoreVert />
-    </IconButton>
+    <MenuButton hasOverflow>
+      <span slot="icon">
+        <MoreVert />
+      </span>
+      <SongsOptions />
+    </MenuButton>
   </div>
 </ViewHeader>
