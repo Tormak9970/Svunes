@@ -3,7 +3,7 @@
   import { PlaybackController } from "../../../lib/controllers/PlaybackController";
   import { QueueController } from "../../../lib/controllers/QueueController";
   import type { Song } from "../../../lib/models/Song";
-  import { isEditingSong, showAddToPlaylist, showSongDetails, songToAdd, albumViewing, artistViewing, songViewing } from "../../../stores/Overlays";
+  import { showAddToPlaylist, showSongDetails, songToAdd, albumViewing, artistViewing, songViewing, showEditSong, showAlbumDetails } from "../../../stores/Overlays";
 
   export let song: Song;
 
@@ -17,6 +17,7 @@
    */
   function goToAlbum() {
     $albumViewing = song.album;
+    $showAlbumDetails = true;
   }
 
   /**
@@ -35,12 +36,11 @@
   }
 
   /**
-   * Shows the song details overlay in edit mode.
+   * Shows the edit song overlay.
    */
   function showSongEdit() {
     $songViewing = song.title;
-    $isEditingSong = true;
-    $showSongDetails = true;
+    $showEditSong = true;
   }
 </script>
 

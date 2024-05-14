@@ -20,8 +20,9 @@ export class Song {
   album: string;
   artist: string;
   releaseYear: number;
-  length: string;
-  bitRate: string;
+  length: number;
+  bitRate: number;
+  sampleRate: number;
   size: string;
   filePath: string;
   albumPath: string;
@@ -33,13 +34,14 @@ export class Song {
   /**
    * Creates a new Song.
    */
-  constructor(title: string, album: string, artist: string, releaseYear: number, length: string, bitRate: string, size: string, filePath: string, albumPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
+  constructor(title: string, album: string, artist: string, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: string, filePath: string, albumPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
     this.title = title;
     this.album = album;
     this.artist = artist;
     this.releaseYear = releaseYear;
     this.length = length;
     this.bitRate = bitRate;
+    this.sampleRate = sampleRate;
     this.size = size;
     this.filePath = filePath;
     this.albumPath = albumPath;
@@ -63,7 +65,7 @@ export class Song {
    * @returns The song object.
    */
   static fromJSON(json: any, lastPlayedOn = "Never"): Song {
-    let title, album, artist, releaseYear, length, bitRate, size, filePath, albumPath, genre, trackNumber, totalTracks;
+    let title, album, artist, releaseYear, length, bitRate, sampleRate, size, filePath, albumPath, genre, trackNumber, totalTracks;
     
     if (json.title && json.filename.endsWith("flac")) {
       title = json.title;
@@ -96,12 +98,13 @@ export class Song {
       }
     }
     
-    length = json.length;
-    bitRate = (parseFloat(json.bitrate) / 1000) + " kbit/s";
+    length = parseInt(json.length);
+    bitRate = parseInt(json.bitrate);
+    sampleRate = parseInt(json.sampleRate);
     size = calcSize(json.size);
     filePath = json.filename;
     albumPath = json.albumpath;
 
-    return new Song(title, album, artist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, size, filePath, albumPath, lastPlayedOn, genre, trackNumber, totalTracks);
+    return new Song(title, album, artist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, albumPath, lastPlayedOn, genre, trackNumber, totalTracks);
   }
 }
