@@ -19,12 +19,13 @@ export class Song {
   title: string;
   album: string;
   artist: string;
-  releaseYear: string;
+  releaseYear: number;
   length: string;
   bitRate: string;
   size: string;
   filePath: string;
   albumPath: string;
+  lastPlayedOn: string;
   genre?: string;
   trackNumber?: string;
   totalTracks?: string;
@@ -32,7 +33,7 @@ export class Song {
   /**
    * Creates a new Song.
    */
-  constructor(title: string, album: string, artist: string, releaseYear: string, length: string, bitRate: string, size: string, filePath: string, albumPath: string, genre?: string, trackNumber?: string, totalTracks?: string) {
+  constructor(title: string, album: string, artist: string, releaseYear: number, length: string, bitRate: string, size: string, filePath: string, albumPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
     this.title = title;
     this.album = album;
     this.artist = artist;
@@ -42,6 +43,7 @@ export class Song {
     this.size = size;
     this.filePath = filePath;
     this.albumPath = albumPath;
+    this.lastPlayedOn = lastPlayedOn;
     this.genre = genre;
     this.trackNumber = trackNumber;
     this.totalTracks = totalTracks;
@@ -60,7 +62,7 @@ export class Song {
    * @param json The song json object.
    * @returns The song object.
    */
-  static fromJSON(json: any): Song {
+  static fromJSON(json: any, lastPlayedOn = "Never"): Song {
     let title, album, artist, releaseYear, length, bitRate, size, filePath, albumPath, genre, trackNumber, totalTracks;
     
     if (json.title && json.filename.endsWith("flac")) {
@@ -100,6 +102,6 @@ export class Song {
     filePath = json.filename;
     albumPath = json.albumpath;
 
-    return new Song(title, album, artist, releaseYear, length, bitRate, size, filePath, albumPath, genre, trackNumber, totalTracks);
+    return new Song(title, album, artist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, size, filePath, albumPath, lastPlayedOn, genre, trackNumber, totalTracks);
   }
 }

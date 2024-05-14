@@ -8,10 +8,11 @@
   import SongOptions from "../SongOptions.svelte";
   import MenuButton from "../../../interactables/MenuButton.svelte";
   import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
-  import Lazy from "svelte-lazy";
+  import Lazy from "../../../layout/Lazy.svelte";
   import MusicNote from "svelte-icons/md/MdMusicNote.svelte";
   import { songGridSize } from "../../../../stores/State";
-    import { GridSize } from "../../../../types/Settings";
+  import { GridSize } from "../../../../types/Settings";
+  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
 
   export let song: Song;
 
@@ -47,6 +48,9 @@
       <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height - 5} fadeOption={IMAGE_FADE_OPTIONS}>
         <!-- svelte-ignore a11y-missing-attribute -->
         <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" />
+        <span slot="placeholder">
+          <MusicNotePlaceholder />
+        </span>
       </Lazy>
     {:else}
       <div class="placeholder-background">
@@ -62,7 +66,7 @@
         {song.title}
       </div>
       <div class="artist">
-        {song.artist}{song.releaseYear ? ` - ${song.releaseYear}` : ""}
+        {song.artist ?? "Unk"}{song.releaseYear ? ` - ${song.releaseYear === -1 ? "Unk" : song.releaseYear}` : ""}
       </div>
     </div>
     {#if !highlighted && $songGridSize === GridSize.LARGE}

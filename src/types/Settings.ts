@@ -78,6 +78,7 @@ export type Settings = {
   cache: {
     albums: Album[],
     numSongs: number,
+    songsLastPlayed: Record<string, string>,
     songProgress: number,
     songName: string,
     nowPlayingListName: string,
@@ -146,6 +147,7 @@ export const DEFAULT_SETTINGS: Settings = {
   "cache": {
     "albums": [],
     "numSongs": 0,
+    "songsLastPlayed": {},
     "songProgress": 0,
     "songName": "",
     "nowPlayingListName": "",

@@ -22,8 +22,8 @@ export const GRID_IMAGE_DIMENSIONS: Record<GridSize, any> = {
     infoHeight: 50
   },
   3: {
-    width: 70,
-    height: 70,
+    width: 75,
+    height: 75,
     gap: 5,
     infoHeight: 50
   }

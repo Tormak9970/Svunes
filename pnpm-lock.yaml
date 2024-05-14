@@ -55,9 +55,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.7
     version: 3.6.7(svelte@4.2.12)
-  svelte-lazy:
-    specifier: ^1.2.1
-    version: 1.2.1(svelte@4.2.12)
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
@@ -2475,14 +2472,6 @@ packages:
   /svelte-icons@2.1.0:
     resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
     dev: false
-
-  /svelte-lazy@1.2.1(svelte@4.2.12):
-    resolution: {integrity: sha512-8L+GrU5p0ia/nLDeGDMTC+DtmbXlFcoaTPoSf8jIy1NoKicqSJXz5tjiu6GUsD7ra0RjgIvhQiLcdZYR9VECeA==}
-    peerDependencies:
-      svelte: 3.x
-    dependencies:
-      svelte: 4.2.12
-    dev: true
 
   /svelte-preprocess@5.1.4(svelte@4.2.12)(typescript@5.2.2):
     resolution: {integrity: sha512-IvnbQ6D6Ao3Gg6ftiM5tdbR6aAETwjhHV+UKGf5bHGYR69RQvF1ho0JKPcbUON4vy4R7zom13jPjgdOWCQ5hDA==}

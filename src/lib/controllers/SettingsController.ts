@@ -330,6 +330,7 @@ export class SettingsController {
     this.albumsUnsub = albums.subscribe(this.updateStoreIfChanged<Album[]>("cache.albums"));
     this.songsUnsub = songs.subscribe((songs) => {
       this.updateSetting<number>("cache.numSongs", songs.length);
+      this.updateSetting<Record<string, string>>("cache.songsLastPlayed", Object.fromEntries(songs.map((song) => [song.title, song.lastPlayedOn])));
     });
     this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
     this.songNameUnsub = songName.subscribe(this.updateStoreIfChanged<string>("cache.songName"));

@@ -62,3 +62,16 @@ export function renderDate(formattedDate: string): string {
 export function getISODate(date: Date): string {
   return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay();
 }
+
+/**
+ * Genrates a sorting function for the provided property.
+ * @param property The property to sort by.
+ * @returns The sorting function.
+ */
+export function stringSort<T>(property: keyof T): (a: T, b: T) => number {
+  return (a: T, b: T) => {
+    if ((a[property] ?? "Unk") < (b[property] ?? "Unk")) return -1;
+    if ((a[property] ?? "Unk") > (b[property] ?? "Unk")) return 1;
+    return 0;
+  }
+}

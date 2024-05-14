@@ -8,8 +8,8 @@
   import SongOptions from "../SongOptions.svelte";
   import MenuButton from "../../../interactables/MenuButton.svelte";
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
-  import Lazy from "svelte-lazy";
-  import MusicNote from "svelte-icons/md/MdMusicNote.svelte";
+  import Lazy from "../../../layout/Lazy.svelte";
+  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
 
   export let song: Song;
 
@@ -46,13 +46,12 @@
         <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS}>
           <!-- svelte-ignore a11y-missing-attribute -->
           <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" />
+          <span slot="placeholder">
+            <MusicNotePlaceholder />
+          </span>
         </Lazy>
       {:else}
-        <div class="placeholder-background">
-          <div class="icon-container">
-            <MusicNote />
-          </div>
-        </div>
+        <MusicNotePlaceholder />
       {/if}
     </div>
     <div class="info">
@@ -60,7 +59,7 @@
         {song.title}
       </div>
       <div class="artist">
-        {song.artist}{song.releaseYear ? ` - ${song.releaseYear}` : ""}
+        {song.artist ?? "Unk"}{song.releaseYear ? ` - ${song.releaseYear === -1 ? "Unk" : song.releaseYear}` : ""}
       </div>
     </div>
   </div>
@@ -134,20 +133,5 @@
 
     margin-left: 10px;
     margin-right: 15px;
-  }
-
-  .placeholder-background {
-    width: 100%;
-    height: 100%;
-    background-color: var(--md-sys-color-surface-container-low);
-    color: var(--md-sys-color-on-secondary-container);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .icon-container {
-    width: 30px;
-    height: 30px;
   }
 </style>

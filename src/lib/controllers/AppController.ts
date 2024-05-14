@@ -136,11 +136,16 @@ export class AppController {
    * @param musicFolders The folders to read music from.
    */
   static async loadSongs(musicFolders: string[]) {
+    const songsLastPlayedMap = SettingsController.getSetting<Record<string, string>>("cache.songsLastPlayed");
     if (musicFolders.length === 0) {
       showEditMusicFolders.set(true);
     } else {
       const songsJson = await RustInterop.readMusicFolders(musicFolders);
-      const loadedSongs: Song[] = songsJson.map((json) => Song.fromJSON(json));
+      const loadedSongs: Song[] = songsJson.map((json) => {
+        const song = Song.fromJSON(json);
+        song.lastPlayedOn = songsLastPlayedMap[song.title] ?? "Never";
+        return song;
+      });
       
       if (SettingsController.getSetting<number>("cache.numSongs") !== loadedSongs.length) this.resetNowPlaying();
       songs.set(loadedSongs);
