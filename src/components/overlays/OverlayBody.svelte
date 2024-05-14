@@ -13,9 +13,9 @@
 
   onMount(() => {
     const style = document.createElement( 'style' )
-    style.innerHTML = '.scroller { margin-right: 3px; } ::-webkit-scrollbar-corner { background: transparent; } ::-webkit-scrollbar-track { background: transparent; }::-webkit-scrollbar-thumb { background: var(--md-sys-color-primary); border-radius: 4px; }::-webkit-scrollbar { width: 6px; height: 8px; }';
+    style.innerHTML = '.scroller { scrollbar-color: transparent transparent; transition: scrollbar-color 0.2s ease-in-out; } .scroller:hover { scrollbar-color: var(--md-sys-color-primary) transparent; }';
     self.shadowRoot?.appendChild(style);
-  })
+  });
 </script>
 
 <!-- ? Docs: https://material-web.dev/components/dialog/ -->

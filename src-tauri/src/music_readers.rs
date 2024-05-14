@@ -19,7 +19,7 @@ pub fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title
     let _ = create_dir_all(file_path.to_owned());
   }
 
-  let mut file_type;
+  let file_type;
   let lower_case = visual.media_type.to_ascii_lowercase();
 
   if visual.media_type.contains("/") {
@@ -85,8 +85,6 @@ pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value
         entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), visual, album_title)));
       }
     }
-
-    let next_packet_res = flac_reader.next_packet();
 
     let default_track = flac_reader.default_track().unwrap();
     let code_params = &default_track.codec_params;
@@ -184,6 +182,6 @@ pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value>
 }
 
 /// Reads a .wav file and returns the info.
-pub fn read_wav(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
+pub fn read_wav(_app_handle: AppHandle, _file_path: PathBuf) -> Map<String, Value> {
   return Map::new();
 }

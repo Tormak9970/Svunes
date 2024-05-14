@@ -75,3 +75,22 @@ export function stringSort<T>(property: keyof T): (a: T, b: T) => number {
     return 0;
   }
 }
+
+/**
+ * Genrates a sorting function for the provided property.
+ * @param property The property to sort by.
+ * @returns The sorting function.
+ */
+export function dateSort<T>(property: keyof T): (a: T, b: T) => number {
+  return (a: T, b: T) => {
+    if (a[property] === "Never" && b[property] === "Never") return 0;
+    if (a[property] === "Never") return -1;
+    if (b[property] === "Never") return 1;
+
+    const aDate = Date.parse(a[property] as string);
+    const bDate = Date.parse(b[property] as string);
+    if (aDate < bDate) return -1;
+    if (aDate > bDate) return 1;
+    return 0;
+  }
+}

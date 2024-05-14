@@ -10,7 +10,7 @@
   import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
   import type { Song } from "../../../lib/models/Song";
   import { LogController } from "../../../lib/controllers/LogController";
-  import { stringSort } from "../../../lib/utils/Utils";
+  import { dateSort, stringSort } from "../../../lib/utils/Utils";
   
   let isAtTop = true;
 
@@ -26,7 +26,7 @@
     } else if (sortOrder === "Year") {
       return songsList.sort((a: Song, b: Song) => b.releaseYear - a.releaseYear);
     } else if (sortOrder === "Last Played") {
-      return songsList;
+      return songsList.sort(dateSort("lastPlayedOn"));
     } else {
       LogController.error("Unkown song sort order!");
       return [];

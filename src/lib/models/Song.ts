@@ -19,6 +19,8 @@ export class Song {
   title: string;
   album: string;
   artist: string;
+  composer?: string;
+  albumArtist?: string;
   releaseYear: number;
   length: number;
   bitRate: number;
@@ -34,10 +36,12 @@ export class Song {
   /**
    * Creates a new Song.
    */
-  constructor(title: string, album: string, artist: string, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: string, filePath: string, albumPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
+  constructor(title: string, album: string, artist: string, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: string, filePath: string, albumPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
     this.title = title;
     this.album = album;
     this.artist = artist;
+    this.composer = composer;
+    this.albumArtist = albumArtist;
     this.releaseYear = releaseYear;
     this.length = length;
     this.bitRate = bitRate;
@@ -65,12 +69,13 @@ export class Song {
    * @returns The song object.
    */
   static fromJSON(json: any, lastPlayedOn = "Never"): Song {
-    let title, album, artist, releaseYear, length, bitRate, sampleRate, size, filePath, albumPath, genre, trackNumber, totalTracks;
+    let title, album, artist, composer, albumArtist, releaseYear, length, bitRate, sampleRate, size, filePath, albumPath, genre, trackNumber, totalTracks;
     
     if (json.title && json.filename.endsWith("flac")) {
       title = json.title;
       album = json.album;
       artist = json.artist;
+      composer = json.composer;
       releaseYear = json.date;
 
       trackNumber = json.tracknumber;
@@ -85,7 +90,9 @@ export class Song {
       }
 
       album = json.talb ?? json.tal;
-      artist = json.tpe1 ?? json.tp1 ?? json.tcom;
+      artist = json.tpe1 ?? json.tp1;
+      composer = json.tcom ?? json.tcm;
+      albumArtist = json.tpe2 ?? json.tp2;
       releaseYear = json.tyer ?? json.tye;
       genre = json.tcon ?? json.tco;
 
@@ -105,6 +112,6 @@ export class Song {
     filePath = json.filename;
     albumPath = json.albumpath;
 
-    return new Song(title, album, artist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, albumPath, lastPlayedOn, genre, trackNumber, totalTracks);
+    return new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, albumPath, lastPlayedOn, genre, trackNumber, totalTracks);
   }
 }

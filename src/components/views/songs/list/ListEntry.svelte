@@ -10,6 +10,9 @@
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
   import Lazy from "../../../layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
+    import { songSortOrder } from "../../../../stores/State";
+    import { fade } from "svelte/transition";
+    import { renderDate } from "../../../../lib/utils/Utils";
 
   export let song: Song;
 
@@ -58,8 +61,18 @@
       <div class="name">
         {song.title}
       </div>
-      <div class="artist">
-        {song.artist ?? "Unk"}{song.releaseYear ? ` - ${song.releaseYear === -1 ? "Unk" : song.releaseYear}` : ""}
+      <div class="secondary">
+        {#if $songSortOrder === "Alphabetical"}
+          <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
+        {:else if $songSortOrder === "Album"}
+          <div in:fade={{ duration: 200 }}>{song.album ?? "Unk"}</div>
+        {:else if $songSortOrder === "Artist"}
+          <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
+        {:else if $songSortOrder === "Year"}
+          <div in:fade={{ duration: 200 }}>{song.releaseYear ?? "Unk"}</div>
+        {:else if $songSortOrder === "Last Played"}
+          <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
+        {/if}
       </div>
     </div>
   </div>
@@ -117,7 +130,7 @@
     overflow: hidden;
   }
 
-  .artist {
+  .secondary {
     font-size: 14px;
     color: var(--md-sys-color-on-surface-variant);
     text-wrap: nowrap;

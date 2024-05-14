@@ -3,7 +3,7 @@ import { writable, type Writable } from "svelte/store";
 export const showEditMusicFolders = writable(false);
 export const showNowPlaying = writable(true); // ! will be false after tested.
 
-export const showSongDetails = writable(true); // ! will be false after tested.
+export const showSongDetails = writable(false); // ! will be false after tested.
 export const songViewing: Writable<string | null> = writable(null);
 export const showEditSong = writable(false); // ! will be false after tested.
 

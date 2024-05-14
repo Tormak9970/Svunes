@@ -43,6 +43,7 @@
     "@material/material-color-utilities": "^0.2.7",
     "@material/web": "^1.4.1",
     "@tauri-apps/cli": "^1.5.10",
+    "m3-svelte": "^3.2.6",
     "svelte-icons": "^2.1.0",
     "svelte-preprocess": "^5.1.4"
   },
