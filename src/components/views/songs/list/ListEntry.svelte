@@ -26,7 +26,7 @@
         $selected = [ ...$selected, song.title ];
       }
     } else {
-      PlaybackController.playSong(song.title);
+      PlaybackController.playSong(song);
     }
   }
 

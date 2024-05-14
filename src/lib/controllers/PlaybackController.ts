@@ -1,12 +1,14 @@
+import type { Song } from "../models/Song";
+
 /**
  * Controller that handles playback.
  */
 export class PlaybackController {
   /**
-   * Plays the provided filename.
-   * @param filename The file to play.
+   * Plays the provided song.
+   * @param song The song to play.
    */
-  static playSong(filename: string) {
+  static playSong(song: Song) {
 
   }
 

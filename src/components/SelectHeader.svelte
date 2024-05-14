@@ -8,10 +8,9 @@
   import BackArrow from "svelte-icons/md/MdArrowBack.svelte"
   import PlaylistAdd from "svelte-icons/md/MdPlaylistAdd.svelte"
   import AddBox from "svelte-icons/md/MdAddBox.svelte"
-  import { showAddToPlaylist } from "../stores/Overlays";
+  import { showAddToPlaylist, albumViewing, playlistViewing, artistViewing, genreViewing } from "../stores/Overlays";
   import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../stores/State";
   import { LogController } from "../lib/controllers/LogController";
-  import { albumViewing, playlistViewing, artistViewing, genreViewing } from "../stores/Navigation";
   import { QueueController } from "../lib/controllers/QueueController";
   import { AppController } from "../lib/controllers/AppController";
 
