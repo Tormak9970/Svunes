@@ -20,7 +20,6 @@ export class AppController {
   static async init() {
     this.musicFoldersSub = musicDirectories.subscribe((folders) => {
       this.loadSongs(folders);
-      isLoading.set(false);
     });
   }
 
@@ -101,7 +100,10 @@ export class AppController {
     const artistList = Array.from(artistMap.values());
     artists.set(artistList);
 
-    LogController.log(`Loaded ${artistList.length} artists.`);
+    LogController.log(`Loaded ${artistList.length} artists.`).then(() => {
+      // * This is kinda dumb but it works.
+      isLoading.set(false);
+    });
   }
 
   /**

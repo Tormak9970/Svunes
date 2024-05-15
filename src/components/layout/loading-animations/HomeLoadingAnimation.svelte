@@ -34,7 +34,7 @@
   .icon span {
     width: 4px;
     height: 100%;
-    background-color: var(--md-sys-color-on-secondary-container);;
+    background-color: rgb(var(--m3-scheme-on-secondary-container));
     border-radius: 2px;
     content: '';
     transform-origin: bottom;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { songGridSize, songSortOrder, songs } from "../../../stores/State";
+  import { isLoading, songGridSize, songSortOrder, songs } from "../../../stores/State";
   import ViewContainer from "../utils/ViewContainer.svelte";
   import ListEntry from "./ListEntry.svelte";
   import GridEntry from "./GridEntry.svelte";
@@ -13,9 +13,7 @@
   import { dateSort, stringSort } from "../../../lib/utils/Utils";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import { Icon } from "m3-svelte";
-    import HomeLoadingAnimation from "../../layout/loading-animations/HomeLoadingAnimation.svelte";
-    import { onMount } from "svelte";
-  
+
   let isAtTop = true;
 
   const keyFunction = (entry: any) => `${entry.data.title}${entry.data.album}${entry.data.artist}`;
@@ -45,19 +43,7 @@
     return sorted;
   }
 
-  let sortedSongs: Song[];
-
-  onMount(() => {
-    sortedSongs = sortSongs($songs, $songSortOrder);
-
-    songs.subscribe((newSongs) => {
-      sortedSongs = sortSongs(newSongs, $songSortOrder);
-    });
-
-    songSortOrder.subscribe((order) => {
-      sortedSongs = sortSongs($songs, order);
-    });
-  });
+  $: sortedSongs = sortSongs($songs, $songSortOrder);
 </script>
 
 <ViewContainer>
@@ -65,9 +51,7 @@
     <SongsHeader highlight={!isAtTop} />
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
-    {#if !sortedSongs}
-      Loading...
-    {:else if sortedSongs.length > 0}
+    {#if sortedSongs.length > 0}
       {#if $songGridSize === GridSize.LIST}
         <VirtualList itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
           <ListEntry song={entry} />

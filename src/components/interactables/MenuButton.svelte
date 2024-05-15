@@ -13,7 +13,11 @@
   export let open = false;
 </script>
 
-<div class="container">
+<svelte:window on:mouseup={() => open = false} />
+
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="container" on:click|stopPropagation>
   <Button type="text" iconType="full" on:click={() => open = !open}>
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>

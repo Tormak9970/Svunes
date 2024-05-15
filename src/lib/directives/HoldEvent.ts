@@ -2,14 +2,13 @@ import type { Action } from "svelte/action"
 
 type HoldEventParams = {
   onHold: () => void,
-  duration: number,
-  requireMouseUp?: boolean
+  duration: number
 }
 
 /**
  * A Svelte directive for applying scroll shadow to elements.
  */
-export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, duration, requireMouseUp = false }) => {
+export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, duration }) => {
   let startTime = Date.now();
   let shouldTrigger = true;
   let blockClick = false;
@@ -23,44 +22,32 @@ export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElemen
   }
 
   function mouseDown(e: MouseEvent) {
+    shouldTrigger = true;
     e.preventDefault();
     e.stopImmediatePropagation();
     startTime = Date.now();
 
-    if (!requireMouseUp) {
-      setTimeout(() => {
-        if (shouldTrigger) {
-          let currentTime = Date.now();
-  
-          if (currentTime - startTime >= duration) {
-            blockClick = true;
-            onHold();
-          }
-  
-          startTime = currentTime;
+    setTimeout(() => {
+      if (shouldTrigger) {
+        let currentTime = Date.now();
+
+        if (currentTime - startTime >= duration) {
+          blockClick = true;
+          onHold();
         }
-        
-        shouldTrigger = !shouldTrigger;
-      }, duration);
-    }
+
+        startTime = currentTime;
+      }
+      
+      shouldTrigger = true;
+    }, duration);
   }
 
   function mouseUp(e: MouseEvent) {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    if (requireMouseUp) {
-      let currentTime = Date.now();
-
-      if (currentTime - startTime >= duration) {
-        blockClick = true;
-        onHold();
-      }
-
-      startTime = currentTime;
-    } else {
-      shouldTrigger = false;
-    }
+    shouldTrigger = false;
   }
 
   node.addEventListener("mousedown", mouseDown);

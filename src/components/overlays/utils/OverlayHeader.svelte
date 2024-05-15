@@ -1,9 +1,9 @@
 <script lang="ts">
   export let highlight: boolean;
-  export let highlightColor = "--md-sys-color-surface-container";
+  export let highlightColor = "--m3-scheme-surface-container";
 </script>
 
-<div class="overlay-header" class:highlight style="--highlight-color: var({highlightColor});">
+<div class="overlay-header" class:highlight style="--highlight-color: rgb(var({highlightColor}));">
   <div class="left">
     <slot name="left" />
   </div>
@@ -29,7 +29,7 @@
   }
 
   .highlight {
-    background-color: var(--highlight-color);
+    background-color: rgb(var(--highlight-color));
   }
 
   .left {
