@@ -5,6 +5,10 @@
   import { GridSize } from "../../../types/Settings";
   import RadioInput from "../../interactables/RadioInput.svelte";
 
+  /**
+   * Sets the song grid size.
+   * @param size The size to set to.
+   */
   function gridSizeChange(size: GridSize) {
     $songGridSize = size;
     $showSongGridSize = false;
@@ -15,19 +19,19 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">
-      <RadioInput name="gridSize" checked={$songGridSize === GridSize.LIST} onChange={() => gridSizeChange(GridSize.LIST)} />
+      <RadioInput name="gridSize" checked={$songGridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)} />
       <div class="radio">List</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="gridSize" checked={$songGridSize === GridSize.LARGE} onChange={() => gridSizeChange(GridSize.LARGE)} />
+      <RadioInput name="gridSize" checked={$songGridSize === GridSize.LARGE} on:input={() => gridSizeChange(GridSize.LARGE)} />
       <div class="radio">Large</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="gridSize" checked={$songGridSize === GridSize.MEDIUM} onChange={() => gridSizeChange(GridSize.MEDIUM)} />
+      <RadioInput name="gridSize" checked={$songGridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)} />
       <div class="radio">Medium</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="gridSize" checked={$songGridSize === GridSize.SMALL} onChange={() => gridSizeChange(GridSize.SMALL)} />
+      <RadioInput name="gridSize" checked={$songGridSize === GridSize.SMALL} on:input={() => gridSizeChange(GridSize.SMALL)} />
       <div class="radio">Small</div>
     </label>
   </div>

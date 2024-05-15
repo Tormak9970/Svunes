@@ -4,8 +4,8 @@
   import { songsMap } from "../../../stores/State";
   import Lazy from "../../layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
-  import FullscreenOverlayBody from "../FullscreenOverlayBody.svelte";
-  import OverlayHeader from "../OverlayHeader.svelte";
+  import FullscreenOverlayBody from "../utils/FullscreenOverlayBody.svelte";
+  import OverlayHeader from "../utils/OverlayHeader.svelte";
   import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
   import { Button, Icon } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";

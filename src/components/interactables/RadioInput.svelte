@@ -1,16 +1,25 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
+
+  const dispatch = createEventDispatcher();
 
   export let checked = false;
   export let disabled = false;
   export let name: string;
-  export let onChange: () => void = () => {};
   export let display = "inline-flex";
   export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
+
+  /**
+   * Relay the input event to the parent.
+   */
+  function onInput() {
+    dispatch("input");
+  }
 </script>
 
 <div class="m3-container" style="display: {display};" {...extraOptions}>
-  <input type="radio" name={name} checked={checked} {disabled} on:input={onChange} />
+  <input type="radio" name={name} checked={checked} {disabled} on:input={onInput} />
   <div class="layer" />
 </div>
 

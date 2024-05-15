@@ -2,7 +2,7 @@
   import { dialog } from "@tauri-apps/api";
   import { showEditMusicFolders } from "../../../stores/Overlays";
   import { musicDirectories } from "../../../stores/State";
-  import OverlayBody from "../OverlayBody.svelte";
+  import OverlayBody from "../utils/OverlayBody.svelte";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./FolderEntry.svelte";
@@ -12,6 +12,9 @@
 
   let folders = [ ...$musicDirectories ];
 
+  /**
+   * Prompts the user to select a folder.
+   */
   async function pickFolders() {
     const path = await dialog.open({
       title: "Choose a Folder",
@@ -24,11 +27,18 @@
     }
   }
 
+  /**
+   * Saves the user's changes
+   */
   function done() {
     $musicDirectories = [ ...folders ];
     $showEditMusicFolders = false;
   }
 
+  /**
+   * Handles removing a path.
+   * @param index The index of the path to remove.
+   */
   function onPathDelete(index: number) {
     folders.splice(index, 1);
     folders = [ ...folders ];

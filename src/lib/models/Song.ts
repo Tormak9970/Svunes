@@ -1,5 +1,10 @@
 import { path } from "@tauri-apps/api";
 
+/**
+ * Gets the size to render.
+ * @param size The size string.
+ * @returns The calculated size.
+ */
 function calcSize(size: string): string {
   const sizeNum = parseFloat(size);
 

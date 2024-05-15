@@ -6,8 +6,9 @@
   export let width = "36px";
   export let height = "36px";
   export let icon: IconifyIcon;
+  export let duration = 300;
 
-  const [send, receive] = containerTransform({ duration: 300 });
+  const [send, receive] = containerTransform({ duration: duration });
 
   export let open = false;
 </script>

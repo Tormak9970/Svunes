@@ -2,6 +2,8 @@ import { get } from "svelte/store";
 import { queue, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
 
+// ! Add logging to this file
+
 /**
  * Controls the current queue.
  */
@@ -15,7 +17,7 @@ export class QueueController {
       const skippedSong = songQueue.shift();
       this.history.push(skippedSong!.title);
 
-      PlaybackController.playSong(songQueue[0].filePath);
+      PlaybackController.playSong(songQueue[0]);
       queue.set(songQueue);
     }
   }

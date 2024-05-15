@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Divider, Icon, ListItemButton } from "m3-svelte";
-  import { AppController } from "../../../lib/controllers/AppController";
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../../lib/controllers/QueueController";
-  import { showAddToPlaylist, showSongDetails, songToAdd, albumViewing, artistViewing, songViewing, showEditSong, showAlbumDetails, showSongOptions } from "../../../stores/Overlays";
-  import { songsMap } from "../../../stores/State";
-  import BottomSheet from "../../layout/BottomSheet.svelte";
+  import { AppController } from "../../lib/controllers/AppController";
+  import { PlaybackController } from "../../lib/controllers/PlaybackController";
+  import { QueueController } from "../../lib/controllers/QueueController";
+  import { showAddToPlaylist, showSongDetails, songToAdd, albumViewing, artistViewing, songToShowOptions, songViewing, showEditSong, showAlbumDetails, showSongOptions } from "../../stores/Overlays";
+  import { songsMap } from "../../stores/State";
+  import BottomSheet from "../layout/BottomSheet.svelte";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import AddBox from "@ktibow/iconset-material-symbols/add-box-rounded";
   import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
@@ -16,18 +16,48 @@
   import Edit from "@ktibow/iconset-material-symbols/edit-rounded";
   import Share from "@ktibow/iconset-material-symbols/share";
   import Trash from "@ktibow/iconset-material-symbols/delete-forever-rounded";
-  import type { Song } from "../../../lib/models/Song";
 
-  $: song = ($songViewing ? $songsMap[$songViewing] : null) as Song;
+  $: song = $songToShowOptions ? $songsMap[$songToShowOptions] : null;
 
+  /**
+   * Handles closing the options.
+   */
   function closeOptions() {
-    $songViewing = null;
+    $songToShowOptions = null;
     $showSongOptions = false;
   }
 
+  /**
+   * Plays this song.
+   */
+  function playSong() {
+    PlaybackController.playSong(song!);
+    closeOptions();
+  }
+
+  /**
+   * Plays this song next.
+   */
+  function playNext() {
+    QueueController.playNext([song!.title]);
+    closeOptions();
+  }
+
+  /**
+   * Queues this song.
+   */
+  function queueSong() {
+    QueueController.queueSongs([song!.title]);
+    closeOptions();
+  }
+
+  /**
+   * Opens the add to playlist dialog with this song set to be added.
+   */
   function addToPlaylist() {
     $songToAdd = song!.title;
     $showAddToPlaylist = true;
+    closeOptions();
   }
 
   /**
@@ -36,6 +66,7 @@
   function goToAlbum() {
     $albumViewing = song!.album;
     $showAlbumDetails = true;
+    closeOptions();
   }
 
   /**
@@ -43,39 +74,60 @@
    */
   function goToArtist() {
     $artistViewing = song!.artist;
+    closeOptions();
   }
 
   /**
    * Shows the song details overlay.
    */
   function showDetails() {
+    $songViewing = song!.title;
     $showSongDetails = true;
+    closeOptions();
   }
 
   /**
    * Shows the edit song overlay.
    */
   function showSongEdit() {
+    $songViewing = song!.title;
     $showEditSong = true;
+    closeOptions();
+  }
+
+  /**
+   * Opens the platform's share ui.
+   */
+  function share() {
+    AppController.share([song!.title]);
+    closeOptions();
+  }
+
+  /**
+   * Prompts the user to confirm if they want to delete this song.
+   */
+  function deleteSong() {
+    AppController.deleteFromDevice([song!.title]);
+    closeOptions();
   }
 </script>
 
 {#if $showSongOptions}
   <BottomSheet on:close={closeOptions}>
     <div class="list">
-      <ListItemButton headline="Play" on:click={() => PlaybackController.playSong(song)}>
+      <ListItemButton headline="Play" on:click={playSong}>
         <svelte:fragment slot="leading">
           <Icon icon={Play} />
         </svelte:fragment>
       </ListItemButton>
       <Divider />
-      <ListItemButton headline="Play Next" on:click={() => QueueController.playNext([song.title])}>
+      <ListItemButton headline="Play Next" on:click={playNext}>
         <svelte:fragment slot="leading">
           <Icon icon={PlayNext} />
         </svelte:fragment>
       </ListItemButton>
       <Divider />
-      <ListItemButton headline="Add to Queue" on:click={() => QueueController.queueSongs([song.title])}>
+      <ListItemButton headline="Add to Queue" on:click={queueSong}>
         <svelte:fragment slot="leading">
           <Icon icon={AddBox} />
         </svelte:fragment>
@@ -113,13 +165,13 @@
         </svelte:fragment>
       </ListItemButton>
       <Divider />
-      <ListItemButton headline="Share" on:click={() => AppController.share([song.title])}>
+      <ListItemButton headline="Share" on:click={share}>
         <svelte:fragment slot="leading">
           <Icon icon={Share} />
         </svelte:fragment>
       </ListItemButton>
       <Divider />
-      <ListItemButton headline="Delete" on:click={() => AppController.deleteFromDevice([song.title])}>
+      <ListItemButton headline="Delete" on:click={deleteSong}>
         <svelte:fragment slot="leading">
           <Icon icon={Trash} />
         </svelte:fragment>

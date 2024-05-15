@@ -1,10 +1,10 @@
 <script lang="ts">
   export let title: string;
   export let highlight: boolean;
-  export let highlightColor = "--md-sys-color-surface-container";
+  export let highlightColor = "--m3-scheme-surface-container";
 </script>
 
-<div class="view-header" class:highlight style="--highlight-color: var({highlightColor});">
+<div class="view-header" class:highlight style="--highlight-color: rgb(var({highlightColor}));">
   <div class="left">
     <slot name="left" />
   </div>

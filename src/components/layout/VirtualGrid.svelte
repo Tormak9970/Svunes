@@ -16,6 +16,7 @@
 	// * Read-Only, but visible to consumers via bind:start & bind:end.
 	export let start = 0;
 	export let end = 0;
+  export let isAtTop = true;
 
   // * Local State
   let mounted: boolean;
@@ -28,7 +29,6 @@
   let viewportWidth = 0;
 
   let contents: HTMLElement;
-  let overflowContainer: HTMLElement;
 
   let top = 0;
   let bottom = 0;
@@ -41,6 +41,12 @@
   // * Whenever `items` changes, invalidate the current heightmap.
   $: if (mounted) refresh(items, viewportHeight, itemHeight);
 
+  /**
+   * Refreshes the contents of the virtual grid.
+   * @param items The items to render.
+   * @param viewportHeight The viewport height.
+   * @param itemHeight The height of the elements being rendered.
+   */
   async function refresh(items: any[], viewportHeight: number, itemHeight: number) {
     const { scrollTop } = viewport;
     const numEntriesPerRow = Math.floor((viewport.clientWidth + columnGap) / (itemWidth + columnGap));
@@ -81,8 +87,12 @@
 		heightMap.length = items.length;
   }
 
+  /**
+   * Handles when the virtual grid is scrolled.
+   */
   async function handleScroll() {
     const { scrollTop } = viewport;
+    isAtTop = scrollTop === 0;
     const numEntriesPerRow = Math.floor((viewport.clientWidth + columnGap) / (itemWidth + columnGap));
 
 		const oldStart = start;

@@ -1,18 +1,18 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
-  import type { Song } from "../../../../lib/models/Song";
-  import { inSelectMode, selected } from "../../../../stores/Select";
-  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
-  import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
-  import Lazy from "../../../layout/Lazy.svelte";
-  import { songGridSize, songSortOrder } from "../../../../stores/State";
-  import { GridSize } from "../../../../types/Settings";
-  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import type { Song } from "../../../lib/models/Song";
+  import { inSelectMode, selected } from "../../../stores/Select";
+  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
+  import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
+  import Lazy from "../../layout/Lazy.svelte";
+  import { songGridSize, songSortOrder } from "../../../stores/State";
+  import { GridSize } from "../../../types/Settings";
+  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import { fade } from "svelte/transition";
-  import { renderDate } from "../../../../lib/utils/Utils";
+  import { renderDate } from "../../../lib/utils/Utils";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import CardClickable from "../../../layout/CardClickable.svelte";
-  import { showSongOptions, songViewing } from "../../../../stores/Overlays";
+  import CardClickable from "../../layout/CardClickable.svelte";
+  import { showSongOptions, songToShowOptions } from "../../../stores/Overlays";
   import { Button, Icon } from "m3-svelte";
 
   export let song: Song;
@@ -20,7 +20,10 @@
   $: convertedPath = song.albumPath ? tauri.convertFileSrc(song.albumPath) : "";
   $: highlighted = $selected.includes(song.title);
 
-  function onClick(e: MouseEvent) {
+  /**
+   * Handles when the user clicks on the entry.
+   */
+  function onClick() {
     if ($inSelectMode) {
       const titleIndex = $selected.indexOf(song.title);
       if (titleIndex !== -1) {
@@ -34,11 +37,17 @@
     }
   }
 
+  /**
+   * Shows the entry's options.
+   */
   function openSongOptions() {
-    $songViewing = song.title;
+    $songToShowOptions = song.title;
     $showSongOptions = true;
   }
 
+  /**
+   * Handles when the user selects the entry.
+   */
   function select() {
     if (!$inSelectMode) {
       $selected = [ ...$selected, song.title ];
@@ -48,7 +57,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<CardClickable type="transparent" highlight={highlighted} on:click={onClick} onSelect={select} extraOptions={{ style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;" }}>
+<CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content" class:highlight={highlighted}>
     <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;">
       {#if convertedPath !== ""}

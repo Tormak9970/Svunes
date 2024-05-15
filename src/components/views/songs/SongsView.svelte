@@ -1,9 +1,9 @@
 <script lang="ts">
   import { songGridSize, songSortOrder, songs } from "../../../stores/State";
-  import ViewContainer from "../ViewContainer.svelte";
-  import ListEntry from "./list/ListEntry.svelte";
-  import GridEntry from "./grid/GridEntry.svelte";
-  import SongsHeader from "./header/SongsHeader.svelte";
+  import ViewContainer from "../utils/ViewContainer.svelte";
+  import ListEntry from "./ListEntry.svelte";
+  import GridEntry from "./GridEntry.svelte";
+  import SongsHeader from "./SongsHeader.svelte";
   import VirtualList from "../../layout/VirtualList.svelte";
   import VirtualGrid from "../../layout/VirtualGrid.svelte";
   import { GridSize, type SongSortOrder } from "../../../types/Settings";
@@ -16,6 +16,12 @@
 
   const keyFunction = (entry: any) => `${entry.data.title}${entry.data.album}${entry.data.artist}`;
 
+  /**
+   * Sorts the songs.
+   * @param songsList The list of songs.
+   * @param sortOrder The order to sort by.
+   * @returns The sorted list.
+   */
   function sortSongs(songsList: Song[], sortOrder: SongSortOrder): Song[] {
     if (sortOrder === "Alphabetical") {
       return songsList.sort(stringSort<Song>("title"));
@@ -46,7 +52,7 @@
         <ListEntry song={entry} />
       </VirtualList>
     {:else}
-      <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} let:entry>
+      <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
         <GridEntry song={entry} />
       </VirtualGrid>
     {/if}

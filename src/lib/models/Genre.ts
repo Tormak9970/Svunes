@@ -10,6 +10,9 @@ export class Genre {
   backgroundColor: string;
   color: string;
 
+  /**
+   * Creates a new Genre.
+   */
   constructor(name: string, imagePreviewPath: string) {
     this.name = name;
     this.imagePreviewPath = imagePreviewPath;

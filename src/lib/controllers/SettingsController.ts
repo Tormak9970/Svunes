@@ -24,6 +24,12 @@ import type { Song } from "../models/Song";
 import type { Album } from "../models/Album";
 import type { Unsubscriber } from "svelte/store";
 
+/**
+ * Sets settings to defaults if they do not exist.
+ * @param object The settings object.
+ * @param defaults The corresponding default values.
+ * @returns The updated settings.
+ */
 function setIfNotExist(object: any, defaults: any): any {
   if (object?.length || object?.length === 0) return object;
 
@@ -122,6 +128,8 @@ export class SettingsController {
     this.settings = await this.loadSettingsFromDevice();
     this.setStores();
     this.registerSubs();
+
+    LogController.log("Initialized Settings.");
   }
 
   /**

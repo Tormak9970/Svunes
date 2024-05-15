@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { View } from "../types/View";
+  import { View } from "../../types/View";
   import { fly } from "svelte/transition";
-  import MenuButton from "./interactables/MenuButton.svelte";
-  import { selected } from "../stores/Select";
-  import { showAddToPlaylist, albumViewing, playlistViewing, artistViewing, genreViewing } from "../stores/Overlays";
-  import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../stores/State";
-  import { LogController } from "../lib/controllers/LogController";
-  import { QueueController } from "../lib/controllers/QueueController";
-  import { AppController } from "../lib/controllers/AppController";
+  import MenuButton from "../interactables/MenuButton.svelte";
+  import { selected } from "../../stores/Select";
+  import { showAddToPlaylist, albumViewing, playlistViewing, artistViewing, genreViewing } from "../../stores/Overlays";
+  import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../../stores/State";
+  import { LogController } from "../../lib/controllers/LogController";
+  import { QueueController } from "../../lib/controllers/QueueController";
+  import { AppController } from "../../lib/controllers/AppController";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
   import AddBox from "@ktibow/iconset-material-symbols/add-box-rounded";

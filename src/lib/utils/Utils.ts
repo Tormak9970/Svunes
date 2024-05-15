@@ -1,5 +1,3 @@
-import type { View } from "../../types/View";
-
 /**
  * Throttles a function to only run every provided interval.
  * @param func The function to throttle.

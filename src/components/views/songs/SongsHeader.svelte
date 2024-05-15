@@ -1,23 +1,28 @@
 <script lang="ts">
-  import ViewHeader from "../../../layout/ViewHeader.svelte";
-  import MenuButton from "../../../interactables/MenuButton.svelte";
-  import { selectedView } from "../../../../stores/State";
-  import { View } from "../../../../types/View";
-  import { selectedChip } from "../../../../stores/Search";
+  import ViewHeader from "../utils/ViewHeader.svelte";
+  import MenuButton from "../../interactables/MenuButton.svelte";
+  import { selectedView } from "../../../stores/State";
+  import { View } from "../../../types/View";
+  import { selectedChip } from "../../../stores/Search";
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
-  import { fromView } from "../../../../stores/Settings";
-  import { showSongGridSize, showSongSortOrder } from "../../../../stores/Overlays";
+  import { fromView } from "../../../stores/Settings";
+  import { showSongGridSize, showSongSortOrder } from "../../../stores/Overlays";
 
   export let highlight: boolean;
 
-
+  /**
+   * Navigates to the settings view.
+   */
   function goToSettings() {
     $fromView = View.SONGS;
     $selectedView = View.SETTINGS;
   }
 
+  /**
+   * Navigates to the search view.
+   */
   function openSearch() {
     $selectedChip = "song";
     $selectedView = View.SEARCH;

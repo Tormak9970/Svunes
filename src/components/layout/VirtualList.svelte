@@ -36,6 +36,12 @@
   // * Whenever `items` changes, invalidate the current heightmap.
 	$: if (mounted) refresh(items, viewportHeight, itemHeight);
 
+  /**
+   * Refreshes the contents of the virtual list.
+   * @param items The items to render.
+   * @param viewportHeight The viewport height.
+   * @param itemHeight The height of the elements being rendered.
+   */
 	async function refresh(items: any[], viewportHeight: number, itemHeight: number) {
 		const { scrollTop } = viewport;
 
@@ -69,6 +75,9 @@
 		heightMap.length = items.length;
 	}
 
+  /**
+   * Handles when the virtual list is scrolled.
+   */
 	async function handleScroll() {
 		const { scrollTop } = viewport;
     isAtTop = scrollTop === 0;

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Button, Icon } from "m3-svelte";
   import { songViewing } from "../../../stores/Overlays";
-  import FullscreenOverlayBody from "../FullscreenOverlayBody.svelte";
-  import OverlayHeader from "../OverlayHeader.svelte";
+  import FullscreenOverlayBody from "../utils/FullscreenOverlayBody.svelte";
+  import OverlayHeader from "../utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
 
   let highlight = false;

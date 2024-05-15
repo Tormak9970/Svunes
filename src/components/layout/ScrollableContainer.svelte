@@ -3,6 +3,9 @@
 
   let container: HTMLDivElement;
 
+  /**
+   * Handles updating scroll-top when the user scrolls.
+   */
   function onScroll() {
     scrollTop = container.scrollTop;
   }

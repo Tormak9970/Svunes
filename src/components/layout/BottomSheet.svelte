@@ -27,12 +27,19 @@
   let startY = 0;
 
   const dispatch = createEventDispatcher();
+
+  /**
+   * Handles opening the sheet.
+   */
   const open = (node: HTMLDialogElement) => {
     node.inert = true;
     node.showModal();
     node.inert = false;
   }
 
+  /**
+   * Function to run on mouse move.
+   */
   function moveMouse(e: { clientY: number }) {
     if (isDragging) {
       const distance = e.clientY - startY;
@@ -42,11 +49,17 @@
     }
   }
 
+  /**
+   * Handles drag start.
+   */
   function onDragStart(y: number) {
     isDragging = true;
     startY = y;
   }
 
+  /**
+   * Handles drag end.
+   */
   function onDragEnd() {
     isDragging = false;
 

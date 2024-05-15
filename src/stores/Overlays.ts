@@ -24,3 +24,4 @@ export const showSongGridSize = writable(false);
 export const showSongSortOrder = writable(false);
 
 export const showSongOptions = writable(false);
+export const songToShowOptions: Writable<string | null> = writable(null);

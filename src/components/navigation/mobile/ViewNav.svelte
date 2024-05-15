@@ -23,6 +23,10 @@
     7: Home
   }
 
+  /**
+   * Sets the selected view to the provided view.
+   * @param view The selected view.
+   */
   function setSelectedView(view: View) {
     $selectedView = view;
     $selected = [];

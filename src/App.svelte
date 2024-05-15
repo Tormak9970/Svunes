@@ -9,8 +9,8 @@
   import { SettingsController } from "./lib/controllers/SettingsController";
   import { ThemeController } from "./lib/controllers/ThemeController";
   import View from "./components/views/View.svelte";
-  import HomeLoadingAnimation from "./components/layout/HomeLoadingAnimation.svelte";
-  import SelectHeader from "./components/SelectHeader.svelte";
+  import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
+  import SelectHeader from "./components/views/SelectHeader.svelte";
   import { inSelectMode } from "./stores/Select";
   import { StyleFromScheme } from "m3-svelte";
 

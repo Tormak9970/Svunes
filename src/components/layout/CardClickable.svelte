@@ -1,16 +1,25 @@
 <script lang="ts">
   import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
   import { holdEvent } from "../../lib/directives/HoldEvent";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   export let extraOptions: HTMLAttributes<HTMLDivElement> & HTMLButtonAttributes = {};
   export let highlight = false;
   export let type: "elevated" | "filled" | "outlined" | "transparent";
-  export let onSelect: () => void = () => {};
+
+  /**
+   * Notifies the parent when the user holds on the card.
+   */
+  function onHold() {
+    dispatch("hold");
+  }
 </script>
 
 <button
   on:click|stopPropagation
-  use:holdEvent={{ onHold: onSelect, duration: 300 }}
+  use:holdEvent={{ onHold: onHold, duration: 300 }}
   class="m3-container type-{type}"
   {...extraOptions}
 >
@@ -80,8 +89,9 @@
     background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
   }
   
-  .highlight.layer {
-    background-color: rgb(var(--m3-scheme-on-surface) / 0.12) !important;
+  .highlight.layer,
+  button:hover > .highlight.layer {
+    background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
   }
 
   @media print, (forced-colors: active) {

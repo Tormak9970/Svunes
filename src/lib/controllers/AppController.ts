@@ -164,6 +164,7 @@ export class AppController {
   static async deleteFromDevice(songNames: string[]) {
     // TODO: show popup to confirm if they really want to.
     // TODO: update relevant stores (recalc genres, albums, artists, remove from playlists)
+    // ! Add logging
   }
 
   /**
@@ -172,5 +173,6 @@ export class AppController {
    */
   static async share(songNames: string[]) {
     // TODO: implement per platform.
+    // ! Add logging
   }
 }

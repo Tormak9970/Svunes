@@ -11,7 +11,7 @@ export class Album {
 
   songNames: string[];
   
-  releaseYear?: string;
+  releaseYear?: number;
   
   backgroundColor: string;
   color: string;
@@ -19,7 +19,7 @@ export class Album {
   /**
    * Creates a new album object.
    */
-  constructor(name: string, artPath: string, releaseYear?: string, lastPlayedOn?: string) {
+  constructor(name: string, artPath: string, releaseYear?: number, lastPlayedOn?: string) {
     this.name = name;
     this.artPath = artPath;
 
