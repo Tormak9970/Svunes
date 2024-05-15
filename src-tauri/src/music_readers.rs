@@ -47,7 +47,7 @@ pub fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title
     }
   }
 
-  return file_path.as_mut_os_string().to_str().unwrap().to_owned();
+  return file_path.as_mut_os_string().to_str().expect("failed to parse file path!!").to_owned();
 }
 
 /// Reads a .flac file and returns the info.
@@ -79,10 +79,15 @@ pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value
       }
       
       let visuals = newest.visuals();
+      
+      let album_title = entry.get("album").unwrap().to_string();
 
       for visual in visuals {
-        let album_title = entry.get("album").unwrap().to_string();
-        entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), visual, album_title)));
+        let album_art_path = write_visual_to_cache(app_handle.to_owned(), visual, album_title.clone());
+
+        if !entry.contains_key("albumpath") {
+          entry.insert(String::from("albumpath"), Value::String(album_art_path));
+        }
       }
     }
 

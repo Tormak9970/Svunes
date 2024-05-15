@@ -146,12 +146,33 @@ export class AppController {
         song.lastPlayedOn = songsLastPlayedMap[song.title] ?? "Never";
         return song;
       });
+
+      const songsWithMissingArt = loadedSongs.filter((song) => !song.albumPath);
+
+      const pathCache: Record<string, string> = {};
+      const blacklist: string[] = [];
+
+      for (const song of songsWithMissingArt) {
+        if (!blacklist.includes(song.album)) {
+          if (!pathCache[song.album]) {
+            const songWithPath = loadedSongs.find((s) => s.album === song.album && s.albumPath);
+            if (songWithPath) {
+              pathCache[song.album] = songWithPath.albumPath;
+              song.albumPath = songWithPath.albumPath;
+            } else {
+              blacklist.push(song.album);
+            }
+          } else {
+            song.albumPath = pathCache[song.album];
+          }
+        }
+      }
       
       if (SettingsController.getSetting<number>("cache.numSongs") !== loadedSongs.length) this.resetNowPlaying();
       songs.set(loadedSongs);
       LogController.log(`Loaded ${loadedSongs.length} songs.`);
 
-      this.loadAlbumsFromSongs(loadedSongs);
+      // this.loadAlbumsFromSongs(loadedSongs);
       this.loadGenresFromSongs(loadedSongs);
       this.loadArtistsFromSongs(loadedSongs);
     }

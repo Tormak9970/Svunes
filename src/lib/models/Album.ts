@@ -33,11 +33,13 @@ export class Album {
     this.backgroundColor = "black";
     this.color = "red";
 
-    RustInterop.getColorsFromImage(this.artPath).then((colors) => {
-      if (colors.length) {
-        this.backgroundColor = colors[0];
-        this.color = colors[1];
-      }
-    });
+    if (this.artPath) {
+      RustInterop.getColorsFromImage(this.artPath).then((colors) => {
+        if (colors.length) {
+          this.backgroundColor = colors[0];
+          this.color = colors[1];
+        }
+      });
+    }
   }
 }

@@ -11,6 +11,10 @@
   import type { Song } from "../../../lib/models/Song";
   import { LogController } from "../../../lib/controllers/LogController";
   import { dateSort, stringSort } from "../../../lib/utils/Utils";
+  import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
+  import { Icon } from "m3-svelte";
+    import HomeLoadingAnimation from "../../layout/loading-animations/HomeLoadingAnimation.svelte";
+    import { onMount } from "svelte";
   
   let isAtTop = true;
 
@@ -23,23 +27,37 @@
    * @returns The sorted list.
    */
   function sortSongs(songsList: Song[], sortOrder: SongSortOrder): Song[] {
+    let sorted: Song[] = [];
     if (sortOrder === "Alphabetical") {
-      return songsList.sort(stringSort<Song>("title"));
+      sorted = songsList.sort(stringSort<Song>("title"));
     } else if (sortOrder === "Album") {
-      return songsList.sort(stringSort<Song>("album"));
+      sorted = songsList.sort(stringSort<Song>("album"));
     } else if (sortOrder === "Artist") {
-      return songsList.sort(stringSort<Song>("artist"));
+      sorted = songsList.sort(stringSort<Song>("artist"));
     } else if (sortOrder === "Year") {
-      return songsList.sort((a: Song, b: Song) => b.releaseYear - a.releaseYear);
+      sorted = songsList.sort((a: Song, b: Song) => b.releaseYear - a.releaseYear);
     } else if (sortOrder === "Last Played") {
-      return songsList.sort(dateSort("lastPlayedOn"));
+      sorted = songsList.sort(dateSort("lastPlayedOn"));
     } else {
       LogController.error("Unkown song sort order!");
-      return [];
+      sorted = [];
     }
+    return sorted;
   }
 
-  $: sortedSongs = sortSongs($songs, $songSortOrder);
+  let sortedSongs: Song[];
+
+  onMount(() => {
+    sortedSongs = sortSongs($songs, $songSortOrder);
+
+    songs.subscribe((newSongs) => {
+      sortedSongs = sortSongs(newSongs, $songSortOrder);
+    });
+
+    songSortOrder.subscribe((order) => {
+      sortedSongs = sortSongs($songs, order);
+    });
+  });
 </script>
 
 <ViewContainer>
@@ -47,14 +65,39 @@
     <SongsHeader highlight={!isAtTop} />
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
-    {#if $songGridSize === GridSize.LIST}
-      <VirtualList itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-        <ListEntry song={entry} />
-      </VirtualList>
+    {#if !sortedSongs}
+      Loading...
+    {:else if sortedSongs.length > 0}
+      {#if $songGridSize === GridSize.LIST}
+        <VirtualList itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+          <ListEntry song={entry} />
+        </VirtualList>
+      {:else}
+        <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+          <GridEntry song={entry} />
+        </VirtualGrid>
+      {/if}
     {:else}
-      <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-        <GridEntry song={entry} />
-      </VirtualGrid>
+      <div class="message-container">
+        <Icon icon={SadFace} width="60px" height="60px" />
+        <div class="message">No songs found. Try adding music folders in settings</div>
+      </div>
     {/if}
   </div>
 </ViewContainer>
+
+<style>
+  .message-container {
+    margin-top: 40%;
+    color: rgb(var(--m3-scheme-on-secondary));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .message {
+    max-width: 300px;
+    font-size: 18px;
+    text-align: center;
+  }
+</style>

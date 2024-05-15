@@ -210,7 +210,14 @@ export class SettingsController {
    */
   private static async loadSettingsFromDevice(): Promise<Settings> {
     const contents = await fs.readTextFile(this.settingsPath);
-    const currentSettings: any = contents !== "" ? JSON.parse(contents) : structuredClone(DEFAULT_SETTINGS);
+    let currentSettings: any;
+
+    try {
+      currentSettings = contents !== "" ? JSON.parse(contents) : structuredClone(DEFAULT_SETTINGS);
+    } catch(e) {
+      currentSettings = structuredClone(DEFAULT_SETTINGS);
+      LogController.error("Settings were corrupted.");
+    }
 
     let settings: Settings = structuredClone(currentSettings);
     
