@@ -1,5 +1,6 @@
 <script lang="ts">
-  import MusicNote from "svelte-icons/md/MdMusicNote.svelte";
+  import MusicNote from "@ktibow/iconset-material-symbols/music-note-rounded";
+  import { Icon } from "m3-svelte";
 
   export let width = 30;
   export let height = 30;
@@ -7,7 +8,7 @@
 
 <div class="placeholder-background">
   <div style="width: {width}px; height: {height}px;">
-    <MusicNote />
+    <Icon icon={MusicNote} width={`${width}px`} height={`${height}px`} />
   </div>
 </div>
 

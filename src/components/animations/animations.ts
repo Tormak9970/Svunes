@@ -136,10 +136,13 @@ export const containerTransform = ({
           container.e.style.boxSizing = "border-box";
           container.e.style.borderStyle = "solid";
           document.body.appendChild(container.e);
-        } else if (t == (container.backwards ? 0 : 1)) {
-          document.body.removeChild(container.e);
-          return (container = null);
+
+          setTimeout(() => {
+            if (container?.e) document.body.removeChild(container.e);
+            (container = null);
+          }, params.duration || defaults.duration || 500);
         }
+        
         container.e.style.top = (u * from.top + t * to.top).toFixed(1) + "px";
         container.e.style.left = (u * from.left + t * to.left).toFixed(1) + "px";
         container.e.style.width = (u * from.width + t * to.width).toFixed(1) + "px";

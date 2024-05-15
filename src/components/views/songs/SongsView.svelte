@@ -41,7 +41,7 @@
     <SongsHeader highlight={!isAtTop} />
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
-    {#if $songGridSize === GridSize.LIST}
+    <!-- {#if $songGridSize === GridSize.LIST}
       <VirtualList itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
         <ListEntry song={entry} />
       </VirtualList>
@@ -49,6 +49,6 @@
       <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} let:entry>
         <GridEntry song={entry} />
       </VirtualGrid>
-    {/if}
+    {/if} -->
   </div>
 </ViewContainer>

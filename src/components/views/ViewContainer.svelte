@@ -13,7 +13,7 @@
 
 <style>
   .content {
-    height: calc(100vh - 46px - 51px);
+    height: calc(100vh - 50px - 60px);
     overflow: hidden;
   }
 </style>

@@ -1,7 +1,9 @@
 <script>
-  import { showSongDetails } from "../../stores/Overlays";
+  import { showSongDetails, showSongGridSize } from "../../stores/Overlays";
   import SongDetails from "./details/SongDetails.svelte";
   import EditMusicFolders from "./edit-music-folders/EditMusicFolders.svelte";
+  import SongGridSize from "./view-settings/SongGridSize.svelte";
+  import SongSortOrder from "./view-settings/SongSortOrder.svelte";
 
 </script>
 
@@ -9,3 +11,5 @@
 {#if $showSongDetails}
   <SongDetails />
 {/if}
+<SongGridSize />
+<SongSortOrder />

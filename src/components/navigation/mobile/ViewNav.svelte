@@ -1,8 +1,27 @@
 <script lang="ts">
   import { selectedView, showMiniPlayer, viewsToRender } from "../../../stores/State";
+  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import Album from "@ktibow/iconset-material-symbols/album";
+  import MusicNote from "@ktibow/iconset-material-symbols/music-note";
+  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
+  import Artist from "@ktibow/iconset-material-symbols/artist-rounded";
+  import Settings from "@ktibow/iconset-material-symbols/settings";
+  import Search from "@ktibow/iconset-material-symbols/search-rounded";
+  import Home from "@ktibow/iconset-material-symbols/home-rounded";
   import { selected } from "../../../stores/Select";
-  import type { View } from "../../../types/View";
-  import ViewButton from "./ViewButton.svelte";
+  import { View } from "../../../types/View";
+  import { NavList, NavListButton } from "m3-svelte";
+  
+  const icons = {
+    0: QueueMusic,
+    1: Album,
+    2: MusicNote,
+    3: LibraryMusic,
+    4: Artist,
+    5: Settings,
+    6: Search,
+    7: Home
+  }
 
   function setSelectedView(view: View) {
     $selectedView = view;
@@ -11,25 +30,34 @@
 </script>
 
 <div class="view-nav" class:rounded={!$showMiniPlayer}>
-  {#each $viewsToRender as viewsToRender}
-    <ViewButton view={viewsToRender} onSelect={setSelectedView} />
-  {/each}
+  <NavList type="bar">
+    <div class="items">
+      {#each $viewsToRender as view}
+        <NavListButton type="auto" on:click={() => setSelectedView(view)} selected={view === $selectedView} icon={icons[view]} />
+      {/each}
+    </div>
+  </NavList>
 </div>
 
 <style>
   .view-nav {
-    width: calc(100% - 20px);
+    width: 100%;
 
-    padding: 10px 10px;
-
-    background-color: var(--md-sys-color-surface-container);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    overflow: hidden;
   }
 
   .rounded {
     border-radius: 10px 10px 0px 0px;
+  }
+
+  .items {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .items :global(.m3-container) {
+    height: auto !important;
   }
 </style>

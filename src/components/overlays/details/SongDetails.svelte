@@ -2,13 +2,13 @@
   import { tauri } from "@tauri-apps/api";
   import { songViewing } from "../../../stores/Overlays";
   import { songsMap } from "../../../stores/State";
-  import IconButton from "../../interactables/IconButton.svelte";
   import Lazy from "../../layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import FullscreenOverlayBody from "../FullscreenOverlayBody.svelte";
   import OverlayHeader from "../OverlayHeader.svelte";
-  import BackArrow from "svelte-icons/md/MdArrowBack.svelte";
-    import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
+  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
+  import { Button, Icon } from "m3-svelte";
+  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   
   $: song = $songsMap[$songViewing!];
   $: convertedPath = song.albumPath ? tauri.convertFileSrc(song.albumPath) : "";
@@ -24,9 +24,9 @@
   <span slot="header">
     <OverlayHeader highlight={highlight}>
       <span slot="left">
-        <IconButton onClick={back}>
-          <BackArrow />
-        </IconButton>
+        <Button type="text" iconType="full" on:click={back}>
+          <Icon icon={BackArrow} width="20px" height="20px" />
+        </Button>
       </span>
     </OverlayHeader>
   </span>

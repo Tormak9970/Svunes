@@ -3,7 +3,6 @@
   import ViewNav from "./components/navigation/mobile/ViewNav.svelte";
   import MiniPlayer from "./components/MiniPlayer.svelte";
   import Titlebar from "./components/Titlebar.svelte";
-  import "./lib/external/md3-index";
   import { isLoading, showMiniPlayer, showViewNav } from "./stores/State";
   import Overlays from "./components/overlays/Overlays.svelte";
   import { AppController } from "./lib/controllers/AppController";
@@ -31,8 +30,8 @@
 
 <main>
   <StyleFromScheme
-    lightScheme={{"primary":4282476597,"onPrimary":4294967295,"primaryContainer":4290899887,"onPrimaryContainer":4278329600,"inversePrimary":4289123221,"secondary":4283720525,"onSecondary":4294967295,"secondaryContainer":4292339916,"onSecondaryContainer":4279377678,"tertiary":4281886312,"onTertiary":4294967295,"tertiaryContainer":4290571246,"onTertiaryContainer":4278198305,"error":4290386458,"onError":4294967295,"errorContainer":4294957782,"onErrorContainer":4282449922,"background":4294507504,"onBackground":4279835927,"surface":4294507504,"onSurface":4279835927,"surfaceVariant":4292863191,"onSurfaceVariant":4282599487,"inverseSurface":4281217579,"inverseOnSurface":4293915368,"outline":4285757806,"outlineVariant":4291020988,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4292402130,"surfaceBright":4294507504,"surfaceContainerLowest":4294967295,"surfaceContainerLow":4294112747,"surfaceContainer":4293717989,"surfaceContainerHigh":4293323231,"surfaceContainerHighest":4292994266,"surfaceTint":4282476597}}
-    darkScheme={{"primary":4289123221,"onPrimary":4279384074,"primaryContainer":4280897311,"onPrimaryContainer":4290899887,"inversePrimary":4282476597,"secondary":4290497457,"onSecondary":4280759329,"secondaryContainer":4282207031,"onSecondaryContainer":4292339916,"tertiary":4288729041,"onTertiary":4278204217,"tertiaryContainer":4280176208,"onTertiaryContainer":4290571246,"error":4294948011,"onError":4285071365,"errorContainer":4287823882,"onErrorContainer":4294957782,"background":4279309327,"onBackground":4292994266,"surface":4279309327,"onSurface":4292994266,"surfaceVariant":4282599487,"onSurfaceVariant":4291020988,"inverseSurface":4292994266,"inverseOnSurface":4281217579,"outline":4287468423,"outlineVariant":4282599487,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4279309327,"surfaceBright":4281809460,"surfaceContainerLowest":4278980362,"surfaceContainerLow":4279835927,"surfaceContainer":4280099099,"surfaceContainerHigh":4280757029,"surfaceContainerHighest":4281480751,"surfaceTint":4289123221}} />
+    lightScheme={{"primary":4285551241,"onPrimary":4294967295,"primaryContainer":4294040319,"onPrimaryContainer":4280880193,"inversePrimary":4292655608,"secondary":4284897903,"onSecondary":4294967295,"secondaryContainer":4293778934,"onSecondaryContainer":4280358953,"tertiary":4286599510,"onTertiary":4294967295,"tertiaryContainer":4294957532,"onTertiaryContainer":4281470998,"error":4290386458,"onError":4294967295,"errorContainer":4294957782,"onErrorContainer":4282449922,"background":4294965246,"onBackground":4280162848,"surface":4294965246,"onSurface":4280162848,"surfaceVariant":4293517290,"onSurfaceVariant":4283123021,"inverseSurface":4281544501,"inverseOnSurface":4294438646,"outline":4286346622,"outlineVariant":4291675342,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4292925663,"surfaceBright":4294965246,"surfaceContainerLowest":4294967295,"surfaceContainerLow":4294636025,"surfaceContainer":4294241267,"surfaceContainerHigh":4293846765,"surfaceContainerHighest":4293452008,"surfaceTint":4285551241}}
+    darkScheme={{"primary":4292655608,"onPrimary":4282327896,"primaryContainer":4283906672,"onPrimaryContainer":4294040319,"inversePrimary":4285551241,"secondary":4291936729,"onSecondary":4281805887,"secondaryContainer":4283318870,"onSecondaryContainer":4293778934,"tertiary":4294162364,"onTertiary":4283180330,"tertiaryContainer":4284889663,"onTertiaryContainer":4294957532,"error":4294948011,"onError":4285071365,"errorContainer":4287823882,"onErrorContainer":4294957782,"background":4279570967,"onBackground":4293452008,"surface":4279570967,"onSurface":4293452008,"surfaceVariant":4283123021,"onSurfaceVariant":4291675342,"inverseSurface":4293452008,"inverseOnSurface":4281544501,"outline":4288056984,"outlineVariant":4283123021,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4279570967,"surfaceBright":4282136638,"surfaceContainerLowest":4279242002,"surfaceContainerLow":4280162848,"surfaceContainer":4280426020,"surfaceContainerHigh":4281084206,"surfaceContainerHighest":4281807673,"surfaceTint":4292655608}} />
   <Overlays />
   {#if $showViewNav}
     <ViewNav />
@@ -45,7 +44,7 @@
       <HomeLoadingAnimation />
     {:else}
       {#if $inSelectMode}
-        <SelectHeader />
+        <!-- <SelectHeader /> -->
       {/if}
       <View />
     {/if}
@@ -60,8 +59,8 @@
     height: 100%;
     width: 100%;
 
-    background-color: var(--md-sys-color-background);
-    color: var(--md-sys-color-on-background);
+    background-color: rgb(var(--m3-scheme-background));
+    color: rgb(var(--m3-scheme-on-background));
 
     display: flex;
     align-items: center;

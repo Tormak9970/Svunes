@@ -1,7 +1,6 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
   import type { Song } from "../../../../lib/models/Song";
-  import MoreVert from "svelte-icons/md/MdMoreVert.svelte";
   import { inSelectMode, selected } from "../../../../stores/Select";
   import { holdEvent } from "../../../../lib/directives/HoldEvent";
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
@@ -10,9 +9,9 @@
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
   import Lazy from "../../../layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
-    import { songSortOrder } from "../../../../stores/State";
-    import { fade } from "svelte/transition";
-    import { renderDate } from "../../../../lib/utils/Utils";
+  import { songSortOrder } from "../../../../stores/State";
+  import { fade } from "svelte/transition";
+  import { renderDate } from "../../../../lib/utils/Utils";
 
   export let song: Song;
 
@@ -80,7 +79,7 @@
     <div class="options">
       <MenuButton>
         <span slot="icon">
-          <MoreVert />
+          <!-- <MoreVert /> -->
         </span>
         <SongOptions song={song} />
       </MenuButton>

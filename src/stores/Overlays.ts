@@ -19,3 +19,6 @@ export const artistToAdd: Writable<string | null> = writable(null);
 export const playlistViewing: Writable<string | null> = writable(null);
 export const artistViewing: Writable<string | null> = writable(null);
 export const genreViewing: Writable<string | null> = writable(null);
+
+export const showSongGridSize = writable(false);
+export const showSongSortOrder = writable(false);

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Close from "../../icons/Close.svelte";
-    import FilledIconButton from "../../interactables/FilledIconButton.svelte";
+  import { Button, Icon } from "m3-svelte";
+  import Close from "@ktibow/iconset-material-symbols/close-rounded";
   
   export let folderPath: string;
   export let index: number;
@@ -9,11 +9,11 @@
 
 <div class="folder-entry">
   <div class="path">{folderPath}</div>
-  <div class="button-container">
-    <FilledIconButton height="22px" width="22px" iconSize="16px" fillColor="--md-sys-color-error-container" onClick={() => onDelete(index)}>
-      <Close />
-    </FilledIconButton>
-  </div>
+  <Button type="filled" iconType="full" extraOptions={{ style: "width: 24px; height: 24px" }} on:click={() => onDelete(index)}>
+    <div style="height: 100%; display: flex; justify-content: center; align-items: center;">
+      <Icon icon={Close} width="20px" height="20px" />
+    </div>
+  </Button>
 </div>
 
 <style>

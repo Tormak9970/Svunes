@@ -1,13 +1,8 @@
 <script lang="ts">
   import { View } from "../types/View";
   import { fly } from "svelte/transition";
-  import IconButton from "./interactables/IconButton.svelte";
-  import MoreVert from "svelte-icons/md/MdMoreVert.svelte";
   import MenuButton from "./interactables/MenuButton.svelte";
   import { selected } from "../stores/Select";
-  import BackArrow from "svelte-icons/md/MdArrowBack.svelte"
-  import PlaylistAdd from "svelte-icons/md/MdPlaylistAdd.svelte"
-  import AddBox from "svelte-icons/md/MdAddBox.svelte"
   import { showAddToPlaylist, albumViewing, playlistViewing, artistViewing, genreViewing } from "../stores/Overlays";
   import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../stores/State";
   import { LogController } from "../lib/controllers/LogController";
@@ -169,7 +164,7 @@
 <div class="select-header" transition:fly={{ y: -50, duration: 250 }}>
   <div class="left">
     <IconButton onClick={back}>
-      <BackArrow />
+      <!-- <BackArrow /> -->
     </IconButton>
   </div>
   <div class="title">
@@ -177,16 +172,16 @@
   </div>
   <div class="right">
     <IconButton onClick={queue}>
-      <AddBox />
+      <!-- <AddBox /> -->
     </IconButton>
     <IconButton onClick={addToPlaylist}>
-      <PlaylistAdd />
+      <!-- <PlaylistAdd /> -->
     </IconButton>
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <MenuButton>
       <span slot="icon">
-        <MoreVert />
+        <!-- <MoreVert /> -->
       </span>
       <md-menu-item style="width: 180px;" on:click={playNext}>
         <div slot="headline">Play Next</div>

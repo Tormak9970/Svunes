@@ -1,7 +1,6 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
   import type { Song } from "../../../../lib/models/Song";
-  import MoreVert from "svelte-icons/md/MdMoreVert.svelte";
   import { inSelectMode, selected } from "../../../../stores/Select";
   import { holdEvent } from "../../../../lib/directives/HoldEvent";
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
@@ -9,12 +8,11 @@
   import MenuButton from "../../../interactables/MenuButton.svelte";
   import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
   import Lazy from "../../../layout/Lazy.svelte";
-  import MusicNote from "svelte-icons/md/MdMusicNote.svelte";
   import { songGridSize, songSortOrder } from "../../../../stores/State";
   import { GridSize } from "../../../../types/Settings";
   import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
-    import { fade } from "svelte/transition";
-    import { renderDate } from "../../../../lib/utils/Utils";
+  import { fade } from "svelte/transition";
+  import { renderDate } from "../../../../lib/utils/Utils";
 
   export let song: Song;
 
@@ -55,11 +53,7 @@
         </span>
       </Lazy>
     {:else}
-      <div class="placeholder-background">
-        <div class="icon-container">
-          <MusicNote />
-        </div>
-      </div>
+      <MusicNotePlaceholder />
     {/if}
   </div>
   <div class="bottom" class:expand={$songGridSize !== GridSize.LARGE}>
@@ -85,7 +79,7 @@
       <div class="options">
         <MenuButton>
           <span slot="icon">
-            <MoreVert />
+            <!-- <MoreVert /> -->
           </span>
           <SongOptions song={song} />
         </MenuButton>
@@ -153,20 +147,5 @@
   .album {
     border-radius: 10px;
     overflow: hidden;
-  }
-
-  .placeholder-background {
-    width: 100%;
-    height: 100%;
-    background-color: var(--md-sys-color-surface-container-low);
-    color: var(--md-sys-color-on-secondary-container);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .icon-container {
-    width: 100%;
-    height: 100%;
   }
 </style>
