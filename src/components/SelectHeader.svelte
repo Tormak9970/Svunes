@@ -8,6 +8,11 @@
   import { LogController } from "../lib/controllers/LogController";
   import { QueueController } from "../lib/controllers/QueueController";
   import { AppController } from "../lib/controllers/AppController";
+  import { Button, Icon, Menu, MenuItem } from "m3-svelte";
+  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
+  import AddBox from "@ktibow/iconset-material-symbols/add-box-rounded";
+  import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
 
   /**
    * Gets the names of the songs from the selected items.
@@ -74,6 +79,7 @@
   function playNext() {
     QueueController.playNext(getSongsFromSelected());
     $selected = [];
+    menuIsOpen = false;
   }
 
   /**
@@ -82,6 +88,7 @@
   function share() {
     AppController.share(getSongsFromSelected());
     $selected = [];
+    menuIsOpen = false;
   }
 
   /**
@@ -90,6 +97,7 @@
   function deleteFromDevice() {
     AppController.deleteFromDevice(getSongsFromSelected());
     $selected = [];
+    menuIsOpen = false;
   }
 
   /**
@@ -136,6 +144,7 @@
         break;
       }
     }
+    menuIsOpen = false;
   }
 
   /**
@@ -143,6 +152,7 @@
    */
   function back() {
     $selected = [];
+    menuIsOpen = false;
   }
 
   /**
@@ -151,6 +161,7 @@
   function queue() {
     QueueController.queueSongs(getSongsFromSelected());
     $selected = [];
+    menuIsOpen = false;
   }
 
   /**
@@ -158,43 +169,35 @@
    */
   function addToPlaylist() {
     $showAddToPlaylist = true;
+    menuIsOpen = false;
   }
+
+  let menuIsOpen = false;
 </script>
 
 <div class="select-header" transition:fly={{ y: -50, duration: 250 }}>
   <div class="left">
-    <IconButton onClick={back}>
-      <!-- <BackArrow /> -->
-    </IconButton>
+    <Button type="text" iconType="full" on:click={back}>
+      <Icon icon={BackArrow} width="36px" height="36px" />
+    </Button>
   </div>
   <div class="title">
     {$selected.length + " selected"}
   </div>
   <div class="right">
-    <IconButton onClick={queue}>
-      <!-- <AddBox /> -->
-    </IconButton>
-    <IconButton onClick={addToPlaylist}>
-      <!-- <PlaylistAdd /> -->
-    </IconButton>
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <MenuButton>
-      <span slot="icon">
-        <!-- <MoreVert /> -->
-      </span>
-      <md-menu-item style="width: 180px;" on:click={playNext}>
-        <div slot="headline">Play Next</div>
-      </md-menu-item>
-      <md-menu-item on:click={share}>
-        <div slot="headline">Share</div>
-      </md-menu-item>
-      <md-menu-item on:click={deleteFromDevice}>
-        <div slot="headline">Delete from Device</div>
-      </md-menu-item>
-      <md-menu-item on:click={selectAll}>
-        <div slot="headline">Select All</div>
-      </md-menu-item>
+    <Button type="text" iconType="full" on:click={queue}>
+      <Icon icon={AddBox} width="36px" height="36px" />
+    </Button>
+    <Button type="text" iconType="full" on:click={addToPlaylist}>
+      <Icon icon={PlaylistAdd} width="36px" height="36px" />
+    </Button>
+    <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
+      <Menu>
+        <MenuItem on:click={playNext}>Play Next</MenuItem>
+        <MenuItem on:click={share}>Share</MenuItem>
+        <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
+        <MenuItem on:click={selectAll}>Select All</MenuItem>
+      </Menu>
     </MenuButton>
   </div>
 </div>
@@ -207,7 +210,7 @@
     align-items: center;
     justify-content: space-between;
     
-    background-color: var(--md-sys-color-surface-container-highest);
+    background-color: rgb(var(--m3-scheme-surface-container-highest));
 
     position: absolute;
     top: 0;
@@ -222,13 +225,11 @@
   .left {
     height: 100%;
     margin-left: 10px;
-    color: var(--md-sys-color-on-surface-variant);
   }
 
   .right {
     height: 100%;
     margin-right: 10px;
-    color: var(--md-sys-color-on-surface-variant);
 
     display: flex;
   }

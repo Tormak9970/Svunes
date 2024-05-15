@@ -2,16 +2,17 @@
   import { tauri } from "@tauri-apps/api";
   import type { Song } from "../../../../lib/models/Song";
   import { inSelectMode, selected } from "../../../../stores/Select";
-  import { holdEvent } from "../../../../lib/directives/HoldEvent";
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
-  import SongOptions from "../SongOptions.svelte";
-  import MenuButton from "../../../interactables/MenuButton.svelte";
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
   import Lazy from "../../../layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
   import { songSortOrder } from "../../../../stores/State";
   import { fade } from "svelte/transition";
   import { renderDate } from "../../../../lib/utils/Utils";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import CardClickable from "../../../layout/CardClickable.svelte";
+  import { Button, Icon } from "m3-svelte";
+  import { showSongOptions, songViewing } from "../../../../stores/Overlays";
 
   export let song: Song;
 
@@ -32,6 +33,11 @@
     }
   }
 
+  function openSongOptions() {
+    $songViewing = song.title;
+    $showSongOptions = true;
+  }
+
   function select() {
     if (!$inSelectMode) {
       $selected = [ ...$selected, song.title ];
@@ -41,78 +47,63 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="song" class:highlight={highlighted} on:click={onClick} use:holdEvent={{ onHold: select, duration: 300 }}>
-  <div class="left">
-    <div class="album">
-      {#if convertedPath !== ""}
-        <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS}>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" />
-          <span slot="placeholder">
-            <MusicNotePlaceholder />
-          </span>
-        </Lazy>
-      {:else}
-        <MusicNotePlaceholder />
-      {/if}
-    </div>
-    <div class="info">
-      <div class="name">
-        {song.title}
-      </div>
-      <div class="secondary">
-        {#if $songSortOrder === "Alphabetical"}
-          <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
-        {:else if $songSortOrder === "Album"}
-          <div in:fade={{ duration: 200 }}>{song.album ?? "Unk"}</div>
-        {:else if $songSortOrder === "Artist"}
-          <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
-        {:else if $songSortOrder === "Year"}
-          <div in:fade={{ duration: 200 }}>{song.releaseYear ?? "Unk"}</div>
-        {:else if $songSortOrder === "Last Played"}
-          <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
+<CardClickable type="transparent" highlight={highlighted} on:click={onClick} onSelect={select} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
+  <div class="content" class:highlight={highlighted}>
+    <div class="left">
+      <div class="album">
+        {#if convertedPath !== ""}
+          <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS}>
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" />
+            <span slot="placeholder">
+              <MusicNotePlaceholder />
+            </span>
+          </Lazy>
+        {:else}
+          <MusicNotePlaceholder />
         {/if}
       </div>
+      <div class="info">
+        <div class="name">
+          {song.title}
+        </div>
+        <div class="secondary">
+          {#if $songSortOrder === "Alphabetical"}
+            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
+          {:else if $songSortOrder === "Album"}
+            <div in:fade={{ duration: 200 }}>{song.album ?? "Unk"}</div>
+          {:else if $songSortOrder === "Artist"}
+            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
+          {:else if $songSortOrder === "Year"}
+            <div in:fade={{ duration: 200 }}>{song.releaseYear ?? "Unk"}</div>
+          {:else if $songSortOrder === "Last Played"}
+            <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
+          {/if}
+        </div>
+      </div>
     </div>
+    {#if !highlighted}
+      <div class="options">
+        <Button type="text" iconType="full" on:click={openSongOptions}>
+          <Icon icon={MoreVert} />
+        </Button>
+      </div>
+    {/if}
   </div>
-  {#if !highlighted}
-    <div class="options">
-      <MenuButton>
-        <span slot="icon">
-          <!-- <MoreVert /> -->
-        </span>
-        <SongOptions song={song} />
-      </MenuButton>
-    </div>
-  {/if}
-  <md-ripple></md-ripple>
-</div>
+</CardClickable>
 
 <style>
-  .song {
-    width: 100%;
-
+  .content {
+    width: 100%; 
     display: flex;
     align-items: center;
-
-    position: relative;
-
-    padding: 10px 0px;
-
-    transition: background-color 0.2s ease-in-out;
-
-    border-radius: 10px;
-    margin: 2px 0px;
-  }
-
-  .highlight {
-    background-color: var(--md-sys-color-surface-variant);
+    /* justify-content: space-between; */
   }
 
   .left {
     display: flex;
     align-items: center;
-    width: calc(100% - 36px);
+    width: calc(100% - 40px);
   }
 
   .info {
@@ -124,6 +115,7 @@
   }
 
   .name {
+    color: rgb(var(--m3-scheme-on-secondary-container));
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -131,7 +123,6 @@
 
   .secondary {
     font-size: 14px;
-    color: var(--md-sys-color-on-surface-variant);
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

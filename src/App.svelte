@@ -44,7 +44,7 @@
       <HomeLoadingAnimation />
     {:else}
       {#if $inSelectMode}
-        <!-- <SelectHeader /> -->
+        <SelectHeader />
       {/if}
       <View />
     {/if}

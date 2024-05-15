@@ -178,7 +178,7 @@
 	}
 
   svelte-virtual-list-viewport:hover {
-    scrollbar-color: var(--md-sys-color-primary) transparent;
+    scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
   }
 
 	svelte-virtual-list-contents {

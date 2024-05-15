@@ -22,3 +22,5 @@ export const genreViewing: Writable<string | null> = writable(null);
 
 export const showSongGridSize = writable(false);
 export const showSongSortOrder = writable(false);
+
+export const showSongOptions = writable(false);

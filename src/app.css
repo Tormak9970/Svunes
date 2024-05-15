@@ -33,6 +33,10 @@ body {
   user-select: none;
 }
 
+*:hover {
+  scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
+}
+
 #app {
   height: 100%;
   width: 100%;
