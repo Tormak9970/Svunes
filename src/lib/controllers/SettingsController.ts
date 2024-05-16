@@ -184,7 +184,7 @@ export class SettingsController {
     parentObject[fieldPath[fieldPath.length - 1]] = val;
 
     this.settings = settings;
-    this.save();
+    await this.save();
 
     const stringified = JSON.stringify(val);
     LogController.log(stringified.length < 200 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
@@ -228,7 +228,7 @@ export class SettingsController {
 
     settings.version = APP_VERSION;
 
-    this.save();
+    await this.save();
 
     LogController.log("Finished checking settings for new app version and/or migration.");
 
@@ -385,8 +385,6 @@ export class SettingsController {
    * Handles destroying the settings.
    */
   static destroy() {
-    this.save();
-
     if (this.themePrimaryColorUnsub) this.themePrimaryColorUnsub();
     if (this.musicDirectoriesUnsub) this.musicDirectoriesUnsub();
     if (this.selectedViewUnsub) this.selectedViewUnsub();

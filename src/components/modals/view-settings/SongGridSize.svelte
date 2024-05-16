@@ -1,7 +1,7 @@
 <script lang="ts">
   import Body from "./Body.svelte";
   import { songGridSize } from "../../../stores/State";
-  import { showSongGridSize } from "../../../stores/Overlays";
+  import { showSongGridSize } from "../../../stores/Modals";
   import { GridSize } from "../../../types/Settings";
   import RadioInput from "../../interactables/RadioInput.svelte";
 

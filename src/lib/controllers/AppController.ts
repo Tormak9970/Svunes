@@ -1,4 +1,4 @@
-import { showEditMusicFolders } from "../../stores/Overlays";
+import { showEditMusicFolders } from "../../stores/Modals";
 import { RustInterop } from "./RustInterop";
 import { albums, artists, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";

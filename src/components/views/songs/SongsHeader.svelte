@@ -8,7 +8,7 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import { fromView } from "../../../stores/Settings";
-  import { showSongGridSize, showSongSortOrder } from "../../../stores/Overlays";
+  import { showSongGridSize, showSongSortOrder } from "../../../stores/Modals";
 
   export let highlight: boolean;
 

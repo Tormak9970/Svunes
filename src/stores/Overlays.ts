@@ -1,6 +1,5 @@
 import { writable, type Writable } from "svelte/store";
 
-export const showEditMusicFolders = writable(false);
 export const showNowPlaying = writable(true); // ! will be false after tested.
 
 export const showSongDetails = writable(false); // ! will be false after tested.
@@ -19,9 +18,6 @@ export const artistToAdd: Writable<string | null> = writable(null);
 export const playlistViewing: Writable<string | null> = writable(null);
 export const artistViewing: Writable<string | null> = writable(null);
 export const genreViewing: Writable<string | null> = writable(null);
-
-export const showSongGridSize = writable(false);
-export const showSongSortOrder = writable(false);
 
 export const showSongOptions = writable(false);
 export const songToShowOptions: Writable<string | null> = writable(null);

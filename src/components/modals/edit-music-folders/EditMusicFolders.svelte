@@ -1,8 +1,8 @@
 <script lang="ts">
   import { dialog } from "@tauri-apps/api";
-  import { showEditMusicFolders } from "../../../stores/Overlays";
+  import { showEditMusicFolders } from "../../../stores/Modals";
   import { musicDirectories } from "../../../stores/State";
-  import OverlayBody from "../utils/OverlayBody.svelte";
+  import ModalBody from "../utils/ModalBody.svelte";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./FolderEntry.svelte";
@@ -55,7 +55,7 @@
   });
 </script>
 
-<OverlayBody show={$showEditMusicFolders} headline={"Music Folders"}>
+<ModalBody show={$showEditMusicFolders} headline={"Music Folders"}>
   <div slot="content">
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
@@ -72,7 +72,7 @@
       <Button type="text" on:click={done}>Done</Button>
     </div>
   </div>
-</OverlayBody>
+</ModalBody>
 
 <style>
   .actions {

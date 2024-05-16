@@ -1,7 +1,7 @@
 <script lang="ts">
   import Body from "./Body.svelte";
   import { songSortOrder } from "../../../stores/State";
-  import { showSongSortOrder } from "../../../stores/Overlays";
+  import { showSongSortOrder } from "../../../stores/Modals";
   import type { SongSortOrder } from "../../../types/Settings";
   import RadioInput from "../../interactables/RadioInput.svelte";
 
