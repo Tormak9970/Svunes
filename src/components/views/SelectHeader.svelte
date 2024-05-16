@@ -10,8 +10,8 @@
   import { AppController } from "../../lib/controllers/AppController";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
-  import AddBox from "@ktibow/iconset-material-symbols/add-box-rounded";
-  import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
+  import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
+  import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
 
   /**
@@ -186,7 +186,7 @@
   </div>
   <div class="right">
     <Button type="text" iconType="full" on:click={queue}>
-      <Icon icon={AddBox} width="36px" height="36px" />
+      <Icon icon={QueueAdd} width="36px" height="36px" />
     </Button>
     <Button type="text" iconType="full" on:click={addToPlaylist}>
       <Icon icon={PlaylistAdd} width="36px" height="36px" />

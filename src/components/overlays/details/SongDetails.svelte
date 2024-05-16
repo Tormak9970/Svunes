@@ -12,16 +12,28 @@
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import MenuButton from "../../interactables/MenuButton.svelte";
+  import DetailsField from "./DetailsField.svelte";
   import { PlaybackController } from "../../../lib/controllers/PlaybackController";
   import { QueueController } from "../../../lib/controllers/QueueController";
   import { AppController } from "../../../lib/controllers/AppController";
+  
+  import Sell from "@ktibow/iconset-material-symbols/sell";
+  import Album from "@ktibow/iconset-material-symbols/album";
+  import Artist from "@ktibow/iconset-material-symbols/artist";
+  import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
+  import Genre from "@ktibow/iconset-material-symbols/library-music-rounded";
+  import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
+  import Duration from "@ktibow/iconset-material-symbols/schedule-rounded"
+  import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded"
+  import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
+  import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
   
   $: song = $songViewing ? $songsMap[$songViewing] : null;
   $: convertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : "";
 
   let imageSize = 360;
 
-  let highlight = false;
+  let isAtTop = true;
 
   /**
    * Closes the details overlay.
@@ -114,9 +126,9 @@
   }
 </script>
 
-<OverlayBody>
+<OverlayBody bind:isAtTop={isAtTop}>
   <span slot="header">
-    <OverlayHeader highlight={highlight}>
+    <OverlayHeader highlight={!isAtTop}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -158,7 +170,26 @@
       </Lazy>
     </div>
     <div class="details">
-      
+      <!-- ! Title -->
+      <DetailsField icon={Sell} headline={song?.title} />
+      <!-- ! album -->
+      <DetailsField icon={Album} headline={song?.album ?? "Unkown"} />
+      <!-- ! artist -->
+      <DetailsField icon={Artist} headline={song?.artist ?? "Unkown"} />
+      <!-- ! release year -->
+      <DetailsField icon={ReleaseYear} headline={song?.releaseYear?.toString() ?? "Unkown"} />
+      <!-- ! genre -->
+      <DetailsField icon={Genre} headline={song?.genre ?? "Unkown"} />
+      <!-- ! track -->
+      <DetailsField icon={TrackNumber} headline={song?.displayTrack()} />
+      <!-- ! duration -->
+      <DetailsField icon={Duration} headline={song?.displayLength()} />
+      <!-- ! bitrate / sample rate -->
+      <DetailsField icon={Frequency} headline={song?.displayFrequency()} />
+      <!-- ! Location -->
+      <DetailsField icon={Location} supporting={song?.filePath} />
+      <!-- ! file Size -->
+      <DetailsField icon={FileSize} headline={song?.displaySize()} />
     </div>
   </span>
 </OverlayBody>
@@ -169,9 +200,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 40px;
   }
 
   .album-picture {
+    margin-top: 2px;
     width: calc(100% - 40px);
     max-width: 360px;
     max-height: 360px;
@@ -180,6 +213,6 @@
   }
 
   .details {
-
+    width: 100%;
   }
 </style>

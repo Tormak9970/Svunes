@@ -96,7 +96,8 @@ pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value
 
     let sample_rate = code_params.sample_rate.unwrap();
     let bits_per_sample = code_params.bits_per_sample.unwrap();
-    let bit_rate = bits_per_sample * sample_rate;
+    let channels = code_params.channels.unwrap();
+    let bit_rate = u64::from(bits_per_sample * sample_rate) * u64::try_from(channels.count()).unwrap();
 
     entry.insert(String::from("bitrate"), Value::String(bit_rate.to_string()));
     entry.insert(String::from("samplerate"), Value::String(sample_rate.to_string()));

@@ -92,3 +92,19 @@ export function dateSort<T>(property: keyof T): (a: T, b: T) => number {
     return 0;
   }
 }
+
+function prefixIfNeeded(time: number): string {
+  return time < 10 ? "0" + time.toString() : time.toString()
+}
+
+/**
+ * Formats a duration into an easy to read format.
+ * @param totalSeconds The total time in seconds.
+ * @returns The formatted time.
+ */
+export function formatTime(totalSeconds: number): string {
+  const hours = Math.floor(totalSeconds / (60 * 60));
+  const minutes = Math.floor((totalSeconds - hours * 60 * 60) / 60);
+  const seconds = totalSeconds % 60;
+  return `${hours !== 0 ? hours + ":" + prefixIfNeeded(minutes) : minutes}:${prefixIfNeeded(seconds)}`;
+}

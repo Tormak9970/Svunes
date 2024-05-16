@@ -7,8 +7,8 @@
   import { songsMap } from "../../stores/State";
   import BottomSheet from "../layout/BottomSheet.svelte";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import AddBox from "@ktibow/iconset-material-symbols/add-box-rounded";
-  import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
+  import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
+  import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import Album from "@ktibow/iconset-material-symbols/album";
   import PlayNext from "@ktibow/iconset-material-symbols/resume-rounded";
   import Info from "@ktibow/iconset-material-symbols/info";
@@ -129,7 +129,7 @@
       <Divider />
       <ListItemButton headline="Add to Queue" on:click={queueSong}>
         <svelte:fragment slot="leading">
-          <Icon icon={AddBox} />
+          <Icon icon={QueueAdd} />
         </svelte:fragment>
       </ListItemButton>
       <Divider />

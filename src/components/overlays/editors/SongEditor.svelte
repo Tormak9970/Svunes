@@ -32,7 +32,7 @@
   let composer: string | undefined;
   let genre: string | undefined;
   let trackNumber: string | undefined;
-  let releaseYear: string;
+  let releaseYear: string | undefined;
 
   let imageSize = 360;
 
@@ -46,8 +46,8 @@
     albumArtist !== song?.albumArtist ||
     composer !== song?.composer ||
     genre !== song?.genre ||
-    trackNumber !== song?.trackNumber ||
-    releaseYear !== song?.releaseYear.toString()
+    trackNumber !== song?.trackNumber?.toString() ||
+    releaseYear !== song?.releaseYear?.toString()
   );
 
   /**
@@ -62,8 +62,8 @@
     albumArtist = song?.albumArtist;
     composer = song?.composer;
     genre = song?.genre;
-    trackNumber = song?.trackNumber;
-    releaseYear = song!.releaseYear.toString();
+    trackNumber = song?.trackNumber?.toString();
+    releaseYear = song?.releaseYear?.toString();
   }
 
   /**
@@ -81,7 +81,7 @@
    */
   function saveChanges() {
     if (title !== "") {
-      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, parseInt(releaseYear), song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber !== "" ? trackNumber : undefined, song!.totalTracks);
+      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, releaseYear ? parseInt(releaseYear) : undefined, song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber ? parseInt(trackNumber) : undefined, song!.totalTracks);
       AppController.editSong($songsMap[$songViewing!], editedSong);
       canSave = false;
       back();
@@ -159,6 +159,7 @@
   }
 
   .album-picture {
+    margin-top: 2px;
     width: calc(100% - 20px);
     max-width: 360px;
     max-height: 360px;
