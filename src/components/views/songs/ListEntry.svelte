@@ -61,9 +61,9 @@
     <div class="left">
       <div class="album">
         {#if convertedPath !== ""}
-          <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS}>
+          <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
             <!-- svelte-ignore a11y-missing-attribute -->
-            <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" />
+            <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
             <span slot="placeholder">
               <MusicNotePlaceholder />
             </span>

@@ -61,9 +61,9 @@
   <div class="content" class:highlight={highlighted}>
     <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;">
       {#if convertedPath !== ""}
-        <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height - 5} fadeOption={IMAGE_FADE_OPTIONS}>
+        <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height - 5} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
           <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" />
+          <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
             <MusicNotePlaceholder />
           </span>

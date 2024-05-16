@@ -5,14 +5,11 @@
   export let show: boolean;
   export let headline: string;
   export let icon: IconifyIcon | undefined = undefined;
-
 </script>
 
-<div class="wrapper">
-  <Dialog headline={headline} icon={icon} open={show}>
-    <slot name="content" />
-    <div slot="buttons">
-      <slot name="actions" />
-    </div>
-  </Dialog>
-</div>
+<Dialog headline={headline} icon={icon} open={show}>
+  <slot name="content" />
+  <div slot="buttons">
+    <slot name="actions" />
+  </div>
+</Dialog>

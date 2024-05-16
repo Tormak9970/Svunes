@@ -1,4 +1,5 @@
 <script>
+  import ArtOptions from "./ArtOptions.svelte";
   import EditMusicFolders from "./edit-music-folders/EditMusicFolders.svelte";
   import SongGridSize from "./view-settings/SongGridSize.svelte";
   import SongSortOrder from "./view-settings/SongSortOrder.svelte";
@@ -11,3 +12,4 @@
 
 <!-- ? Misc -->
 <EditMusicFolders />
+<ArtOptions />

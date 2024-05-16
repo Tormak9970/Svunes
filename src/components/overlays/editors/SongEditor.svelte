@@ -16,13 +16,14 @@
   import { AppController } from "../../../lib/controllers/AppController";
   import { LogController } from "../../../lib/controllers/LogController";
   import { Song } from "../../../lib/models/Song";
+  import { onArtOptionsDone, showArtOptions } from "../../../stores/Modals";
 
   let snackbar: (data: ErrorSnackbarIn) => void;
 
   $: song = $songViewing ? $songsMap[$songViewing] : null;
   
-  let albumPath: string | undefined;
-  $: convertedPath = albumPath ? tauri.convertFileSrc(albumPath) : "";
+  let artPath: string | undefined;
+  $: convertedPath = artPath ? tauri.convertFileSrc(artPath) : "";
 
   let title: string;
   let album: string | undefined;
@@ -38,7 +39,7 @@
   let isAtTop = true;
   
   $: canSave = (
-    albumPath !== song?.artPath ||
+    artPath !== song?.artPath ||
     title !== song?.title ||
     album !== song?.album ||
     artist !== song?.artist ||
@@ -53,7 +54,7 @@
    * Initializes the song fields.
    */
   function initializeFields() {
-    albumPath = song?.artPath;
+    artPath = song?.artPath;
 
     title = song!.title;
     album = song!.album;
@@ -80,7 +81,7 @@
    */
   function saveChanges() {
     if (title !== "") {
-      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, parseInt(releaseYear), song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, albumPath ? albumPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber !== "" ? trackNumber : undefined, song!.totalTracks);
+      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, parseInt(releaseYear), song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber !== "" ? trackNumber : undefined, song!.totalTracks);
       AppController.editSong($songsMap[$songViewing!], editedSong);
       canSave = false;
       back();
@@ -94,15 +95,10 @@
    * Handles prompting the user to change the song's art.
    */
   function onAlbumArtClick() {
-    // TODO: show an overlay
-  }
-
-  /**
-   * Callback to run when the new album art is set.
-   * @param newPath
-   */
-  function onAlbumArtChange(newPath: string) {
-
+    $onArtOptionsDone = (path: string | undefined) => {
+      artPath = path;
+    }
+    $showArtOptions = true;
   }
 
   onMount(() => {
@@ -127,14 +123,16 @@
   </span>
   <span class="content" slot="content">
     <div class="album-picture">
-      <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} clickable on:click={onAlbumArtClick}>
-        <!-- svelte-ignore missing-declaration -->
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" />
-        <span slot="placeholder">
-          <MusicNotePlaceholder />
-        </span>
-      </Lazy>
+      {#key artPath ?? ""}
+        <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} clickable on:click={onAlbumArtClick}>
+          <!-- svelte-ignore missing-declaration -->
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" />
+          <span slot="placeholder">
+            <MusicNotePlaceholder height={80} width={80} backgroundColor="--m3-scheme-surface-container-lowest" fillColor="--m3-scheme-on-secondary" />
+          </span>
+        </Lazy>
+      {/key}
     </div>
     <div class="fields">
       <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />

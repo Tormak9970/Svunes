@@ -7,14 +7,16 @@
     </div>
   {/if}
   {#if loaded}
-    <div
-      in:fade={fadeOption || {}}
-      class={contentClass}
-      style={contentStyle}
-    >
-      <slot>Lazy load content</slot>
-    </div>
-    {#if !contentShow}
+    {#if !failed}
+      <div
+        in:fade={fadeOption || {}}
+        class={contentClass}
+        style={contentStyle}
+      >
+        <slot onError={onError}>Lazy load content</slot>
+      </div>
+    {/if}
+    {#if !contentShow || failed}
       <slot name="placeholder" />
     {/if}
   {:else}
@@ -52,7 +54,7 @@
 </style>
 
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { fade } from 'svelte/transition';
   export let keep = false;
   export let height = 0;
@@ -64,6 +66,7 @@
   export let resetHeightDelay = 0;
   export let onload: any = null;
   export let clickable = false;
+  const onError = () => { failed = true; }
   
   let className = '';
   export { className as class };
@@ -73,6 +76,7 @@
   const contentClass = 'svelte-lazy-content';
   const rootInitialHeight = getStyleHeight();
   let loaded = false;
+  let failed = false;
 
   let contentShow = true;
   $: contentStyle = !contentShow ? 'display: none' : '';
@@ -164,7 +168,7 @@
     setTimeout(() => {
       const isLoading = checkImgLoadingStatus(node);
       if (!isLoading) {
-        node.style.height = '100%';
+        node.style.height = 'auto';
       }
     // Add a delay to wait for remote resources like images to load
     }, resetHeightDelay);
@@ -191,6 +195,8 @@
       }, { capture: true, once: true });
 
       return true;
+    } else if (img.complete && !img.src) {
+      failed = true;
     }
 
     if (img.naturalHeight === 0) {
