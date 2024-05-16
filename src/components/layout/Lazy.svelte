@@ -1,4 +1,11 @@
-<div use:load class={rootClass} style="height: {rootInitialHeight}">
+<div class:container={true} use:load class={rootClass} style="height: {rootInitialHeight}">
+  {#if clickable}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class="click-container" on:click={() => dispatch("click")}>
+      <slot name="click-container" />
+    </div>
+  {/if}
   {#if loaded}
     <div
       in:fade={fadeOption || {}}
@@ -15,7 +22,37 @@
   {/if}
 </div>
 
+<style>
+  .container {
+    position: relative;
+  }
+  
+  .container:hover {
+    cursor: pointer;
+  }
+
+  .click-container {
+    position: absolute;
+    top: 0;
+
+    cursor: pointer;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 2;
+
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .container:hover .click-container {
+    background-color: rgb(var(--m3-scheme-scrim) / 0.3);
+  }
+</style>
+
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
   import { fade } from 'svelte/transition';
   export let keep = false;
   export let height = 0;
@@ -26,6 +63,7 @@
   };
   export let resetHeightDelay = 0;
   export let onload: any = null;
+  export let clickable = false;
   
   let className = '';
   export { className as class };
@@ -38,6 +76,8 @@
 
   let contentShow = true;
   $: contentStyle = !contentShow ? 'display: none' : '';
+
+  const dispatch = createEventDispatcher();
 
   function load(node: HTMLElement) {
     setHeight(node);

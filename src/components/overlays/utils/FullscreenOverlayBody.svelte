@@ -1,12 +1,24 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
+
+  export let isAtTop = true;
+
+  let contentContainer: HTMLDivElement;
+
+  /**
+   * Handles when the content scrolls.
+   */
+  function onScroll() {
+    const { scrollTop } = contentContainer;
+    isAtTop = scrollTop === 0;
+  }
 </script>
 
 <div class="full-screen-overlay" transition:fly={{ duration: 200, x: 400 }}>
   <div class="headline">
     <slot name="header" />
   </div>
-  <div class="content">
+  <div class="content" on:scroll={onScroll} bind:this={contentContainer}>
     <slot name="content" />
   </div>
 </div>
@@ -27,6 +39,15 @@
   .content {
     margin-top: 50px;
     height: calc(100vh - 50px);
-    overflow: hidden;
+    overflow-y: scroll;
+    padding-left: 10px;
+    
+    scrollbar-color: transparent transparent;
+
+    transition: scrollbar-color 0.2s ease-in-out;
+  }
+
+  .content:hover {
+    scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
   }
 </style>

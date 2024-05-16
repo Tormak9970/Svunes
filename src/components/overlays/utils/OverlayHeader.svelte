@@ -29,7 +29,7 @@
   }
 
   .highlight {
-    background-color: rgb(var(--highlight-color));
+    background-color: var(--highlight-color);
   }
 
   .left {
