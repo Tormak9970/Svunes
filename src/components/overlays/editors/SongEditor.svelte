@@ -1,13 +1,22 @@
 <script lang="ts">
   import { Button, Icon } from "m3-svelte";
-  import { songViewing } from "../../../stores/Overlays";
+  import { showEditSong, showSongDetails, songViewing } from "../../../stores/Overlays";
   import FullscreenOverlayBody from "../utils/FullscreenOverlayBody.svelte";
   import OverlayHeader from "../utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
 
+  let canSave = false;
+
   let highlight = false;
 
   function back() {
+    if (!$showSongDetails) {
+      $songViewing = null;
+    }
+    $showEditSong = false;
+  }
+
+  function saveChanges() {
 
   }
 </script>
@@ -21,9 +30,14 @@
         </Button>
       </span>
       <span slot="right">
-        <md-text-button>Save</md-text-button>
+        <Button type="text" disabled={!canSave} on:click={saveChanges}>
+          Save
+        </Button>
       </span>
     </OverlayHeader>
+  </span>
+  <span slot="content">
+
   </span>
 </FullscreenOverlayBody>
 

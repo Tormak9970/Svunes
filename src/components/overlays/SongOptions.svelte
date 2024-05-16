@@ -13,7 +13,7 @@
   import PlayNext from "@ktibow/iconset-material-symbols/resume-rounded";
   import Info from "@ktibow/iconset-material-symbols/info";
   import Artist from "@ktibow/iconset-material-symbols/artist-rounded";
-  import Edit from "@ktibow/iconset-material-symbols/edit-rounded";
+  import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import Share from "@ktibow/iconset-material-symbols/share";
   import Trash from "@ktibow/iconset-material-symbols/delete-forever-rounded";
 

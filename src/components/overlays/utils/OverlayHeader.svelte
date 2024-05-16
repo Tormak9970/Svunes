@@ -40,7 +40,5 @@
   .right {
     height: 100%;
     margin-right: 10px;
-
-    display: flex;
   }
 </style>
