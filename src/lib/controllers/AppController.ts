@@ -52,19 +52,22 @@ export class AppController {
     const albumsList = get(albums);
 
     for (const song of songs) {
-      if (!albumMap.get(song.album)) {
-        const listAlbum = albumsList.find((a) => a.name === song.album);
-        const album = new Album(song.album, song.albumPath, song.releaseYear, listAlbum?.lastPlayedOn);
-        album.songNames.push(song.title);
-        
-        if (song.artist) album.artists.add(song.artist);
-
-        albumMap.set(album.name, album);
-      } else {
-        const album = albumMap.get(song.album)!;
-        album.songNames.push(song.title);
-        
-        if (song.artist) album.artists.add(song.artist);
+      if (song.album) {
+        if (!albumMap.get(song.album)) {
+          const listAlbum = albumsList.find((a) => a.name === song.album);
+          const album = new Album(song.album, song.artPath, song.releaseYear, listAlbum?.lastPlayedOn);
+          album.songNames.push(song.title);
+          
+          if (song.artist) album.artists.add(song.artist);
+  
+          albumMap.set(album.name, album);
+        } else {
+          const album = albumMap.get(song.album)!;
+          album.songNames.push(song.title);
+          
+          if (song.artist) album.artists.add(song.artist);
+          if (!album.artPath) album.artPath = song.artPath;
+        }
       }
     }
 
@@ -84,15 +87,16 @@ export class AppController {
     for (const song of songs) {
       if (song.artist) {
         if (!artistMap.get(song.artist)) {
-          const artist = new Artist(song.artist);
+          const artist = new Artist(song.artist, song.artPath);
           artist.songNames.push(song.title);
-          artist.albumNames.add(song.album);
+          if (song.album) artist.albumNames.add(song.album);
   
           artistMap.set(song.artist, artist);
         } else {
           const artist = artistMap.get(song.artist)!;
           artist.songNames.push(song.title);
-          artist.albumNames.add(song.album);
+          if (song.album) artist.albumNames.add(song.album);
+          if (!artist.imagePath) artist.imagePath = song.artPath;
         }
       }
     }
@@ -117,13 +121,14 @@ export class AppController {
       const songGenre = song.genre ?? "Other";
 
       if (!genreMap.get(songGenre)) {
-        const genre = new Genre(songGenre, song.albumPath);
+        const genre = new Genre(songGenre, song.artPath);
         genre.songNames.push(song.title);
 
         genreMap.set(songGenre, genre);
       } else {
         const genre = genreMap.get(songGenre)!;
         genre.songNames.push(song.title);
+        if (!genre.imagePreviewPath) genre.imagePreviewPath = song.artPath;
       }
     }
 
@@ -149,23 +154,25 @@ export class AppController {
         return song;
       });
 
-      const songsWithMissingArt = loadedSongs.filter((song) => !song.albumPath);
+      const songsWithMissingArt = loadedSongs.filter((song) => !song.artPath);
 
       const pathCache: Record<string, string> = {};
       const blacklist: string[] = [];
 
       for (const song of songsWithMissingArt) {
-        if (!blacklist.includes(song.album)) {
-          if (!pathCache[song.album]) {
-            const songWithPath = loadedSongs.find((s) => s.album === song.album && s.albumPath);
-            if (songWithPath) {
-              pathCache[song.album] = songWithPath.albumPath;
-              song.albumPath = songWithPath.albumPath;
+        if (song.album) {
+          if (!blacklist.includes(song.album)) {
+            if (!pathCache[song.album]) {
+              const songWithPath = loadedSongs.find((s) => s.album === song.album && s.artPath);
+              if (songWithPath && songWithPath.artPath) {
+                pathCache[song.album] = songWithPath.artPath;
+                song.artPath = songWithPath.artPath;
+              } else {
+                blacklist.push(song.album);
+              }
             } else {
-              blacklist.push(song.album);
+              song.artPath = pathCache[song.album];
             }
-          } else {
-            song.albumPath = pathCache[song.album];
           }
         }
       }
@@ -174,10 +181,19 @@ export class AppController {
       songs.set(loadedSongs);
       LogController.log(`Loaded ${loadedSongs.length} songs.`);
 
-      // this.loadAlbumsFromSongs(loadedSongs);
+      this.loadAlbumsFromSongs(loadedSongs);
       this.loadGenresFromSongs(loadedSongs);
       this.loadArtistsFromSongs(loadedSongs);
     }
+  }
+
+  /**
+   * Applies the changes made to a song, and updates the artist/album (or creates/deletes them) as needed.
+   * @param originalSong The original song.
+   * @param edited The edited song.
+   */
+  static async editSong(originalSong: Song, edited: Song) {
+
   }
 
   /**

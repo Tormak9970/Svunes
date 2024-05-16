@@ -5,7 +5,7 @@ import { RustInterop } from "../controllers/RustInterop";
  */
 export class Genre {
   name: string;
-  imagePreviewPath: string;
+  imagePreviewPath: string | undefined;
   songNames: string[];
   backgroundColor: string;
   color: string;
@@ -13,7 +13,7 @@ export class Genre {
   /**
    * Creates a new Genre.
    */
-  constructor(name: string, imagePreviewPath: string) {
+  constructor(name: string, imagePreviewPath: string | undefined) {
     this.name = name;
     this.imagePreviewPath = imagePreviewPath;
     this.songNames = [];
@@ -22,11 +22,13 @@ export class Genre {
     this.backgroundColor = "black";
     this.color = "red";
 
-    RustInterop.getColorsFromImage(this.imagePreviewPath).then((colors) => {
-      if (colors.length) {
-        this.backgroundColor = colors[0];
-        this.color = colors[1];
-      }
-    });
+    if (this.imagePreviewPath) {
+      RustInterop.getColorsFromImage(this.imagePreviewPath).then((colors) => {
+        if (colors.length) {
+          this.backgroundColor = colors[0];
+          this.color = colors[1];
+        }
+      });
+    }
   }
 }

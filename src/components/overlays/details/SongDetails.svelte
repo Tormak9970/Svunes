@@ -17,7 +17,7 @@
   import { AppController } from "../../../lib/controllers/AppController";
   
   $: song = $songViewing ? $songsMap[$songViewing] : null;
-  $: convertedPath = song?.albumPath ? tauri.convertFileSrc(song.albumPath) : "";
+  $: convertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : "";
 
   let imageSize = 360;
 
@@ -76,7 +76,7 @@
    * Shows the song's album.
    */
   function goToAlbum() {
-    $albumViewing = song!.album;
+    $albumViewing = song!.album!;
     $showAlbumDetails = true;
     closeDetails();
   }
@@ -85,7 +85,7 @@
    * Shows the song's artist.
    */
   function goToArtist() {
-    $artistViewing = song!.artist;
+    $artistViewing = song!.artist!;
     closeDetails();
   }
 
@@ -133,7 +133,9 @@
             <MenuItem on:click={playNext}>Play Next</MenuItem>
             <MenuItem on:click={queueSong}>Add to Queue</MenuItem>
             <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
-            <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
+            {#if song?.album}
+              <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
+            {/if}
             {#if song?.artist}
               <MenuItem on:click={goToArtist}>Go to Artist</MenuItem>
             {/if}

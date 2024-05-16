@@ -1,36 +1,69 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { Button, Icon } from "m3-svelte";
-  import { showEditSong, showSongDetails, songViewing } from "../../../stores/Overlays";
   import FullscreenOverlayBody from "../utils/FullscreenOverlayBody.svelte";
   import OverlayHeader from "../utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { songsMap } from "../../../stores/State";
-  import { tauri } from "@tauri-apps/api";
   import Lazy from "../../layout/Lazy.svelte";
   import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
   import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import TextField from "../../interactables/TextField.svelte";
   import NumberField from "../../interactables/NumberField.svelte";
+  import ErrorSnackbar, { type ErrorSnackbarIn } from "../../snackbars/error/ErrorSnackbar.svelte";
+  import { tauri } from "@tauri-apps/api";
+  import { showEditSong, showSongDetails, songViewing } from "../../../stores/Overlays";
+  import { AppController } from "../../../lib/controllers/AppController";
+  import { LogController } from "../../../lib/controllers/LogController";
+  import { Song } from "../../../lib/models/Song";
+
+  let snackbar: (data: ErrorSnackbarIn) => void;
 
   $: song = $songViewing ? $songsMap[$songViewing] : null;
-
   
-  $: albumPath = song?.albumPath;
+  let albumPath: string | undefined;
   $: convertedPath = albumPath ? tauri.convertFileSrc(albumPath) : "";
 
-  $: title = song?.title;
-  $: album = song?.album;
-  $: artist = song?.artist;
-  $: albumArtist = song?.albumArtist;
-  $: composer = song?.composer;
-  $: genre = song?.genre;
-  $: releaseYear = song?.releaseYear;
+  let title: string;
+  let album: string | undefined;
+  let artist: string | undefined;
+  let albumArtist: string | undefined;
+  let composer: string | undefined;
+  let genre: string | undefined;
+  let trackNumber: string | undefined;
+  let releaseYear: string;
 
   let imageSize = 360;
 
   let isAtTop = true;
   
-  let canSave = false;
+  $: canSave = (
+    albumPath !== song?.artPath ||
+    title !== song?.title ||
+    album !== song?.album ||
+    artist !== song?.artist ||
+    albumArtist !== song?.albumArtist ||
+    composer !== song?.composer ||
+    genre !== song?.genre ||
+    trackNumber !== song?.trackNumber ||
+    releaseYear !== song?.releaseYear.toString()
+  );
+
+  /**
+   * Initializes the song fields.
+   */
+  function initializeFields() {
+    albumPath = song?.artPath;
+
+    title = song!.title;
+    album = song!.album;
+    artist = song!.artist;
+    albumArtist = song?.albumArtist;
+    composer = song?.composer;
+    genre = song?.genre;
+    trackNumber = song?.trackNumber;
+    releaseYear = song!.releaseYear.toString();
+  }
 
   /**
    * Closes the edit overlay.
@@ -42,45 +75,39 @@
     $showEditSong = false;
   }
 
+  /**
+   * Saves the changes the user has made.
+   */
   function saveChanges() {
-
+    if (title !== "") {
+      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, parseInt(releaseYear), song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, albumPath ? albumPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber !== "" ? trackNumber : undefined, song!.totalTracks);
+      AppController.editSong($songsMap[$songViewing!], editedSong);
+      canSave = false;
+      back();
+    } else {
+      snackbar({ message: "Title is required!", closable: true, timeout: 3000 });
+      LogController.error("Failed to save changes! A title is required!");
+    }
   }
 
+  /**
+   * Handles prompting the user to change the song's art.
+   */
   function onAlbumArtClick() {
     // TODO: show an overlay
   }
 
-  function onAlbumArtChange(e: Event) {
+  /**
+   * Callback to run when the new album art is set.
+   * @param newPath
+   */
+  function onAlbumArtChange(newPath: string) {
 
   }
 
-  function onTitleChange(e: Event) {
-
-  }
-
-  function onAlbumChange(e: Event) {
-
-  }
-
-  function onArtistChange(e: Event) {
-
-  }
-
-  function onAlbumArtistChange(e: Event) {
-
-  }
-
-  function onComposerChange(e: Event) {
-
-  }
-
-  function onGenreChange(e: Event) {
-
-  }
-
-  function onReleaseYearChange(e: Event) {
-
-  }
+  onMount(() => {
+    initializeFields();
+  });
 </script>
 
 <FullscreenOverlayBody bind:isAtTop={isAtTop}>
@@ -110,16 +137,18 @@
       </Lazy>
     </div>
     <div class="fields">
-      <TextField name="Title" value={title} on:change={onTitleChange} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Album" value={album} on:change={onAlbumChange} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Artist" value={artist} on:change={onArtistChange} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Album Artist" value={albumArtist} on:change={onAlbumArtistChange} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Composer" value={composer} on:change={onComposerChange} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <div class="two-wide">
-        <TextField name="Genre" value={genre} on:change={onGenreChange} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
-        <NumberField name="Year" value={releaseYear?.toString()} on:change={onReleaseYearChange} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} extraOptions={{ type: "number" }} />
+      <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Artist" bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Album Artist" bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Composer" bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Genre" bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <div class="two-wide">
+        <NumberField name="Track #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} extraOptions={{ type: "number" }} />
+        <NumberField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} extraOptions={{ type: "number" }} />
       </div>
     </div>
+    <ErrorSnackbar bind:show={snackbar} />
   </span>
 </FullscreenOverlayBody>
 

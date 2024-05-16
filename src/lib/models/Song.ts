@@ -22,8 +22,8 @@ function calcSize(size: string): string {
  */
 export class Song {
   title: string;
-  album: string;
-  artist: string;
+  album?: string;
+  artist?: string;
   composer?: string;
   albumArtist?: string;
   releaseYear: number;
@@ -32,7 +32,7 @@ export class Song {
   sampleRate: number;
   size: string;
   filePath: string;
-  albumPath: string;
+  artPath: string | undefined;
   lastPlayedOn: string;
   genre?: string;
   trackNumber?: string;
@@ -41,7 +41,7 @@ export class Song {
   /**
    * Creates a new Song.
    */
-  constructor(title: string, album: string, artist: string, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: string, filePath: string, albumPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
+  constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: string, filePath: string, artPath: string, lastPlayedOn: string, genre?: string, trackNumber?: string, totalTracks?: string) {
     this.title = title;
     this.album = album;
     this.artist = artist;
@@ -53,7 +53,7 @@ export class Song {
     this.sampleRate = sampleRate;
     this.size = size;
     this.filePath = filePath;
-    this.albumPath = albumPath;
+    this.artPath = artPath;
     this.lastPlayedOn = lastPlayedOn;
     this.genre = genre;
     this.trackNumber = trackNumber;
@@ -74,7 +74,7 @@ export class Song {
    * @returns The song object.
    */
   static fromJSON(json: any, lastPlayedOn = "Never"): Song {
-    let title, album, artist, composer, albumArtist, releaseYear, length, bitRate, sampleRate, size, filePath, albumPath, genre, trackNumber, totalTracks;
+    let title, album, artist, composer, albumArtist, releaseYear, length, bitRate, sampleRate, size, filePath, artPath, genre, trackNumber, totalTracks;
     
     if (json.title && json.filename.endsWith("flac")) {
       title = json.title;
@@ -115,8 +115,8 @@ export class Song {
     sampleRate = parseInt(json.sampleRate);
     size = calcSize(json.size);
     filePath = json.filename;
-    albumPath = json.albumpath;
+    artPath = json.albumpath;
 
-    return new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, albumPath, lastPlayedOn, genre, trackNumber, totalTracks);
+    return new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, artPath, lastPlayedOn, genre, trackNumber, totalTracks);
   }
 }

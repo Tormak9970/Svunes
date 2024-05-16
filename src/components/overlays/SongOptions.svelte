@@ -64,7 +64,7 @@
    * Shows the song's album.
    */
   function goToAlbum() {
-    $albumViewing = song!.album;
+    $albumViewing = song!.album!;
     $showAlbumDetails = true;
     closeOptions();
   }
@@ -73,7 +73,7 @@
    * Shows the song's artist.
    */
   function goToArtist() {
-    $artistViewing = song!.artist;
+    $artistViewing = song!.artist!;
     closeOptions();
   }
 
@@ -139,12 +139,14 @@
         </svelte:fragment>
       </ListItemButton>
       <Divider />
-      <ListItemButton headline="Go to Album" on:click={goToAlbum}>
-        <svelte:fragment slot="leading">
-          <Icon icon={Album} />
-        </svelte:fragment>
-      </ListItemButton>
-      <Divider />
+      {#if song?.album}
+        <ListItemButton headline="Go to Album" on:click={goToAlbum}>
+          <svelte:fragment slot="leading">
+            <Icon icon={Album} />
+          </svelte:fragment>
+        </ListItemButton>
+        <Divider />
+      {/if}
       {#if song?.artist}
         <ListItemButton headline="Go to Artist" on:click={goToArtist}>
           <svelte:fragment slot="leading">

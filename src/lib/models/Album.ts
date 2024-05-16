@@ -5,7 +5,7 @@ import { RustInterop } from "../controllers/RustInterop";
  */
 export class Album {
   name: string;
-  artPath: string;
+  artPath: string | undefined;
   lastPlayedOn: string;
   artists: Set<string>;
 
@@ -19,7 +19,7 @@ export class Album {
   /**
    * Creates a new album object.
    */
-  constructor(name: string, artPath: string, releaseYear?: number, lastPlayedOn?: string) {
+  constructor(name: string, artPath: string | undefined, releaseYear?: number, lastPlayedOn?: string) {
     this.name = name;
     this.artPath = artPath;
 

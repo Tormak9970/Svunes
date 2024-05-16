@@ -36,6 +36,8 @@
     {disabled}
     {required}
     {...extraOptions}
+    on:change={(e) => dispatch("change", e)}
+    on:input={(e) => dispatch("input", e)}
   />
   <div class="layer" />
   <label class="m3-font-body-large" for={id}>{name}</label>

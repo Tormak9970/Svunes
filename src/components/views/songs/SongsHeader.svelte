@@ -41,7 +41,7 @@
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       <Menu>
         <MenuItem on:click={() => { $showSongGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
-        <MenuItem on:click={() => { $showSongSortOrder = true; menuIsOpen = false; }}>Sort Order</MenuItem>
+        <MenuItem on:click={() => { $showSongSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
         <MenuItem on:click={goToSettings}>Settings</MenuItem>
       </Menu>
     </MenuButton>

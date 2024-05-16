@@ -16,7 +16,7 @@
 
   export let song: Song;
 
-  $: convertedPath = song.albumPath ? tauri.convertFileSrc(song.albumPath) : "";
+  $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.title);
 
   /**
