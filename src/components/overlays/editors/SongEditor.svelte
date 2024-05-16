@@ -32,6 +32,9 @@
   
   let canSave = false;
 
+  /**
+   * Closes the edit overlay.
+   */
   function back() {
     if (!$showSongDetails) {
       $songViewing = null;
