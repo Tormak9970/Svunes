@@ -4,7 +4,7 @@
   import { songsMap } from "../../../stores/State";
   import Lazy from "../../layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
-  import FullscreenOverlayBody from "../utils/FullscreenOverlayBody.svelte";
+  import OverlayBody from "../utils/OverlayBody.svelte";
   import OverlayHeader from "../utils/OverlayHeader.svelte";
   import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
@@ -114,7 +114,7 @@
   }
 </script>
 
-<FullscreenOverlayBody>
+<OverlayBody>
   <span slot="header">
     <OverlayHeader highlight={highlight}>
       <span slot="left">
@@ -161,7 +161,7 @@
       
     </div>
   </span>
-</FullscreenOverlayBody>
+</OverlayBody>
 
 <style>
   .content {

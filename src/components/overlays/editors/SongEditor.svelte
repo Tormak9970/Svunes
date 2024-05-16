@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Button, Icon } from "m3-svelte";
-  import FullscreenOverlayBody from "../utils/FullscreenOverlayBody.svelte";
+  import OverlayBody from "../utils/OverlayBody.svelte";
   import OverlayHeader from "../utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { songsMap } from "../../../stores/State";
@@ -110,7 +110,7 @@
   });
 </script>
 
-<FullscreenOverlayBody bind:isAtTop={isAtTop}>
+<OverlayBody bind:isAtTop={isAtTop}>
   <span slot="header">
     <OverlayHeader highlight={!isAtTop}>
       <span slot="left">
@@ -150,7 +150,7 @@
     </div>
     <ErrorSnackbar bind:show={snackbar} />
   </span>
-</FullscreenOverlayBody>
+</OverlayBody>
 
 <style>
   .content {
