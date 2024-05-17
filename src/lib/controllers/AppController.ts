@@ -55,7 +55,7 @@ export class AppController {
       if (song.album) {
         if (!albumMap.get(song.album)) {
           const listAlbum = albumsList.find((a) => a.name === song.album);
-          const album = new Album(song.album, song.artPath, song.releaseYear, listAlbum?.lastPlayedOn);
+          const album = new Album(song.album, song.artPath, song.releaseYear, song.genre, listAlbum?.lastPlayedOn);
           album.songNames.push(song.title);
           
           if (song.artist) album.artists.add(song.artist);
@@ -193,6 +193,15 @@ export class AppController {
    * @param edited The edited song.
    */
   static async editSong(originalSong: Song, edited: Song) {
+
+  }
+
+  /**
+   * Applies the changes made to an album, and updates the songs/artists (or creates/deletes them) as needed.
+   * @param originalAlbum The original album.
+   * @param edited The edited album.
+   */
+  static async editAlbum(originalAlbum: Album, edited: Album) {
 
   }
 

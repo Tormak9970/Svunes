@@ -170,25 +170,15 @@
       </Lazy>
     </div>
     <div class="details">
-      <!-- ! Title -->
       <DetailsField icon={Sell} headline={song?.title} />
-      <!-- ! album -->
       <DetailsField icon={Album} headline={song?.album ?? "Unkown"} />
-      <!-- ! artist -->
       <DetailsField icon={Artist} headline={song?.artist ?? "Unkown"} />
-      <!-- ! release year -->
       <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? "Unkown" : song?.releaseYear.toString()} />
-      <!-- ! genre -->
       <DetailsField icon={Genre} headline={song?.genre ?? "Unkown"} />
-      <!-- ! track -->
       <DetailsField icon={TrackNumber} headline={song?.displayTrack()} />
-      <!-- ! duration -->
       <DetailsField icon={Duration} headline={song?.displayLength()} />
-      <!-- ! bitrate / sample rate -->
       <DetailsField icon={Frequency} headline={song?.displayFrequency()} />
-      <!-- ! Location -->
       <DetailsField icon={Location} supporting={song?.filePath} />
-      <!-- ! file Size -->
       <DetailsField icon={FileSize} headline={song?.displaySize()} />
     </div>
   </span>
