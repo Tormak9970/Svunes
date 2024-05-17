@@ -129,7 +129,7 @@
    * Prompts the user if they really want to delete everything they've selected.
    */
   function deleteFromDevice() {
-    AppController.deleteFromDevice(getSongsFromSelected());
+    AppController.deleteSongsFromDevice(getSongsFromSelected());
     $selected = [];
     menuIsOpen = false;
   }

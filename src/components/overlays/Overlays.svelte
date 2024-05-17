@@ -4,7 +4,7 @@
   import ArtistDetails from "./details/ArtistDetails.svelte";
   import GenreDetails from "./details/GenreDetails.svelte";
   import PlaylistDetails from "./details/PlaylistDetails.svelte";
-  import SongDetails from "./details/SongDetails.svelte";
+  import SongDetails from "./details/song-details/SongDetails.svelte";
   import SongEditor from "./editors/SongEditor.svelte";
   import AlbumEditor from "./editors/AlbumEditor.svelte";
   import SongOptions from "./SongOptions.svelte";

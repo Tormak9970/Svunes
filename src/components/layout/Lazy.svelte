@@ -28,10 +28,6 @@
   .container {
     position: relative;
   }
-  
-  .container:hover {
-    cursor: pointer;
-  }
 
   .click-container {
     position: absolute;

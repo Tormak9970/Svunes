@@ -209,9 +209,19 @@ export class AppController {
    * Deletes the provided songs from the device.
    * @param songNames The names of the songs to delete.
    */
-  static async deleteFromDevice(songNames: string[]) {
+  static async deleteSongsFromDevice(songNames: string[]) {
     // TODO: show popup to confirm if they really want to.
     // TODO: update relevant stores (recalc genres, albums, artists, remove from playlists)
+    // ! Add logging
+  }
+
+  /**
+   * Deletes the provided albums from the device.
+   * @param albumNames The names of the albums to delete.
+   */
+  static async deleteAlbumsFromDevice(albumNames: string[]) {
+    // TODO: show popup to confirm if they really want to.
+    // TODO: update relevant stores (recalc genres, songs, artists, remove from playlists)
     // ! Add logging
   }
 

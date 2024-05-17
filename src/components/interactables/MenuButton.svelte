@@ -22,11 +22,11 @@
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
   {#if open}
-    <div class="menu-wrapper" in:receive={{ key: "container" }} out:send={{ key: "container" }}>
+    <div class="menu-wrapper" in:receive={{ key: "menu-button" }} out:send={{ key: "menu-button" }}>
       <slot />
     </div>
   {:else}
-    <div class="wrapper-placeholder" in:receive={{ key: "container" }} out:send={{ key: "container" }} />
+    <div class="wrapper-placeholder" in:receive={{ key: "menu-button" }} out:send={{ key: "menu-button" }} />
   {/if}
 </div>
 

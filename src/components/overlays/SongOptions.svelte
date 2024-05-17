@@ -107,7 +107,7 @@
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    AppController.deleteFromDevice([song!.title]);
+    AppController.deleteSongsFromDevice([song!.title]);
     closeOptions();
   }
 </script>

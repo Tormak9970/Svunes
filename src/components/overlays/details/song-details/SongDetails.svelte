@@ -1,21 +1,20 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
-  import { albumViewing, artistViewing, showAddToPlaylist, showAlbumDetails, showEditSong, showSongDetails, songToAdd, songViewing } from "../../../stores/Overlays";
-  import { songsMap } from "../../../stores/State";
-  import Lazy from "../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
-  import OverlayBody from "../utils/OverlayBody.svelte";
-  import OverlayHeader from "../utils/OverlayHeader.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
+  import { albumViewing, artistViewing, showAddToPlaylist, showAlbumDetails, showEditSong, showSongDetails, songToAdd, songViewing } from "../../../../stores/Overlays";
+  import { songsMap } from "../../../../stores/State";
+  import Lazy from "../../../layout/Lazy.svelte";
+  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import OverlayHeader from "../../utils/OverlayHeader.svelte";
+  import { IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import MenuButton from "../../interactables/MenuButton.svelte";
+  import MenuButton from "../../../interactables/MenuButton.svelte";
   import DetailsField from "./DetailsField.svelte";
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../../lib/controllers/QueueController";
-  import { AppController } from "../../../lib/controllers/AppController";
+  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
+  import { QueueController } from "../../../../lib/controllers/QueueController";
+  import { AppController } from "../../../../lib/controllers/AppController";
   
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import Album from "@ktibow/iconset-material-symbols/album";
@@ -27,6 +26,7 @@
   import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded"
   import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
+    import DetailsBody from "../DetailsBody.svelte";
   
   $: song = $songViewing ? $songsMap[$songViewing] : null;
   $: convertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : "";
@@ -44,19 +44,11 @@
   }
 
   /**
-   * Handles closing the options.
-   */
-   function closeDetails() {
-    $songViewing = null;
-    $showSongDetails = false;
-  }
-
-  /**
    * Plays this song.
    */
   function playSong() {
     PlaybackController.playSong(song!);
-    closeDetails();
+    back();
   }
 
   /**
@@ -64,7 +56,7 @@
    */
   function playNext() {
     QueueController.playSongsNext([song!.title]);
-    closeDetails();
+    back();
   }
 
   /**
@@ -72,7 +64,7 @@
    */
   function queueSong() {
     QueueController.queueSongs([song!.title]);
-    closeDetails();
+    back();
   }
 
   /**
@@ -81,7 +73,7 @@
   function addToPlaylist() {
     $songToAdd = song!.title;
     $showAddToPlaylist = true;
-    closeDetails();
+    back();
   }
 
   /**
@@ -90,7 +82,7 @@
   function goToAlbum() {
     $albumViewing = song!.album!;
     $showAlbumDetails = true;
-    closeDetails();
+    back();
   }
 
   /**
@@ -98,7 +90,7 @@
    */
   function goToArtist() {
     $artistViewing = song!.artist!;
-    closeDetails();
+    back();
   }
 
   /**
@@ -114,19 +106,19 @@
    */
   function share() {
     AppController.share([song!.title]);
-    closeDetails();
+    back();
   }
 
   /**
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    AppController.deleteFromDevice([song!.title]);
-    closeDetails();
+    AppController.deleteSongsFromDevice([song!.title]);
+    back();
   }
 </script>
 
-<OverlayBody bind:isAtTop={isAtTop}>
+<DetailsBody bind:isAtTop={isAtTop}>
   <span slot="header">
     <OverlayHeader highlight={!isAtTop}>
       <span slot="left">
@@ -182,7 +174,7 @@
       <DetailsField icon={FileSize} headline={song?.displaySize()} />
     </div>
   </span>
-</OverlayBody>
+</DetailsBody>
 
 <style>
   .content {
