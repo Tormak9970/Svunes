@@ -8,6 +8,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import MenuButton from "../../interactables/MenuButton.svelte";
   import { tauri } from "@tauri-apps/api";
   import { showAlbumDetails, showEditAlbum, albumViewing, albumToAdd, showAddToPlaylist } from "../../../stores/Overlays";
@@ -17,6 +18,7 @@
   import DetailsBody from "./DetailsBody.svelte";
   import type { Album } from "../../../lib/models/Album";
   import { onMount } from "svelte";
+    import RadioMenuItem from "../../interactables/RadioMenuItem.svelte";
 
   let album: Album;
   $: convertedPath = album?.artPath ? tauri.convertFileSrc(album?.artPath) : "";
@@ -66,6 +68,13 @@
   }
 
   /**
+   * Shows the album view sort.
+   */
+  function showAlbumViewSort() {
+    
+  }
+
+  /**
    * Shows the edit song overlay.
    */
   function showAlbumEdit() {
@@ -94,6 +103,14 @@
         </Button>
       </span>
       <span slot="right" style="display: flex; flex-direction: row;">
+        <MenuButton icon={Filter}>
+          <Menu>
+            <RadioMenuItem name="albumEntriesSort" label="Alphabetical" on:input={() => {}} />
+            <RadioMenuItem name="albumEntriesSort" label="Track Number" on:input={() => {}} />
+            <RadioMenuItem name="albumEntriesSort" label="Song Duration" on:input={() => {}} />
+          </Menu>
+        </MenuButton>
+        <div style="height: 100%; width: 5px;" />
         <Button type="text" iconType="full" on:click={showAlbumEdit}>
           <Icon icon={Edit} width="20px" height="20px" />
         </Button>
