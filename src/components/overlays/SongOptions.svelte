@@ -39,7 +39,7 @@
    * Plays this song next.
    */
   function playNext() {
-    QueueController.playNext([song!.title]);
+    QueueController.playSongsNext([song!.title]);
     closeOptions();
   }
 

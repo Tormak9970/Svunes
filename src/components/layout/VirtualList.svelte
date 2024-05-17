@@ -161,7 +161,7 @@
     bind:this={viewport}
   >
     <svelte-virtual-list-contents
-      style="padding-top: {top}px; padding-bottom: {bottom}px;"
+      style="padding-top: {top}px; padding-bottom: {bottom + 2}px;"
       bind:this={contents}
     >
       {#each visible as row (keyFunction(row))}

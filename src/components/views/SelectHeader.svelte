@@ -43,10 +43,6 @@
         }
         break;
       }
-      case View.SONGS: {
-        songNames = $selected;
-        break;
-      }
       case View.ARTISTS: {
         if ($artistViewing) {
           songNames = $selected;
@@ -58,6 +54,7 @@
         }
         break;
       }
+      case View.SONGS:
       case View.GENRES: {
         songNames = $selected;
         break;
@@ -77,7 +74,44 @@
    * Sets the selected items to be played next.
    */
   function playNext() {
-    QueueController.playNext(getSongsFromSelected());
+    switch ($selectedView) {
+      case View.PLAYLISTS: {
+        if ($playlistViewing) {
+          QueueController.playSongsNext($selected);
+        } else {
+          QueueController.playPlaylistsNext($selected);
+        }
+        break;
+      }
+      case View.ALBUMS: {
+        if ($albumViewing) {
+          QueueController.playSongsNext($selected);
+        } else {
+          QueueController.playAlbumsNext($selected);
+        }
+        break;
+      }
+      case View.ARTISTS: {
+        if ($artistViewing) {
+          QueueController.playSongsNext($selected);
+        } else {
+          QueueController.playArtistsNext($selected);
+        }
+        break;
+      }
+      case View.SONGS:
+      case View.GENRES: {
+        QueueController.playSongsNext($selected);
+        break;
+      }
+      case View.HOME:
+      case View.SEARCH:
+      case View.SETTINGS: {
+        LogController.error("Shouldn't be able to get here!");
+        break;
+      }
+    }
+
     $selected = [];
     menuIsOpen = false;
   }
@@ -159,7 +193,43 @@
    * Queues the selected items.
    */
   function queue() {
-    QueueController.queueSongs(getSongsFromSelected());
+    switch ($selectedView) {
+      case View.PLAYLISTS: {
+        if ($playlistViewing) {
+          QueueController.queueSongs($selected);
+        } else {
+          QueueController.queuePlaylists($selected);
+        }
+        break;
+      }
+      case View.ALBUMS: {
+        if ($albumViewing) {
+          QueueController.queueSongs($selected);
+        } else {
+          QueueController.queueAlbums($selected);
+        }
+        break;
+      }
+      case View.ARTISTS: {
+        if ($artistViewing) {
+          QueueController.playSongsNext($selected);
+        } else {
+          QueueController.queueArtists($selected);
+        }
+        break;
+      }
+      case View.SONGS:
+      case View.GENRES: {
+        QueueController.queueSongs($selected);
+        break;
+      }
+      case View.HOME:
+      case View.SEARCH:
+      case View.SETTINGS: {
+        LogController.error("Shouldn't be able to get here!");
+        break;
+      }
+    }
     $selected = [];
     menuIsOpen = false;
   }

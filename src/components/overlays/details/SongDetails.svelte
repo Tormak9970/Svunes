@@ -31,7 +31,7 @@
   $: song = $songViewing ? $songsMap[$songViewing] : null;
   $: convertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : "";
 
-  let imageSize = 360;
+  let imageSize = 335;
 
   let isAtTop = true;
 
@@ -63,7 +63,7 @@
    * Plays this song next.
    */
   function playNext() {
-    QueueController.playNext([song!.title]);
+    QueueController.playSongsNext([song!.title]);
     closeDetails();
   }
 
@@ -159,13 +159,13 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <div class="album-picture">
-      <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS}>
+    <div class="album-picture" style="max-width: {imageSize}px; max-height: {imageSize}px;">
+      <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
         <!-- svelte-ignore missing-declaration -->
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" />
+        <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" on:error={onError} />
         <span slot="placeholder">
-          <MusicNotePlaceholder />
+          <MusicNotePlaceholder height={80} width={80} />
         </span>
       </Lazy>
     </div>
@@ -177,7 +177,7 @@
       <!-- ! artist -->
       <DetailsField icon={Artist} headline={song?.artist ?? "Unkown"} />
       <!-- ! release year -->
-      <DetailsField icon={ReleaseYear} headline={song?.releaseYear?.toString() ?? "Unkown"} />
+      <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? "Unkown" : song?.releaseYear.toString()} />
       <!-- ! genre -->
       <DetailsField icon={Genre} headline={song?.genre ?? "Unkown"} />
       <!-- ! track -->

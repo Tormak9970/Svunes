@@ -47,7 +47,7 @@
     composer !== song?.composer ||
     genre !== song?.genre ||
     trackNumber !== song?.trackNumber?.toString() ||
-    releaseYear !== song?.releaseYear?.toString()
+    releaseYear !== (song?.releaseYear === -1 ? undefined : song?.releaseYear.toString())
   );
 
   /**
@@ -63,7 +63,7 @@
     composer = song?.composer;
     genre = song?.genre;
     trackNumber = song?.trackNumber?.toString();
-    releaseYear = song?.releaseYear?.toString();
+    releaseYear = song?.releaseYear === -1 ? undefined : song?.releaseYear.toString();
   }
 
   /**
@@ -81,7 +81,7 @@
    */
   function saveChanges() {
     if (title !== "") {
-      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, releaseYear ? parseInt(releaseYear) : undefined, song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber ? parseInt(trackNumber) : undefined, song!.totalTracks);
+      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, releaseYear ? parseInt(releaseYear) : -1, song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber ? parseInt(trackNumber) : undefined, song!.totalTracks);
       AppController.editSong($songsMap[$songViewing!], editedSong);
       canSave = false;
       back();

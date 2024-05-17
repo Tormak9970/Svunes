@@ -12,7 +12,7 @@ export class Song {
   artist?: string;
   composer?: string;
   albumArtist?: string;
-  releaseYear?: number;
+  releaseYear: number;
   length: number;
   bitRate: number;
   sampleRate: number;
@@ -27,7 +27,7 @@ export class Song {
   /**
    * Creates a new Song.
    */
-  constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number | undefined, length: number, bitRate: number, sampleRate: number, size: number, filePath: string, artPath: string, lastPlayedOn: string, genre?: string, trackNumber?: number, totalTracks?: number) {
+  constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: number, filePath: string, artPath: string, lastPlayedOn: string, genre?: string, trackNumber?: number, totalTracks?: number) {
     this.title = title;
     this.album = album;
     this.artist = artist;

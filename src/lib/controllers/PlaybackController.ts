@@ -1,3 +1,6 @@
+import type { Album } from "../models/Album";
+import type { Artist } from "../models/Artist";
+import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
 
 // ! Add logging to this file
@@ -7,10 +10,34 @@ import type { Song } from "../models/Song";
  */
 export class PlaybackController {
   /**
+   * Plays the provided playlist.
+   * @param playlist The playlist to play.
+   */
+  static playPlaylist(playlist: Playlist) {
+
+  }
+
+  /**
    * Plays the provided song.
    * @param song The song to play.
    */
   static playSong(song: Song) {
+
+  }
+  
+  /**
+   * Plays the provided album.
+   * @param album The album to play.
+   */
+  static playAlbum(album: Album) {
+
+  }
+  
+  /**
+   * Plays the provided artist.
+   * @param artist The artist to play.
+   */
+  static playArtist(artist: Artist) {
 
   }
 

@@ -15,7 +15,7 @@
   }
 </script>
 
-<Body headline="Sort Order" open={$showAlbumSortOrder}>
+<Body headline="Sort Order" bind:open={$showAlbumSortOrder}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">
@@ -29,6 +29,10 @@
     <label style="margin-bottom: 10px">
       <RadioInput name="sortOrder" checked={$albumSortOrder === "Year"} on:input={() => sortOrderChange("Year")} />
       <div class="radio">Year</div>
+    </label>
+    <label style="margin-bottom: 10px">
+      <RadioInput name="sortOrder" checked={$albumSortOrder === "Length"} on:input={() => sortOrderChange("Length")} />
+      <div class="radio">Length</div>
     </label>
     <label style="margin-bottom: 10px">
       <RadioInput name="sortOrder" checked={$albumSortOrder === "Track Count"} on:input={() => sortOrderChange("Track Count")} />

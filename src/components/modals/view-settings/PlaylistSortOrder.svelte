@@ -15,7 +15,7 @@
   }
 </script>
 
-<Body headline="Sort Order" open={$showPlaylistSortOrder}>
+<Body headline="Sort Order" bind:open={$showPlaylistSortOrder}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">

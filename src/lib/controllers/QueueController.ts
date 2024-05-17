@@ -1,8 +1,9 @@
 import { get } from "svelte/store";
-import { queue, songsMap } from "../../stores/State";
+import { albums, albumsMap, artists, artistsMap, queue, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
 
 // ! Add logging to this file
+// ! search file for "TODO"
 
 /**
  * Controls the current queue.
@@ -27,6 +28,14 @@ export class QueueController {
   }
 
   /**
+   * Queues the provided playlists.
+   * @param playlistNames The playlist names to queue.
+   */
+  static queuePlaylists(playlistNames: string[]) {
+    
+  }
+
+  /**
    * Queues the provided songs.
    * @param songNames The song names to queue.
    */
@@ -36,6 +45,48 @@ export class QueueController {
 
     for (const songName of songNames) {
       songQueue.push(songMap[songName]);
+    }
+    
+    queue.set(songQueue);
+  }
+
+  /**
+   * Queues the provided albums.
+   * @param albumNames The album names to queue.
+   */
+  static queueAlbums(albumNames: string[]) {
+    let songMap = get(songsMap);
+    let albumMap = get(albumsMap);
+    let songQueue = get(queue);
+
+    for (const albumName of albumNames.reverse()) {
+      const album = albumMap[albumName];
+      album.setLastPlayed();
+      
+      for (const songName of album.songNames) {
+        songQueue.push(songMap[songName]);
+      }
+    }
+
+    // TODO: verify that this will include the changed date
+    albums.set([ ...get(albums) ]);
+    
+    queue.set(songQueue);
+  }
+
+  /**
+   * Queues the provided artists.
+   * @param artistNames The artists names to queue.
+   */
+  static queueArtists(artistNames: string[]) {
+    let songMap = get(songsMap);
+    let artistMap = get(artistsMap);
+    let songQueue = get(queue);
+
+    for (const artistName of artistNames.reverse()) {
+      for (const songName of artistMap[artistName].songNames) {
+        songQueue.push(songMap[songName]);
+      }
     }
     
     queue.set(songQueue);
@@ -55,15 +106,65 @@ export class QueueController {
   }
 
   /**
+   * Queues the provided playlists right after the current song.
+   * @param playlistNames The playlist names to queue.
+   */
+  static playPlaylistsNext(playlistNames: string[]) {
+    
+  }
+
+  /**
    * Queues the provided songs right after the current song.
    * @param songNames The song names to queue.
    */
-  static playNext(songNames: string[]) {
+  static playSongsNext(songNames: string[]) {
     let songMap = get(songsMap);
     let songQueue = get(queue);
 
     for (const songName of songNames.reverse()) {
       songQueue.unshift(songMap[songName]);
+    }
+    
+    queue.set(songQueue);
+  }
+
+  /**
+   * Queues the provided albums right after the current song.
+   * @param albumNames The album names to queue.
+   */
+  static playAlbumsNext(albumNames: string[]) {
+    let songMap = get(songsMap);
+    let albumMap = get(albumsMap);
+    let songQueue = get(queue);
+
+    for (const albumName of albumNames.reverse()) {
+      const album = albumMap[albumName];
+      album.setLastPlayed();
+      
+      for (const songName of album.songNames) {
+        songQueue.unshift(songMap[songName]);
+      }
+    }
+
+    // TODO: verify that this will include the changed date
+    albums.set([ ...get(albums) ]);
+    
+    queue.set(songQueue);
+  }
+
+  /**
+   * Queues the provided artists right after the current song.
+   * @param artistNames The artists names to queue.
+   */
+  static playArtistsNext(artistNames: string[]) {
+    let songMap = get(songsMap);
+    let artistMap = get(artistsMap);
+    let songQueue = get(queue);
+
+    for (const artistName of artistNames.reverse()) {
+      for (const songName of artistMap[artistName].songNames) {
+        songQueue.unshift(songMap[songName]);
+      }
     }
     
     queue.set(songQueue);

@@ -182,7 +182,7 @@
     bind:this={viewport}
   >
     <svelte-virtual-grid-contents
-      style="padding-top: {top}px; padding-bottom: {bottom}px;"
+      style="padding-top: {top}px; padding-bottom: {bottom + 2}px;"
       bind:this={contents}
     >
       {#each visible as entry (keyFunction(entry))}

@@ -16,7 +16,7 @@
 
   let isAtTop = true;
 
-  const keyFunction = (entry: any) => `${entry.data.title}${entry.data.album}${entry.data.artist}`;
+  const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
 
   /**
    * Sorts the songs.

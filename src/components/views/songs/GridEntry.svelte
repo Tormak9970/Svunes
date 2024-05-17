@@ -79,13 +79,13 @@
         </div>
         <div class="secondary">
           {#if $songSortOrder === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
+            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
           {:else if $songSortOrder === "Album"}
-            <div in:fade={{ duration: 200 }}>{song.album ?? "Unk"}</div>
+            <div in:fade={{ duration: 200 }}>{song.album ?? "Unkown"}</div>
           {:else if $songSortOrder === "Artist"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unk"}</div>
+            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
           {:else if $songSortOrder === "Year"}
-            <div in:fade={{ duration: 200 }}>{song.releaseYear ?? "Unk"}</div>
+            <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? "Unkown" : song.releaseYear}</div>
           {:else if $songSortOrder === "Last Played"}
             <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
           {/if}
