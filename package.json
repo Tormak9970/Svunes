@@ -26,7 +26,6 @@
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",
     "@commitlint/config-conventional": "^17.4.4",
-    "@sveltejs/svelte-virtual-list": "^3.0.1",
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tauri-apps/api": "^1.5.3",
     "@tsconfig/svelte": "^5.0.2",

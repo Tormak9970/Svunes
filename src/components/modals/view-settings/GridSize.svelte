@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { View } from "../../../types/View";
+
   import Body from "./Body.svelte";
-  import { songGridSize } from "../../../stores/State";
-  import { showSongGridSize } from "../../../stores/Modals";
+  import { albumGridSize, artistGridSize, playlistGridSize, selectedView, songGridSize } from "../../../stores/State";
+  import { showGridSize } from "../../../stores/Modals";
   import { GridSize } from "../../../types/Settings";
   import RadioInput from "../../interactables/RadioInput.svelte";
 
@@ -10,12 +12,28 @@
    * @param size The size to set to.
    */
   function gridSizeChange(size: GridSize) {
-    $songGridSize = size;
-    $showSongGridSize = false;
+    switch($selectedView) {
+      case View.PLAYLISTS:
+        $playlistGridSize = size;
+        break;
+      case View.ALBUMS:
+        $albumGridSize = size;
+        break;
+      case View.SONGS:
+        $songGridSize = size;
+        break;
+      case View.ARTISTS:
+        $artistGridSize = size;
+        break;
+      default:
+        break;
+    }
+    
+    $showGridSize = false;
   }
 </script>
 
-<Body headline="Grid Size" open={$showSongGridSize}>
+<Body headline="Grid Size" open={$showGridSize}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">

@@ -29,10 +29,10 @@ export enum GridStyle {
   SQUARE
 }
 
-export type PlaylistSortOrder = "Alphabetical" | "Last Played";
-export type AlbumSortOrder = "Alphabetical" | "Year" | "Length" | "Song Count" | "Last Played";
+export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Last Played";
+export type AlbumSortOrder = "Alphabetical" | "Artist" | "Year" | "Length" | "Track Count" | "Last Played";
 export type SongSortOrder = "Alphabetical" | "Album" | "Artist" | "Year" | "Last Played";
-export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Song Count";
+export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Track Count";
 
 export type NowPlayingType = "Playlist" | "Album" | "Songs" | "Genre";
 

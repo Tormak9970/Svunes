@@ -26,8 +26,9 @@
     AppController.init();
     ThemeController.init();
 
-    closeRequestListener = await window.appWindow.listen("tauri://close-requested", (e) => {
+    closeRequestListener = await window.appWindow.listen("tauri://close-requested", async (e) => {
       // TODO: check if settings save is in progress, if show, show overlay
+      await SettingsController.save();
     });
   });
 

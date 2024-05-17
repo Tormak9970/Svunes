@@ -374,7 +374,7 @@ export class SettingsController {
   /**
    * Saves the settings object.
    */
-  private static async save() {
+  static async save() {
     await fs.writeFile({
       path: this.settingsPath,
       contents: JSON.stringify(this.settings),

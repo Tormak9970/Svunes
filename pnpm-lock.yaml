@@ -31,9 +31,6 @@ devDependencies:
   '@commitlint/config-conventional':
     specifier: ^17.4.4
     version: 17.4.4
-  '@sveltejs/svelte-virtual-list':
-    specifier: ^3.0.1
-    version: 3.0.1
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.2
     version: 3.0.2(svelte@4.2.12)(vite@5.2.0)
@@ -679,10 +676,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /@sveltejs/svelte-virtual-list@3.0.1:
-    resolution: {integrity: sha512-aF9TptS7NKKS7/TqpsxQBSDJ9Q0XBYzBehCeIC5DzdMEgrJZpIYao9LRLnyyo6SVodpapm2B7FE/Lj+FSA5/SQ==}
-    dev: true
 
   /@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.0):
     resolution: {integrity: sha512-9QX28IymvBlSCqsCll5t0kQVxipsfhFFL+L2t3nTWfXnddYwxBuAEtTtlaVQpRz9c37BhJjltSeY4AJSC03SSg==}

@@ -8,7 +8,7 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import { fromView } from "../../../stores/Settings";
-  import { showSongGridSize, showSongSortOrder } from "../../../stores/Modals";
+  import { showGridSize, showSongSortOrder } from "../../../stores/Modals";
 
   export let highlight: boolean;
 
@@ -40,7 +40,7 @@
   <div slot="right">
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       <Menu>
-        <MenuItem on:click={() => { $showSongGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
+        <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
         <MenuItem on:click={() => { $showSongSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
         <MenuItem on:click={goToSettings}>Settings</MenuItem>
       </Menu>

@@ -46,6 +46,7 @@
 <style>
   .view-nav {
     width: 100%;
+    height: 60px;
 
     overflow: hidden;
   }
