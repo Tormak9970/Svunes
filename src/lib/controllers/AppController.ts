@@ -58,13 +58,14 @@ export class AppController {
           const album = new Album(song.album, song.artPath, song.albumArtist, song.releaseYear, song.genre, listAlbum?.lastPlayedOn);
           album.songKeys.push(song.key);
           
-          // if (song.artist) album.artists.add(song.artist);
+          if (song.artist) album.artists.add(song.artist);
   
           albumMap.set(album.name, album);
         } else {
           const album = albumMap.get(song.album)!;
           album.songKeys.push(song.key);
           
+          if (song.artist) album.artists.add(song.artist);
           if (!album.albumArtist) album.albumArtist = song.albumArtist;
           if (!album.artPath) album.artPath = song.artPath;
         }
@@ -72,7 +73,6 @@ export class AppController {
     }
 
     const newAlbumsList = Array.from(albumMap.values());
-    console.log(newAlbumsList);
     albums.set(newAlbumsList);
     
     LogController.log(`Loaded ${newAlbumsList.length} albums.`);

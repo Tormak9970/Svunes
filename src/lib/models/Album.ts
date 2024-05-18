@@ -10,7 +10,8 @@ export class Album {
   name: string;
   artPath: string | undefined;
   lastPlayedOn: string;
-  albumArtist: string | undefined;
+  _albumArtist: string | undefined;
+  artists: Set<string>;
   genre?: string;
 
   songKeys: string[];
@@ -26,13 +27,14 @@ export class Album {
   constructor(name: string, artPath: string | undefined, albumArtist: string | undefined, releaseYear: number, genre?: string, lastPlayedOn?: string) {
     this.name = name;
     this.artPath = artPath;
-    this.albumArtist = albumArtist;
+    this._albumArtist = albumArtist;
 
     this.releaseYear = releaseYear;
     this.genre = genre;
 
     this.lastPlayedOn = lastPlayedOn ?? "Never";
     this.songKeys = [];
+    this.artists = new Set();
     
     // TODO: figure out css vars for this
     this.backgroundColor = "black";
@@ -46,6 +48,14 @@ export class Album {
         }
       });
     }
+  }
+
+  get albumArtist(): string | undefined {
+    return this._albumArtist ?? (this.artists.size === 1 ? Array.from(this.artists)[0] : undefined)
+  }
+
+  set albumArtist(artist: string | undefined) {
+    this._albumArtist = artist;
   }
 
   get albumLength() {
@@ -73,11 +83,4 @@ export class Album {
   displayAlbumLength(): string {
     return formatTime(this.albumLength);
   }
-
-  // /**
-  //  * Displays the album's artists.
-  //  */
-  // displayArtists(): string | undefined {
-  //   return this.artists.size > 0 ? Array.from(this.artists.values()).join(", ") : undefined;
-  // }
 }
