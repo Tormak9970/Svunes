@@ -14,6 +14,7 @@
    * Relay the input event to the parent.
    */
   function onInput() {
+    console.log("sending input")
     dispatch("input");
   }
 </script>

@@ -10,10 +10,10 @@ export class Album {
   name: string;
   artPath: string | undefined;
   lastPlayedOn: string;
-  artists: Set<string>;
+  albumArtist: string | undefined;
   genre?: string;
 
-  songNames: string[];
+  songKeys: string[];
   
   releaseYear: number;
   
@@ -23,16 +23,16 @@ export class Album {
   /**
    * Creates a new album object.
    */
-  constructor(name: string, artPath: string | undefined, releaseYear: number, genre?: string, lastPlayedOn?: string) {
+  constructor(name: string, artPath: string | undefined, albumArtist: string | undefined, releaseYear: number, genre?: string, lastPlayedOn?: string) {
     this.name = name;
     this.artPath = artPath;
+    this.albumArtist = albumArtist;
 
     this.releaseYear = releaseYear;
     this.genre = genre;
 
     this.lastPlayedOn = lastPlayedOn ?? "Never";
-    this.artists = new Set();
-    this.songNames = [];
+    this.songKeys = [];
     
     // TODO: figure out css vars for this
     this.backgroundColor = "black";
@@ -49,11 +49,11 @@ export class Album {
   }
 
   get albumLength() {
-    const songNamesMap = get(songsMap);
+    const songKeysMap = get(songsMap);
     let totalLength = 0;
 
-    for (const songName of this.songNames) {
-      const song = songNamesMap[songName];
+    for (const songKey of this.songKeys) {
+      const song = songKeysMap[songKey];
       totalLength += song.length;
     }
 
@@ -74,10 +74,10 @@ export class Album {
     return formatTime(this.albumLength);
   }
 
-  /**
-   * Displays the album's artists.
-   */
-  displayArtists(): string | undefined {
-    return this.artists.size > 0 ? Array.from(this.artists.values()).join(", ") : undefined;
-  }
+  // /**
+  //  * Displays the album's artists.
+  //  */
+  // displayArtists(): string | undefined {
+  //   return this.artists.size > 0 ? Array.from(this.artists.values()).join(", ") : undefined;
+  // }
 }

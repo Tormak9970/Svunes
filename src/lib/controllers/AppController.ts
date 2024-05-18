@@ -55,23 +55,24 @@ export class AppController {
       if (song.album) {
         if (!albumMap.get(song.album)) {
           const listAlbum = albumsList.find((a) => a.name === song.album);
-          const album = new Album(song.album, song.artPath, song.releaseYear, song.genre, listAlbum?.lastPlayedOn);
-          album.songNames.push(song.title);
+          const album = new Album(song.album, song.artPath, song.albumArtist, song.releaseYear, song.genre, listAlbum?.lastPlayedOn);
+          album.songKeys.push(song.key);
           
-          if (song.artist) album.artists.add(song.artist);
+          // if (song.artist) album.artists.add(song.artist);
   
           albumMap.set(album.name, album);
         } else {
           const album = albumMap.get(song.album)!;
-          album.songNames.push(song.title);
+          album.songKeys.push(song.key);
           
-          if (song.artist) album.artists.add(song.artist);
+          if (!album.albumArtist) album.albumArtist = song.albumArtist;
           if (!album.artPath) album.artPath = song.artPath;
         }
       }
     }
 
     const newAlbumsList = Array.from(albumMap.values());
+    console.log(newAlbumsList);
     albums.set(newAlbumsList);
     
     LogController.log(`Loaded ${newAlbumsList.length} albums.`);
@@ -88,13 +89,13 @@ export class AppController {
       if (song.artist) {
         if (!artistMap.get(song.artist)) {
           const artist = new Artist(song.artist, song.artPath);
-          artist.songNames.push(song.title);
+          artist.songKeys.push(song.key);
           if (song.album) artist.albumNames.add(song.album);
   
           artistMap.set(song.artist, artist);
         } else {
           const artist = artistMap.get(song.artist)!;
-          artist.songNames.push(song.title);
+          artist.songKeys.push(song.key);
           if (song.album) artist.albumNames.add(song.album);
           if (!artist.imagePath) artist.imagePath = song.artPath;
         }
@@ -122,12 +123,12 @@ export class AppController {
 
       if (!genreMap.get(songGenre)) {
         const genre = new Genre(songGenre, song.artPath);
-        genre.songNames.push(song.title);
+        genre.songKeys.push(song.key);
 
         genreMap.set(songGenre, genre);
       } else {
         const genre = genreMap.get(songGenre)!;
-        genre.songNames.push(song.title);
+        genre.songKeys.push(song.key);
         if (!genre.imagePreviewPath) genre.imagePreviewPath = song.artPath;
       }
     }
@@ -150,7 +151,7 @@ export class AppController {
       const songsJson = await RustInterop.readMusicFolders(musicFolders);
       const loadedSongs: Song[] = songsJson.map((json) => {
         const song = Song.fromJSON(json);
-        song.lastPlayedOn = songsLastPlayedMap[song.title] ?? "Never";
+        song.lastPlayedOn = songsLastPlayedMap[song.key] ?? "Never";
         return song;
       });
 

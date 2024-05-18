@@ -1,6 +1,6 @@
 <script>
   import { showAlbumDetails, showArtistDetails, showEditAlbum, showEditSong, showGenreDetails, showPlaylistDetails, showSongDetails } from "../../stores/Overlays";
-  import AblumDetails from "./details/AblumDetails.svelte";
+  import AblumDetails from "./details/album-details/AblumDetails.svelte";
   import ArtistDetails from "./details/ArtistDetails.svelte";
   import GenreDetails from "./details/GenreDetails.svelte";
   import PlaylistDetails from "./details/PlaylistDetails.svelte";

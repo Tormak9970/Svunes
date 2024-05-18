@@ -18,6 +18,8 @@ export class Song {
   sampleRate: number;
   size: number;
   filePath: string;
+  fileName: string;
+  folderPath: string;
   artPath: string | undefined;
   lastPlayedOn: string;
   genre?: string;
@@ -44,26 +46,14 @@ export class Song {
     this.genre = genre;
     this.trackNumber = trackNumber;
     this.totalTracks = totalTracks;
+
+    const fileNameStart = this.filePath.lastIndexOf(path.sep);
+    this.fileName = this.filePath.substring(fileNameStart+1);
+    this.folderPath = this.filePath.substring(0, fileNameStart);
   }
 
-  // play() {
-
-  // }
-
-  /**
-   * Gets the file name of the song.
-   */
-  getFileName(): string {
-    const fileNameStart = this.filePath.lastIndexOf(path.sep);
-    return this.filePath.substring(fileNameStart+1);
-  }
-
-  /**
-   * Gets the folder path of the song.
-   */
-  getFolder(): string {
-    const fileNameStart = this.filePath.lastIndexOf(path.sep);
-    return this.filePath.substring(0, fileNameStart);
+  get key() {
+    return this.fileName;
   }
 
   /**
@@ -74,7 +64,7 @@ export class Song {
     if (this.trackNumber && this.totalTracks) {
       return this.trackNumber.toString() + " / " + this.totalTracks.toString();
     } else if (this.trackNumber && this.album && albumMap[this.album]) {
-      return this.trackNumber.toString() + " / " + albumMap[this.album].songNames.length.toString();
+      return this.trackNumber.toString() + " / " + albumMap[this.album].songKeys.length.toString();
     } else if (this.trackNumber) {
       return this.trackNumber.toString();
     } else {

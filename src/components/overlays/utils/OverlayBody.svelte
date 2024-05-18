@@ -40,7 +40,7 @@
     margin-top: 50px;
     height: calc(100vh - 50px);
     overflow-y: scroll;
-    padding-left: 10px;
+    padding-left: 15px;
     
     scrollbar-color: transparent transparent;
 

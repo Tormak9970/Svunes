@@ -16,7 +16,7 @@
 
   let isAtTop = true;
 
-  const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songNames.length}${entry.data.lastPlayedOn}`;
+  const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songKeys.length}${entry.data.lastPlayedOn}`;
 
   /**
    * Sorts the albums.
@@ -29,13 +29,13 @@
     if (sortOrder === "Alphabetical") {
       sorted = albumsList.sort(stringSort<Album>("name"));
     } else if (sortOrder === "Artist") {
-      sorted = albumsList.sort(stringCallbackSort<Album>((album) => album.displayArtists()));
+      sorted = albumsList.sort(stringSort<Album>("albumArtist"));
     } else if (sortOrder === "Year") {
       sorted = albumsList.sort((a: Album, b: Album) => b.releaseYear - a.releaseYear);
     } else if (sortOrder === "Length") {
       sorted = albumsList.sort((a: Album, b: Album) => b.albumLength - a.albumLength);
     } else if (sortOrder === "Track Count") {
-      sorted = albumsList.sort((a: Album, b: Album) => b.songNames.length - a.songNames.length);
+      sorted = albumsList.sort((a: Album, b: Album) => b.songKeys.length - a.songKeys.length);
     } else if (sortOrder === "Last Played") {
       sorted = albumsList.sort(dateSort("lastPlayedOn"));
     } else {

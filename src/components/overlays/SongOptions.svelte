@@ -39,7 +39,7 @@
    * Plays this song next.
    */
   function playNext() {
-    QueueController.playSongsNext([song!.title]);
+    QueueController.playSongsNext([song!.key]);
     closeOptions();
   }
 
@@ -47,7 +47,7 @@
    * Queues this song.
    */
   function queueSong() {
-    QueueController.queueSongs([song!.title]);
+    QueueController.queueSongs([song!.key]);
     closeOptions();
   }
 
@@ -55,7 +55,7 @@
    * Opens the add to playlist dialog with this song set to be added.
    */
   function addToPlaylist() {
-    $songToAdd = song!.title;
+    $songToAdd = song!.key;
     $showAddToPlaylist = true;
     closeOptions();
   }
@@ -81,7 +81,7 @@
    * Shows the song details overlay.
    */
   function showDetails() {
-    $songViewing = song!.title;
+    $songViewing = song!.key;
     $showSongDetails = true;
     closeOptions();
   }
@@ -90,7 +90,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    $songViewing = song!.title;
+    $songViewing = song!.key;
     $showEditSong = true;
     closeOptions();
   }
@@ -99,7 +99,7 @@
    * Opens the platform's share ui.
    */
   function share() {
-    AppController.share([song!.title]);
+    AppController.share([song!.key]);
     closeOptions();
   }
 
@@ -107,7 +107,7 @@
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    AppController.deleteSongsFromDevice([song!.title]);
+    AppController.deleteSongsFromDevice([song!.key]);
     closeOptions();
   }
 </script>

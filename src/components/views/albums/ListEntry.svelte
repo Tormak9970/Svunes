@@ -68,15 +68,15 @@
         </div>
         <div class="secondary">
           {#if $albumSortOrder === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{album.displayArtists() ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
           {:else if $albumSortOrder === "Artist"}
-            <div in:fade={{ duration: 200 }}>{album.displayArtists() ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
           {:else if $albumSortOrder === "Year"}
             <div in:fade={{ duration: 200 }}>{album.releaseYear === -1 ? "Unkown" : album.releaseYear}</div>
             {:else if $albumSortOrder === "Length"}
             <div in:fade={{ duration: 200 }}>{album.displayAlbumLength()}</div>
             {:else if $albumSortOrder === "Track Count"}
-            <div in:fade={{ duration: 200 }}>{album.songNames.length + " tracks"}</div>
+            <div in:fade={{ duration: 200 }}>{album.songKeys.length + " tracks"}</div>
           {:else if $albumSortOrder === "Last Played"}
             <div in:fade={{ duration: 200 }}>{album.lastPlayedOn === "Never" ? "Never" : renderDate(album.lastPlayedOn)}</div>
           {/if}
@@ -91,7 +91,6 @@
     width: 100%; 
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
   }
 
   .left {
@@ -105,7 +104,6 @@
   }
 
   .name {
-    color: rgb(var(--m3-scheme-on-secondary-container));
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -113,6 +111,7 @@
 
   .secondary {
     font-size: 14px;
+    color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

@@ -70,7 +70,7 @@ export const albumsMap: Readable<Record<string, Album>> = derived(albums, (album
 });
 export const songs: Writable<Song[]> = writable([]);
 export const songsMap: Readable<Record<string, Song>> = derived(songs, (songs: Song[]) => {
-  const entries: [string, Song][] = songs.map((song) => [song.title, song]);
+  const entries: [string, Song][] = songs.map((song) => [song.key, song]);
   return Object.fromEntries(entries);
 });
 export const songProgress = writable(0);

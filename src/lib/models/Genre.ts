@@ -6,7 +6,7 @@ import { RustInterop } from "../controllers/RustInterop";
 export class Genre {
   name: string;
   imagePreviewPath: string | undefined;
-  songNames: string[];
+  songKeys: string[];
   backgroundColor: string;
   color: string;
 
@@ -16,7 +16,7 @@ export class Genre {
   constructor(name: string, imagePreviewPath: string | undefined) {
     this.name = name;
     this.imagePreviewPath = imagePreviewPath;
-    this.songNames = [];
+    this.songKeys = [];
     
     // TODO: figure out css vars for this
     this.backgroundColor = "black";

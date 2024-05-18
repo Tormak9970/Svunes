@@ -5,9 +5,6 @@
   import OverlayHeader from "../utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { songsMap } from "../../../stores/State";
-  import Lazy from "../../layout/Lazy.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import TextField from "../../interactables/TextField.svelte";
   import NumberField from "../../interactables/NumberField.svelte";
   import ErrorSnackbar, { type ErrorSnackbarIn } from "../../snackbars/error/ErrorSnackbar.svelte";
@@ -17,13 +14,13 @@
   import { LogController } from "../../../lib/controllers/LogController";
   import { Song } from "../../../lib/models/Song";
   import { onArtOptionsDone, showArtOptions } from "../../../stores/Modals";
+  import DetailsArtPicture from "../utils/DetailsArtPicture.svelte";
 
   let snackbar: (data: ErrorSnackbarIn) => void;
 
   $: song = $songViewing ? $songsMap[$songViewing] : null;
   
   let artPath: string | undefined;
-  $: convertedPath = artPath ? tauri.convertFileSrc(artPath) : "";
 
   let title: string;
   let album: string | undefined;
@@ -33,8 +30,6 @@
   let genre: string | undefined;
   let trackNumber: string | undefined;
   let releaseYear: string | undefined;
-
-  let imageSize = 360;
 
   let isAtTop = true;
   
@@ -122,18 +117,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <div class="album-picture">
-      {#key artPath ?? ""}
-        <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} clickable on:click={onAlbumArtClick}>
-          <!-- svelte-ignore missing-declaration -->
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" />
-          <span slot="placeholder">
-            <MusicNotePlaceholder height={80} width={80} backgroundColor="--m3-scheme-surface-container-lowest" fillColor="--m3-scheme-on-secondary" />
-          </span>
-        </Lazy>
-      {/key}
-    </div>
+    <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
     <div class="fields">
       <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
@@ -158,18 +142,10 @@
     align-items: center;
   }
 
-  .album-picture {
-    margin-top: 2px;
-    width: calc(100% - 20px);
-    max-width: 360px;
-    max-height: 360px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
   .fields {
     margin-top: 20px;
-    width: calc(100% - 20px);
+    width: 100%;
+    max-width: 370px;
   }
 
   .two-wide {

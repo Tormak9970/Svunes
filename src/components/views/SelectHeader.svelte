@@ -38,7 +38,7 @@
         } else {
           for (const albumName of $selected) {
             const album = $albumsMap[albumName];
-            songNames.push(...album.songNames);
+            songNames.push(...album.songKeys);
           }
         }
         break;
@@ -49,7 +49,7 @@
         } else {
           for (const artistName of $selected) {
             const artist = $artistsMap[artistName];
-            songNames.push(...artist.songNames);
+            songNames.push(...artist.songKeys);
           }
         }
         break;
@@ -149,26 +149,26 @@
       }
       case View.ALBUMS: {
         if ($albumViewing) {
-          $selected = [ ...$albumsMap[$albumViewing].songNames ];
+          $selected = [ ...$albumsMap[$albumViewing].songKeys ];
         } else {
           $selected = $albums.map((album) => album.name);
         }
         break;
       }
       case View.SONGS: {
-        $selected = $songs.map((song) => song.title);
+        $selected = $songs.map((song) => song.key);
         break;
       }
       case View.ARTISTS: {
         if ($artistViewing) {
-          $selected = [ ...$artistsMap[$artistViewing].songNames ];
+          $selected = [ ...$artistsMap[$artistViewing].songKeys ];
         } else {
           $selected = $artists.map((artist) => artist.name);
         }
         break;
       }
       case View.GENRES: {
-        $selected = [ ...$genresMap[$genreViewing!].songNames ];
+        $selected = [ ...$genresMap[$genreViewing!].songKeys ];
         break;
       }
       case View.SEARCH:

@@ -16,6 +16,7 @@
   import { window } from "@tauri-apps/api";
   import type { UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./components/modals/Modals.svelte";
+    import { exit } from "@tauri-apps/api/process";
 
   let closeRequestListener: UnlistenFn;
 
@@ -29,7 +30,7 @@
     closeRequestListener = await window.appWindow.listen("tauri://close-requested", async (e) => {
       // TODO: check if settings save is in progress, if show, show overlay
       await SettingsController.save();
-      return true;
+      await exit(0);
     });
   });
 

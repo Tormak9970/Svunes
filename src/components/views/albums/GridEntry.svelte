@@ -50,7 +50,7 @@
   <div class="content" class:highlight={highlighted}>
     <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$albumGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$albumGridSize].height}px;">
       {#if convertedPath !== ""}
-        <Lazy height={GRID_IMAGE_DIMENSIONS[$albumGridSize].height - 5} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+        <Lazy height={GRID_IMAGE_DIMENSIONS[$albumGridSize].height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
           <!-- svelte-ignore a11y-missing-attribute -->
           <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$albumGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$albumGridSize].height}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
@@ -68,15 +68,15 @@
         </div>
         <div class="secondary">
           {#if $albumSortOrder === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{album.displayArtists() ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
           {:else if $albumSortOrder === "Artist"}
-            <div in:fade={{ duration: 200 }}>{album.displayArtists() ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
           {:else if $albumSortOrder === "Year"}
             <div in:fade={{ duration: 200 }}>{album.releaseYear === -1 ? "Unkown" : album.releaseYear}</div>
             {:else if $albumSortOrder === "Length"}
             <div in:fade={{ duration: 200 }}>{album.displayAlbumLength()}</div>
             {:else if $albumSortOrder === "Track Count"}
-            <div in:fade={{ duration: 200 }}>{album.songNames.length + " tracks"}</div>
+            <div in:fade={{ duration: 200 }}>{album.songKeys.length + " tracks"}</div>
           {:else if $albumSortOrder === "Last Played"}
             <div in:fade={{ duration: 200 }}>{album.lastPlayedOn === "Never" ? "Never" : renderDate(album.lastPlayedOn)}</div>
           {/if}
@@ -116,7 +116,7 @@
 
   .secondary {
     font-size: 14px;
-    color: var(--md-sys-color-on-surface-variant);
+    color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

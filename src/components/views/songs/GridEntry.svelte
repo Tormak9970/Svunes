@@ -18,19 +18,19 @@
   export let song: Song;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
-  $: highlighted = $selected.includes(song.title);
+  $: highlighted = $selected.includes(song.key);
 
   /**
    * Handles when the user clicks on the entry.
    */
   function onClick() {
     if ($inSelectMode) {
-      const titleIndex = $selected.indexOf(song.title);
+      const titleIndex = $selected.indexOf(song.key);
       if (titleIndex !== -1) {
         $selected.splice(titleIndex, 1);
         $selected = [ ...$selected ];
       } else {
-        $selected = [ ...$selected, song.title ];
+        $selected = [ ...$selected, song.key ];
       }
     } else {
       PlaybackController.playSong(song);
@@ -41,7 +41,7 @@
    * Shows the entry's options.
    */
   function openSongOptions() {
-    $songToShowOptions = song.title;
+    $songToShowOptions = song.key;
     $showSongOptions = true;
   }
 
@@ -50,7 +50,7 @@
    */
   function select() {
     if (!$inSelectMode) {
-      $selected = [ ...$selected, song.title ];
+      $selected = [ ...$selected, song.key ];
     }
   }
 </script>
@@ -61,7 +61,7 @@
   <div class="content" class:highlight={highlighted}>
     <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;">
       {#if convertedPath !== ""}
-        <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height - 5} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+        <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
           <!-- svelte-ignore a11y-missing-attribute -->
           <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
@@ -138,7 +138,7 @@
 
   .secondary {
     font-size: 14px;
-    color: var(--md-sys-color-on-surface-variant);
+    color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

@@ -114,11 +114,11 @@ export function dateSort<T>(property: keyof T): (a: T, b: T) => number {
 export function nullishNumberSort<T>(property: keyof T): (a: T, b: T) => number {
   return (a: T, b: T) => {
     if (a[property] && b[property]) {
-      return (b[property] as number) - (a[property] as number);
+      return (a[property] as number) - (b[property] as number);
     } else if (a[property]) {
-      return 1;
-    } else if (b[property]) {
       return -1;
+    } else if (b[property]) {
+      return 1;
     } else {
       return 0;
     }

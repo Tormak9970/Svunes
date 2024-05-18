@@ -1,18 +1,13 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
-  import type { Song } from "../../../lib/models/Song";
-  import { inSelectMode, selected } from "../../../stores/Select";
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import Lazy from "../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
-  import { songSortOrder } from "../../../stores/State";
-  import { fade } from "svelte/transition";
-  import { renderDate } from "../../../lib/utils/Utils";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import CardClickable from "../../layout/CardClickable.svelte";
   import { Button, Icon } from "m3-svelte";
-  import { showSongOptions, songToShowOptions } from "../../../stores/Overlays";
+  import type { Song } from "../../../../lib/models/Song";
+  import { inSelectMode, selected } from "../../../../stores/Select";
+  import CardClickable from "../../../layout/CardClickable.svelte";
+  import Lazy from "../../../layout/Lazy.svelte";
+  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
+  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
 
   export let song: Song;
 
@@ -37,14 +32,6 @@
   }
 
   /**
-   * Shows the entry's options.
-   */
-  function openSongOptions() {
-    $songToShowOptions = song.key;
-    $showSongOptions = true;
-  }
-
-  /**
    * Handles when the user selects the entry.
    */
   function select() {
@@ -57,7 +44,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
-  <div class="content" class:highlight={highlighted}>
+  <div class="content">
     <div class="left">
       <div class="album">
         {#if convertedPath !== ""}
@@ -77,27 +64,15 @@
           {song.title}
         </div>
         <div class="secondary">
-          {#if $songSortOrder === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
-          {:else if $songSortOrder === "Album"}
-            <div in:fade={{ duration: 200 }}>{song.album ?? "Unkown"}</div>
-          {:else if $songSortOrder === "Artist"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
-          {:else if $songSortOrder === "Year"}
-            <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? "Unkown" : song.releaseYear}</div>
-          {:else if $songSortOrder === "Last Played"}
-            <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
-          {/if}
+          <div class="artist">
+            {song.artist ?? "Unkown"}
+          </div>
+          <div class="other">
+            {song.trackNumber ? song.trackNumber + " | " : ""}{song.displayLength()}
+          </div>
         </div>
       </div>
     </div>
-    {#if !highlighted}
-      <div class="options">
-        <Button type="text" iconType="full" on:click={openSongOptions}>
-          <Icon icon={MoreVert} />
-        </Button>
-      </div>
-    {/if}
   </div>
 </CardClickable>
 
@@ -111,15 +86,11 @@
   .left {
     display: flex;
     align-items: center;
-    width: calc(100% - 40px);
+    width: 100%;
   }
 
   .info {
-    max-width: calc(100% - 75px - 30px);
-  }
-
-  .highlight .left {
-    width: 100%;
+    width: calc(100% - 75px);
   }
 
   .name {
@@ -129,11 +100,12 @@
   }
 
   .secondary {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
-    text-wrap: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    font-size: 14px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .album {

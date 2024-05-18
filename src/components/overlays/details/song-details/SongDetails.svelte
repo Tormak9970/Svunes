@@ -1,11 +1,7 @@
 <script lang="ts">
-  import { tauri } from "@tauri-apps/api";
   import { albumViewing, artistViewing, showAddToPlaylist, showAlbumDetails, showEditSong, showSongDetails, songToAdd, songViewing } from "../../../../stores/Overlays";
   import { songsMap } from "../../../../stores/State";
-  import Lazy from "../../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
   import OverlayHeader from "../../utils/OverlayHeader.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
@@ -26,12 +22,10 @@
   import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded"
   import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
-    import DetailsBody from "../DetailsBody.svelte";
+  import DetailsBody from "../DetailsBody.svelte";
+  import DetailsArtPicture from "../../utils/DetailsArtPicture.svelte";
   
   $: song = $songViewing ? $songsMap[$songViewing] : null;
-  $: convertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : "";
-
-  let imageSize = 335;
 
   let isAtTop = true;
 
@@ -55,7 +49,7 @@
    * Plays this song next.
    */
   function playNext() {
-    QueueController.playSongsNext([song!.title]);
+    QueueController.playSongsNext([song!.key]);
     back();
   }
 
@@ -63,7 +57,7 @@
    * Queues this song.
    */
   function queueSong() {
-    QueueController.queueSongs([song!.title]);
+    QueueController.queueSongs([song!.key]);
     back();
   }
 
@@ -71,7 +65,7 @@
    * Opens the add to playlist dialog with this song set to be added.
    */
   function addToPlaylist() {
-    $songToAdd = song!.title;
+    $songToAdd = song!.key;
     $showAddToPlaylist = true;
     back();
   }
@@ -97,7 +91,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    $songViewing = song!.title;
+    $songViewing = song!.key;
     $showEditSong = true;
   }
 
@@ -105,7 +99,7 @@
    * Opens the platform's share ui.
    */
   function share() {
-    AppController.share([song!.title]);
+    AppController.share([song!.key]);
     back();
   }
 
@@ -113,7 +107,7 @@
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    AppController.deleteSongsFromDevice([song!.title]);
+    AppController.deleteSongsFromDevice([song!.key]);
     back();
   }
 </script>
@@ -151,16 +145,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <div class="album-picture" style="max-width: {imageSize}px; max-height: {imageSize}px;">
-      <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-        <!-- svelte-ignore missing-declaration -->
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" on:error={onError} />
-        <span slot="placeholder">
-          <MusicNotePlaceholder height={80} width={80} />
-        </span>
-      </Lazy>
-    </div>
+    <DetailsArtPicture artPath={song?.artPath} />
     <div class="details">
       <DetailsField icon={Sell} headline={song?.title} />
       <DetailsField icon={Album} headline={song?.album ?? "Unkown"} />
@@ -183,15 +168,6 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 40px;
-  }
-
-  .album-picture {
-    margin-top: 2px;
-    width: calc(100% - 40px);
-    max-width: 360px;
-    max-height: 360px;
-    border-radius: 10px;
-    overflow: hidden;
   }
 
   .details {
