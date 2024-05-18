@@ -140,3 +140,13 @@ export function formatTime(totalSeconds: number): string {
   const seconds = totalSeconds % 60;
   return `${hours !== 0 ? hours + ":" + prefixIfNeeded(minutes) : minutes}:${prefixIfNeeded(seconds)}`;
 }
+
+/**
+ * Sums the components of a color.
+ * @param color The color to sum.
+ * @returns The some of the color's components.
+ */
+export function sumColorString(color: string): number {
+  const parts = color.split(" ").map((part) => parseInt(part));
+  return parts[0] + parts[1] + parts[2];
+}

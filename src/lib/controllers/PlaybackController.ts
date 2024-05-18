@@ -28,8 +28,9 @@ export class PlaybackController {
   /**
    * Plays the provided album.
    * @param album The album to play.
+   * @param shuffle Whether to shuffle this album or not.
    */
-  static playAlbum(album: Album) {
+  static playAlbum(album: Album, shuffle = false) {
 
   }
   

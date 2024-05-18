@@ -28,8 +28,8 @@ struct Payload {
   cwd: String,
 }
 
-fn color_to_hex(color: Color) -> String {
-  return String::from("#") + format!("{:x}{:x}{:x}", color.r, color.g, color.b).as_str();
+fn color_to_rgb(color: Color) -> String {
+  return format!("{} {} {}", color.r, color.g, color.b);
 }
 
 /// Reads a music file and returns the info.
@@ -167,11 +167,11 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
 
       let color_palette = get_palette_with_options(img.as_bytes(),
         PixelEncoding::Rgb,
-        Quality::new(1),
-        MaxColors::new(2), // ! try different values
+        Quality::new(5),
+        MaxColors::new(2),
         PixelFilter::White);
 
-      let colors = vec![Value::String(color_to_hex(color_palette[0])), Value::String(color_to_hex(color_palette[1]))];
+      let colors = vec![Value::String(color_to_rgb(color_palette[0])), Value::String(color_to_rgb(color_palette[1]))];
       return serde_json::to_string(&colors).expect("Couldn't serialize json!");
     } else {
       logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}.", image_path).as_str(), 2);

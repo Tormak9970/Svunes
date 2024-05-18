@@ -5,6 +5,8 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
+  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import MenuButton from "../../../interactables/MenuButton.svelte";
   import { showAlbumDetails, showEditAlbum, albumViewing, albumToAdd, showAddToPlaylist } from "../../../../stores/Overlays";
@@ -19,6 +21,7 @@
   import AlbumEntries from "./AlbumEntries.svelte";
   import SimilarAlbums from "./SimilarAlbums.svelte";
   import DetailsArtPicture from "../../utils/DetailsArtPicture.svelte";
+  import ColoredButton from "../../../interactables/ColoredButton.svelte";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
@@ -39,6 +42,14 @@
    */
   function playAlbum() {
     PlaybackController.playAlbum(album!);
+    back();
+  }
+
+  /**
+   * Shuffles then plays this album.
+   */
+  function playShuffledAlbum() {
+    PlaybackController.playAlbum(album!, true);
     back();
   }
 
@@ -125,8 +136,13 @@
         <h3 class="name">{album?.name}</h3>
         <div class="other">{album?.albumArtist ? album?.albumArtist + " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear + " • " : ""}{album?.displayAlbumLength()}</div>
       </div>
-      <div class="buttons">
-
+      <div class="buttons" style="{album?.backgroundColor ? `--m3-scheme-primary: ${album.backgroundColor};` : ""}">
+        <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 10px)" }} on:click={playAlbum}>
+          <Icon icon={Play} /> Play All
+        </ColoredButton>
+        <ColoredButton type="filled" extraOptions={{ style: "display: flex; width: calc(50% - 10px)" }} on:click={playShuffledAlbum}>
+          <Icon icon={Shuffle} /> Shuffle
+        </ColoredButton>
       </div>
     </div>
     <div class="songs">
@@ -165,6 +181,13 @@
   .other {
     font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
+  }
+
+  .buttons {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
 
   .section-header {

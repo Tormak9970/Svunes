@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { RustInterop } from "../controllers/RustInterop";
 import { songsMap } from "../../stores/State";
-import { formatTime, getISODate } from "../utils/Utils";
+import { formatTime, getISODate, sumColorString } from "../utils/Utils";
 
 /**
  * Represents an album.
@@ -18,8 +18,7 @@ export class Album {
   
   releaseYear: number;
   
-  backgroundColor: string;
-  color: string;
+  backgroundColor: string | undefined;
 
   /**
    * Creates a new album object.
@@ -36,15 +35,23 @@ export class Album {
     this.songKeys = [];
     this.artists = new Set();
     
-    // TODO: figure out css vars for this
-    this.backgroundColor = "black";
-    this.color = "red";
+    this.backgroundColor = undefined;
 
     if (this.artPath) {
       RustInterop.getColorsFromImage(this.artPath).then((colors) => {
         if (colors.length) {
-          this.backgroundColor = colors[0];
-          this.color = colors[1];
+          let brightestColor = colors[0];
+          let brightest = sumColorString(colors[0]);
+
+          for (const color of colors) {
+            const sum = sumColorString(color);
+            if (sum > brightest) {
+              brightest = sum;
+              brightestColor = color;
+            }
+          }
+
+          this.backgroundColor = brightestColor;
         }
       });
     }
