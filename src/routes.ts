@@ -11,8 +11,9 @@ import Genres from "./routes/genres/Genres.svelte";
 import Home from "./routes/Home.svelte";
 import Playlists from "./routes/playlists/Playlists.svelte";
 import Search from "./routes/Search.svelte";
-import Settings from "./routes/Settings.svelte";
+import Settings from "./routes/settings/Settings.svelte";
 import Songs from "./routes/songs/Songs.svelte";
+import PlaylistDetails from "./routes/playlists/Details.svelte";
 
 export const viewRoutesLUT = {
   0: "/playlists",
@@ -30,6 +31,7 @@ export const routes = {
   "/": HomeLoadingAnimation,
 
   "/playlists": Playlists,
+  "/playlists/:key": PlaylistDetails,
 
   "/albums": Albums,
   "/albums/:key": AblumDetails,
