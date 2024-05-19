@@ -3,7 +3,7 @@
   import { AppController } from "../../lib/controllers/AppController";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
-  import { showAddToPlaylist, songToAdd, albumViewing, artistViewing, songToShowOptions, showAlbumDetails, showSongOptions } from "../../stores/Overlays";
+  import { showAddToPlaylist, songToAdd, songToShowOptions, showSongOptions } from "../../stores/Overlays";
   import { songsMap } from "../../stores/State";
   import BottomSheet from "../layout/BottomSheet.svelte";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
@@ -16,7 +16,7 @@
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import Share from "@ktibow/iconset-material-symbols/share";
   import Trash from "@ktibow/iconset-material-symbols/delete-forever-rounded";
-    import { push } from "svelte-spa-router";
+  import { push } from "svelte-spa-router";
 
   $: song = $songToShowOptions ? $songsMap[$songToShowOptions] : null;
 
@@ -65,8 +65,7 @@
    * Shows the song's album.
    */
   function goToAlbum() {
-    $albumViewing = song!.album!;
-    $showAlbumDetails = true;
+    push(`/albums/${song!.album!}`);
     closeOptions();
   }
 
@@ -74,7 +73,7 @@
    * Shows the song's artist.
    */
   function goToArtist() {
-    $artistViewing = song!.artist!;
+    push(`/artists/${song!.artist!}`);
     closeOptions();
   }
 

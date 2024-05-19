@@ -13,6 +13,7 @@
   import { NavList, NavListButton } from "m3-svelte";
   import { push } from "svelte-spa-router";
   import { viewRoutesLUT } from "../../../routes";
+    import { fly } from "svelte/transition";
   
   const icons = {
     0: QueueMusic,
@@ -39,7 +40,7 @@
   }
 </script>
 
-<div class="view-nav" class:rounded={!$showMiniPlayer}>
+<div class="view-nav" class:rounded={!$showMiniPlayer} transition:fly={{ duration: 200, y: 60 }}>
   <NavList type="bar">
     <div class="items">
       {#each $viewsToRender as view}

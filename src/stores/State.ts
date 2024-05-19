@@ -10,7 +10,6 @@ import type { Genre } from "../lib/models/Genre";
 export const isLoading = writable(true);
 
 // * View stores
-export const showViewNav = writable(true);
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);
 

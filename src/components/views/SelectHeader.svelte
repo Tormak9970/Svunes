@@ -3,7 +3,7 @@
   import { fly } from "svelte/transition";
   import MenuButton from "../interactables/MenuButton.svelte";
   import { selected } from "../../stores/Select";
-  import { showAddToPlaylist, albumViewing, playlistViewing, artistViewing, genreViewing } from "../../stores/Overlays";
+  import { showAddToPlaylist } from "../../stores/Overlays";
   import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../../stores/State";
   import { LogController } from "../../lib/controllers/LogController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -13,6 +13,7 @@
   import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
   import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import { location } from "svelte-spa-router";
 
   /**
    * Gets the names of the songs from the selected items.
@@ -22,35 +23,35 @@
 
     switch ($selectedView) {
       case View.PLAYLISTS: {
-        if ($playlistViewing) {
-          songNames = $selected;
-        } else {
+        if ($location === "/playlists") {
           for (const playlistName of $selected) {
             const playlist = $playlistsMap[playlistName];
             songNames.push(...playlist.songNames);
           }
+        } else {
+          songNames = $selected;
         }
         break;
       }
       case View.ALBUMS: {
-        if ($albumViewing) {
-          songNames = $selected;
-        } else {
+        if ($location === "/albums") {
           for (const albumName of $selected) {
             const album = $albumsMap[albumName];
             songNames.push(...album.songKeys);
           }
+        } else {
+          songNames = $selected;
         }
         break;
       }
       case View.ARTISTS: {
-        if ($artistViewing) {
-          songNames = $selected;
-        } else {
+        if ($location === "/artists") {
           for (const artistName of $selected) {
             const artist = $artistsMap[artistName];
             songNames.push(...artist.songKeys);
           }
+        } else {
+          songNames = $selected;
         }
         break;
       }
@@ -76,26 +77,26 @@
   function playNext() {
     switch ($selectedView) {
       case View.PLAYLISTS: {
-        if ($playlistViewing) {
-          QueueController.playSongsNext($selected);
-        } else {
+        if ($location === "/playlists") {
           QueueController.playPlaylistsNext($selected);
+        } else {
+          QueueController.playSongsNext($selected);
         }
         break;
       }
       case View.ALBUMS: {
-        if ($albumViewing) {
-          QueueController.playSongsNext($selected);
-        } else {
+        if ($location === "/albums") {
           QueueController.playAlbumsNext($selected);
+        } else {
+          QueueController.playSongsNext($selected);
         }
         break;
       }
       case View.ARTISTS: {
-        if ($artistViewing) {
-          QueueController.playSongsNext($selected);
-        } else {
+        if ($location === "/artists") {
           QueueController.playArtistsNext($selected);
+        } else {
+          QueueController.playSongsNext($selected);
         }
         break;
       }
@@ -140,18 +141,20 @@
   function selectAll() {
     switch ($selectedView) {
       case View.PLAYLISTS: {
-        if ($playlistViewing) {
-          $selected = [ ...$playlistsMap[$playlistViewing].songNames ];
-        } else {
+        if ($location === "/playlists") {
           $selected = $playlists.map((playlist) => playlist.name);
+        } else {
+          const playlistName = $location.substring(11);
+          $selected = [ ...$playlistsMap[playlistName].songNames ];
         }
         break;
       }
       case View.ALBUMS: {
-        if ($albumViewing) {
-          $selected = [ ...$albumsMap[$albumViewing].songKeys ];
-        } else {
+        if ($location === "/albums") {
           $selected = $albums.map((album) => album.name);
+        } else {
+          const albumName = $location.substring(8);
+          $selected = [ ...$albumsMap[albumName].songKeys ];
         }
         break;
       }
@@ -160,15 +163,17 @@
         break;
       }
       case View.ARTISTS: {
-        if ($artistViewing) {
-          $selected = [ ...$artistsMap[$artistViewing].songKeys ];
-        } else {
+        if ($location === "/artists") {
           $selected = $artists.map((artist) => artist.name);
+        } else {
+          const artistName = $location.substring(9);
+          $selected = [ ...$artistsMap[artistName].songKeys ];
         }
         break;
       }
       case View.GENRES: {
-        $selected = [ ...$genresMap[$genreViewing!].songKeys ];
+        const genreName = $location.substring(8);
+        $selected = [ ...$genresMap[genreName].songKeys ];
         break;
       }
       case View.SEARCH:
@@ -195,26 +200,26 @@
   function queue() {
     switch ($selectedView) {
       case View.PLAYLISTS: {
-        if ($playlistViewing) {
-          QueueController.queueSongs($selected);
-        } else {
+        if ($location === "/playlists") {
           QueueController.queuePlaylists($selected);
+        } else {
+          QueueController.queueSongs($selected);
         }
         break;
       }
       case View.ALBUMS: {
-        if ($albumViewing) {
-          QueueController.queueSongs($selected);
-        } else {
+        if ($location === "/albums") {
           QueueController.queueAlbums($selected);
+        } else {
+          QueueController.queueSongs($selected);
         }
         break;
       }
       case View.ARTISTS: {
-        if ($artistViewing) {
-          QueueController.playSongsNext($selected);
-        } else {
+        if ($location === "/artists") {
           QueueController.queueArtists($selected);
+        } else {
+          QueueController.playSongsNext($selected);
         }
         break;
       }

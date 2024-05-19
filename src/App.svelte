@@ -3,7 +3,7 @@
   import ViewNav from "./components/navigation/mobile/ViewNav.svelte";
   import MiniPlayer from "./components/overlays/MiniPlayer.svelte";
   import Titlebar from "./components/Titlebar.svelte";
-  import { isLoading, selectedView, showMiniPlayer, showViewNav } from "./stores/State";
+  import { isLoading, selectedView, showMiniPlayer } from "./stores/State";
   import Overlays from "./components/overlays/Overlays.svelte";
   import { AppController } from "./lib/controllers/AppController";
   import { SettingsController } from "./lib/controllers/SettingsController";
@@ -15,7 +15,7 @@
   import type { UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./components/modals/Modals.svelte";
   import { exit } from "@tauri-apps/api/process";
-  import Router, { push } from 'svelte-spa-router'
+  import Router, { location, push } from 'svelte-spa-router'
   import { routes, viewRoutesLUT } from "./routes";
   import type { Unsubscriber } from "svelte/store";
 
@@ -23,6 +23,8 @@
   let closeRequestListener: UnlistenFn;
 
   let isDesktop = false;
+
+  $: console.log($location);
 
   onMount(async () => {
     loadingUnsub = isLoading.subscribe((newStatus) => {
@@ -54,7 +56,7 @@
     darkScheme={{"primary":4292655608,"onPrimary":4282327896,"primaryContainer":4283906672,"onPrimaryContainer":4294040319,"inversePrimary":4285551241,"secondary":4291936729,"onSecondary":4281805887,"secondaryContainer":4283318870,"onSecondaryContainer":4293778934,"tertiary":4294162364,"onTertiary":4283180330,"tertiaryContainer":4284889663,"onTertiaryContainer":4294957532,"error":4294948011,"onError":4285071365,"errorContainer":4287823882,"onErrorContainer":4294957782,"background":4279570967,"onBackground":4293452008,"surface":4279570967,"onSurface":4293452008,"surfaceVariant":4283123021,"onSurfaceVariant":4291675342,"inverseSurface":4293452008,"inverseOnSurface":4281544501,"outline":4288056984,"outlineVariant":4283123021,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4279570967,"surfaceBright":4282136638,"surfaceContainerLowest":4279242002,"surfaceContainerLow":4280162848,"surfaceContainer":4280426020,"surfaceContainerHigh":4281084206,"surfaceContainerHighest":4281807673,"surfaceTint":4292655608}} />
   <Overlays />
   <Modals />
-  {#if $showViewNav}
+  {#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}
     <ViewNav />
   {/if}
   {#if $showMiniPlayer}

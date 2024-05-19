@@ -5,7 +5,7 @@
   import MusicNotePlaceholder from "../../../components/layout/placeholders/MusicNotePlaceholder.svelte";
   import type { Album } from "../../../lib/models/Album";
   import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import { albumViewing, showAlbumDetails } from "../../../stores/Overlays";
+  import { push } from "svelte-spa-router";
 
   export let album: Album;
 
@@ -17,8 +17,7 @@
    * Handles when the user clicks on the entry.
    */
   function onClick() {
-    $albumViewing = album.name;
-    $showAlbumDetails = true;
+    push(`/albums/${album.name}`);
   }
 </script>
 
