@@ -13,6 +13,7 @@
   import { Song } from "../../lib/models/Song";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
+    import { pop } from "svelte-spa-router";
 
   let snackbar: (data: ErrorSnackbarIn) => void;
 
@@ -64,7 +65,7 @@
    * Closes the edit overlay.
    */
   function back() {
-    history.back();
+    pop();
   }
 
   /**

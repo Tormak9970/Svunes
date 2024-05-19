@@ -24,7 +24,7 @@
   import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
   import DetailsBody from "../../components/utils/DetailsBody.svelte";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
-  import { push } from "svelte-spa-router";
+  import { pop, push } from "svelte-spa-router";
   
   export let params: { key?: string } = {};
   $: song = params.key ? $songsMap[params.key] : null;
@@ -35,7 +35,7 @@
    * Closes the details overlay.
    */
   function back() {
-    history.back();
+    pop();
   }
 
   /**

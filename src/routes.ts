@@ -35,6 +35,7 @@ export const routes = {
 
   "/albums": Albums,
   "/albums/:key": AblumDetails,
+  "/albums/:key/alt": AblumDetails,
   "/albums/:key/edit": AlbumEditor,
 
   "/songs": Songs,

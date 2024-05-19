@@ -5,7 +5,7 @@
   import MusicNotePlaceholder from "../../../components/layout/placeholders/MusicNotePlaceholder.svelte";
   import type { Album } from "../../../lib/models/Album";
   import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import { push } from "svelte-spa-router";
+  import { location, push } from "svelte-spa-router";
 
   export let album: Album;
 
@@ -17,7 +17,11 @@
    * Handles when the user clicks on the entry.
    */
   function onClick() {
-    push(`/albums/${album.name}`);
+    if ($location.endsWith("alt")) {
+      push(`/albums/${album.name}`);
+    } else {
+      push(`/albums/${album.name}/alt`);
+    }
   }
 </script>
 
