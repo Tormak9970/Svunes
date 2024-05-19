@@ -87,7 +87,7 @@ export class Album {
   }
 
   /**
-   * Displays the length of the song.
+   * Displays the length of the album.
    */
   displayAlbumLength(): string {
     return formatTime(this.albumLength);

@@ -173,7 +173,7 @@
   });
 </script>
 
-<div style="width: calc({width} - 10px); height: {height}; margin-left: 10px;">
+<div style="width: {width}; height: {height};">
   <svelte-virtual-grid-viewport
     style="height: {height}; --img-width: {itemWidth}px; --img-height: {itemHeight}px; --column-gap: {columnGap}px; --row-gap: {rowGap}px;"
     on:scroll={handleScroll}

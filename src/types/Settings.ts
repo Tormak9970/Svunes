@@ -33,7 +33,9 @@ export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Most Played" | 
 export type AlbumSortOrder = "Alphabetical" | "Artist" | "Year" | "Length" | "Track Count" | "Most Played" | "Last Played";
 export type SongSortOrder = "Alphabetical" | "Album" | "Artist" | "Year" | "Most Played" | "Last Played";
 export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Track Count";
+
 export type AlbumEntriesSortOrder = "Alphabetical" | "Track Number" | "Song Duration";
+export type ArtistEntriesSortOrder = "Alphabetical" | "Album" | "Year" | "Song Duration";
 
 export type NowPlayingType = "Playlist" | "Album" | "Songs" | "Genre";
 

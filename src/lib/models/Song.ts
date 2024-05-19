@@ -9,7 +9,7 @@ import { formatTime } from "../utils/Utils";
 export class Song {
   title: string;
   album?: string;
-  artist?: string;
+  _artist?: string;
   composer?: string;
   albumArtist?: string;
   releaseYear: number;
@@ -33,7 +33,7 @@ export class Song {
   constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: number, filePath: string, artPath: string, lastPlayedOn: string, numTimesPlayed: number, genre?: string, trackNumber?: number, totalTracks?: number) {
     this.title = title;
     this.album = album;
-    this.artist = artist;
+    this._artist = artist;
     this.composer = composer;
     this.albumArtist = albumArtist;
     this.releaseYear = releaseYear;
@@ -56,6 +56,14 @@ export class Song {
 
   get key() {
     return this.fileName;
+  }
+
+  get artist(): string | undefined {
+    return this._artist ?? this.albumArtist;
+  }
+
+  set artist(newArtist: string | undefined) {
+    this._artist = newArtist;
   }
 
   /**

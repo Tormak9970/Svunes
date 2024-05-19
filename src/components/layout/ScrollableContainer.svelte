@@ -24,7 +24,6 @@
     overflow-x: hidden;
   }
 
-  /* .scroller { margin-right: 3px; } */
   ::-webkit-scrollbar-corner { background: transparent; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--md-sys-color-primary); border-radius: 4px; }

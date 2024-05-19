@@ -1,26 +1,26 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
-  import CardClickable from "../../../components/layout/CardClickable.svelte";
-  import Lazy from "../../../components/layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../../components/layout/placeholders/MusicNotePlaceholder.svelte";
-  import type { Album } from "../../../lib/models/Album";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
   import { location, push } from "svelte-spa-router";
+  import CardClickable from "../CardClickable.svelte";
+  import Lazy from "../Lazy.svelte";
+  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
+  import MusicNotePlaceholder from "../placeholders/MusicNotePlaceholder.svelte";
+  import type { Artist } from "../../../lib/models/Artist";
 
-  export let album: Album;
+  export let artist: Artist;
 
   let size = 150;
 
-  $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
+  $: convertedPath = artist.imagePath ? tauri.convertFileSrc(artist.imagePath) : "";
 
   /**
    * Handles when the user clicks on the entry.
    */
   function onClick() {
     if ($location.endsWith("alt")) {
-      push(`/albums/${album.name}`);
+      push(`/artists/${artist.name}`);
     } else {
-      push(`/albums/${album.name}/alt`);
+      push(`/artists/${artist.name}/alt`);
     }
   }
 </script>
@@ -43,9 +43,7 @@
       {/if}
     </div>
     <div class="bottom" style="height: {50}px;">
-      <div class="info">
-        {album.name}
-      </div>
+      <div class="info">{artist.name}</div>
     </div>
   </div>
 </CardClickable>
@@ -64,12 +62,11 @@
     width: calc(100% - 20px);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .info {
     margin-right: 0px;
-    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
 
@@ -80,7 +77,7 @@
   }
 
   .album {
-    border-radius: 10px;
+    border-radius: 50%;
     overflow: hidden;
   }
 </style>

@@ -62,7 +62,7 @@
   function saveChanges() {
     if (albumName !== "") {
       const original = $albumsMap[params.key!];
-      const editedAlbum = new Album(albumName, artPath, albumArtist, releaseYear ? parseInt(releaseYear) : -1, genre, original.lastPlayedOn);
+      const editedAlbum = new Album(albumName, artPath, albumArtist, releaseYear ? parseInt(releaseYear) : -1, genre, original.lastPlayedOn, original.numTimesPlayed);
       editedAlbum.songKeys = original.songKeys;
       AppController.editAlbum(original, editedAlbum);
       canSave = false;

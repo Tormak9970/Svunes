@@ -41,8 +41,9 @@ export class PlaybackController {
   /**
    * Plays the provided artist.
    * @param artist The artist to play.
+   * @param shuffle Whether to shuffle this artist or not.
    */
-  static playArtist(artist: Artist) {
+  static playArtist(artist: Artist, shuffle = false) {
 
   }
 
