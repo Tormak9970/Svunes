@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { albumSortOrder, albums, albumGridSize } from "../../../stores/State";
-  import ViewContainer from "../utils/ViewContainer.svelte";
-  import ListEntry from "./ListEntry.svelte";
-  import GridEntry from "./GridEntry.svelte";
-  import AlbumsHeader from "./AlbumsHeader.svelte";
-  import VirtualList from "../../layout/VirtualList.svelte";
-  import VirtualGrid from "../../layout/VirtualGrid.svelte";
-  import { GridSize, type AlbumSortOrder } from "../../../types/Settings";
-  import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { LogController } from "../../../lib/controllers/LogController";
-  import { dateSort, stringCallbackSort, stringSort } from "../../../lib/utils/Utils";
+  import { albumSortOrder, albums, albumGridSize } from "../../stores/State";
+  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
+  import ListEntry from "../../components/views/albums/ListEntry.svelte";
+  import GridEntry from "../../components/views/albums/GridEntry.svelte";
+  import AlbumsHeader from "../../components/views/albums/AlbumsHeader.svelte";
+  import VirtualList from "../../components/layout/VirtualList.svelte";
+  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
+  import { GridSize, type AlbumSortOrder } from "../../types/Settings";
+  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
+  import { LogController } from "../../lib/controllers/LogController";
+  import { dateSort, stringSort } from "../../lib/utils/Utils";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import { Icon } from "m3-svelte";
-  import type { Album } from "../../../lib/models/Album";
+  import type { Album } from "../../lib/models/Album";
 
   let isAtTop = true;
 

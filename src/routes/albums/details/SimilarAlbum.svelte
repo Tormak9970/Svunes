@@ -1,11 +1,11 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
-  import { albumViewing, showAlbumDetails } from "../../../../stores/Overlays";
-  import type { Album } from "../../../../lib/models/Album";
-  import CardClickable from "../../../layout/CardClickable.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../../lib/utils/ImageConstants";
-  import Lazy from "../../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import CardClickable from "../../../components/layout/CardClickable.svelte";
+  import Lazy from "../../../components/layout/Lazy.svelte";
+  import MusicNotePlaceholder from "../../../components/layout/placeholders/MusicNotePlaceholder.svelte";
+  import type { Album } from "../../../lib/models/Album";
+  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
+  import { albumViewing, showAlbumDetails } from "../../../stores/Overlays";
 
   export let album: Album;
 

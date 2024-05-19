@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sharedAxisTransition } from "../../animations/animations";
+  import { sharedAxisTransition } from "../animations/animations";
 
   export let isAtTop = true;
 

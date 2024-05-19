@@ -1,24 +1,23 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Button, Icon } from "m3-svelte";
-  import OverlayBody from "../utils/OverlayBody.svelte";
-  import OverlayHeader from "../utils/OverlayHeader.svelte";
+  import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
+  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import { songsMap } from "../../../stores/State";
-  import TextField from "../../interactables/TextField.svelte";
-  import NumberField from "../../interactables/NumberField.svelte";
-  import ErrorSnackbar, { type ErrorSnackbarIn } from "../../snackbars/error/ErrorSnackbar.svelte";
-  import { tauri } from "@tauri-apps/api";
-  import { showEditSong, showSongDetails, songViewing } from "../../../stores/Overlays";
-  import { AppController } from "../../../lib/controllers/AppController";
-  import { LogController } from "../../../lib/controllers/LogController";
-  import { Song } from "../../../lib/models/Song";
-  import { onArtOptionsDone, showArtOptions } from "../../../stores/Modals";
-  import DetailsArtPicture from "../utils/DetailsArtPicture.svelte";
+  import { songsMap } from "../../stores/State";
+  import TextField from "../../components/interactables/TextField.svelte";
+  import NumberField from "../../components/interactables/NumberField.svelte";
+  import ErrorSnackbar, { type ErrorSnackbarIn } from "../../components/snackbars/error/ErrorSnackbar.svelte";
+  import { AppController } from "../../lib/controllers/AppController";
+  import { LogController } from "../../lib/controllers/LogController";
+  import { Song } from "../../lib/models/Song";
+  import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
+  import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
 
   let snackbar: (data: ErrorSnackbarIn) => void;
 
-  $: song = $songViewing ? $songsMap[$songViewing] : null;
+  export let params: { key?: string } = {};
+  $: song = params.key ? $songsMap[params.key] : null;
   
   let artPath: string | undefined;
 
@@ -65,10 +64,7 @@
    * Closes the edit overlay.
    */
   function back() {
-    if (!$showSongDetails) {
-      $songViewing = null;
-    }
-    $showEditSong = false;
+    history.back();
   }
 
   /**
@@ -77,7 +73,7 @@
   function saveChanges() {
     if (title !== "") {
       const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, releaseYear ? parseInt(releaseYear) : -1, song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, genre !== "" ? genre : undefined, trackNumber ? parseInt(trackNumber) : undefined, song!.totalTracks);
-      AppController.editSong($songsMap[$songViewing!], editedSong);
+      AppController.editSong($songsMap[params!.key!], editedSong);
       canSave = false;
       back();
     } else {

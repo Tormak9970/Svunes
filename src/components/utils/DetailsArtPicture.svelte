@@ -1,8 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import Lazy from "../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import { IMAGE_FADE_OPTIONS } from "../../lib/utils/ImageConstants";
+  import Lazy from "../layout/Lazy.svelte";
+  import MusicNotePlaceholder from "../layout/placeholders/MusicNotePlaceholder.svelte";
   import { tauri } from "@tauri-apps/api";
 
   export let artPath: string | undefined;

@@ -9,7 +9,7 @@
   import { fade } from "svelte/transition";
   import { renderDate } from "../../../lib/utils/Utils";
   import CardClickable from "../../layout/CardClickable.svelte";
-  import { albumViewing, showAlbumDetails } from "../../../stores/Overlays";
+  import { push } from "svelte-spa-router";
 
   export let album: Album;
 
@@ -29,8 +29,7 @@
         $selected = [ ...$selected, album.name ];
       }
     } else {
-      $albumViewing = album.name;
-      $showAlbumDetails = true;
+      push(`/albums/${album.name}`);
     }
   }
 

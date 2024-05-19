@@ -1,15 +1,15 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
   import { Button, Icon } from "m3-svelte";
-  import type { Song } from "../../../../lib/models/Song";
-  import { inSelectMode, selected } from "../../../../stores/Select";
-  import CardClickable from "../../../layout/CardClickable.svelte";
-  import Lazy from "../../../layout/Lazy.svelte";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
-  import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
-  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
-  import { showSongOptions, songToShowOptions } from "../../../../stores/Overlays";
+  import CardClickable from "../../../components/layout/CardClickable.svelte";
+  import Lazy from "../../../components/layout/Lazy.svelte";
+  import MusicNotePlaceholder from "../../../components/layout/placeholders/MusicNotePlaceholder.svelte";
+  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import type { Song } from "../../../lib/models/Song";
+  import { inSelectMode, selected } from "../../../stores/Select";
+    import { showSongOptions, songToShowOptions } from "../../../stores/Overlays";
+    import { PlaybackController } from "../../../lib/controllers/PlaybackController";
 
   export let song: Song;
 

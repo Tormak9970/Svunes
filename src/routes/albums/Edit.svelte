@@ -1,23 +1,23 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Button, Icon } from "m3-svelte";
-  import OverlayBody from "../utils/OverlayBody.svelte";
-  import OverlayHeader from "../utils/OverlayHeader.svelte";
+  import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
+  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import { albumsMap } from "../../../stores/State";
-  import TextField from "../../interactables/TextField.svelte";
-  import NumberField from "../../interactables/NumberField.svelte";
-  import ErrorSnackbar, { type ErrorSnackbarIn } from "../../snackbars/error/ErrorSnackbar.svelte";
-  import { showAlbumDetails, showEditAlbum, albumViewing } from "../../../stores/Overlays";
-  import { AppController } from "../../../lib/controllers/AppController";
-  import { LogController } from "../../../lib/controllers/LogController";
-  import { onArtOptionsDone, showArtOptions } from "../../../stores/Modals";
-  import { Album } from "../../../lib/models/Album";
-  import DetailsArtPicture from "../utils/DetailsArtPicture.svelte";
+  import { albumsMap } from "../../stores/State";
+  import TextField from "../../components/interactables/TextField.svelte";
+  import NumberField from "../../components/interactables/NumberField.svelte";
+  import ErrorSnackbar, { type ErrorSnackbarIn } from "../../components/snackbars/error/ErrorSnackbar.svelte";
+  import { AppController } from "../../lib/controllers/AppController";
+  import { LogController } from "../../lib/controllers/LogController";
+  import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
+  import { Album } from "../../lib/models/Album";
+  import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
 
   let snackbar: (data: ErrorSnackbarIn) => void;
 
-  $: album = $albumViewing ? $albumsMap[$albumViewing] : null;
+  export let params: { key?: string } = {};
+  $: album = params.key ? $albumsMap[params.key] : null;
   
   let artPath: string | undefined;
 
@@ -25,8 +25,6 @@
   let albumArtist: string | undefined;
   let genre: string | undefined;
   let releaseYear: string | undefined;
-
-  let imageSize = 360;
 
   let isAtTop = true;
   
@@ -54,19 +52,15 @@
    * Closes the edit overlay.
    */
   function back() {
-    if (!$showAlbumDetails) {
-      $albumViewing = null;
-    }
-    $showEditAlbum = false;
+    history.back();
   }
 
   /**
    * Saves the changes the user has made.
    */
   function saveChanges() {
-    const artists = albumArtist?.split(", ");
     if (albumName !== "") {
-      const original = $albumsMap[$albumViewing!];
+      const original = $albumsMap[params.key!];
       const editedAlbum = new Album(albumName, artPath, albumArtist, releaseYear ? parseInt(releaseYear) : -1, genre, original.lastPlayedOn);
       editedAlbum.songKeys = original.songKeys;
       AppController.editAlbum(original, editedAlbum);

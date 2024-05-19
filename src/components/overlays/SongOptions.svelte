@@ -3,7 +3,7 @@
   import { AppController } from "../../lib/controllers/AppController";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
-  import { showAddToPlaylist, showSongDetails, songToAdd, albumViewing, artistViewing, songToShowOptions, songViewing, showEditSong, showAlbumDetails, showSongOptions } from "../../stores/Overlays";
+  import { showAddToPlaylist, songToAdd, albumViewing, artistViewing, songToShowOptions, showAlbumDetails, showSongOptions } from "../../stores/Overlays";
   import { songsMap } from "../../stores/State";
   import BottomSheet from "../layout/BottomSheet.svelte";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
@@ -16,6 +16,7 @@
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import Share from "@ktibow/iconset-material-symbols/share";
   import Trash from "@ktibow/iconset-material-symbols/delete-forever-rounded";
+    import { push } from "svelte-spa-router";
 
   $: song = $songToShowOptions ? $songsMap[$songToShowOptions] : null;
 
@@ -81,8 +82,7 @@
    * Shows the song details overlay.
    */
   function showDetails() {
-    $songViewing = song!.key;
-    $showSongDetails = true;
+    push(`/songs/${song!.key}`);
     closeOptions();
   }
 
@@ -90,8 +90,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    $songViewing = song!.key;
-    $showEditSong = true;
+    push(`/songs/${song!.key}/edit`);
     closeOptions();
   }
 

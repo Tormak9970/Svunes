@@ -3,26 +3,31 @@
   import ViewNav from "./components/navigation/mobile/ViewNav.svelte";
   import MiniPlayer from "./components/overlays/MiniPlayer.svelte";
   import Titlebar from "./components/Titlebar.svelte";
-  import { isLoading, showMiniPlayer, showViewNav } from "./stores/State";
+  import { isLoading, selectedView, showMiniPlayer, showViewNav } from "./stores/State";
   import Overlays from "./components/overlays/Overlays.svelte";
   import { AppController } from "./lib/controllers/AppController";
   import { SettingsController } from "./lib/controllers/SettingsController";
   import { ThemeController } from "./lib/controllers/ThemeController";
-  import View from "./components/views/View.svelte";
-  import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
   import SelectHeader from "./components/views/SelectHeader.svelte";
   import { inSelectMode } from "./stores/Select";
   import { StyleFromScheme } from "m3-svelte";
   import { window } from "@tauri-apps/api";
   import type { UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./components/modals/Modals.svelte";
-    import { exit } from "@tauri-apps/api/process";
+  import { exit } from "@tauri-apps/api/process";
+  import Router, { push } from 'svelte-spa-router'
+  import { routes, viewRoutesLUT } from "./routes";
+  import type { Unsubscriber } from "svelte/store";
 
+  let loadingUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;
 
   let isDesktop = false;
 
   onMount(async () => {
+    loadingUnsub = isLoading.subscribe((newStatus) => {
+      if (!newStatus) push(viewRoutesLUT[$selectedView]);
+    })
     await SettingsController.init();
     AppController.init();
     ThemeController.init();
@@ -38,6 +43,7 @@
     AppController.destroy();
     SettingsController.destroy();
 
+    if (loadingUnsub) loadingUnsub();
     if (closeRequestListener) closeRequestListener();
   });
 </script>
@@ -55,14 +61,10 @@
     <MiniPlayer />
   {/if}
   <div class="content">
-    {#if $isLoading}
-      <HomeLoadingAnimation />
-    {:else}
-      {#if $inSelectMode}
-        <SelectHeader />
-      {/if}
-      <View />
+    {#if $inSelectMode}
+      <SelectHeader />
     {/if}
+    <Router {routes} restoreScrollState={true} />
   </div>
   {#if isDesktop}
     <Titlebar title="Tunistic" />

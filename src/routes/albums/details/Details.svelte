@@ -1,30 +1,32 @@
 <script lang="ts">
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
-  import OverlayHeader from "../../utils/OverlayHeader.svelte";
-  import { albumsMap, artistsMap } from "../../../../stores/State";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
-  import MenuButton from "../../../interactables/MenuButton.svelte";
-  import { showAlbumDetails, showEditAlbum, albumViewing, albumToAdd, showAddToPlaylist } from "../../../../stores/Overlays";
-  import { AppController } from "../../../../lib/controllers/AppController";
-  import { QueueController } from "../../../../lib/controllers/QueueController";
-  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
-  import DetailsBody from "../DetailsBody.svelte";
-  import type { Album } from "../../../../lib/models/Album";
   import { onMount } from "svelte";
-  import RadioMenuItem from "../../../interactables/RadioMenuItem.svelte";
-  import type { AlbumEntriesSortOrder } from "../../../../types/Settings";
   import AlbumEntries from "./AlbumEntries.svelte";
   import SimilarAlbums from "./SimilarAlbums.svelte";
-  import DetailsArtPicture from "../../utils/DetailsArtPicture.svelte";
-  import ColoredButton from "../../../interactables/ColoredButton.svelte";
+  import type { AlbumEntriesSortOrder } from "../../../types/Settings";
+  import type { Album } from "../../../lib/models/Album";
+  import { albumsMap, artistsMap } from "../../../stores/State";
+  import { albumToAdd, showAddToPlaylist } from "../../../stores/Overlays";
+  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
+  import { QueueController } from "../../../lib/controllers/QueueController";
+  import { AppController } from "../../../lib/controllers/AppController";
+  import DetailsBody from "../../../components/utils/DetailsBody.svelte";
+  import DetailsArtPicture from "../../../components/utils/DetailsArtPicture.svelte";
+  import OverlayHeader from "../../../components/overlays/utils/OverlayHeader.svelte";
+  import MenuButton from "../../../components/interactables/MenuButton.svelte";
+  import RadioMenuItem from "../../../components/interactables/RadioMenuItem.svelte";
+  import ColoredButton from "../../../components/interactables/ColoredButton.svelte";
+  import { push } from "svelte-spa-router";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
+  export let params: { key?: string } = {};
   let album: Album;
 
   $: artist = album?.albumArtist ? $artistsMap[album?.albumArtist] : undefined;
@@ -35,8 +37,7 @@
    * Closes the details overlay.
    */
    function back() {
-    $showAlbumDetails = false;
-    $albumViewing = null;
+    history.back();
   }
 
   /**
@@ -44,7 +45,6 @@
    */
   function playAlbum() {
     PlaybackController.playAlbum(album!);
-    back();
   }
 
   /**
@@ -52,7 +52,6 @@
    */
   function playShuffledAlbum() {
     PlaybackController.playAlbum(album!, true);
-    back();
   }
 
   /**
@@ -60,7 +59,6 @@
    */
   function playNext() {
     QueueController.playAlbumsNext([album!.name]);
-    back();
   }
 
   /**
@@ -68,7 +66,6 @@
    */
   function queueAlbum() {
     QueueController.queueSongs([album!.name]);
-    back();
   }
 
   /**
@@ -83,7 +80,7 @@
    * Shows the edit song overlay.
    */
   function showAlbumEdit() {
-    $showEditAlbum = true;
+    push(`/albums/${params!.key!}/edit`);
   }
 
   /**
@@ -91,11 +88,10 @@
    */
   function deleteAlbum() {
     AppController.deleteAlbumsFromDevice([album!.name]);
-    back();
   }
 
   onMount(() => {
-    album = $albumsMap[$albumViewing!];
+    album = $albumsMap[params!.key!];
   });
 </script>
 

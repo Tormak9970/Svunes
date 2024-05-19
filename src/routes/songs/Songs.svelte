@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { isLoading, songGridSize, songSortOrder, songs } from "../../../stores/State";
-  import ViewContainer from "../utils/ViewContainer.svelte";
-  import ListEntry from "./ListEntry.svelte";
-  import GridEntry from "./GridEntry.svelte";
-  import SongsHeader from "./SongsHeader.svelte";
-  import VirtualList from "../../layout/VirtualList.svelte";
-  import VirtualGrid from "../../layout/VirtualGrid.svelte";
-  import { GridSize, type SongSortOrder } from "../../../types/Settings";
-  import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import type { Song } from "../../../lib/models/Song";
-  import { LogController } from "../../../lib/controllers/LogController";
-  import { dateSort, stringSort } from "../../../lib/utils/Utils";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import { Icon } from "m3-svelte";
+  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
+  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
+  import VirtualList from "../../components/layout/VirtualList.svelte";
+  import GridEntry from "../../components/views/songs/GridEntry.svelte";
+  import ListEntry from "../../components/views/songs/ListEntry.svelte";
+  import SongsHeader from "../../components/views/songs/SongsHeader.svelte";
+  import { LogController } from "../../lib/controllers/LogController";
+  import type { Song } from "../../lib/models/Song";
+  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
+  import { stringSort, dateSort } from "../../lib/utils/Utils";
+  import { songs, songSortOrder, songGridSize } from "../../stores/State";
+  import { type SongSortOrder, GridSize } from "../../types/Settings";
 
   let isAtTop = true;
 

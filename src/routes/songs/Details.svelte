@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { albumViewing, artistViewing, showAddToPlaylist, showAlbumDetails, showEditSong, showSongDetails, songToAdd, songViewing } from "../../../../stores/Overlays";
-  import { songsMap } from "../../../../stores/State";
-  import OverlayHeader from "../../utils/OverlayHeader.svelte";
+  import { showAddToPlaylist, songToAdd } from "../../stores/Overlays";
+  import { songsMap } from "../../stores/State";
+  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import MenuButton from "../../../interactables/MenuButton.svelte";
+  import MenuButton from "../../components/interactables/MenuButton.svelte";
   import DetailsField from "./DetailsField.svelte";
-  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../../../lib/controllers/QueueController";
-  import { AppController } from "../../../../lib/controllers/AppController";
+  import { PlaybackController } from "../../lib/controllers/PlaybackController";
+  import { QueueController } from "../../lib/controllers/QueueController";
+  import { AppController } from "../../lib/controllers/AppController";
   
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import Album from "@ktibow/iconset-material-symbols/album";
@@ -22,10 +22,12 @@
   import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded"
   import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
-  import DetailsBody from "../DetailsBody.svelte";
-  import DetailsArtPicture from "../../utils/DetailsArtPicture.svelte";
+  import DetailsBody from "../../components/utils/DetailsBody.svelte";
+  import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
+  import { push } from "svelte-spa-router";
   
-  $: song = $songViewing ? $songsMap[$songViewing] : null;
+  export let params: { key?: string } = {};
+  $: song = params.key ? $songsMap[params.key] : null;
 
   let isAtTop = true;
 
@@ -33,8 +35,7 @@
    * Closes the details overlay.
    */
   function back() {
-    $songViewing = null;
-    $showSongDetails = false;
+    history.back();
   }
 
   /**
@@ -42,7 +43,6 @@
    */
   function playSong() {
     PlaybackController.playSong(song!);
-    back();
   }
 
   /**
@@ -50,7 +50,6 @@
    */
   function playNext() {
     QueueController.playSongsNext([song!.key]);
-    back();
   }
 
   /**
@@ -58,7 +57,6 @@
    */
   function queueSong() {
     QueueController.queueSongs([song!.key]);
-    back();
   }
 
   /**
@@ -67,32 +65,27 @@
   function addToPlaylist() {
     $songToAdd = song!.key;
     $showAddToPlaylist = true;
-    back();
   }
 
   /**
    * Shows the song's album.
    */
   function goToAlbum() {
-    $albumViewing = song!.album!;
-    $showAlbumDetails = true;
-    back();
+    push(`/albums/${song!.album!}`);
   }
 
   /**
    * Shows the song's artist.
    */
   function goToArtist() {
-    $artistViewing = song!.artist!;
-    back();
+    push(`/artists/${song!.artist!}`);
   }
 
   /**
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    $songViewing = song!.key;
-    $showEditSong = true;
+    push(`/songs/${song!.key}/edit`);
   }
 
   /**
@@ -100,7 +93,6 @@
    */
   function share() {
     AppController.share([song!.key]);
-    back();
   }
 
   /**
@@ -108,7 +100,6 @@
    */
   function deleteSong() {
     AppController.deleteSongsFromDevice([song!.key]);
-    back();
   }
 </script>
 

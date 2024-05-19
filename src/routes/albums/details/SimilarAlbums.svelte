@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Artist } from "../../../../lib/models/Artist";
-  import { albumsMap } from "../../../../stores/State";
+  import type { Artist } from "../../../lib/models/Artist";
+  import { albumsMap } from "../../../stores/State";
   import SimilarAlbum from "./SimilarAlbum.svelte";
 
 

@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { LogController } from "../../../lib/controllers/LogController";
+  import type { Song } from "../../../lib/models/Song";
+  import { stringSort, nullishNumberSort } from "../../../lib/utils/Utils";
+  import { songsMap } from "../../../stores/State";
+  import type { AlbumEntriesSortOrder } from "../../../types/Settings";
   import AlbumEntry from "./AlbumEntry.svelte";
-  import { songsMap } from "../../../../stores/State";
-  import type { Song } from "../../../../lib/models/Song";
-  import { LogController } from "../../../../lib/controllers/LogController";
-  import type { AlbumEntriesSortOrder } from "../../../../types/Settings";
-  import { nullishNumberSort, stringSort } from "../../../../lib/utils/Utils";
 
   export let sortOrder: AlbumEntriesSortOrder;
   export let songKeys: string[];
