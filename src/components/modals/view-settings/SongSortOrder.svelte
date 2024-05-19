@@ -19,23 +19,23 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$songSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
+      <RadioInput name="songSortOrder" checked={$songSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
       <div class="radio">Alphabetical</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$songSortOrder === "Album"} on:input={() => sortOrderChange("Album")} />
+      <RadioInput name="songSortOrder" checked={$songSortOrder === "Album"} on:input={() => sortOrderChange("Album")} />
       <div class="radio">Album</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$songSortOrder === "Artist"} on:input={() => sortOrderChange("Artist")} />
+      <RadioInput name="songSortOrder" checked={$songSortOrder === "Artist"} on:input={() => sortOrderChange("Artist")} />
       <div class="radio">Artist</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$songSortOrder === "Year"} on:input={() => sortOrderChange("Year")} />
+      <RadioInput name="songSortOrder" checked={$songSortOrder === "Year"} on:input={() => sortOrderChange("Year")} />
       <div class="radio">Year</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$songSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
+      <RadioInput name="songSortOrder" checked={$songSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
       <div class="radio">Last Played</div>
     </label>
   </div>

@@ -8,6 +8,7 @@ import { SettingsController } from "./SettingsController";
 import { LogController } from "./LogController";
 import { Genre } from "../models/Genre";
 import { Artist } from "../models/Artist";
+import type { AlbumMetadata, SongMetadata } from "../../types/Settings";
 
 /**
  * The core app controller.
@@ -47,15 +48,14 @@ export class AppController {
    * @param songs The loaded songs.
    */
   private static loadAlbumsFromSongs(songs: Song[]) {
+    const albumsMetadataMap = SettingsController.getSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata");
     const albumMap = new Map<string, Album>();
-
-    const albumsList = get(albums);
 
     for (const song of songs) {
       if (song.album) {
         if (!albumMap.get(song.album)) {
-          const listAlbum = albumsList.find((a) => a.name === song.album);
-          const album = new Album(song.album, song.artPath, song.albumArtist, song.releaseYear, song.genre, listAlbum?.lastPlayedOn);
+          const metadata = albumsMetadataMap[song.album];
+          const album = new Album(song.album, song.artPath, song.albumArtist, song.releaseYear, song.genre, metadata?.lastPlayedOn, metadata?.numTimesPlayed);
           album.songKeys.push(song.key);
           
           if (song.artist) album.artists.add(song.artist);
@@ -90,13 +90,17 @@ export class AppController {
         if (!artistMap.get(song.artist)) {
           const artist = new Artist(song.artist, song.artPath);
           artist.songKeys.push(song.key);
+          
           if (song.album) artist.albumNames.add(song.album);
+          if (song.genre) artist.genres.add(song.genre);
   
           artistMap.set(song.artist, artist);
         } else {
           const artist = artistMap.get(song.artist)!;
           artist.songKeys.push(song.key);
+
           if (song.album) artist.albumNames.add(song.album);
+          if (song.genre) artist.genres.add(song.genre);
           if (!artist.imagePath) artist.imagePath = song.artPath;
         }
       }
@@ -125,11 +129,15 @@ export class AppController {
         const genre = new Genre(songGenre, song.artPath);
         genre.songKeys.push(song.key);
 
+        if (song.artist) genre.artists.add(song.artist);
+
         genreMap.set(songGenre, genre);
       } else {
         const genre = genreMap.get(songGenre)!;
         genre.songKeys.push(song.key);
+
         if (!genre.imagePreviewPath) genre.imagePreviewPath = song.artPath;
+        if (song.artist) genre.artists.add(song.artist);
       }
     }
 
@@ -144,14 +152,20 @@ export class AppController {
    * @param musicFolders The folders to read music from.
    */
   static async loadSongs(musicFolders: string[]) {
-    const songsLastPlayedMap = SettingsController.getSetting<Record<string, string>>("cache.songsLastPlayed");
+    const songsMetadataMap = SettingsController.getSetting<Record<string, SongMetadata>>("cache.songsMetadata");
     if (musicFolders.length === 0) {
       showEditMusicFolders.set(true);
     } else {
       const songsJson = await RustInterop.readMusicFolders(musicFolders);
       const loadedSongs: Song[] = songsJson.map((json) => {
         const song = Song.fromJSON(json);
-        song.lastPlayedOn = songsLastPlayedMap[song.key] ?? "Never";
+        const metadata = songsMetadataMap[song.key];
+        
+        if (metadata) {
+          song.lastPlayedOn = metadata.lastPlayedOn ?? "Never";
+          song.numTimesPlayed = metadata.numTimesPlayed ?? 0;
+        }
+
         return song;
       });
 

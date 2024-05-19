@@ -5,6 +5,7 @@ export class Artist {
   name: string;
   imagePath: string | undefined;
   albumNames: Set<string>;
+  genres: Set<string>;
   songKeys: string[];
 
   /**
@@ -14,6 +15,7 @@ export class Artist {
     this.name = name;
     this.imagePath = imagePath;
     this.albumNames = new Set();
+    this.genres = new Set();
     this.songKeys = [];
   }
 }

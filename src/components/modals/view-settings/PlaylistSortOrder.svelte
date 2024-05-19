@@ -19,15 +19,15 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$playlistSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
+      <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
       <div class="radio">Alphabetical</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$playlistSortOrder === "Song Count"} on:input={() => sortOrderChange("Song Count")} />
+      <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Song Count"} on:input={() => sortOrderChange("Song Count")} />
       <div class="radio">Track Count</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$playlistSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
+      <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
       <div class="radio">Track Count</div>
     </label>
   </div>

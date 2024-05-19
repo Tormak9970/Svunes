@@ -19,27 +19,27 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$albumSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
+      <RadioInput name="albumSortOrder" checked={$albumSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
       <div class="radio">Alphabetical</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$albumSortOrder === "Artist"} on:input={() => sortOrderChange("Artist")} />
+      <RadioInput name="albumSortOrder" checked={$albumSortOrder === "Artist"} on:input={() => sortOrderChange("Artist")} />
       <div class="radio">Artist</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$albumSortOrder === "Year"} on:input={() => sortOrderChange("Year")} />
+      <RadioInput name="albumSortOrder" checked={$albumSortOrder === "Year"} on:input={() => sortOrderChange("Year")} />
       <div class="radio">Year</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$albumSortOrder === "Length"} on:input={() => sortOrderChange("Length")} />
+      <RadioInput name="albumSortOrder" checked={$albumSortOrder === "Length"} on:input={() => sortOrderChange("Length")} />
       <div class="radio">Length</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$albumSortOrder === "Track Count"} on:input={() => sortOrderChange("Track Count")} />
+      <RadioInput name="albumSortOrder" checked={$albumSortOrder === "Track Count"} on:input={() => sortOrderChange("Track Count")} />
       <div class="radio">Track Count</div>
     </label>
     <label style="margin-bottom: 10px">
-      <RadioInput name="sortOrder" checked={$albumSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
+      <RadioInput name="albumSortOrder" checked={$albumSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
       <div class="radio">Last Played</div>
     </label>
   </div>

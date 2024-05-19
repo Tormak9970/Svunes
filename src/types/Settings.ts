@@ -29,13 +29,23 @@ export enum GridStyle {
   SQUARE
 }
 
-export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Last Played";
-export type AlbumSortOrder = "Alphabetical" | "Artist" | "Year" | "Length" | "Track Count" | "Last Played";
-export type SongSortOrder = "Alphabetical" | "Album" | "Artist" | "Year" | "Last Played";
+export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Most Played" | "Last Played";
+export type AlbumSortOrder = "Alphabetical" | "Artist" | "Year" | "Length" | "Track Count" | "Most Played" | "Last Played";
+export type SongSortOrder = "Alphabetical" | "Album" | "Artist" | "Year" | "Most Played" | "Last Played";
 export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Track Count";
 export type AlbumEntriesSortOrder = "Alphabetical" | "Track Number" | "Song Duration";
 
 export type NowPlayingType = "Playlist" | "Album" | "Songs" | "Genre";
+
+export type SongMetadata = {
+  lastPlayedOn: string | undefined,
+  numTimesPlayed: number | undefined
+}
+
+export type AlbumMetadata = {
+  lastPlayedOn: string | undefined,
+  numTimesPlayed: number | undefined
+}
 
 export type Settings = {
   version: string,
@@ -77,9 +87,9 @@ export type Settings = {
   hiddenSongs: Song[],
 
   cache: {
-    albums: Album[],
+    albumsMetadata: Record<string, AlbumMetadata>,
     numSongs: number,
-    songsLastPlayed: Record<string, string>,
+    songsMetadata: Record<string, SongMetadata>,
     songProgress: number,
     songName: string,
     nowPlayingListName: string,
@@ -146,9 +156,9 @@ export const DEFAULT_SETTINGS: Settings = {
   "hiddenSongs": [],
 
   "cache": {
-    "albums": [],
+    "albumsMetadata": {},
     "numSongs": 0,
-    "songsLastPlayed": {},
+    "songsMetadata": {},
     "songProgress": 0,
     "songName": "",
     "nowPlayingListName": "",

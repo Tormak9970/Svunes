@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type NowPlayingType, type Settings, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
+import { type AlbumMetadata, type NowPlayingType, type Settings, type SongMetadata, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, viewsToRender } from "../../stores/State";
 import { View } from "../../types/View";
@@ -275,7 +275,6 @@ export class SettingsController {
 
 
     const cache = this.settings.cache;
-    albums.set(cache.albums);
     songProgress.set(cache.songProgress);
     songName.set(cache.songName);
     nowPlayingListName.set(cache.nowPlayingListName);
@@ -342,10 +341,28 @@ export class SettingsController {
     this.hiddenSongsUnsub = hiddenSongs.subscribe(this.updateStoreIfChanged<Song[]>("hiddenSongs"));
 
 
-    this.albumsUnsub = albums.subscribe(this.updateStoreIfChanged<Album[]>("cache.albums"));
+    this.albumsUnsub = albums.subscribe((albums) => {
+      this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", Object.fromEntries(albums.map((album) => {
+        return [
+          album.name,
+          {
+            "lastPlayedOn": album.lastPlayedOn,
+            "numTimesPlayed": album.numTimesPlayed
+          }
+        ]
+      })));
+    });
     this.songsUnsub = songs.subscribe((songs) => {
       this.updateSetting<number>("cache.numSongs", songs.length);
-      this.updateSetting<Record<string, string>>("cache.songsLastPlayed", Object.fromEntries(songs.map((song) => [song.key, song.lastPlayedOn])));
+      this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", Object.fromEntries(songs.map((song) => {
+        return [
+          song.key,
+          {
+            "lastPlayedOn": song.lastPlayedOn,
+            "numTimesPlayed": song.numTimesPlayed
+          }
+        ]
+      })));
     });
     this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
     this.songNameUnsub = songName.subscribe(this.updateStoreIfChanged<string>("cache.songName"));
@@ -379,6 +396,34 @@ export class SettingsController {
       path: this.settingsPath,
       contents: JSON.stringify(this.settings),
     });
+  }
+
+  /**
+   * Updates the saved metadata for the provided album.
+   * @param albums The albums to update.
+   */
+  static async updateAlbumsMetadata(albums: Album[]) {
+    for (const album of albums) {
+      this.settings.cache.albumsMetadata[album.name] = {
+        "lastPlayedOn": album.lastPlayedOn,
+        "numTimesPlayed": album.numTimesPlayed
+      }
+    }
+
+    await this.updateSetting<Record<string, SongMetadata>>("cache.albumsMetadata", this.settings.cache.albumsMetadata);
+  }
+
+  /**
+   * Updates the saved metadata for the provided song.
+   * @param song The song to update.
+   */
+  static async updateSongMetadata(song: Song) {
+    this.settings.cache.songsMetadata[song.key] = {
+      "lastPlayedOn": song.lastPlayedOn,
+      "numTimesPlayed": song.numTimesPlayed
+    }
+
+    await this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", this.settings.cache.songsMetadata);
   }
 
   /**

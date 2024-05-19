@@ -1,6 +1,6 @@
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
 import AblumDetails from "./routes/albums/details/Details.svelte";
-import ArtistDetails from "./routes/artists/Details.svelte";
+import ArtistDetails from "./routes/artists/details/Details.svelte";
 import GenreDetails from "./routes/genres/Details.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import AlbumEditor from "./routes/albums/Edit.svelte";
@@ -15,6 +15,9 @@ import Settings from "./routes/settings/Settings.svelte";
 import Songs from "./routes/songs/Songs.svelte";
 import PlaylistDetails from "./routes/playlists/Details.svelte";
 
+/**
+ * A LUT for mapping Views to their routes.
+ */
 export const viewRoutesLUT = {
   0: "/playlists",
   1: "/albums",
@@ -26,7 +29,9 @@ export const viewRoutesLUT = {
   7: "/home"
 }
 
-
+/**
+ * The app's routes.
+ */
 export const routes = {
   "/": HomeLoadingAnimation,
 
@@ -44,6 +49,7 @@ export const routes = {
 
   "/artists": Artists,
   "/artists/:key": ArtistDetails,
+  "/artists/:key/alt": ArtistDetails,
 
   "/genres": Genres,
   "/genres/:key": GenreDetails,
@@ -53,4 +59,9 @@ export const routes = {
   "/settings": Settings,
 
   "/home": Home
+  // "/home/top-artists": TopArtists,
+  // "/home/top-albums": TopAlbums,
+  // "/home/most-played": MostPlayed,
+
+  // "/history": History,
 }

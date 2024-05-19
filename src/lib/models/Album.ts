@@ -13,6 +13,7 @@ export class Album {
   _albumArtist: string | undefined;
   artists: Set<string>;
   genre?: string;
+  numTimesPlayed: number;
 
   songKeys: string[];
   
@@ -23,7 +24,7 @@ export class Album {
   /**
    * Creates a new album object.
    */
-  constructor(name: string, artPath: string | undefined, albumArtist: string | undefined, releaseYear: number, genre?: string, lastPlayedOn?: string) {
+  constructor(name: string, artPath: string | undefined, albumArtist: string | undefined, releaseYear: number, genre?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
     this.name = name;
     this.artPath = artPath;
     this._albumArtist = albumArtist;
@@ -32,6 +33,7 @@ export class Album {
     this.genre = genre;
 
     this.lastPlayedOn = lastPlayedOn ?? "Never";
+    this.numTimesPlayed = numTimesPlayed ?? 0;
     this.songKeys = [];
     this.artists = new Set();
     

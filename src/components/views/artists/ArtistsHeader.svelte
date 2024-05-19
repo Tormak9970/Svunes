@@ -5,7 +5,7 @@
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
-  import { showAlbumSortOrder, showGridSize } from "../../../stores/Modals";
+  import { showAlbumSortOrder, showArtistSortOrder, showGridSize } from "../../../stores/Modals";
   import { push } from "svelte-spa-router";
 
   export let highlight: boolean;
@@ -21,14 +21,14 @@
    * Navigates to the search view.
    */
   function openSearch() {
-    $selectedChip = "album";
+    $selectedChip = "artist";
     push("/search");
   }
 
   let menuIsOpen = false;
 </script>
 
-<ViewHeader title="Albums" highlight={highlight}>
+<ViewHeader title="Artists" highlight={highlight}>
   <div slot="left">
     <Button type="text" iconType="full" on:click={openSearch}>
       <Icon icon={Search} width="20px" height="20px" />
@@ -38,7 +38,7 @@
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       <Menu>
         <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
-        <MenuItem on:click={() => { $showAlbumSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
+        <MenuItem on:click={() => { $showArtistSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
         <MenuItem on:click={goToSettings}>Settings</MenuItem>
       </Menu>
     </MenuButton>

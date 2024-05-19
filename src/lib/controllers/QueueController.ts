@@ -1,6 +1,7 @@
 import { get } from "svelte/store";
 import { albums, albumsMap, artists, artistsMap, queue, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
+import { SettingsController } from "./SettingsController";
 
 // ! Add logging to this file
 // ! search file for "TODO"
@@ -11,6 +12,9 @@ import { PlaybackController } from "./PlaybackController";
 export class QueueController {
   private static history: string[];
 
+  /**
+   * Skips the current song.
+   */
   static skip() {
     let songQueue = get(queue);
     
@@ -23,8 +27,24 @@ export class QueueController {
     }
   }
 
+  /**
+   * Skips back to the last song.
+   */
   static skipBack() {
+    let songQueue = get(queue);
+    let songMap = get(songsMap);
 
+    if (this.history.length > 0) {
+      let lastPlayedSongKey = this.history.pop();
+      let lastPlayedSong = songMap[lastPlayedSongKey!];
+
+      songQueue.unshift(lastPlayedSong);
+      PlaybackController.playSong(lastPlayedSong);
+      
+      queue.set(songQueue);
+    } else {
+      // ! show user snackbar
+    }
   }
 
   /**
@@ -33,6 +53,7 @@ export class QueueController {
    */
   static queuePlaylists(playlistNames: string[]) {
     
+    // TODO: verify that this will include the changed date
   }
 
   /**
@@ -68,8 +89,7 @@ export class QueueController {
       }
     }
 
-    // TODO: verify that this will include the changed date
-    albums.set([ ...get(albums) ]);
+    SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
     queue.set(songQueue);
   }
@@ -111,6 +131,7 @@ export class QueueController {
    */
   static playPlaylistsNext(playlistNames: string[]) {
     
+    // TODO: verify that this will include the changed date
   }
 
   /**
@@ -146,8 +167,7 @@ export class QueueController {
       }
     }
 
-    // TODO: verify that this will include the changed date
-    albums.set([ ...get(albums) ]);
+    SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
     queue.set(songQueue);
   }

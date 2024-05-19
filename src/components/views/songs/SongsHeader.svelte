@@ -1,14 +1,12 @@
 <script lang="ts">
   import ViewHeader from "../utils/ViewHeader.svelte";
   import MenuButton from "../../interactables/MenuButton.svelte";
-  import { selectedView } from "../../../stores/State";
-  import { View } from "../../../types/View";
   import { selectedChip } from "../../../stores/Search";
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
-  import { fromView } from "../../../stores/Settings";
   import { showGridSize, showSongSortOrder } from "../../../stores/Modals";
+  import { push } from "svelte-spa-router";
 
   export let highlight: boolean;
 
@@ -16,8 +14,7 @@
    * Navigates to the settings view.
    */
   function goToSettings() {
-    $fromView = View.SONGS;
-    $selectedView = View.SETTINGS;
+    push("/settings");
   }
 
   /**
@@ -25,7 +22,7 @@
    */
   function openSearch() {
     $selectedChip = "song";
-    $selectedView = View.SEARCH;
+    push("/search");
   }
 
   let menuIsOpen = false;

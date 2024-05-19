@@ -22,6 +22,7 @@ export class Song {
   folderPath: string;
   artPath: string | undefined;
   lastPlayedOn: string;
+  numTimesPlayed: number;
   genre?: string;
   trackNumber?: number;
   totalTracks?: number;
@@ -29,7 +30,7 @@ export class Song {
   /**
    * Creates a new Song.
    */
-  constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: number, filePath: string, artPath: string, lastPlayedOn: string, genre?: string, trackNumber?: number, totalTracks?: number) {
+  constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: number, filePath: string, artPath: string, lastPlayedOn: string, numTimesPlayed: number, genre?: string, trackNumber?: number, totalTracks?: number) {
     this.title = title;
     this.album = album;
     this.artist = artist;
@@ -43,6 +44,7 @@ export class Song {
     this.filePath = filePath;
     this.artPath = artPath;
     this.lastPlayedOn = lastPlayedOn;
+    this.numTimesPlayed = numTimesPlayed;
     this.genre = genre;
     this.trackNumber = trackNumber;
     this.totalTracks = totalTracks;
@@ -104,9 +106,11 @@ export class Song {
   /**
    * Gets a song object from a json object.
    * @param json The song json object.
+   * @param lastPlayedOn The date the song was last played.
+   * @param numTimesPlayed The number of times this song has been played.
    * @returns The song object.
    */
-  static fromJSON(json: any, lastPlayedOn = "Never"): Song {
+  static fromJSON(json: any, lastPlayedOn = "Never", numTimesPlayed = 0): Song {
     let title, album, artist, composer, albumArtist, releaseYear, length, bitRate, sampleRate, size, filePath, artPath, genre, trackNumber, totalTracks;
     
     if (json.title && json.filename.endsWith("flac")) {
@@ -153,6 +157,6 @@ export class Song {
     filePath = json.filename;
     artPath = json.albumpath;
 
-    return new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, artPath, lastPlayedOn, genre, trackNumber, totalTracks);
+    return new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, artPath, lastPlayedOn, numTimesPlayed, genre, trackNumber, totalTracks);
   }
 }

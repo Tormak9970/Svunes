@@ -8,6 +8,7 @@ export class Genre {
   name: string;
   imagePreviewPath: string | undefined;
   songKeys: string[];
+  artists: Set<string>;
   backgroundColor: string | undefined;
 
   /**
@@ -17,6 +18,7 @@ export class Genre {
     this.name = name;
     this.imagePreviewPath = imagePreviewPath;
     this.songKeys = [];
+    this.artists = new Set();
     
     this.backgroundColor = undefined;
 
