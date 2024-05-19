@@ -27,6 +27,8 @@
 
   let album: Album;
 
+  $: artist = album?.albumArtist ? $artistsMap[album?.albumArtist] : undefined;
+
   let isAtTop = true;
 
   /**
@@ -149,10 +151,10 @@
       <h3 class="section-header">Songs</h3>
       <AlbumEntries songKeys={album?.songKeys ?? []} sortOrder={albumSortMethod} />
     </div>
-    {#if album?.albumArtist}
+    {#if artist && artist.albumNames.size > 1}
       <div class="similar">
         <h3 class="section-header">More from {album?.albumArtist}</h3>
-        <SimilarAlbums albumArtist={album?.albumArtist} />
+        <SimilarAlbums artist={artist} currentAlbumName={album.name} />
       </div>
     {/if}
   </span>

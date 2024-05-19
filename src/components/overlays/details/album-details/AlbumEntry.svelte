@@ -8,6 +8,8 @@
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../../lib/utils/ImageConstants";
   import MusicNotePlaceholder from "../../../layout/placeholders/MusicNotePlaceholder.svelte";
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
+  import { showSongOptions, songToShowOptions } from "../../../../stores/Overlays";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
 
   export let song: Song;
 
@@ -29,6 +31,14 @@
     } else {
       PlaybackController.playSong(song);
     }
+  }
+  
+  /**
+   * Shows the entry's options.
+   */
+   function openSongOptions() {
+    $songToShowOptions = song.key;
+    $showSongOptions = true;
   }
 
   /**
@@ -72,6 +82,11 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="options">
+      <Button type="text" iconType="full" on:click={openSongOptions}>
+        <Icon icon={MoreVert} />
+      </Button>
     </div>
   </div>
 </CardClickable>

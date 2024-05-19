@@ -23,6 +23,9 @@ dependencies:
   svelte-preprocess:
     specifier: ^5.1.4
     version: 5.1.4(svelte@4.2.12)(typescript@5.2.2)
+  svelte-spa-router:
+    specifier: ^4.0.1
+    version: 4.0.1
 
 devDependencies:
   '@commitlint/cli':
@@ -2132,6 +2135,11 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
+  /regexparam@2.0.2:
+    resolution: {integrity: sha512-A1PeDEYMrkLrfyOwv2jwihXbo9qxdGD3atBYQA9JJgreAx8/7rC6IUkWOw2NQlOxLp2wL0ifQbh1HuidDfYA6w==}
+    engines: {node: '>=8'}
+    dev: false
+
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
@@ -2485,6 +2493,12 @@ packages:
       strip-indent: 3.0.0
       svelte: 4.2.12
       typescript: 5.2.2
+
+  /svelte-spa-router@4.0.1:
+    resolution: {integrity: sha512-2JkmUQ2f9jRluijL58LtdQBIpynSbem2eBGp4zXdi7aDY1znbR6yjw0KsonD0aq2QLwf4Yx4tBJQjxIjgjXHKg==}
+    dependencies:
+      regexparam: 2.0.2
+    dev: false
 
   /svelte@4.2.12:
     resolution: {integrity: sha512-d8+wsh5TfPwqVzbm4/HCXC783/KPHV60NvwitJnyTA5lWn1elhXMNWhXGCJ7PwPa8qFUnyJNIyuIRt2mT0WMug==}
