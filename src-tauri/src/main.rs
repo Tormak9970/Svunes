@@ -12,6 +12,7 @@ use std::{fs::{self, DirEntry}, io::Error, panic::{self, Location}, path::PathBu
 
 use music_readers::{read_flac, read_mp3, read_wav};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
+use rayon::iter::IntoParallelRefIterator;
 use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
@@ -20,6 +21,7 @@ use tauri::{
 };
 
 use image::io::Reader as ImageReader;
+use rayon::prelude::*;
 // use id3::{frame::Picture, Tag, TagLike};
 
 #[derive(Clone, serde::Serialize)]
@@ -91,15 +93,16 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> Vec<Value> 
 async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String) -> String {
   let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Should have been able to deserialize music folders array.");
 
-  let mut entries: Vec<Value> = vec![];
-
-  for music_folder in music_folder_paths {
+  for music_folder in &music_folder_paths {
     add_path_to_scope(app_handle.to_owned(), music_folder.to_owned()).await;
+  }
+
+  let entries: Vec<Value> = music_folder_paths.par_iter().map(| music_folder | {
     let folder_path: PathBuf = PathBuf::from(music_folder.to_owned());
 
-    let mut folder_entries = read_music_folder(app_handle.to_owned(), folder_path);
-    entries.append(&mut folder_entries);
-  }
+    let folder_entries = read_music_folder(app_handle.to_owned(), folder_path);
+    return folder_entries;
+  }).flatten().collect();
 
   return serde_json::to_string(&entries).expect("Can't serialize entries to string.");
 }

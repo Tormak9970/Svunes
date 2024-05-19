@@ -76,6 +76,7 @@ dependencies = [
  "image 0.25.1",
  "palette_extract",
  "panic-message",
+ "rayon",
  "serde",
  "serde_json",
  "symphonia",
