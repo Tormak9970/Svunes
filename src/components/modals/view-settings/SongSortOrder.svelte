@@ -35,6 +35,10 @@
       <div class="radio">Year</div>
     </label>
     <label style="margin-bottom: 10px">
+      <RadioInput name="songSortOrder" checked={$songSortOrder === "Most Played"} on:input={() => sortOrderChange("Most Played")} />
+      <div class="radio">Most Played</div>
+    </label>
+    <label style="margin-bottom: 10px">
       <RadioInput name="songSortOrder" checked={$songSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
       <div class="radio">Last Played</div>
     </label>

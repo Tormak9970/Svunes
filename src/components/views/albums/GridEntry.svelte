@@ -72,10 +72,12 @@
             <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
           {:else if $albumSortOrder === "Year"}
             <div in:fade={{ duration: 200 }}>{album.releaseYear === -1 ? "Unkown" : album.releaseYear}</div>
-            {:else if $albumSortOrder === "Length"}
+          {:else if $albumSortOrder === "Length"}
             <div in:fade={{ duration: 200 }}>{album.displayAlbumLength()}</div>
-            {:else if $albumSortOrder === "Track Count"}
+          {:else if $albumSortOrder === "Track Count"}
             <div in:fade={{ duration: 200 }}>{album.songKeys.length + " tracks"}</div>
+          {:else if $albumSortOrder === "Most Played"}
+            <div in:fade={{ duration: 200 }}>{album.numTimesPlayed}</div>
           {:else if $albumSortOrder === "Last Played"}
             <div in:fade={{ duration: 200 }}>{album.lastPlayedOn === "Never" ? "Never" : renderDate(album.lastPlayedOn)}</div>
           {/if}

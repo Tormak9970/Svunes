@@ -34,6 +34,8 @@
       sorted = songsList.sort(stringSort<Song>("artist"));
     } else if (sortOrder === "Year") {
       sorted = songsList.sort((a: Song, b: Song) => b.releaseYear - a.releaseYear);
+    } else if (sortOrder === "Most Played") {
+      sorted = songsList.sort((a: Song, b: Song) => b.numTimesPlayed - a.numTimesPlayed);
     } else if (sortOrder === "Last Played") {
       sorted = songsList.sort(dateSort("lastPlayedOn"));
     } else {

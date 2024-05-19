@@ -86,6 +86,8 @@
             <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
           {:else if $songSortOrder === "Year"}
             <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? "Unkown" : song.releaseYear}</div>
+          {:else if $songSortOrder === "Most Played"}
+            <div in:fade={{ duration: 200 }}>{song.numTimesPlayed}</div>
           {:else if $songSortOrder === "Last Played"}
             <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
           {/if}

@@ -36,6 +36,8 @@
       sorted = albumsList.sort((a: Album, b: Album) => b.albumLength - a.albumLength);
     } else if (sortOrder === "Track Count") {
       sorted = albumsList.sort((a: Album, b: Album) => b.songKeys.length - a.songKeys.length);
+    } else if (sortOrder === "Most Played") {
+      sorted = albumsList.sort((a: Album, b: Album) => b.numTimesPlayed - a.numTimesPlayed);
     } else if (sortOrder === "Last Played") {
       sorted = albumsList.sort(dateSort("lastPlayedOn"));
     } else {

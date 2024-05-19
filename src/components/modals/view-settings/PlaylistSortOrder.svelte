@@ -27,8 +27,12 @@
       <div class="radio">Track Count</div>
     </label>
     <label style="margin-bottom: 10px">
+      <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Most Played"} on:input={() => sortOrderChange("Most Played")} />
+      <div class="radio">Most Played</div>
+    </label>
+    <label style="margin-bottom: 10px">
       <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
-      <div class="radio">Track Count</div>
+      <div class="radio">Last Played</div>
     </label>
   </div>
 </Body>
