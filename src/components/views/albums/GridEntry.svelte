@@ -115,7 +115,7 @@
     overflow: hidden;
   }
 
-  .secondary {
+  .secondary > div {
     font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;

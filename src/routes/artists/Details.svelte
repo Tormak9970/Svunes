@@ -19,10 +19,11 @@
   import { pop } from "svelte-spa-router";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { Song } from "../../lib/models/Song";
-  import { stringSort } from "../../lib/utils/Utils";
+  import { getRandomElements, stringSort } from "../../lib/utils/Utils";
   import { LogController } from "../../lib/controllers/LogController";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
     import ArtistCarousel from "../../components/layout/artist-carousel/ArtistCarousel.svelte";
+    import { Artist } from "../../lib/models/Artist";
 
   let artistSortMethod: ArtistEntriesSortOrder = "Album";
 
@@ -33,7 +34,9 @@
   $: songs = artist?.songKeys?.map((key) => $songsMap[key]);
   $: sortedSongs = songs ? sortSongs(songs, artistSortMethod) : [];
 
-  $: similarArtists = artist?.similarArtists;
+  $: allSimilarArtists = artist?.similarArtists;
+  // @ts-ignore
+  $: similarArtists = (allSimilarArtists && allSimilarArtists?.length > 5) ? getRandomElements<Artist>(allSimilarArtists, 5) : similarArtists;
 
   let isAtTop = true;
 
@@ -128,7 +131,7 @@
     <div class="details">
       <div class="info">
         <h3 class="name">{artist?.name}</h3>
-        <div class="other">{artist?.albumNames.size + " Albums • "}{artist?.songKeys.length + " Songs • "}{artist?.displayArtistSongLength()}</div>
+        <div class="other">{artist?.albumNames.size + ` Album${artist?.albumNames.size === 1 ? "" : "s"} • `}{artist?.songKeys.length + ` Song${artist?.songKeys.length === 1 ? "" : "s"} • `}{artist?.displayArtistSongLength()}</div>
       </div>
       <div class="buttons" style="{artist?.backgroundColor ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
         <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 10px)" }} on:click={playArtist}>
@@ -139,13 +142,15 @@
         </ColoredButton>
       </div>
     </div>
-    <div class="albums">
-      <div class="section-header">
-        <h3 class="label">Albums</h3>
-        <div />
+    {#if artistAlbums.length > 0 }
+      <div class="albums">
+        <div class="section-header">
+          <h3 class="label">Albums</h3>
+          <div />
+        </div>
+        <AlbumCarousel albums={artistAlbums} />
       </div>
-      <AlbumCarousel albums={artistAlbums} />
-    </div>
+    {/if}
     <div class="songs">
       <div class="section-header">
         <h3 class="label">Songs</h3>
@@ -222,6 +227,10 @@
   .albums,
   .songs {
     width: 100%;
+  }
+
+  .similar {
+    margin-top: 5px;
   }
 
   .similar .section-header,

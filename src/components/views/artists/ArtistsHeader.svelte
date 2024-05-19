@@ -5,8 +5,10 @@
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Button, Icon, Menu, MenuItem } from "m3-svelte";
-  import { showAlbumSortOrder, showArtistSortOrder, showGridSize } from "../../../stores/Modals";
+  import { showArtistSortOrder, showGridSize } from "../../../stores/Modals";
   import { push } from "svelte-spa-router";
+  import { selectedView } from "../../../stores/State";
+  import { View } from "../../../types/View";
 
   export let highlight: boolean;
 
@@ -14,6 +16,7 @@
    * Navigates to the settings view.
    */
   function goToSettings() {
+    $selectedView = View.SETTINGS;
     push("/settings");
   }
 
@@ -21,6 +24,7 @@
    * Navigates to the search view.
    */
   function openSearch() {
+    $selectedView = View.SEARCH;
     $selectedChip = "artist";
     push("/search");
   }

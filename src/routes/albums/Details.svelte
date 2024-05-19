@@ -146,8 +146,7 @@
     <div class="details">
       <div class="info">
         <h3 class="name">{album?.name}</h3>
-        <!-- TODO: set a max width for the artist names -->
-        <div class="other">{album?.albumArtist ? album?.albumArtist + " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear + " • " : ""}{album?.displayAlbumLength()}</div>
+        <div class="other"><div class="album-artist">{album?.albumArtist ?? ""}</div>{album?.albumArtist ? " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear : ""}{album?.releaseYear !== -1 ? " • " : ""}{album?.displayAlbumLength()}</div>
       </div>
       <div class="buttons" style="{album?.backgroundColor ? `--m3-scheme-primary: ${album.backgroundColor};` : ""}">
         <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 5px)" }} on:click={playAlbum}>
@@ -202,6 +201,9 @@
   .other {
     font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
+
+    display: flex;
+    align-items: center;
   }
 
   .buttons {
@@ -237,5 +239,12 @@
   .songs .section-header {
     width: calc(100% - 30px);
     margin-left: 15px;
+  }
+
+  .album-artist {
+    max-width: 80%;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
   }
 </style>

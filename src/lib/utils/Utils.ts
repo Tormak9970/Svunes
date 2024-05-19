@@ -150,3 +150,41 @@ export function sumColorString(color: string): number {
   const parts = color.split(" ").map((part) => parseInt(part));
   return parts[0] + parts[1] + parts[2];
 }
+
+/**
+ * Checks if an artist is singular.
+ * @param artist The artist to check
+ */
+export function artistIsSingular(artist: string) {
+  if (artist.includes(" and ") || artist.includes(" & ") || artist.includes(",") || artist.includes("/")) return false;
+  return true;
+}
+
+/**
+ * Gets all the artist names from a string.
+ * @param artist The string to check
+ */
+export function getAllArtistNames(artist: string): string[] {
+  return artist.split(/\s*(?:\s*(?:and|&|,|\/)\s*)\s*/);
+}
+
+/**
+ * Randomly selects n elements from an array.
+ * @param arr The array to get elements from.
+ * @param n The number of elements.
+ * @returns The randomly selected elements.
+ */
+export function getRandomElements<T>(arr: T[], n: number): T[] {
+  let result = new Array(n);
+  let len = arr.length;
+  let taken = new Array(len);
+  if (n > len) throw new RangeError("getRandom: more elements taken than available");
+
+  while (n--) {
+    const x = Math.floor(Math.random() * len);
+    result[n] = arr[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+
+  return result;
+}

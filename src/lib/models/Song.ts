@@ -1,7 +1,7 @@
 import { path } from "@tauri-apps/api";
 import { albumsMap } from "../../stores/State";
 import { get } from "svelte/store";
-import { formatTime } from "../utils/Utils";
+import { artistIsSingular, formatTime } from "../utils/Utils";
 
 /**
  * Class representing a song.
@@ -9,7 +9,7 @@ import { formatTime } from "../utils/Utils";
 export class Song {
   title: string;
   album?: string;
-  _artist?: string;
+  artist?: string;
   composer?: string;
   albumArtist?: string;
   releaseYear: number;
@@ -33,9 +33,12 @@ export class Song {
   constructor(title: string, album: string | undefined, artist: string | undefined, composer: string | undefined, albumArtist: string | undefined, releaseYear: number, length: number, bitRate: number, sampleRate: number, size: number, filePath: string, artPath: string, lastPlayedOn: string, numTimesPlayed: number, genre?: string, trackNumber?: number, totalTracks?: number) {
     this.title = title;
     this.album = album;
-    this._artist = artist;
     this.composer = composer;
     this.albumArtist = albumArtist;
+    this.artist = artist;
+
+    if (!this.artist && this.albumArtist && artistIsSingular(this.albumArtist)) this.artist = this.albumArtist;
+
     this.releaseYear = releaseYear;
     this.length = length;
     this.bitRate = bitRate;
@@ -56,14 +59,6 @@ export class Song {
 
   get key() {
     return this.fileName;
-  }
-
-  get artist(): string | undefined {
-    return this._artist ?? this.albumArtist;
-  }
-
-  set artist(newArtist: string | undefined) {
-    this._artist = newArtist;
   }
 
   /**

@@ -9,6 +9,7 @@ import { LogController } from "./LogController";
 import { Genre } from "../models/Genre";
 import { Artist } from "../models/Artist";
 import type { AlbumMetadata, SongMetadata } from "../../types/Settings";
+import { getAllArtistNames } from "../utils/Utils";
 
 /**
  * The core app controller.
@@ -87,21 +88,23 @@ export class AppController {
 
     for (const song of songs) {
       if (song.artist) {
-        if (!artistMap.get(song.artist)) {
-          const artist = new Artist(song.artist, song.artPath);
-          artist.songKeys.push(song.key);
-          
-          if (song.album) artist.albumNames.add(song.album);
-          if (song.genre) artist.genres.add(song.genre);
+        for (const artistName of getAllArtistNames(song.artist)) {
+          if (!artistMap.get(artistName)) {
+            const artist = new Artist(artistName, song.artPath);
+            artist.songKeys.push(song.key);
+            
+            if (song.album && song.albumArtist?.includes(artistName)) artist.albumNames.add(song.album);
+            if (song.genre) artist.genres.add(song.genre);
+    
+            artistMap.set(artistName, artist);
+          } else {
+            const artist = artistMap.get(artistName)!;
+            artist.songKeys.push(song.key);
   
-          artistMap.set(song.artist, artist);
-        } else {
-          const artist = artistMap.get(song.artist)!;
-          artist.songKeys.push(song.key);
-
-          if (song.album) artist.albumNames.add(song.album);
-          if (song.genre) artist.genres.add(song.genre);
-          if (!artist.imagePath) artist.imagePath = song.artPath;
+            if (song.album && song.albumArtist?.includes(artistName)) artist.albumNames.add(song.album);
+            if (song.genre) artist.genres.add(song.genre);
+            if (!artist.imagePath) artist.imagePath = song.artPath;
+          }
         }
       }
     }
