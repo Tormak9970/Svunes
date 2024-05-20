@@ -45,6 +45,29 @@ export function debounce(func: any, wait:number, immediate?:boolean) {
 }
 
 /**
+ * Debounces a function by the provided interval.
+ * @param func The function to debounce.
+ * @param wait How long to wait before running the function after the last call.
+ * @param immediate Whether to run the function immediately, then debounce, or debounce from the start.
+ * @returns The debounced function.
+ */
+export function asyncDebounce(func: any, wait:number, resolve: (value?: unknown) => void, immediate?:boolean) {
+  let timeout:any|null;
+  return function (...args: any[]) {
+    // @ts-ignore
+    const context = this;
+    const later = function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args).then(resolve);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout as any);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args).then(resolve);
+  }
+}
+
+/**
  * Renders the provided date in short form.
  * @param formattedDate The date in ISO format.
  */

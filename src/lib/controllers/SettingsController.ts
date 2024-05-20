@@ -23,6 +23,7 @@ import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
 import type { Album } from "../models/Album";
 import type { Unsubscriber } from "svelte/store";
+import { debounce } from "../utils/Utils";
 
 /**
  * Sets settings to defaults if they do not exist.
@@ -170,7 +171,7 @@ export class SettingsController {
    * @param field The setting to update.
    * @param val The new value.
    */
-  private static async updateSetting<T>(field: string, val: T): Promise<void> {
+  private static updateSetting<T>(field: string, val: T): void {
     const settings = structuredClone(this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
@@ -184,7 +185,7 @@ export class SettingsController {
     parentObject[fieldPath[fieldPath.length - 1]] = val;
 
     this.settings = settings;
-    await this.save();
+    this.save();
 
     const stringified = JSON.stringify(val);
     LogController.log(stringified.length < 200 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
@@ -388,21 +389,30 @@ export class SettingsController {
     this.artistSortOrderUnsub = artistSortOrder.subscribe(this.updateStoreIfChanged<string>("artistsView.sortOrder"));
   }
 
+  private static saveCallback = (value?: unknown) => {};
+  private static async saveSettingsToDevice() {
+    await fs.writeFile({
+      path: this.settingsPath,
+      contents: JSON.stringify(this.settings),
+    }).then(SettingsController.saveCallback.bind(this));
+  }
+  private static debouncedSave = debounce(SettingsController.saveSettingsToDevice.bind(SettingsController), 500);
+
   /**
    * Saves the settings object.
    */
   static async save() {
-    await fs.writeFile({
-      path: this.settingsPath,
-      contents: JSON.stringify(this.settings),
-    });
+    return new Promise((resolve, reject) => {
+      this.saveCallback = resolve;
+      this.debouncedSave();
+    })
   }
 
   /**
    * Updates the saved metadata for the provided album.
    * @param albums The albums to update.
    */
-  static async updateAlbumsMetadata(albums: Album[]) {
+  static updateAlbumsMetadata(albums: Album[]) {
     for (const album of albums) {
       this.settings.cache.albumsMetadata[album.name] = {
         "lastPlayedOn": album.lastPlayedOn,
@@ -410,20 +420,20 @@ export class SettingsController {
       }
     }
 
-    await this.updateSetting<Record<string, SongMetadata>>("cache.albumsMetadata", this.settings.cache.albumsMetadata);
+    this.updateSetting<Record<string, SongMetadata>>("cache.albumsMetadata", this.settings.cache.albumsMetadata);
   }
 
   /**
    * Updates the saved metadata for the provided song.
    * @param song The song to update.
    */
-  static async updateSongMetadata(song: Song) {
+  static updateSongMetadata(song: Song) {
     this.settings.cache.songsMetadata[song.key] = {
       "lastPlayedOn": song.lastPlayedOn,
       "numTimesPlayed": song.numTimesPlayed
     }
 
-    await this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", this.settings.cache.songsMetadata);
+    this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", this.settings.cache.songsMetadata);
   }
 
   /**
