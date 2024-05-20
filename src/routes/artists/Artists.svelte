@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { albumGridSize, artistGridSize, artists, artistSortOrder } from "../../stores/State";
+  import { albumGridSize, artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "../../stores/State";
   import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
   import ListEntry from "../../components/views/artists/ListEntry.svelte";
   import GridEntry from "../../components/views/artists/GridEntry.svelte";
@@ -13,8 +13,6 @@
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import { Icon } from "m3-svelte";
   import type { Artist } from "../../lib/models/Artist";
-
-  let isAtTop = true;
 
   const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songKeys.length}`;
 
@@ -44,16 +42,16 @@
 
 <ViewContainer>
   <div slot="header">
-    <ArtistsHeader highlight={!isAtTop} />
+    <ArtistsHeader highlight={!$artistsIsAtTop} />
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
     {#if sortedArtists.length > 0}
       {#if $artistGridSize === GridSize.LIST}
-        <VirtualList itemHeight={60} items={sortedArtists} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+        <VirtualList name="artistsView" itemHeight={60} items={sortedArtists} keyFunction={keyFunction} bind:isAtTop={$artistsIsAtTop} let:entry>
           <ListEntry artist={entry} />
         </VirtualList>
       {:else}
-        <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$albumGridSize].height + GRID_IMAGE_DIMENSIONS[$albumGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$albumGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} items={sortedArtists} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+        <VirtualGrid name="artistsView" itemHeight={GRID_IMAGE_DIMENSIONS[$albumGridSize].height + GRID_IMAGE_DIMENSIONS[$albumGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$albumGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} items={sortedArtists} keyFunction={keyFunction} bind:isAtTop={$artistsIsAtTop} let:entry>
           <GridEntry artist={entry} />
         </VirtualGrid>
       {/if}

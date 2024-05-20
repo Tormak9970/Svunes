@@ -11,10 +11,8 @@
   import type { Song } from "../../lib/models/Song";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
   import { stringSort, dateSort } from "../../lib/utils/Utils";
-  import { songs, songSortOrder, songGridSize, songsStartIndex } from "../../stores/State";
+  import { songs, songSortOrder, songGridSize, songsIsAtTop } from "../../stores/State";
   import { type SongSortOrder, GridSize } from "../../types/Settings";
-
-  let isAtTop = true;
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
 
@@ -50,16 +48,16 @@
 
 <ViewContainer>
   <div slot="header">
-    <SongsHeader highlight={!isAtTop} />
+    <SongsHeader highlight={!$songsIsAtTop} />
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
     {#if sortedSongs.length > 0}
       {#if $songGridSize === GridSize.LIST}
-        <VirtualList itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+        <VirtualList name="songsView" itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={$songsIsAtTop} let:entry>
           <ListEntry song={entry} />
         </VirtualList>
       {:else}
-        <VirtualGrid itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+        <VirtualGrid name="songsView" itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={$songsIsAtTop} let:entry>
           <GridEntry song={entry} />
         </VirtualGrid>
       {/if}

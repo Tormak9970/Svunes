@@ -1,8 +1,36 @@
+<script lang="ts" context="module">
+  type CacheEntry = {
+    start: number,
+    end: number,
+    heightMap: any[],
+    top: number,
+    bottom: number,
+    listScrollTop: number
+  }
+  let virtualGridCache: Record<string, CacheEntry> = {};
+
+  function getCacheEntry(name: string): CacheEntry {
+    if (!virtualGridCache[name]) {
+      virtualGridCache[name] = {
+        start: 0,
+        end: 0,
+        heightMap: [],
+        top: 0,
+        bottom: 0,
+        listScrollTop: 0
+      }
+    }
+
+    return virtualGridCache[name];
+  }
+</script>
+
 <script lang="ts">
 	import { onMount, tick } from "svelte";
   import { debounce } from "../../lib/utils/Utils";
 
 	// * Component Props.
+  export let name: string;
 	export let items: any[];
 	export let height = "100%";
   export let width = "100%";
@@ -10,19 +38,16 @@
   export let itemWidth: number;
   export let columnGap: number;
   export let rowGap: number;
+  export let isAtTop = true;
 
   export let keyFunction = (entry: any) => entry.index;
 
-	// * Read-Only, but visible to consumers via bind:start & bind:end.
-	export let start = 0;
-	export let end = 0;
-  export let isAtTop = true;
+  $: cacheEntry = getCacheEntry(name);
 
   // * Local State
   let mounted: boolean;
   let entries: HTMLCollectionOf<HTMLElement>;
   let visible: any[];
-  let heightMap: any[] = [];
 
   let viewport: HTMLElement;
   let viewportHeight = 0;
@@ -30,12 +55,10 @@
 
   let contents: HTMLElement;
 
-  let top = 0;
-  let bottom = 0;
   let averageHeight: number;
 
-  $: visible = items.slice(start, end).map((data, i) => {
-    return { index: i + start, data };
+  $: visible = items.slice(cacheEntry.start, cacheEntry.end).map((data, i) => {
+    return { index: i + cacheEntry.start, data };
   });
 
   // * Whenever `items` changes, invalidate the current heightmap.
@@ -54,21 +77,21 @@
     // * Wait until the DOM is up to date.
 		await tick();
 
-		let contentHeight = top - scrollTop;
-		let i = start;
+		let contentHeight = cacheEntry.top - scrollTop;
+		let i = cacheEntry.start;
 
 		while ((contentHeight - rowGap) < viewportHeight && i < items.length) {
-			let entry = entries[i - start];
+			let entry = entries[i - cacheEntry.start];
 
 			if (!entry) {
-				end = i + 1;
+				cacheEntry.end = i + 1;
         // * Render the newly visible entry.
 				await tick();
-				entry = entries[i - start];
+				entry = entries[i - cacheEntry.start];
 			}
 
       // TODO: maybe try only adding rowGap if we're not on the last row.
-			const entryHeight = heightMap[i] = (itemHeight + rowGap);
+			const entryHeight = cacheEntry.heightMap[i] = (itemHeight + rowGap);
       // * Only increase the contentHeight if this is the last element in the row, or the last element.
       if (i % numEntriesPerRow === numEntriesPerRow - 1 || i === items.length - 1) contentHeight += entryHeight;
 
@@ -78,13 +101,15 @@
     // TODO: see if this is needed.
     contentHeight -= rowGap;
 
-		end = i;
+		cacheEntry.end = i;
 
-		const remaining = items.length - end;
-		averageHeight = (top + contentHeight) / end;
+		const remaining = items.length - cacheEntry.end;
+		averageHeight = (cacheEntry.top + contentHeight) / cacheEntry.end;
 
-		bottom = remaining * averageHeight;
-		heightMap.length = items.length;
+		cacheEntry.bottom = remaining * averageHeight;
+		cacheEntry.heightMap.length = items.length;
+    
+		virtualGridCache = { ...virtualGridCache }
   }
 
   /**
@@ -93,23 +118,25 @@
   async function handleScroll() {
     const { scrollTop } = viewport;
     isAtTop = scrollTop === 0;
+    cacheEntry.listScrollTop = scrollTop;
+
     const numEntriesPerRow = Math.floor((viewport.clientWidth + columnGap) / (itemWidth + columnGap));
 
-		const oldStart = start;
+		const oldStart = cacheEntry.start;
 
 		for (let v = 0; v < entries.length; v++) {
-			heightMap[start + v] = (itemHeight + rowGap);
+			cacheEntry.heightMap[cacheEntry.start + v] = (itemHeight + rowGap);
 		}
 
 		let i = 0;
 		let y = 0;
 
 		while (i < items.length) {
-			const entryHeight = heightMap[i] || averageHeight;
+			const entryHeight = cacheEntry.heightMap[i] || averageHeight;
 
 			if (y + entryHeight > scrollTop) {
-				start = i;
-				top = y;
+				cacheEntry.start = i;
+				cacheEntry.top = y;
 
 				break;
 			}
@@ -121,34 +148,34 @@
 
 		while (i < items.length) {
       // * Only increase the height if this is the last element in the row, or the last element
-			if (i % numEntriesPerRow === numEntriesPerRow - 1 || i === items.length - 1) y += heightMap[i] || averageHeight;
+			if (i % numEntriesPerRow === numEntriesPerRow - 1 || i === items.length - 1) y += cacheEntry.heightMap[i] || averageHeight;
 			i++;
 
       // ? subtract row-gap here to always exclude the last line's row-gap
 			if ((y - rowGap) > scrollTop + viewportHeight) break;
 		}
 
-		end = i;
+		cacheEntry.end = i;
 
-		const remaining = items.length - end;
-		averageHeight = y / end;
+		const remaining = items.length - cacheEntry.end;
+		averageHeight = y / cacheEntry.end;
 
 		while (i < items.length) {
-      heightMap[i++] = averageHeight;
+      cacheEntry.heightMap[i++] = averageHeight;
     }
 
-		bottom = remaining * averageHeight;
+		cacheEntry.bottom = remaining * averageHeight;
 
 		// prevent jumping if we scrolled up into unknown territory
-		if (start < oldStart) {
+		if (cacheEntry.start < oldStart) {
 			await tick();
 
 			let expectedHeight = 0;
 			let actualHeight = 0;
 
-			for (let i = start; i < oldStart; i++) {
-				if (entries[i - start] && i % numEntriesPerRow === 0) {
-					expectedHeight += heightMap[i];
+			for (let i = cacheEntry.start; i < oldStart; i++) {
+				if (entries[i - cacheEntry.start] && i % numEntriesPerRow === 0) {
+					expectedHeight += cacheEntry.heightMap[i];
 					actualHeight += (itemHeight + rowGap);
 				}
 			}
@@ -157,9 +184,7 @@
 			viewport.scrollTo(0, scrollTop + d);
 		}
 
-		// TODO if we overestimated the space these
-		// rows would occupy we may need to add some
-		// more. maybe we can just call handle_scroll again?
+		virtualGridCache = { ...virtualGridCache }
   }
 
   const debouncedRefresh = debounce(() => refresh(items, viewportHeight, itemHeight), 100);
@@ -169,6 +194,7 @@
   // * Trigger initial refresh.
   onMount(() => {
     entries = contents.getElementsByTagName("svelte-virtual-grid-entry") as HTMLCollectionOf<HTMLElement>;
+    viewport.scrollTo(0, cacheEntry.listScrollTop);
     mounted = true;
   });
 </script>
@@ -182,7 +208,7 @@
     bind:this={viewport}
   >
     <svelte-virtual-grid-contents
-      style="padding-top: {top}px; padding-bottom: {bottom + 2}px;"
+      style="padding-top: {cacheEntry.top}px; padding-bottom: {cacheEntry.bottom + 2}px;"
       bind:this={contents}
     >
       {#each visible as entry (keyFunction(entry))}
