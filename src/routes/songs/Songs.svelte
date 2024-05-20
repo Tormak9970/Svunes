@@ -11,7 +11,7 @@
   import type { Song } from "../../lib/models/Song";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
   import { stringSort, dateSort } from "../../lib/utils/Utils";
-  import { songs, songSortOrder, songGridSize } from "../../stores/State";
+  import { songs, songSortOrder, songGridSize, songsStartIndex } from "../../stores/State";
   import { type SongSortOrder, GridSize } from "../../types/Settings";
 
   let isAtTop = true;

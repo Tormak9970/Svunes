@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isLoading, selectedView, showMiniPlayer, viewsToRender } from "../../../stores/State";
+  import { isLoading, selectedView, showMiniPlayer, viewsToRender } from "../../stores/State";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import Album from "@ktibow/iconset-material-symbols/album";
   import MusicNote from "@ktibow/iconset-material-symbols/music-note";
@@ -8,12 +8,12 @@
   import Settings from "@ktibow/iconset-material-symbols/settings";
   import Search from "@ktibow/iconset-material-symbols/search-rounded";
   import Home from "@ktibow/iconset-material-symbols/home-rounded";
-  import { selected } from "../../../stores/Select";
-  import { View } from "../../../types/View";
+  import { selected } from "../../stores/Select";
+  import { View } from "../../types/View";
   import { NavList, NavListButton } from "m3-svelte";
   import { push } from "svelte-spa-router";
-  import { viewRoutesLUT } from "../../../routes";
-    import { fly } from "svelte/transition";
+  import { viewRoutesLUT } from "../../routes";
+  import { fly } from "svelte/transition";
   
   const icons = {
     0: QueueMusic,

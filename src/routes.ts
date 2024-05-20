@@ -31,8 +31,8 @@ export const viewRoutesLUT = {
   2: "/songs",
   3: "/artists",
   4: "/genres",
-  5: "/search",
-  6: "/settings",
+  5: "/settings",
+  6: "/search",
   7: "/home"
 }
 

@@ -13,6 +13,11 @@ export const isLoading = writable(true);
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);
 
+export const playlistsStartIndex = writable(0);
+export const songsStartIndex = writable(0);
+export const albumsStartIndex = writable(0);
+export const artistsStartIndex = writable(0);
+
 export const showMiniPlayer = writable(true);
 
 export const playlists: Writable<Playlist[]> = writable([]);

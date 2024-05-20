@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
-  import ViewNav from "./components/navigation/mobile/ViewNav.svelte";
+  import ViewNav from "./components/navigation/ViewNav.svelte";
   import MiniPlayer from "./components/overlays/MiniPlayer.svelte";
   import Titlebar from "./components/Titlebar.svelte";
   import { isLoading, selectedView, showMiniPlayer } from "./stores/State";
