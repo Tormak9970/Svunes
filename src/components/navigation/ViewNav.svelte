@@ -10,10 +10,11 @@
   import Home from "@ktibow/iconset-material-symbols/home-rounded";
   import { selected } from "../../stores/Select";
   import { View } from "../../types/View";
-  import { NavList, NavListButton } from "m3-svelte";
   import { push } from "svelte-spa-router";
   import { viewRoutesLUT } from "../../routes";
   import { fly } from "svelte/transition";
+  import NavList from "./NavList.svelte";
+    import NavListButton from "./NavListButton.svelte";
   
   const icons = {
     0: QueueMusic,
