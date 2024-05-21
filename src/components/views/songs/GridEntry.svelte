@@ -12,8 +12,8 @@
   import { renderDate } from "../../../lib/utils/Utils";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import CardClickable from "../../layout/CardClickable.svelte";
-  import { showSongOptions, songToShowOptions } from "../../../stores/Overlays";
-  import { Button, Icon } from "m3-svelte";
+  import MenuButton from "../../interactables/MenuButton.svelte";
+  import SongOptions from "./SongOptions.svelte";
 
   export let song: Song;
 
@@ -38,14 +38,6 @@
   }
 
   /**
-   * Shows the entry's options.
-   */
-  function openSongOptions() {
-    $songToShowOptions = song.key;
-    $showSongOptions = true;
-  }
-
-  /**
    * Handles when the user selects the entry.
    */
   function select() {
@@ -53,6 +45,8 @@
       $selected = [ ...$selected, song.key ];
     }
   }
+  
+  let menuIsOpen = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -95,9 +89,9 @@
       </div>
       {#if !highlighted && $songGridSize === GridSize.LARGE}
         <div class="options">
-          <Button type="text" iconType="full" on:click={openSongOptions}>
-            <Icon icon={MoreVert} />
-          </Button>
+          <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
+            <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
+          </MenuButton>
         </div>
       {/if}
     </div>
