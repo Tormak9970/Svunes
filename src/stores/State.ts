@@ -39,6 +39,9 @@ export const genresMap: Readable<Record<string, Genre>> = derived(genres, (genre
   return Object.fromEntries(entries);
 });
 
+export const lastView: Writable<View | null> = writable(null);
+export const isSwitchingView = writable(false);
+
 // * Settings stores
 export const themePrimaryColor = writable("#7bdd69");
 

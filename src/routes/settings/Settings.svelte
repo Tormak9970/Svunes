@@ -4,9 +4,13 @@
   import { Button, Icon } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { pop } from "svelte-spa-router";
+  import { onMount } from "svelte";
+  import { isSwitchingView } from "../../stores/State";
 
 
-
+  onMount(() => {
+    $isSwitchingView = false;
+  });
 </script>
 
 <SettingsBody>

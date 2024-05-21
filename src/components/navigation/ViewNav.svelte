@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isLoading, selectedView, showMiniPlayer, viewsToRender } from "../../stores/State";
+  import { isLoading, isSwitchingView, lastView, selectedView, showMiniPlayer, viewsToRender } from "../../stores/State";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import Album from "@ktibow/iconset-material-symbols/album";
   import MusicNote from "@ktibow/iconset-material-symbols/music-note";
@@ -31,8 +31,10 @@
    * @param view The selected view.
    */
   function setSelectedView(view: View) {
+    $lastView = $selectedView;
     $selectedView = view;
     $selected = [];
+    $isSwitchingView = true;
     
     if (!$isLoading) {
       push(viewRoutesLUT[view]);

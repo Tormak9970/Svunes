@@ -188,7 +188,7 @@ export function artistIsSingular(artist: string) {
  * @param artist The string to check
  */
 export function getAllArtistNames(artist: string): string[] {
-  return artist.split(/\s*(?:\s*(?:and|&|,|\/)\s*)\s*/);
+  return artist.split(/\s*(?:\s*(?:and|&|,|;|\/|\\)\s*)\s*/);
 }
 
 /**
