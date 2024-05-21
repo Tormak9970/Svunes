@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./lib/md-defs";
   import { onDestroy, onMount } from "svelte";
   import ViewNav from "./components/navigation/ViewNav.svelte";
   import MiniPlayer from "./components/overlays/MiniPlayer.svelte";

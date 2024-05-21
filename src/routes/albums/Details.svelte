@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, Icon, Menu, MenuItem } from "m3-svelte";
+  import { Button, Icon } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
@@ -24,6 +24,7 @@
   import type { Song } from "../../lib/models/Song";
   import { nullishNumberSort, stringSort } from "../../lib/utils/Utils";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
+  import MenuItem from "../../components/layout/MenuItem.svelte";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
@@ -131,12 +132,10 @@
         </Button>
         <div style="height: 100%; width: 5px;" />
         <MenuButton icon={MoreVert}>
-          <Menu>
-            <MenuItem on:click={playNext}>Play Next</MenuItem>
-            <MenuItem on:click={queueAlbum}>Add to Queue</MenuItem>
-            <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
-            <MenuItem on:click={deleteAlbum}>Delete</MenuItem>
-          </Menu>
+          <MenuItem on:click={playNext}>Play Next</MenuItem>
+          <MenuItem on:click={queueAlbum}>Add to Queue</MenuItem>
+          <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
+          <MenuItem on:click={deleteAlbum}>Delete</MenuItem>
         </MenuButton>
       </span>
     </OverlayHeader>
@@ -161,11 +160,9 @@
       <div class="section-header">
         <h3 class="label">Songs</h3>
         <MenuButton icon={Filter}>
-          <Menu>
-            <RadioMenuItem name="albumEntriesSort" label="Alphabetical" checked={albumSortMethod === "Alphabetical"} on:input={() => albumSortMethod = "Alphabetical" } />
-            <RadioMenuItem name="albumEntriesSort" label="Track Number" checked={albumSortMethod === "Track Number"} on:input={() => albumSortMethod = "Track Number"} />
-            <RadioMenuItem name="albumEntriesSort" label="Song Duration" checked={albumSortMethod === "Song Duration"} on:input={() => albumSortMethod = "Song Duration"} />
-          </Menu>
+          <RadioMenuItem name="albumEntriesSort" label="Alphabetical" checked={albumSortMethod === "Alphabetical"} on:input={() => albumSortMethod = "Alphabetical" } />
+          <RadioMenuItem name="albumEntriesSort" label="Track Number" checked={albumSortMethod === "Track Number"} on:input={() => albumSortMethod = "Track Number"} />
+          <RadioMenuItem name="albumEntriesSort" label="Song Duration" checked={albumSortMethod === "Song Duration"} on:input={() => albumSortMethod = "Song Duration"} />
         </MenuButton>
       </div>
       <SongsList songs={sortedSongs} />

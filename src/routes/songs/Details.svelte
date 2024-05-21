@@ -2,7 +2,7 @@
   import { showAddToPlaylist, songToAdd } from "../../stores/Overlays";
   import { songsMap } from "../../stores/State";
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
-  import { Button, Icon, Menu, MenuItem } from "m3-svelte";
+  import { Button, Icon } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
@@ -25,6 +25,7 @@
   import DetailsBody from "../../components/utils/DetailsBody.svelte";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop, push } from "svelte-spa-router";
+  import MenuItem from "../../components/layout/MenuItem.svelte";
   
   export let params: { key?: string } = {};
   $: song = params.key ? $songsMap[params.key] : null;
@@ -117,20 +118,18 @@
         </Button>
         <div style="height: 100%; width: 5px;" />
         <MenuButton icon={MoreVert}>
-          <Menu>
-            <MenuItem on:click={playSong}>Play</MenuItem>
-            <MenuItem on:click={playNext}>Play Next</MenuItem>
-            <MenuItem on:click={queueSong}>Add to Queue</MenuItem>
-            <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
-            {#if song?.album}
-              <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
-            {/if}
-            {#if song?.artist}
-              <MenuItem on:click={goToArtist}>Go to Artist</MenuItem>
-            {/if}
-            <MenuItem on:click={share}>Share</MenuItem>
-            <MenuItem on:click={deleteSong}>Delete</MenuItem>
-          </Menu>
+          <MenuItem on:click={playSong}>Play</MenuItem>
+          <MenuItem on:click={playNext}>Play Next</MenuItem>
+          <MenuItem on:click={queueSong}>Add to Queue</MenuItem>
+          <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
+          {#if song?.album}
+            <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
+          {/if}
+          {#if song?.artist}
+            <MenuItem on:click={goToArtist}>Go to Artist</MenuItem>
+          {/if}
+          <MenuItem on:click={share}>Share</MenuItem>
+          <MenuItem on:click={deleteSong}>Delete</MenuItem>
         </MenuButton>
       </span>
     </OverlayHeader>

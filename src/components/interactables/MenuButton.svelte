@@ -1,26 +1,24 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
   import { Button, Icon } from "m3-svelte";
-  import { containerTransform } from "../animations/animations";
 
   export let width = "36px";
   export let height = "36px";
   export let icon: IconifyIcon;
-  export let duration = 300;
 
   let buttonElement: HTMLButtonElement;
-
-  const [send, receive] = containerTransform({ duration: duration });
+  let menuElement: any;
 
   export let open = false;
 
   function onMouseUp(e: Event) {
-    if (e.target !== buttonElement) open = false;
+    if (e.target !== buttonElement) menuElement.open = open = false;
   }
 
   function onClick(e: Event) {
     if (!buttonElement) buttonElement = e.target as HTMLButtonElement;
-    open = !open;
+    if (!menuElement.anchorElement) menuElement.anchorElement = buttonElement;
+    menuElement.open = open = !open;
   }
 </script>
 
@@ -28,31 +26,17 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="container" on:click|stopPropagation>
+<div class="container" on:click|stopPropagation style="--md-menu-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-selected-container-color: rgb(var(--m3-scheme-secondary-container));">
   <Button type="text" iconType="full" on:click={onClick}>
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
-  {#if open}
-    <div class="menu-wrapper" in:receive={{ key: "menu-button" }} out:send={{ key: "menu-button" }}>
-      <slot />
-    </div>
-  {:else}
-    <div class="wrapper-placeholder" in:receive={{ key: "menu-button" }} out:send={{ key: "menu-button" }} />
-  {/if}
+  <md-menu bind:this={menuElement} positioning="popover">
+    <slot />
+  </md-menu>
 </div>
 
 <style>
   .container {
     position: relative;
-  }
-
-  .menu-wrapper {
-    position: absolute;
-    right: 0;
-  }
-
-  .wrapper-placeholder {
-    position: absolute;
-    right: 0;
   }
 </style>

@@ -4,11 +4,12 @@
   import { selectedChip } from "../../../stores/Search";
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { Button, Icon, Menu, MenuItem } from "m3-svelte";
+  import { Button, Icon } from "m3-svelte";
   import { showGridSize, showSongSortOrder } from "../../../stores/Modals";
   import { push } from "svelte-spa-router";
   import { selectedView } from "../../../stores/State";
   import { View } from "../../../types/View";
+    import MenuItem from "../../layout/MenuItem.svelte";
 
   export let highlight: boolean;
 
@@ -40,11 +41,9 @@
   </div>
   <div slot="right">
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      <Menu>
-        <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
-        <MenuItem on:click={() => { $showSongSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
-        <MenuItem on:click={goToSettings}>Settings</MenuItem>
-      </Menu>
+      <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
+      <MenuItem on:click={() => { $showSongSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
+      <MenuItem on:click={goToSettings}>Settings</MenuItem>
     </MenuButton>
   </div>
 </ViewHeader>
