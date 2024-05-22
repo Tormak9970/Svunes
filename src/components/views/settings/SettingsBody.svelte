@@ -3,7 +3,7 @@
 </script>
 
 <div class="full-screen-overlay" transition:sharedAxisTransition={{ direction: "Z", leaving: false }}>
-  <div class="headline">
+  <div style="display: flex;">
     <slot name="header" />
   </div>
   <div class="content">

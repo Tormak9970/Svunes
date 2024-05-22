@@ -1,10 +1,9 @@
 import { get } from "svelte/store";
-import { albums, albumsMap, artists, artistsMap, queue, songsMap } from "../../stores/State";
+import { albumsMap, artistsMap, playlists, playlistsMap, queue, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 
 // ! Add logging to this file
-// ! search file for "TODO"
 
 /**
  * Controls the current queue.
@@ -52,8 +51,23 @@ export class QueueController {
    * @param playlistNames The playlist names to queue.
    */
   static queuePlaylists(playlistNames: string[]) {
+    let songMap = get(songsMap);
+    let playlistMap = get(playlistsMap);
+    let songQueue = get(queue);
+
+    for (const playlistName of playlistNames) {
+      const playlist = playlistMap[playlistName];
+      playlist.numTimesPlayed++;
+      playlist.setLastPlayed();
+      
+      for (const songName of playlist.songKeys) {
+        songQueue.push(songMap[songName]);
+      }
+    }
+
+    playlists.set([ ...get(playlists) ]);
     
-    // TODO: verify that this will include the changed date
+    queue.set(songQueue);
   }
 
   /**
@@ -80,8 +94,9 @@ export class QueueController {
     let albumMap = get(albumsMap);
     let songQueue = get(queue);
 
-    for (const albumName of albumNames.reverse()) {
+    for (const albumName of albumNames) {
       const album = albumMap[albumName];
+      album.numTimesPlayed++;
       album.setLastPlayed();
       
       for (const songName of album.songKeys) {
@@ -103,7 +118,7 @@ export class QueueController {
     let artistMap = get(artistsMap);
     let songQueue = get(queue);
 
-    for (const artistName of artistNames.reverse()) {
+    for (const artistName of artistNames) {
       for (const songName of artistMap[artistName].songKeys) {
         songQueue.push(songMap[songName]);
       }
@@ -130,8 +145,23 @@ export class QueueController {
    * @param playlistNames The playlist names to queue.
    */
   static playPlaylistsNext(playlistNames: string[]) {
+    let songMap = get(songsMap);
+    let playlistMap = get(playlistsMap);
+    let songQueue = get(queue);
+
+    for (const playlistName of playlistNames.reverse()) {
+      const playlist = playlistMap[playlistName];
+      playlist.numTimesPlayed++;
+      playlist.setLastPlayed();
+      
+      for (const songName of playlist.songKeys.reverse()) {
+        songQueue.unshift(songMap[songName]);
+      }
+    }
+
+    playlists.set([ ...get(playlists) ]);
     
-    // TODO: verify that this will include the changed date
+    queue.set(songQueue);
   }
 
   /**
@@ -160,9 +190,10 @@ export class QueueController {
 
     for (const albumName of albumNames.reverse()) {
       const album = albumMap[albumName];
+      album.numTimesPlayed++;
       album.setLastPlayed();
       
-      for (const songKey of album.songKeys) {
+      for (const songKey of album.songKeys.reverse()) {
         songQueue.unshift(songMap[songKey]);
       }
     }
@@ -182,7 +213,7 @@ export class QueueController {
     let songQueue = get(queue);
 
     for (const artistName of artistNames.reverse()) {
-      for (const songKey of artistMap[artistName].songKeys) {
+      for (const songKey of artistMap[artistName].songKeys.reverse()) {
         songQueue.unshift(songMap[songKey]);
       }
     }

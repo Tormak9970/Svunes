@@ -1,3 +1,5 @@
+import { get } from "svelte/store";
+import { playlists } from "../../stores/State";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
 import type { Playlist } from "../models/Playlist";
@@ -16,7 +18,9 @@ export class PlaybackController {
    * @param shuffle Whether to shuffle this playlist or not.
    */
   static playPlaylist(playlist: Playlist, shuffle = false) {
-
+    playlist.numTimesPlayed++;
+    playlist.setLastPlayed();
+    playlists.set([ ...get(playlists) ]);
   }
 
   /**
@@ -24,6 +28,8 @@ export class PlaybackController {
    * @param song The song to play.
    */
   static playSong(song: Song) {
+    song.numTimesPlayed++;
+    song.setLastPlayed();
     SettingsController.updateSongMetadata(song);
 
   }
@@ -34,6 +40,8 @@ export class PlaybackController {
    * @param shuffle Whether to shuffle this album or not.
    */
   static playAlbum(album: Album, shuffle = false) {
+    album.numTimesPlayed++;
+    album.setLastPlayed();
     SettingsController.updateAlbumsMetadata([album]);
     
   }

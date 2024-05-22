@@ -1,5 +1,5 @@
 import type { Album } from "../lib/models/Album";
-import type { Playlist } from "../lib/models/Playlist";
+import { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { View } from "./View";
 
@@ -118,6 +118,8 @@ export type Settings = {
   }
 }
 
+const FAVORITES_PLAYLIST = new Playlist("Favorites", [], false, undefined, undefined, undefined, 0);
+
 export const DEFAULT_SETTINGS: Settings = {
   "version": "",
   "themePrimaryColor": "#7bdd69",
@@ -151,7 +153,9 @@ export const DEFAULT_SETTINGS: Settings = {
     "showAlbumOnLockScreen": true
   },
 
-  "playlists": [],
+  "playlists": [
+    FAVORITES_PLAYLIST
+  ],
 
   "queue": [],
 
