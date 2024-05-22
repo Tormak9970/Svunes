@@ -1,12 +1,10 @@
 <script lang="ts">
-  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import { Button, Icon } from "m3-svelte";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { pop } from "svelte-spa-router";
   import { onMount } from "svelte";
-  import { isSwitchingView } from "../../stores/State";
+  import { isSwitchingView, lastView, selectedView } from "../../stores/State";
   import SettingsNavButton from "../../components/views/settings/SettingsNavButton.svelte";
+  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
   
   import Palette from "@ktibow/iconset-material-symbols/palette";
   import NowPlaying from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
@@ -16,6 +14,11 @@
   import Backup from "@ktibow/iconset-material-symbols/history-rounded";
   import About from "@ktibow/iconset-material-symbols/info-outline-rounded";
 
+  function goBack() {
+    $selectedView = $lastView!;
+    pop();
+  }
+
   onMount(() => {
     $isSwitchingView = false;
   });
@@ -23,15 +26,7 @@
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <OverlayHeader highlight={false}>
-      <span slot="left" style="display: flex; align-items: center;">
-        <Button type="text" iconType="full" on:click={pop}>
-          <Icon icon={BackArrow} width="20px" height="20px" />
-        </Button>
-        <div style="margin-left: 10px; font-size: 20px;">Settings</div>
-      </span>
-      <span slot="right" />
-    </OverlayHeader>
+    <SettingsHeader label="Settings" goBack={goBack} />
   </span>
   <span class="content" slot="content">
     <SettingsNavButton label="Appearance" description="Customize the look of the app" route="/settings/theme" icon={Palette} color="#42a5f5" />
