@@ -38,19 +38,19 @@
 <Body headline="Grid Size" bind:open={$showGridSize}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
-    <label style="margin-bottom: 10px">
+    <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)} />
       <div class="radio">List</div>
     </label>
-    <label style="margin-bottom: 10px">
+    <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LARGE} on:input={() => gridSizeChange(GridSize.LARGE)} />
       <div class="radio">Large</div>
     </label>
-    <label style="margin-bottom: 10px">
+    <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)} />
       <div class="radio">Medium</div>
     </label>
-    <label style="margin-bottom: 10px">
+    <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.SMALL} on:input={() => gridSizeChange(GridSize.SMALL)} />
       <div class="radio">Small</div>
     </label>
