@@ -1,4 +1,4 @@
-<div class:container={true} use:load class={rootClass} style="height: {rootInitialHeight}">
+<div class:container={true} use:load class={rootClass} style="height: {rootInitialHeight};">
   {#if clickable}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
