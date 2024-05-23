@@ -2,12 +2,12 @@
   import type { IconifyIcon } from "@iconify/types";
   import Card from "../../../layout/Card.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import ColorPicker from "../../../interactables/ColorPicker.svelte";
+  import ColorPicker from "../../../interactables/color-picker/ColorPicker.svelte";
 
   export let label: string;
   export let description: string;
   export let icon: IconifyIcon | undefined = undefined;
-  // export let color: string;
+  export let color: string;
 </script>
 
 <Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; border-radius: 10px; margin: 2px 0px;" }}>
@@ -25,7 +25,7 @@
     </div>
     <!-- svelte-ignore a11y-label-has-associated-control -->
     <label class="toggle-container">
-      <ColorPicker />
+      <ColorPicker bind:hex={color} />
     </label>
   </div>
 </Card>
@@ -56,7 +56,7 @@
   }
 
   .info {
-    width: calc(100% - 95px);
+    width: calc(100% - 99px);
   }
   
   .description {

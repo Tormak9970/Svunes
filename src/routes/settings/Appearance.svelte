@@ -1,8 +1,11 @@
 <script lang="ts">
   import { pop } from "svelte-spa-router";
+    import { themePrimaryColor } from "../../stores/State";
 
   import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
   import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
+  import SettingSection from "../../components/views/settings/SettingSection.svelte";
+  import ColorSetting from "../../components/views/settings/entries/ColorSetting.svelte";
   import ToggleSetting from "../../components/views/settings/entries/ToggleSetting.svelte";
   import ButtonSetting from "../../components/views/settings/entries/ButtonSetting.svelte";
   
@@ -14,8 +17,6 @@
   import BugReport from "@ktibow/iconset-material-symbols/bug-report-outline-rounded";
   import Help from "@ktibow/iconset-material-symbols/help-rounded";
   import License from "@ktibow/iconset-material-symbols/license-outline-rounded";
-  import SettingSection from "../../components/views/settings/SettingSection.svelte";
-    import ColorSetting from "../../components/views/settings/entries/ColorSetting.svelte";
 </script>
 
 <SettingsBody>
@@ -24,7 +25,7 @@
   </span>
   <span class="content" slot="content">
     <SettingSection label="THEME" />
-    <ColorSetting label="App Theme" description="Customize the color palette of the app" />
+    <ColorSetting label="App Theme" description="Customize the color palette of the app" bind:color={$themePrimaryColor} />
     <ToggleSetting label="OLED Black" description="Use an all black theme for the app" checked={false} />
   </span>
 </SettingsBody>

@@ -122,7 +122,7 @@ const FAVORITES_PLAYLIST = new Playlist("Favorites", [], false, undefined, undef
 
 export const DEFAULT_SETTINGS: Settings = {
   "version": "",
-  "themePrimaryColor": "#7bdd69",
+  "themePrimaryColor": "#dcb9f8",
   "musicDirectories": [],
   "selectedView": 0,
 
