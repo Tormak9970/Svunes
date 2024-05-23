@@ -29,7 +29,7 @@
     <SettingsHeader label="Settings" goBack={goBack} />
   </span>
   <span class="content" slot="content">
-    <SettingsNavButton label="Appearance" description="Customize the look of the app" route="/settings/theme" icon={Palette} color="#42a5f5" />
+    <SettingsNavButton label="Appearance" description="Customize the look of the app" route="/settings/appearance" icon={Palette} color="#42a5f5" />
     <SettingsNavButton label="Now Playing" description="Customize the now playing screen" route="/settings/now-playing" icon={NowPlaying} color="#ef5350" />
     <SettingsNavButton label="Personalize" description="Change the layout and controls of the app" route="/settings/personalize" icon={Personalize} color="#66bb6a" />
     <SettingsNavButton label="Audio" description="Audio playback settings" route="/settings/audio" icon={Audio} color="#7e57c2" />

@@ -1,17 +1,21 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
+  import Card from "../../../layout/Card.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import CardClickable from "../../../layout/CardClickable.svelte";
+  import ColorPicker from "../../../interactables/ColorPicker.svelte";
 
   export let label: string;
   export let description: string;
-  export let icon: IconifyIcon;
+  export let icon: IconifyIcon | undefined = undefined;
+  // export let color: string;
 </script>
 
-<CardClickable type="transparent" on:click extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; border-radius: 10px; margin: 2px 0px;" }}>
+<Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content">
     <div class="icon-container">
-      <Icon icon={icon} height="22px" width="22px" />
+      {#if icon}
+        <Icon icon={icon} height="22px" width="22px" />
+      {/if}
     </div>
     <div class="info">
       <div>{label}</div>
@@ -19,8 +23,12 @@
         {description}
       </div>
     </div>
+    <!-- svelte-ignore a11y-label-has-associated-control -->
+    <label class="toggle-container">
+      <ColorPicker />
+    </label>
   </div>
-</CardClickable>
+</Card>
 
 <style>
   .content {
@@ -48,7 +56,7 @@
   }
 
   .info {
-    width: calc(100% - 55px);
+    width: calc(100% - 95px);
   }
   
   .description {

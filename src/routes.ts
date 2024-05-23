@@ -14,7 +14,7 @@ import Search from "./routes/Search.svelte";
 import Settings from "./routes/settings/Settings.svelte";
 import Songs from "./routes/songs/Songs.svelte";
 import PlaylistDetails from "./routes/playlists/Details.svelte";
-import ThemeSettings from "./routes/settings/Theme.svelte";
+import AppearanceSettings from "./routes/settings/Appearance.svelte";
 import NowPlayingSettings from "./components/overlays/NowPlaying.svelte";
 import AudioSettings from "./routes/settings/Audio.svelte";
 import PersonalizeSettings from "./routes/settings/Personalize.svelte";
@@ -64,7 +64,7 @@ export const routes = {
   "/search": Search,
 
   "/settings": Settings,
-  "/settings/theme": ThemeSettings,
+  "/settings/appearance": AppearanceSettings,
   "/settings/now-playing": NowPlayingSettings,
   "/settings/audio": AudioSettings,
   "/settings/personalize": PersonalizeSettings,

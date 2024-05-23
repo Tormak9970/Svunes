@@ -25,8 +25,6 @@
 
   let isDesktop = false;
 
-  $: console.log($location);
-
   onMount(async () => {
     loadingUnsub = isLoading.subscribe((newStatus) => {
       if (!newStatus) push(viewRoutesLUT[$selectedView]);
