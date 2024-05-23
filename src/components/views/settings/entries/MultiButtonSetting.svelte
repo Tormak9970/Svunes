@@ -2,15 +2,14 @@
   import type { IconifyIcon } from "@iconify/types";
   import Card from "../../../layout/Card.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import ColorPicker from "../../../interactables/color-picker/ColorPicker.svelte";
+  import MultiButtonContainer from "../../../interactables/multi-button/MultiButtonContainer.svelte";
 
   export let label: string;
   export let description: string;
   export let icon: IconifyIcon | undefined = undefined;
-  export let color: string;
 </script>
 
-<Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; padding-bottom: 5px; border-radius: 10px; margin: 2px 0px;" }}>
+<Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content">
     <div class="icon-container">
       {#if icon}
@@ -22,11 +21,10 @@
       <div class="description">
         {description}
       </div>
+      <MultiButtonContainer>
+        <slot />
+      </MultiButtonContainer>
     </div>
-    <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class="toggle-container">
-      <ColorPicker bind:hex={color} />
-    </label>
   </div>
 </Card>
 
@@ -56,11 +54,12 @@
   }
 
   .info {
-    width: calc(100% - 99px);
+    width: calc(100% - 55px);
   }
   
   .description {
     color: rgb(var(--m3-scheme-outline));
     font-size: 14px;
+    margin-bottom: 5px;
   }
 </style>

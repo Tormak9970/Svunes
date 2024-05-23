@@ -1,6 +1,6 @@
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -43,6 +43,8 @@ export const lastView: Writable<View | null> = writable(null);
 export const isSwitchingView = writable(false);
 
 // * Settings stores
+export const palette = writable<Palette>("Auto");
+export const useOledPalette = writable(false);
 export const themePrimaryColor = writable("#7bdd69");
 
 // # Now Playing Settings

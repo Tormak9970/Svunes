@@ -29,6 +29,8 @@ export enum GridStyle {
   SQUARE
 }
 
+export type Palette = "Auto" | "Dark" | "Light";
+
 export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Most Played" | "Last Played";
 export type AlbumSortOrder = "Alphabetical" | "Artist" | "Year" | "Length" | "Track Count" | "Most Played" | "Last Played";
 export type SongSortOrder = "Alphabetical" | "Album" | "Artist" | "Year" | "Most Played" | "Last Played";
@@ -51,7 +53,11 @@ export type AlbumMetadata = {
 
 export type Settings = {
   version: string,
+
+  palette: Palette,
+  useOledPalette: boolean,
   themePrimaryColor: string,
+
   musicDirectories: string[],
   selectedView: View,
 
@@ -122,7 +128,9 @@ const FAVORITES_PLAYLIST = new Playlist("Favorites", [], false, undefined, undef
 
 export const DEFAULT_SETTINGS: Settings = {
   "version": "",
-  "themePrimaryColor": "#dcb9f8",
+  "palette": "Auto",
+  "useOledPalette": false,
+  "themePrimaryColor": "#a74bf2",
   "musicDirectories": [],
   "selectedView": 0,
 

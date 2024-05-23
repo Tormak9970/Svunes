@@ -15,9 +15,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type NowPlayingType, type Settings, type SongMetadata, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
+import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, viewsToRender } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender } from "../../stores/State";
 import { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
@@ -66,7 +66,10 @@ export class SettingsController {
   private static settingsPath = "";
   private static settings: Settings;
 
+  private static paletteUnsub: Unsubscriber;
+  private static useOledPaletteUnsub: Unsubscriber;
   private static themePrimaryColorUnsub: Unsubscriber;
+
   private static musicDirectoriesUnsub: Unsubscriber;
   private static selectedViewUnsub: Unsubscriber;
 
@@ -240,7 +243,10 @@ export class SettingsController {
    * Sets the Svelte stores associated with the settings.
    */
   private static setStores(): void {
+    palette.set(this.settings.palette);
+    useOledPalette.set(this.settings.useOledPalette);
     themePrimaryColor.set(this.settings.themePrimaryColor);
+
     musicDirectories.set(this.settings.musicDirectories);
     selectedView.set(this.settings.selectedView);
 
@@ -308,7 +314,10 @@ export class SettingsController {
    * Registers the subscriptions to stores.
    */
   private static registerSubs() {
+    this.paletteUnsub = palette.subscribe(this.updateStoreIfChanged<Palette>("palette"));
+    this.useOledPaletteUnsub = useOledPalette.subscribe(this.updateStoreIfChanged<boolean>("useOledPalette"));
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
+
     this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
     this.selectedViewUnsub = selectedView.subscribe((view: View) => {
       if (this.settings.personalization.viewsToRender.includes(view) && view !== View.SETTINGS && view !== View.SEARCH) {
@@ -440,7 +449,10 @@ export class SettingsController {
    * Handles destroying the settings.
    */
   static destroy() {
+    if (this.paletteUnsub) this.paletteUnsub();
+    if (this.useOledPaletteUnsub) this.useOledPaletteUnsub();
     if (this.themePrimaryColorUnsub) this.themePrimaryColorUnsub();
+    
     if (this.musicDirectoriesUnsub) this.musicDirectoriesUnsub();
     if (this.selectedViewUnsub) this.selectedViewUnsub();
 
