@@ -16,7 +16,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import { fade } from "svelte/transition";
   import iconX from "@ktibow/iconset-material-symbols/close";
-  import { Icon } from "m3-svelte";
+  import Icon from "../../utils/Icon.svelte";
   import ErrorSnackbarItem from "./ErrorSnackbarItem.svelte";
   type SnackbarData = {
     message: string;

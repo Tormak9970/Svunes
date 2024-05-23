@@ -1,19 +1,16 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import CardClickable from "../../layout/CardClickable.svelte";
-  import Icon from "../../utils/Icon.svelte";
-  import { push } from "svelte-spa-router";
+  import Card from "../../../layout/Card.svelte";
+  import Icon from "../../../utils/Icon.svelte";
 
   export let label: string;
-  export let route: string;
   export let description: string;
   export let icon: IconifyIcon;
-  export let color: string;
 </script>
 
-<CardClickable type="transparent" on:click={() => push(route)} extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; border-radius: 10px; margin: 2px 0px;" }}>
+<Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content">
-    <div class="icon-container" style:--color={color} style:--background-color={color + "30"}>
+    <div class="icon-container">
       <Icon icon={icon} height="22px" width="22px" />
     </div>
     <div class="info">
@@ -22,8 +19,11 @@
         {description}
       </div>
     </div>
+    <div class="toggle-container">
+
+    </div>
   </div>
-</CardClickable>
+</Card>
 
 <style>
   .content {
@@ -40,9 +40,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    color: var(--color);
-    background-color: var(--background-color);
 
     margin-right: 15px;
   }

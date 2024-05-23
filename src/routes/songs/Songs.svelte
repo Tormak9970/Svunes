@@ -1,6 +1,6 @@
 <script lang="ts">
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import { Icon } from "m3-svelte";
+  import Icon from "../../components/utils/Icon.svelte";
   import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
   import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
   import VirtualList from "../../components/layout/VirtualList.svelte";

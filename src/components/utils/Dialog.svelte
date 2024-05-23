@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Icon from "../../utils/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
+  import Icon from "./Icon.svelte";
 
   export let display = "flex";
   export let extraOptions: HTMLDialogAttributes = {};
@@ -14,7 +14,6 @@
 
   const dispatch = createEventDispatcher();
   let dialog: HTMLDialogElement;
-  
   $: {
     if (!dialog) break $;
     if (open) dialog.showModal();
@@ -50,6 +49,9 @@
     <div class="content m3-font-body-medium">
       <slot />
     </div>
+    <div class="buttons">
+      <slot name="buttons" />
+    </div>
   </div>
 </dialog>
 
@@ -61,7 +63,7 @@
     background-color: rgb(var(--m3-scheme-surface-container-high));
     border: none;
     border-radius: var(--m3-dialog-shape);
-    min-width: 10.5rem;
+    min-width: 17.5rem;
     max-width: 35rem;
     padding: 0;
     overflow: auto;
@@ -69,7 +71,7 @@
   .m3-container {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem 1rem;
+    padding: 1.5rem;
     width: 100%;
   }
 
@@ -82,16 +84,14 @@
   .headline {
     color: rgb(var(--m3-scheme-on-surface));
     margin-top: 0;
-    margin-bottom: 0.5rem;
-
-    font-size: 16px;
+    margin-bottom: 1rem;
   }
   .headline.center {
     text-align: center;
   }
   .content {
     color: rgb(var(--m3-scheme-on-surface-variant));
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
   }
   .buttons {
     display: flex;
@@ -122,6 +122,12 @@
   }
   dialog[open] .content {
     animation: opacity 200ms;
+  }
+  dialog[open] .buttons {
+    position: relative;
+    animation:
+      buttonsIn 0.5s cubic-bezier(0.05, 0.7, 0.1, 1),
+      opacity 200ms 100ms backwards;
   }
   dialog::backdrop {
     background-color: rgb(var(--m3-scheme-scrim) / 0.3);

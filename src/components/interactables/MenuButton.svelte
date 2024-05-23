@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import { Button, Icon } from "m3-svelte";
+  import Button from "./Button.svelte";
+  import Icon from "../utils/Icon.svelte";
 
   export let width = "36px";
   export let height = "36px";

@@ -20,9 +20,6 @@ dependencies:
   '@tauri-apps/cli':
     specifier: ^1.5.10
     version: 1.5.10
-  m3-svelte:
-    specifier: ^3.2.6
-    version: 3.2.6
   svelte-preprocess:
     specifier: ^5.1.4
     version: 5.1.4(svelte@4.2.12)(typescript@5.2.2)
@@ -517,12 +514,6 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
-
-  /@ktibow/iconset-material-symbols@0.0.1708325449:
-    resolution: {integrity: sha512-jI8aeTmft2+m7SQXMcy2Tx//bz6q1zda6Ipu4asy6NrqpwO3ILWBkHVFv1YfjGQZnO85fDf0ZrsLgPLQRGLNDA==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: false
 
   /@ktibow/iconset-material-symbols@0.0.1715672497:
     resolution: {integrity: sha512-n4JGXTYWdhegKMO0mk+gLD1fyfKHnHF0Cq9Y7Wg+r655U4HnB+KaAwRfoaNqFmv75I34xO0GsO9K2LWlDPpZBg==}
@@ -1836,15 +1827,6 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /m3-svelte@3.2.6:
-    resolution: {integrity: sha512-+AWbNZHVpO1nXZXCy0D4TdrWiOnxPAXWhCSuTx5h5M3Hu2fzZQnpu3kdEhUJ85ZBwX05owgb3U5jPuhWAoSl5Q==}
-    dependencies:
-      '@iconify/types': 2.0.0
-      '@ktibow/iconset-material-symbols': 0.0.1708325449
-      '@material/material-color-utilities': 0.2.7
-      svelte: 4.2.17
-    dev: false
-
   /magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
     dependencies:
@@ -2564,26 +2546,6 @@ packages:
       locate-character: 3.0.0
       magic-string: 0.30.10
       periscopic: 3.1.0
-
-  /svelte@4.2.17:
-    resolution: {integrity: sha512-N7m1YnoXtRf5wya5Gyx3TWuTddI4nAyayyIWFojiWV5IayDYNV5i2mRp/7qNGol4DtxEYxljmrbgp1HM6hUbmQ==}
-    engines: {node: '>=16'}
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@jridgewell/sourcemap-codec': 1.4.15
-      '@jridgewell/trace-mapping': 0.3.25
-      '@types/estree': 1.0.5
-      acorn: 8.11.3
-      aria-query: 5.3.0
-      axobject-query: 4.0.0
-      code-red: 1.0.4
-      css-tree: 2.3.1
-      estree-walker: 3.0.3
-      is-reference: 3.0.2
-      locate-character: 3.0.0
-      magic-string: 0.30.10
-      periscopic: 3.1.0
-    dev: false
 
   /text-extensions@1.9.0:
     resolution: {integrity: sha512-wiBrwC1EhBelW12Zy26JeOUkQ5mRu+5o8rpsJk5+2t+Y5vE7e842qtZDQ2g1NpX/29HdyFeJ4nSIhI47ENSxlQ==}

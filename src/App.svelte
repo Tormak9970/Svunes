@@ -11,7 +11,7 @@
   import { ThemeController } from "./lib/controllers/ThemeController";
   import SelectHeader from "./components/views/SelectHeader.svelte";
   import { inSelectMode } from "./stores/Select";
-  import { StyleFromScheme } from "m3-svelte";
+  import StyleFromScheme from "./components/utils/styles/StyleFromScheme.svelte";
   import { window } from "@tauri-apps/api";
   import type { UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./components/modals/Modals.svelte";

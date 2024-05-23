@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import { Dialog } from "m3-svelte";
+  import Dialog from "../../utils/Dialog.svelte";
 
   export let show: boolean;
   export let headline: string;

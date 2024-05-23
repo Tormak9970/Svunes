@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import { Icon } from "m3-svelte";
+  import Icon from "../utils/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 

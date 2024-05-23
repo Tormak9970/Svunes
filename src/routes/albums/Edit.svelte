@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Button, Icon } from "m3-svelte";
+  import Button from "../../components/interactables/Button.svelte";
+  import Icon from "../../components/utils/Icon.svelte";
   import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";

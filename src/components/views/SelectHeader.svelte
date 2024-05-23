@@ -8,12 +8,14 @@
   import { LogController } from "../../lib/controllers/LogController";
   import { QueueController } from "../../lib/controllers/QueueController";
   import { AppController } from "../../lib/controllers/AppController";
-  import { Button, Icon, Menu, MenuItem } from "m3-svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
   import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
   import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { location } from "svelte-spa-router";
+  import Button from "../interactables/Button.svelte";
+  import Icon from "../utils/Icon.svelte";
+  import MenuItem from "../layout/MenuItem.svelte";
 
   /**
    * Gets the names of the songs from the selected items.
@@ -26,7 +28,7 @@
         if ($location === "/playlists") {
           for (const playlistName of $selected) {
             const playlist = $playlistsMap[playlistName];
-            songNames.push(...playlist.songNames);
+            songNames.push(...playlist.songKeys);
           }
         } else {
           songNames = $selected;
@@ -145,7 +147,7 @@
           $selected = $playlists.map((playlist) => playlist.name);
         } else {
           const playlistName = $location.substring(11);
-          $selected = [ ...$playlistsMap[playlistName].songNames ];
+          $selected = [ ...$playlistsMap[playlistName].songKeys ];
         }
         break;
       }
@@ -267,12 +269,10 @@
       <Icon icon={PlaylistAdd} width="36px" height="36px" />
     </Button>
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      <Menu>
-        <MenuItem on:click={playNext}>Play Next</MenuItem>
-        <MenuItem on:click={share}>Share</MenuItem>
-        <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
-        <MenuItem on:click={selectAll}>Select All</MenuItem>
-      </Menu>
+      <MenuItem on:click={playNext}>Play Next</MenuItem>
+      <MenuItem on:click={share}>Share</MenuItem>
+      <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
+      <MenuItem on:click={selectAll}>Select All</MenuItem>
     </MenuButton>
   </div>
 </div>

@@ -11,7 +11,7 @@
   import { LogController } from "../../lib/controllers/LogController";
   import { stringSort } from "../../lib/utils/Utils";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import { Icon } from "m3-svelte";
+  import Icon from "../../components/utils/Icon.svelte";
   import type { Artist } from "../../lib/models/Artist";
 
   const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songKeys.length}`;

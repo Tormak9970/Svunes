@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Button, Icon } from "m3-svelte";
+  import Button from "../../interactables/Button.svelte";
+  import Icon from "../../utils/Icon.svelte";
   import OverlayHeader from "../../overlays/utils/OverlayHeader.svelte";
 
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";

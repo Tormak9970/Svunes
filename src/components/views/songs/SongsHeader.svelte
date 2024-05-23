@@ -4,12 +4,13 @@
   import { selectedChip } from "../../../stores/Search";
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { Button, Icon } from "m3-svelte";
+  import Button from "../../interactables/Button.svelte";
+  import Icon from "../../utils/Icon.svelte";
   import { showGridSize, showSongSortOrder } from "../../../stores/Modals";
   import { push } from "svelte-spa-router";
   import { selectedView } from "../../../stores/State";
   import { View } from "../../../types/View";
-    import MenuItem from "../../layout/MenuItem.svelte";
+  import MenuItem from "../../layout/MenuItem.svelte";
 
   export let highlight: boolean;
 

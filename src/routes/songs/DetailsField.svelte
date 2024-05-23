@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import { Icon, ListItem } from "m3-svelte";
+  import ListItem from "../../components/layout/ListItem.svelte";
+  import Icon from "../../components/utils/Icon.svelte";
 
   export let headline: string = "";
   export let supporting: string | undefined = undefined;

@@ -6,7 +6,7 @@
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./FolderEntry.svelte";
-  import { Button } from "m3-svelte";
+  import Button from "../../interactables/Button.svelte";
 
   let musicDirectoriesUnsub: Unsubscriber;
 

@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 
 **System information (please complete the following information):**
- - Browser: [e.g. Chrome, Firefox, Safari, etc]
+ - OS version: [e.g. iOS 17, Android 14, Windows 10, Arch KDE]
  - Version [e.g. v1.0.0]
 
 **Additional information**

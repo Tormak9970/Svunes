@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import { Icon } from "m3-svelte";
+  import Icon from "../utils/Icon.svelte";
 
   export let icon: IconifyIcon | "space" | undefined = undefined;
   export let disabled = false;
