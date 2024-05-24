@@ -35,18 +35,18 @@ fn color_to_rgb(color: Color) -> String {
 }
 
 /// Reads a music file and returns the info.
-fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String) -> Map<String, Value> {
+fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String, max_length: u64) -> Map<String, Value> {
   if file_type.eq_ignore_ascii_case("mp3") {
-    return read_mp3(app_handle, file_path);
+    return read_mp3(app_handle, file_path, max_length);
   } else if file_type.eq_ignore_ascii_case("flac") {
-    return read_flac(app_handle, file_path);
+    return read_flac(app_handle, file_path, max_length);
   } else {
-    return read_wav(app_handle, file_path);
+    return read_wav(app_handle, file_path, max_length);
   } 
 }
 
 /// Reads the content of the provided directory.
-fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> Vec<Value> {
+fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf, max_length: u64) -> Vec<Value> {
   let contents_res = fs::read_dir(folder_path.to_owned());
   
   let mut entries: Vec<Value> = vec![];
@@ -59,7 +59,7 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> Vec<Value> 
       let file_path: PathBuf = file_entry.path();
 
       if file_path.is_dir() {
-        let mut folder_entries = read_music_folder(app_handle.to_owned(), file_path.to_owned());
+        let mut folder_entries = read_music_folder(app_handle.to_owned(), file_path.to_owned(), max_length);
         entries.append(&mut folder_entries);
       } else {
         let file_type_str_res = file_path.extension();
@@ -69,7 +69,7 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> Vec<Value> 
           let file_type = file_type_str.into_string().ok().expect("Should have been able to convert the file extension to a String.");
         
           if file_type.eq_ignore_ascii_case("mp3") || file_type.eq_ignore_ascii_case("flac") || file_type.eq_ignore_ascii_case("wav") {
-            let mut file_entry = read_music_file(app_handle.to_owned(), file_path.to_owned(), file_type);
+            let mut file_entry = read_music_file(app_handle.to_owned(), file_path.to_owned(), file_type, max_length);
             
             if !file_entry.is_empty() {
               let file_path_str = file_path.as_os_str().to_str().unwrap().to_owned();
@@ -90,7 +90,7 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf) -> Vec<Value> 
 
 #[tauri::command]
 /// Reads the contents of the provided directories.
-async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String) -> String {
+async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String, max_length: u64) -> String {
   let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Should have been able to deserialize music folders array.");
 
   for music_folder in &music_folder_paths {
@@ -100,7 +100,7 @@ async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: Strin
   let entries: Vec<Value> = music_folder_paths.par_iter().map(| music_folder | {
     let folder_path: PathBuf = PathBuf::from(music_folder.to_owned());
 
-    let folder_entries = read_music_folder(app_handle.to_owned(), folder_path);
+    let folder_entries = read_music_folder(app_handle.to_owned(), folder_path, max_length);
     return folder_entries;
   }).flatten().collect();
 

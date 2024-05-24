@@ -31,16 +31,14 @@ export function throttle(func: any, wait: number) {
 export function debounce(func: any, wait:number, immediate?:boolean) {
   let timeout:any|null;
   return function (...args: any[]) {
-    // @ts-ignore
-    const context = this;
     const later = function () {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      if (!immediate) func(...args);
     };
     const callNow = immediate && !timeout;
     clearTimeout(timeout as any);
     timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+    if (callNow) func(...args);
   }
 }
 

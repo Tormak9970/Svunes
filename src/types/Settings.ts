@@ -29,6 +29,11 @@ export enum GridStyle {
   SQUARE
 }
 
+export enum APP_LANGUAGE {
+  SYSTEM,
+  ENGLISH
+}
+
 export type Palette = "Auto" | "Dark" | "Light";
 
 export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Most Played" | "Last Played";
@@ -92,7 +97,10 @@ export type Settings = {
 
   queue: Song[],
 
-  hiddenSongs: Song[],
+  blacklistedFolders: string[],
+  pauseOnVolumeZero: boolean,
+  filterSongDuration: number,
+  selectedLanguage: APP_LANGUAGE,
 
   cache: {
     albumsMetadata: Record<string, AlbumMetadata>,
@@ -167,7 +175,10 @@ export const DEFAULT_SETTINGS: Settings = {
 
   "queue": [],
 
-  "hiddenSongs": [],
+  "blacklistedFolders": [],
+  "pauseOnVolumeZero": false,
+  "filterSongDuration": 30,
+  "selectedLanguage": APP_LANGUAGE.SYSTEM,
 
   "cache": {
     "albumsMetadata": {},

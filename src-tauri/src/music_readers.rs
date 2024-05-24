@@ -51,7 +51,7 @@ pub fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title
 }
 
 /// Reads a .flac file and returns the info.
-pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
+pub fn read_flac(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<String, Value> {
   let file_src = File::open(file_path.to_owned()).expect("failed to open file");
   let file_metadata = file_src.metadata().unwrap();
   
@@ -64,6 +64,33 @@ pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value
 
   if flac_reader_res.is_ok() {
     let mut flac_reader = flac_reader_res.ok().unwrap();
+
+    let default_track = flac_reader.default_track().unwrap();
+    let code_params = &default_track.codec_params;
+
+    let time_base = code_params.time_base.unwrap();
+    let num_frames = code_params.n_frames.unwrap();
+    let length: symphonia::core::units::Time = TimeBase::calc_time(&time_base, num_frames);
+
+    if length.seconds > max_length {
+      return Map::new();
+    }
+
+    entry.insert(String::from("length"), Value::String(length.seconds.to_string()));
+
+
+    let sample_rate = code_params.sample_rate.unwrap();
+    let bits_per_sample = code_params.bits_per_sample.unwrap();
+    let channels = code_params.channels.unwrap();
+    let bit_rate = u64::from(bits_per_sample * sample_rate) * u64::try_from(channels.count()).unwrap();
+
+    entry.insert(String::from("bitrate"), Value::String(bit_rate.to_string()));
+    entry.insert(String::from("samplerate"), Value::String(sample_rate.to_string()));
+
+
+    entry.insert(String::from("size"), Value::String(file_metadata.len().to_string()));
+
+
     let mut metadata = flac_reader.metadata();
 
     let newest_res = metadata.skip_to_latest();
@@ -90,24 +117,6 @@ pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value
         }
       }
     }
-
-    let default_track = flac_reader.default_track().unwrap();
-    let code_params = &default_track.codec_params;
-
-    let sample_rate = code_params.sample_rate.unwrap();
-    let bits_per_sample = code_params.bits_per_sample.unwrap();
-    let channels = code_params.channels.unwrap();
-    let bit_rate = u64::from(bits_per_sample * sample_rate) * u64::try_from(channels.count()).unwrap();
-
-    entry.insert(String::from("bitrate"), Value::String(bit_rate.to_string()));
-    entry.insert(String::from("samplerate"), Value::String(sample_rate.to_string()));
-
-    let time_base = code_params.time_base.unwrap();
-    let num_frames = code_params.n_frames.unwrap();
-    let length: symphonia::core::units::Time = TimeBase::calc_time(&time_base, num_frames);
-    entry.insert(String::from("length"), Value::String(length.seconds.to_string()));
-
-    entry.insert(String::from("size"), Value::String(file_metadata.len().to_string()));
   } else {
     logger::log_to_file(app_handle.to_owned(), format!("Failed to parse {} with flac parser.", file_path.as_os_str().to_str().unwrap()).as_str(), 2);
   }
@@ -116,9 +125,10 @@ pub fn read_flac(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value
 }
 
 /// Reads a .mp3 file and returns the info.
-pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value> {
+pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<String, Value> {
   let file_src = File::open(file_path.to_owned()).expect("failed to open file");
   let file_metadata = file_src.metadata().unwrap();
+  let mut entry: Map<String, Value> = Map::new();
   
   let mss = MediaSourceStream::new(Box::new(file_src), Default::default());
   let meta_opts: MetadataOptions = Default::default();
@@ -135,6 +145,30 @@ pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value>
   probe.register_all::<Id3v2Reader>();
 
   let mut probed = probe.format(&hint, mss, &fmt_opts, &meta_opts).expect("unsupported format");
+
+  let default_track = probed.format.default_track().unwrap();
+  let code_params = &default_track.codec_params;
+
+  let time_base = code_params.time_base.unwrap();
+  let num_frames = code_params.n_frames.unwrap();
+  let length: symphonia::core::units::Time = TimeBase::calc_time(&time_base, num_frames);
+
+  if length.seconds > max_length {
+    return Map::new();
+  }
+
+  entry.insert(String::from("length"), Value::String(length.seconds.to_string()));
+
+
+  let sample_rate = code_params.sample_rate.unwrap();
+  let bit_rate = code_params.bits_per_sample.unwrap();
+
+  entry.insert(String::from("bitrate"), Value::String(bit_rate.to_string()));
+  entry.insert(String::from("samplerate"), Value::String(sample_rate.to_string()));
+
+
+  let file_size = file_metadata.len();
+  entry.insert(String::from("size"), Value::String(file_size.to_string()));
     
 
   let mut tags = vec![];
@@ -146,8 +180,6 @@ pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value>
     tags = metadata_rev.tags().to_owned();
     visuals = metadata_rev.visuals().to_owned();
   }
-
-  let mut entry: Map<String, Value> = Map::new();
 
   for tag in tags {
     if !tag.key.eq_ignore_ascii_case("lyrics") {
@@ -167,27 +199,11 @@ pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf) -> Map<String, Value>
       // println!("{}", write_visual_to_cache(app_handle.to_owned(), &visual, "test".to_owned()));
     }
   }
-
-  let default_track = probed.format.default_track().unwrap();
-  let code_params = &default_track.codec_params;
-  let sample_rate = code_params.sample_rate.unwrap();
-  let bit_rate = code_params.bits_per_sample.unwrap();
-
-  entry.insert(String::from("bitrate"), Value::String(bit_rate.to_string()));
-  entry.insert(String::from("samplerate"), Value::String(sample_rate.to_string()));
-
-  let time_base = code_params.time_base.unwrap();
-  let num_frames = code_params.n_frames.unwrap();
-  let length: symphonia::core::units::Time = TimeBase::calc_time(&time_base, num_frames);
-  entry.insert(String::from("length"), Value::String(length.seconds.to_string()));
-
-  let file_size = file_metadata.len();
-  entry.insert(String::from("size"), Value::String(file_size.to_string()));
   
   return entry;
 }
 
 /// Reads a .wav file and returns the info.
-pub fn read_wav(_app_handle: AppHandle, _file_path: PathBuf) -> Map<String, Value> {
+pub fn read_wav(_app_handle: AppHandle, _file_path: PathBuf, max_length: u64) -> Map<String, Value> {
   return Map::new();
 }

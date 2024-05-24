@@ -155,11 +155,13 @@ export class AppController {
    * @param musicFolders The folders to read music from.
    */
   static async loadSongs(musicFolders: string[]) {
+    const maxLength = SettingsController.getSetting<number>("filterSongDuration") * 60;
     const songsMetadataMap = SettingsController.getSetting<Record<string, SongMetadata>>("cache.songsMetadata");
+
     if (musicFolders.length === 0) {
       showEditMusicFolders.set(true);
     } else {
-      const songsJson = await RustInterop.readMusicFolders(musicFolders);
+      const songsJson = await RustInterop.readMusicFolders(musicFolders, maxLength);
       const loadedSongs: Song[] = songsJson.map((json) => {
         const song = Song.fromJSON(json);
         const metadata = songsMetadataMap[song.key];

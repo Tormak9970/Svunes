@@ -64,10 +64,11 @@ export class RustInterop {
   /**
    * Reads the contents of the provided folders.
    * @param folders The folders to read.
+   * @param maxLength The max length of songs to include.
    * @returns The list of songs found.
    */
-  static async readMusicFolders(folders: string[]): Promise<any[]> {
-    const results = await invoke("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders) });
+  static async readMusicFolders(folders: string[], maxLength: number): Promise<any[]> {
+    const results = await invoke("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders), maxLength: maxLength });
     return JSON.parse(results as string);
   }
 

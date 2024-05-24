@@ -15,9 +15,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
+import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, APP_LANGUAGE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, hiddenSongs, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage } from "../../stores/State";
 import { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
@@ -91,8 +91,13 @@ export class SettingsController {
   private static autoPlayOnBluetoothUnsub: Unsubscriber;
 
   private static playlistsUnsub: Unsubscriber;
+
   private static queueUnsub: Unsubscriber;
-  private static hiddenSongsUnsub: Unsubscriber;
+
+  private static blacklistedFoldersUnsub: Unsubscriber;
+  private static pauseOnVolumeZeroUnsub: Unsubscriber;
+  private static filterSongDurationUnsub: Unsubscriber;
+  private static selectedLanguageUnsub: Unsubscriber;
 
   private static albumsUnsub: Unsubscriber;
   private static songsUnsub: Unsubscriber;
@@ -278,7 +283,10 @@ export class SettingsController {
 
     queue.set(this.settings.queue);
 
-    hiddenSongs.set(this.settings.hiddenSongs);
+    blacklistedFolders.set(this.settings.blacklistedFolders);
+    pauseOnVolumeZero.set(this.settings.pauseOnVolumeZero);
+    filterSongDuration.set(this.settings.filterSongDuration);
+    selectedLanguage.set(this.settings.selectedLanguage);
 
 
     const cache = this.settings.cache;
@@ -348,8 +356,10 @@ export class SettingsController {
 
     this.queueUnsub = queue.subscribe(this.updateStoreIfChanged<Song[]>("queue"));
     
-    this.hiddenSongsUnsub = hiddenSongs.subscribe(this.updateStoreIfChanged<Song[]>("hiddenSongs"));
-
+    this.blacklistedFoldersUnsub = blacklistedFolders.subscribe(this.updateStoreIfChanged<string[]>("blacklistedFolders"));
+    this.pauseOnVolumeZeroUnsub = pauseOnVolumeZero.subscribe(this.updateStoreIfChanged<boolean>("pauseOnVolumeZero"));
+    this.filterSongDurationUnsub = filterSongDuration.subscribe(this.updateStoreIfChanged<number>("filterSongDuration"));
+    this.selectedLanguageUnsub = selectedLanguage.subscribe(this.updateStoreIfChanged<APP_LANGUAGE>("selectedLanguage"));
 
     this.albumsUnsub = albums.subscribe((albums) => {
       this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", Object.fromEntries(albums.map((album) => {
@@ -474,8 +484,13 @@ export class SettingsController {
     if (this.autoPlayOnBluetoothUnsub) this.autoPlayOnBluetoothUnsub();
 
     if (this.playlistsUnsub) this.playlistsUnsub();
+
     if (this.queueUnsub) this.queueUnsub();
-    if (this.hiddenSongsUnsub) this.hiddenSongsUnsub();
+    
+    if (this.blacklistedFoldersUnsub) this.blacklistedFoldersUnsub();
+    if (this.pauseOnVolumeZeroUnsub) this.pauseOnVolumeZeroUnsub();
+    if (this.filterSongDurationUnsub) this.filterSongDurationUnsub();
+    if (this.selectedLanguageUnsub) this.selectedLanguageUnsub();
 
     if (this.albumsUnsub) this.albumsUnsub();
     if (this.songsUnsub) this.songsUnsub();

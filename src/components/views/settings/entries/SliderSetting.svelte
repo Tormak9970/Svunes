@@ -2,12 +2,18 @@
   import type { IconifyIcon } from "@iconify/types";
   import Card from "../../../layout/Card.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import Toggle from "../../../interactables/Toggle.svelte";
+  import Slider from "../../../interactables/Slider.svelte";
+  import type { Spring } from "svelte/motion";
 
   export let label: string;
   export let description: string;
   export let icon: IconifyIcon | undefined = undefined;
-  export let checked: boolean;
+  export let value: number;
+  export let min = 0;
+  export let max = 100;
+  export let step = 1;
+
+  let valueDisplayed: Spring<number>;
 </script>
 
 <Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 5px; border-radius: 10px; margin: 2px 0px;" }}>
@@ -22,11 +28,13 @@
       <div class="description">
         {description}
       </div>
+      <div class="slider-container">
+        <div style="width: 90%;">
+          <Slider min={min} max={max} step={step} showValue={false} bind:value={value} bind:valueDisplayed={valueDisplayed} />
+        </div>
+        <div style="width: 10%;">{$valueDisplayed?.toFixed(0)}</div>
+      </div>
     </div>
-    <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class="toggle-container">
-      <Toggle bind:checked={checked} />
-    </label>
   </div>
 </Card>
 
@@ -63,7 +71,10 @@
     font-size: 14px;
   }
 
-  .toggle-container {
-    align-self: center;
+  .slider-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
   }
 </style>
