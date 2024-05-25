@@ -1,7 +1,7 @@
 <script lang="ts">
   import { pop } from "svelte-spa-router";
   import { showNowPlayingTheme } from "../../stores/Modals";
-  import { circularPlayButton, nowPlayingMiniUseAlbumColors, nowPlayingTheme, nowPlayingUseAlbumColors, showExtraSongInfo } from "../../stores/State";
+  import { circularPlayButton, dismissMiniPlayerWithSwipe, nowPlayingMiniUseAlbumColors, nowPlayingTheme, nowPlayingUseAlbumColors, showExtraControls, showExtraSongInfo, showVolumeControls } from "../../stores/State";
   import { getNowPlayingTheme } from "../../types/Settings";
 
   import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
@@ -11,6 +11,9 @@
   import ToggleSetting from "../../components/views/settings/entries/ToggleSetting.svelte";
   
   import NowPlaying from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
+  import SwipeDownAlt from "@ktibow/iconset-material-symbols/swipe-down-alt-rounded";
+  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
+  import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
 </script>
 
 <SettingsBody>
@@ -24,6 +27,9 @@
     <ToggleSetting label="Use Album Color" description={"Themes the now playing page based on the album's cover"} bind:checked={$nowPlayingUseAlbumColors} />
     <ToggleSetting label="Use Color for Mini" description={"Themes the mini player based on the album's cover"} bind:checked={$nowPlayingMiniUseAlbumColors} />
     <SettingSection label="Controls" />
+    <ToggleSetting label="Dismiss with swipe down" description={"Swipe down to dismiss the mini player"} icon={SwipeDownAlt} bind:checked={$dismissMiniPlayerWithSwipe} />
+    <ToggleSetting label="Extra Controls" description={"Adds skip controls to the mini player"} icon={Play} bind:checked={$showExtraControls} />
+    <ToggleSetting label="Volume Controls" description={"Displays volume controls if there is enough space"} icon={VolumeUp} bind:checked={$showVolumeControls} />
   </span>
 </SettingsBody>
 
