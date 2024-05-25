@@ -204,6 +204,6 @@ pub fn read_mp3(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> M
 }
 
 /// Reads a .wav file and returns the info.
-pub fn read_wav(_app_handle: AppHandle, _file_path: PathBuf, max_length: u64) -> Map<String, Value> {
+pub fn read_wav(_app_handle: AppHandle, _file_path: PathBuf, _max_length: u64) -> Map<String, Value> {
   return Map::new();
 }

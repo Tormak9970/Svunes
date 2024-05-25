@@ -34,6 +34,19 @@ export enum APP_LANGUAGE {
   ENGLISH
 }
 
+/**
+ * Gets a string to render for the given app language.
+ * @param lang The language to get.
+ */
+export function getLanguage(lang: APP_LANGUAGE): string {
+  switch (lang) {
+    case APP_LANGUAGE.SYSTEM:
+      return "System Default";
+    case APP_LANGUAGE.ENGLISH:
+      return "English";
+  }
+}
+
 export type Palette = "Auto" | "Dark" | "Light";
 
 export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Most Played" | "Last Played";
