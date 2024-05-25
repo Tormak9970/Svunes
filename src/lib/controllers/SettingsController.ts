@@ -15,9 +15,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, APP_LANGUAGE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout } from "../../types/Settings";
+import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, APP_LANGUAGE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingAlbumTheme, nowPlayingLayout, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors } from "../../stores/State";
 import { View } from "../../types/View";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
@@ -73,10 +73,9 @@ export class SettingsController {
   private static musicDirectoriesUnsub: Unsubscriber;
   private static selectedViewUnsub: Unsubscriber;
 
-  private static showSongInfoUnsub: Unsubscriber;
+  private static showExtraSongInfoUnsub: Unsubscriber;
   private static circularPlayButtonUnsub: Unsubscriber;
-  private static nowPlayingLayoutUnsub: Unsubscriber;
-  private static nowPlayingAlbumThemeUnsub: Unsubscriber;
+  private static nowPlayingThemeUnsub: Unsubscriber;
   private static nowPlayingUseAlbumColorsUnsub: Unsubscriber;
   private static nowPlayingMiniUseAlbumColorsUnsub: Unsubscriber;
 
@@ -119,6 +118,7 @@ export class SettingsController {
   private static artistGridSizeUnsub: Unsubscriber;
   private static artistGridStyleUnsub: Unsubscriber;
   private static artistSortOrderUnsub: Unsubscriber;
+  private static useArtistColorsUnsub: Unsubscriber;
 
   /**
    * Initializes the SettingsController.
@@ -299,10 +299,9 @@ export class SettingsController {
 
 
     const nowPlaying = this.settings.nowPlaying;
-    showSongInfo.set(nowPlaying.songInfo);
+    showExtraSongInfo.set(nowPlaying.songInfo);
     circularPlayButton.set(nowPlaying.circularPlayButton);
-    nowPlayingLayout.set(nowPlaying.layout);
-    nowPlayingAlbumTheme.set(nowPlaying.albumTheme);
+    nowPlayingTheme.set(nowPlaying.layout);
     nowPlayingUseAlbumColors.set(nowPlaying.useAlbumColors);
     nowPlayingMiniUseAlbumColors.set(nowPlaying.useAlbumColorsForMini);
 
@@ -358,6 +357,7 @@ export class SettingsController {
     artistGridSize.set(artistsView.gridSize);
     artistGridStyle.set(artistsView.gridStyle);
     artistSortOrder.set(artistsView.sortOrder);
+    useArtistColors.set(artistsView.useArtistColors);
   }
 
   /**
@@ -376,10 +376,9 @@ export class SettingsController {
     });
 
 
-    this.showSongInfoUnsub = showSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
+    this.showExtraSongInfoUnsub = showExtraSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
     this.circularPlayButtonUnsub = circularPlayButton.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.circularPlayButton"));
-    this.nowPlayingLayoutUnsub = nowPlayingLayout.subscribe(this.updateStoreIfChanged<NowPlayingLayout>("nowPlaying.layout"));
-    this.nowPlayingAlbumThemeUnsub = nowPlayingAlbumTheme.subscribe(this.updateStoreIfChanged<NowPlayingAlbumTheme>("nowPlaying.albumTheme"));
+    this.nowPlayingThemeUnsub = nowPlayingTheme.subscribe(this.updateStoreIfChanged<NowPlayingTheme>("nowPlaying.layout"));
     this.nowPlayingUseAlbumColorsUnsub = nowPlayingUseAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.useAlbumColors"));
     this.nowPlayingMiniUseAlbumColorsUnsub = nowPlayingMiniUseAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.useAlbumColorsForMini"));
 
@@ -448,6 +447,7 @@ export class SettingsController {
     this.artistGridSizeUnsub = artistGridSize.subscribe(this.updateStoreIfChanged<GridSize>("artistsView.gridSize"));
     this.artistGridStyleUnsub = artistGridStyle.subscribe(this.updateStoreIfChanged<GridStyle>("artistsView.gridStyle"));
     this.artistSortOrderUnsub = artistSortOrder.subscribe(this.updateStoreIfChanged<string>("artistsView.sortOrder"));
+    this.useArtistColorsUnsub = useArtistColors.subscribe(this.updateStoreIfChanged<boolean>("artistsView.useArtistColors"));
   }
 
   private static saveCallback = (value?: unknown) => {};
@@ -519,10 +519,9 @@ export class SettingsController {
     if (this.musicDirectoriesUnsub) this.musicDirectoriesUnsub();
     if (this.selectedViewUnsub) this.selectedViewUnsub();
 
-    if (this.showSongInfoUnsub) this.showSongInfoUnsub();
+    if (this.showExtraSongInfoUnsub) this.showExtraSongInfoUnsub();
     if (this.circularPlayButtonUnsub) this.circularPlayButtonUnsub();
-    if (this.nowPlayingLayoutUnsub) this.nowPlayingLayoutUnsub();
-    if (this.nowPlayingAlbumThemeUnsub) this.nowPlayingAlbumThemeUnsub();
+    if (this.nowPlayingThemeUnsub) this.nowPlayingThemeUnsub();
     if (this.nowPlayingUseAlbumColorsUnsub) this.nowPlayingUseAlbumColorsUnsub();
     if (this.nowPlayingMiniUseAlbumColorsUnsub) this.nowPlayingMiniUseAlbumColorsUnsub();
 
@@ -565,5 +564,6 @@ export class SettingsController {
     if (this.artistGridSizeUnsub) this.artistGridSizeUnsub();
     if (this.artistGridStyleUnsub) this.artistGridStyleUnsub();
     if (this.artistSortOrderUnsub) this.artistSortOrderUnsub();
+    if (this.useArtistColorsUnsub) this.useArtistColorsUnsub();
   }
 }

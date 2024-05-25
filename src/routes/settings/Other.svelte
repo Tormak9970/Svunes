@@ -25,7 +25,7 @@
     <ButtonSetting label="Blacklisted Folders" description={"Blacklisted folders are excluded from being loaded"} icon={VisibilityOff} on:click={() => $showBlacklistFolders = true} />
     <SettingSection label="Advanced" />
     <SliderSetting label="Max Song Length" description="Filters out songs that are longer than the provided value (in minutes)" max={60} bind:value={$filterSongDuration} />
-    <ToggleSetting label="Pause on Mute" description="Pauses the music when the volume decreases to zero and starts playing when the volume goes above zero." icon={Mute} bind:checked={$pauseOnVolumeZero} />
+    <ToggleSetting label="Pause on Mute" description="Pauses the music when the volume decreases to zero and starts playing when the volume goes above zero" icon={Mute} bind:checked={$pauseOnVolumeZero} />
     <ButtonSetting label="Change Language" description={getLanguage($selectedLanguage)} icon={Language} on:click={() => $showSelectLanguage = true} />
   </span>
 </SettingsBody>

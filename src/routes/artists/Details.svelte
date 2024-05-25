@@ -7,7 +7,7 @@
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import type { ArtistEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artistsMap, songsMap } from "../../stores/State";
+  import { albumsMap, artistsMap, songsMap, useArtistColors } from "../../stores/State";
   import { artistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -133,7 +133,7 @@
         <h3 class="name">{artist?.name}</h3>
         <div class="other">{artist?.albumNames.size + ` Album${artist?.albumNames.size === 1 ? "" : "s"} • `}{artist?.songKeys.length + ` Song${artist?.songKeys.length === 1 ? "" : "s"} • `}{artist?.displayArtistSongLength()}</div>
       </div>
-      <div class="buttons" style="{artist?.backgroundColor ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
+      <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
         <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 10px)" }} on:click={playArtist}>
           <Icon icon={Play} /> Play All
         </ColoredButton>

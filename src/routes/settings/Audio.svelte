@@ -18,8 +18,8 @@
   <span class="content" slot="content">
     <!-- Gapless playback? -->
     <SettingSection label="Auto Play" />
-    <ToggleSetting label="Wired Connections" description="Automatically start playback when a wired devices is connected, and stop it when one disconnects." icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
-    <ToggleSetting label="Bluetooth Connections" description="Automatically start playback when a bluetooth devices is connected, and stop it when one disconnects." icon={BluetoothAuto} bind:checked={$autoPlayOnBluetooth} />
+    <ToggleSetting label="Wired Connections" description="Automatically start playback when a wired devices is connected, and stop it when one disconnects" icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
+    <ToggleSetting label="Bluetooth Connections" description="Automatically start playback when a bluetooth devices is connected, and stop it when one disconnects" icon={BluetoothAuto} bind:checked={$autoPlayOnBluetooth} />
   </span>
 </SettingsBody>
 

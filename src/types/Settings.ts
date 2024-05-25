@@ -1,18 +1,32 @@
-import type { Album } from "../lib/models/Album";
 import { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { View } from "./View";
 
-export enum NowPlayingLayout {
-  NORMAL
+export enum NowPlayingTheme {
+  NORMAL,
+  CARD,
+  CIRCLE,
+  FULL,
+  SIMPLE
 }
 
-export enum NowPlayingAlbumTheme {
-  NORMAL,
-  FULL,
-  FULL_CARD,
-  CARD,
-  CIRCULAR
+/**
+ * Gets a string to render for the given now playing theme.
+ * @param theme The theme to get.
+ */
+export function getNowPlayingTheme(theme: NowPlayingTheme): string {
+  switch (theme) {
+    case NowPlayingTheme.NORMAL:
+      return "Normal";
+    case NowPlayingTheme.FULL:
+      return "Full";
+    case NowPlayingTheme.CARD:
+      return "Card";
+    case NowPlayingTheme.CIRCLE:
+      return "Circle";
+    case NowPlayingTheme.SIMPLE:
+      return "Simple";
+  }
 }
 
 export enum GridSize {
@@ -83,8 +97,7 @@ export type Settings = {
   nowPlaying: {
     songInfo: boolean,
     circularPlayButton: boolean,
-    layout: NowPlayingLayout,
-    albumTheme: NowPlayingAlbumTheme,
+    layout: NowPlayingTheme,
     useAlbumColors: boolean,
     useAlbumColorsForMini: boolean,
     controls: {
@@ -142,7 +155,8 @@ export type Settings = {
   artistsView: {
     gridSize: GridSize,
     gridStyle: GridStyle,
-    sortOrder: ArtistSortOrder
+    sortOrder: ArtistSortOrder,
+    useArtistColors: boolean
   }
 }
 
@@ -159,9 +173,8 @@ export const DEFAULT_SETTINGS: Settings = {
 
   "nowPlaying": {
     "songInfo": false,
-    "circularPlayButton": false,
-    "layout": NowPlayingLayout.NORMAL,
-    "albumTheme": NowPlayingAlbumTheme.NORMAL,
+    "circularPlayButton": true,
+    "layout": NowPlayingTheme.NORMAL,
     "useAlbumColors": true,
     "useAlbumColorsForMini": false,
     "controls": {
@@ -221,6 +234,7 @@ export const DEFAULT_SETTINGS: Settings = {
   "artistsView": {
     "gridSize": GridSize.LARGE,
     "gridStyle": GridStyle.CIRCULAR,
-    "sortOrder": "Alphabetical"
+    "sortOrder": "Alphabetical",
+    "useArtistColors": true
   }
 };

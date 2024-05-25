@@ -15,7 +15,7 @@ import Settings from "./routes/settings/Settings.svelte";
 import Songs from "./routes/songs/Songs.svelte";
 import PlaylistDetails from "./routes/playlists/Details.svelte";
 import AppearanceSettings from "./routes/settings/Appearance.svelte";
-import NowPlayingSettings from "./components/overlays/NowPlaying.svelte";
+import NowPlayingSettings from "./routes/settings/NowPlaying.svelte";
 import AudioSettings from "./routes/settings/Audio.svelte";
 import PersonalizeSettings from "./routes/settings/Personalize.svelte";
 import OtherSettings from "./routes/settings/Other.svelte";

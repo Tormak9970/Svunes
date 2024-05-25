@@ -9,7 +9,7 @@
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { AlbumEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artistsMap, songsMap } from "../../stores/State";
+  import { albumsMap, artistsMap, songsMap, useAlbumColors } from "../../stores/State";
   import { albumToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -148,7 +148,7 @@
         <h3 class="name">{album?.name}</h3>
         <div class="other"><div class="album-artist">{album?.albumArtist ?? ""}</div>{album?.albumArtist ? " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear : ""}{album?.releaseYear !== -1 ? " • " : ""}{album?.displayAlbumLength()}</div>
       </div>
-      <div class="buttons" style="{album?.backgroundColor ? `--m3-scheme-primary: ${album.backgroundColor};` : ""}">
+      <div class="buttons" style="{(album?.backgroundColor && $useAlbumColors) ? `--m3-scheme-primary: ${album.backgroundColor};` : ""}">
         <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 5px)" }} on:click={playAlbum}>
           <Icon icon={Play} /> Play All
         </ColoredButton>

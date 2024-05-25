@@ -1,6 +1,6 @@
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { APP_LANGUAGE, GridSize, GridStyle, NowPlayingAlbumTheme, NowPlayingLayout, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { APP_LANGUAGE, GridSize, GridStyle, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -53,10 +53,9 @@ export const useOledPalette = writable(false);
 export const themePrimaryColor = writable("#7bdd69");
 
 // # Now Playing Settings
-export const showSongInfo = writable(false);
+export const showExtraSongInfo = writable(false);
 export const circularPlayButton = writable(false);
-export const nowPlayingLayout = writable(NowPlayingLayout.NORMAL);
-export const nowPlayingAlbumTheme = writable(NowPlayingAlbumTheme.NORMAL);
+export const nowPlayingTheme = writable(NowPlayingTheme.NORMAL);
 
 export const dismissMiniPlayerWithSwipe = writable(true);
 export const showExtraControls = writable(true);
@@ -106,3 +105,4 @@ export const songSortOrder: Writable<SongSortOrder> = writable("Alphabetical");
 export const artistGridSize: Writable<GridSize> = writable(GridSize.LARGE);
 export const artistGridStyle: Writable<GridStyle> = writable(GridStyle.CIRCULAR);
 export const artistSortOrder: Writable<ArtistSortOrder> = writable("Alphabetical");
+export const useArtistColors: Writable<boolean> = writable(true);

@@ -75,7 +75,6 @@
     <SettingsHeader label="Backup & Restore" goBack={pop} />
   </span>
   <span class="content" slot="content">
-    <!-- svelte-ignore missing-declaration -->
     <ButtonSetting label="Backup" description={"Creates a backup of the app's settings"} icon={AppShortcut} on:click={makeBackup} />
     <ButtonSetting label="Restore" description={"Restore the app's settings from a backup file"} icon={Download} on:click={pickBackup} />
     <ButtonSetting label="Reset Settings" description={"Resets the app's settings back to default"} icon={RestartAlt} on:click={resetSettings} />

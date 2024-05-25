@@ -9,6 +9,7 @@ export const showSongSortOrder = writable(false);
 export const showAlbumSortOrder = writable(false);
 export const showArtistSortOrder = writable(false);
 
+export const showNowPlayingTheme = writable(false);
 
 export const showSelectLanguage = writable(false);
 
