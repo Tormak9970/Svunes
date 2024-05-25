@@ -245,6 +245,48 @@ export class SettingsController {
   }
 
   /**
+   * Applies the settings from a backup file.
+   * @param filePath The filepath of the backup.
+   */
+  static async applyBackup(filePath: string) {
+    const contents = await fs.readTextFile(filePath);
+
+    if (contents !== "") {
+      let currentContents: any = JSON.parse(contents);
+
+      if (currentContents.FILE_SIG_DO_NOT_EDIT === "dev.travislane.tunistic") {
+        let settings: Settings = currentContents;
+    
+        const defaultSettings = structuredClone(DEFAULT_SETTINGS);
+
+        settings = setIfNotExist(settings, defaultSettings);
+        settings = this.migrateSettingsStructure(settings);
+
+        settings.version = APP_VERSION;
+        this.settings = settings;
+
+        await this.save();
+
+        LogController.log("Successfully restored backup.");
+      } else {
+        LogController.error("Backup did not contain the FILE_SIG.");
+      }
+    } else {
+      LogController.error("Backup was empty.");
+    }
+  }
+
+  /**
+   * Resets the app's settings.
+   */
+  static async resetSettings() {
+    this.settings = structuredClone(DEFAULT_SETTINGS);
+    await this.save();
+
+    LogController.log("Successfully reset settings.");
+  }
+
+  /**
    * Sets the Svelte stores associated with the settings.
    */
   private static setStores(): void {
@@ -424,6 +466,17 @@ export class SettingsController {
     return new Promise((resolve, reject) => {
       this.saveCallback = resolve;
       this.debouncedSave();
+    })
+  }
+
+  /**
+   * Writes the app's settings to a file.
+   * @param filePath The path to save to.
+   */
+  static async saveSettingsToFile(filePath: string) {
+    await fs.writeFile({
+      path: filePath,
+      contents: JSON.stringify(this.settings),
     })
   }
 

@@ -10,6 +10,7 @@
   import LanguageSelect from "./LanguageSelect.svelte";
   import ViewOrder from "./ViewOrder.svelte";
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
+  import Controlled from "./Controlled.svelte";
 
 </script>
 
@@ -23,6 +24,7 @@
 <!-- ? Misc -->
 <EditMusicFolders />
 <ArtOptions />
+<Controlled />
 
 <!-- ? Settings -->
 <BlacklistFolders />

@@ -70,6 +70,7 @@ export type AlbumMetadata = {
 }
 
 export type Settings = {
+  FILE_SIG_DO_NOT_EDIT: "dev.travislane.tunistic",
   version: string,
 
   palette: Palette,
@@ -148,6 +149,7 @@ export type Settings = {
 const FAVORITES_PLAYLIST = new Playlist("Favorites", [], false, undefined, undefined, undefined, 0);
 
 export const DEFAULT_SETTINGS: Settings = {
+  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
   "version": "",
   "palette": "Auto",
   "useOledPalette": false,

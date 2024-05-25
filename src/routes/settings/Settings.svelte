@@ -34,7 +34,7 @@
     <SettingsNavButton label="Personalize" description="Change the layout and controls of the app" route="/settings/personalize" icon={Personalize} color="#66bb6a" />
     <SettingsNavButton label="Audio" description="Audio playback settings" route="/settings/audio" icon={Audio} color="#7e57c2" />
     <SettingsNavButton label="Other" description="Hide songs, change language, and more" route="/settings/other" icon={Other} color="#FFA726" />
-    <SettingsNavButton label="Backup & Restore" description="Backup and restore your playlists and settings" route="/settings/backup" icon={Backup} color="#26C6DA" />
+    <SettingsNavButton label="Backup & Restore" description="Backup, restore & reset your settings" route="/settings/backup" icon={Backup} color="#26C6DA" />
     <SettingsNavButton label="About" description="Info about the app and developers" route="/settings/about" icon={About} color="#D4E157" />
   </span>
 </SettingsBody>
