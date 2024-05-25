@@ -64,11 +64,12 @@ export class RustInterop {
   /**
    * Reads the contents of the provided folders.
    * @param folders The folders to read.
+   * @param blacklist The blacklisted folders.
    * @param maxLength The max length of songs to include.
    * @returns The list of songs found.
    */
-  static async readMusicFolders(folders: string[], maxLength: number): Promise<any[]> {
-    const results = await invoke("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders), maxLength: maxLength });
+  static async readMusicFolders(folders: string[], blacklist: string[], maxLength: number): Promise<any[]> {
+    const results = await invoke("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders), blacklistFolderPathsStr: JSON.stringify(blacklist), maxLength: maxLength });
     return JSON.parse(results as string);
   }
 

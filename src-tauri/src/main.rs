@@ -46,21 +46,23 @@ fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String,
 }
 
 /// Reads the content of the provided directory.
-fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf, max_length: u64) -> Vec<Value> {
+fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf, blacklist: &[String], max_length: u64) -> Vec<Value> {
   let contents_res = fs::read_dir(folder_path.to_owned());
   
   let mut entries: Vec<Value> = vec![];
 
   if contents_res.is_ok() {
     let contents = contents_res.ok().unwrap();
+    
+    let mut sub_dirs: Vec<PathBuf> = vec![];
 
     for file_entry_res in contents {
       let file_entry: DirEntry = file_entry_res.ok().expect("File entry should have been ok.");
       let file_path: PathBuf = file_entry.path();
+      let file_path_str = file_path.as_os_str().to_str().unwrap().to_owned();
 
-      if file_path.is_dir() {
-        let mut folder_entries = read_music_folder(app_handle.to_owned(), file_path.to_owned(), max_length);
-        entries.append(&mut folder_entries);
+      if file_path.is_dir() && !blacklist.contains(&file_path_str) {
+        sub_dirs.push(file_path);
       } else {
         let file_type_str_res = file_path.extension();
         
@@ -72,13 +74,17 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf, max_length: u6
             let mut file_entry = read_music_file(app_handle.to_owned(), file_path.to_owned(), file_type, max_length);
             
             if !file_entry.is_empty() {
-              let file_path_str = file_path.as_os_str().to_str().unwrap().to_owned();
               file_entry.insert(String::from("filename"), Value::String(file_path_str));
               entries.push(Value::Object(file_entry));
             }
           }
         }
       }
+    }
+
+    for directory_path in sub_dirs {
+      let mut folder_entries = read_music_folder(app_handle.to_owned(), directory_path.to_owned(), blacklist, max_length);
+      entries.append(&mut folder_entries);
     }
   } else {
     let err: Error = contents_res.err().unwrap();
@@ -90,17 +96,18 @@ fn read_music_folder(app_handle: AppHandle, folder_path: PathBuf, max_length: u6
 
 #[tauri::command]
 /// Reads the contents of the provided directories.
-async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String, max_length: u64) -> String {
-  let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Should have been able to deserialize music folders array.");
+async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String, blacklist_folder_paths_str: String, max_length: u64) -> String {
+  let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Couldn't deserialize music folders array.");
+  let blacklist_folder_paths: Vec<String> = serde_json::from_str(blacklist_folder_paths_str.as_str()).expect("Couldn't deserialize blacklist folders array.");
 
   for music_folder in &music_folder_paths {
     add_path_to_scope(app_handle.to_owned(), music_folder.to_owned()).await;
   }
 
-  let entries: Vec<Value> = music_folder_paths.par_iter().map(| music_folder | {
+  let entries: Vec<Value> = music_folder_paths.par_iter().filter(| folder | !blacklist_folder_paths.contains(&folder)).map(| music_folder | {
     let folder_path: PathBuf = PathBuf::from(music_folder.to_owned());
 
-    let folder_entries = read_music_folder(app_handle.to_owned(), folder_path, max_length);
+    let folder_entries = read_music_folder(app_handle.to_owned(), folder_path, &blacklist_folder_paths, max_length);
     return folder_entries;
   }).flatten().collect();
 

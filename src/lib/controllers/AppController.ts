@@ -1,6 +1,6 @@
 import { showEditMusicFolders } from "../../stores/Modals";
 import { RustInterop } from "./RustInterop";
-import { albums, artists, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
@@ -16,12 +16,23 @@ import { getAllArtistNames } from "../utils/Utils";
  */
 export class AppController {
   private static musicFoldersSub: Unsubscriber;
+  private static blacklistFoldersSub: Unsubscriber;
+  private static oldBlacklist: string[] = [];
+
   /**
    * Initializes the app.
    */
   static async init() {
+    this.oldBlacklist = get(blacklistedFolders);
+
     this.musicFoldersSub = musicDirectories.subscribe((folders) => {
-      this.loadSongs(folders);
+      this.loadSongs(folders, get(blacklistedFolders));
+    });
+    this.blacklistFoldersSub = blacklistedFolders.subscribe((folders) => {
+      if (JSON.stringify(folders) !== JSON.stringify(this.oldBlacklist)) {
+        this.oldBlacklist = folders;
+        this.loadSongs(get(musicDirectories), folders);
+      }
     });
   }
 
@@ -30,6 +41,7 @@ export class AppController {
    */
   static destroy() {
     if (this.musicFoldersSub) this.musicFoldersSub();
+    if (this.blacklistFoldersSub) this.blacklistFoldersSub();
   }
 
   /**
@@ -153,15 +165,17 @@ export class AppController {
   /**
    * Reads songs from the provided folders.
    * @param musicFolders The folders to read music from.
+   * @param blacklistedFolders The user's blacklisted folders.
    */
-  static async loadSongs(musicFolders: string[]) {
+  static async loadSongs(musicFolders: string[], blacklistedFolders: string[]) {
+    console.log("loading songs...");
     const maxLength = SettingsController.getSetting<number>("filterSongDuration") * 60;
     const songsMetadataMap = SettingsController.getSetting<Record<string, SongMetadata>>("cache.songsMetadata");
 
     if (musicFolders.length === 0) {
       showEditMusicFolders.set(true);
     } else {
-      const songsJson = await RustInterop.readMusicFolders(musicFolders, maxLength);
+      const songsJson = await RustInterop.readMusicFolders(musicFolders, blacklistedFolders, maxLength);
       const loadedSongs: Song[] = songsJson.map((json) => {
         const song = Song.fromJSON(json);
         const metadata = songsMetadataMap[song.key];
