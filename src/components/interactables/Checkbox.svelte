@@ -8,7 +8,7 @@
 </script>
 
 <label class="m3-container" style="display: {display};" {...extraOptions}>
-  <input type="checkbox" bind:checked={checked} disabled={disabled} />
+  <input type="checkbox" bind:checked={checked} on:input disabled={disabled} />
   <div class="layer">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path

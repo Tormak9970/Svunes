@@ -13,6 +13,8 @@ export const showNowPlayingTheme = writable(false);
 
 export const showSelectLanguage = writable(false);
 
+export const showEditViewOrder = writable(false);
+
 export const showArtOptions = writable(false);
 export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> = writable(() => {});
 

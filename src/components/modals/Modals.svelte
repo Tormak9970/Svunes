@@ -8,7 +8,7 @@
   import ArtistSortOrder from "./view-settings/ArtistSortOrder.svelte";
   import BlacklistFolders from "./BlacklistFolders.svelte";
   import LanguageSelect from "./LanguageSelect.svelte";
-  import ViewOrder from "./ViewOrder.svelte";
+  import EditViewOrder from "./EditViewOrder.svelte";
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
   import Controlled from "./Controlled.svelte";
 
@@ -29,5 +29,5 @@
 <!-- ? Settings -->
 <BlacklistFolders />
 <LanguageSelect />
-<ViewOrder />
+<EditViewOrder />
 <NowPlayingTheme />

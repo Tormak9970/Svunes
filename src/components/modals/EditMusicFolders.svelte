@@ -7,7 +7,7 @@
   import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./utils/FolderEntry.svelte";
   import Button from "../interactables/Button.svelte";
-    import { location } from "svelte-spa-router";
+  import { location } from "svelte-spa-router";
 
   let musicDirectoriesUnsub: Unsubscriber;
 

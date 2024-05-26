@@ -50,7 +50,7 @@
   }
 
   .info {
-    width: calc(100% - 55px);
+    width: calc(100% - 117px);
   }
   
   .description {
