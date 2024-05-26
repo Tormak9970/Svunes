@@ -146,12 +146,4 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  @media screen and (forced-colors: active) {
-    .selected {
-      background-color: selecteditem !important;
-    }
-    .m3-container.disabled {
-      opacity: 0.38;
-    }
-  }
 </style>

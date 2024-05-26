@@ -1,33 +1,31 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
-  const dispatch = createEventDispatcher();
-
+  export let display = "inline-flex";
+  export let extraOptions: HTMLAttributes<HTMLLabelElement> = {};
   export let checked = false;
   export let disabled = false;
-  export let name: string;
-  export let display = "inline-flex";
-  export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
-
-  /**
-   * Relay the input event to the parent.
-   */
-  function onInput() {
-    dispatch("input");
-  }
 </script>
 
-<div class="m3-container" style="display: {display};" {...extraOptions}>
-  <input type="radio" name={name} checked={checked} {disabled} on:input={onInput} />
-  <div class="layer" />
-</div>
+<label class="m3-container" style="display: {display};" {...extraOptions}>
+  <input type="checkbox" bind:checked={checked} disabled={disabled} />
+  <div class="layer">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M 4.83 13.41 L 9 17.585 L 19.59 7"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.41"
+      />
+    </svg>
+  </div>
+</label>
 
 <style>
   .m3-container {
     position: relative;
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
   }
   .m3-container input {
     position: absolute;
@@ -35,10 +33,11 @@
   }
   .layer {
     position: absolute;
-    inset: -0.625rem;
+    inset: -0.6875rem;
     width: 2.5rem;
     height: 2.5rem;
     border-radius: var(--m3-util-rounding-full);
+
     transition: all 200ms;
     cursor: pointer;
     --color: var(--m3-scheme-on-surface-variant);
@@ -48,23 +47,17 @@
     content: " ";
     display: block;
     position: absolute;
-    inset: 0.625rem;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: var(--m3-util-rounding-full);
+    inset: 0.6875rem;
+    border-radius: 0.125rem;
     border: solid 0.125rem rgb(var(--color));
-    transition: all 0.3s;
+    transition: all 200ms;
   }
-  .layer::after {
-    content: " ";
-    display: block;
+  svg {
     position: absolute;
-    inset: 1.25rem;
-    width: 0rem;
-    height: 0rem;
-    border-radius: var(--m3-util-rounding-full);
-    background-color: rgb(var(--color));
-    transition: all 0.3s;
+    inset: 0.6875rem;
+    color: rgb(var(--m3-scheme-on-primary));
+    opacity: 0;
+    transition: opacity 200ms;
   }
 
   @media (hover: hover) {
@@ -78,22 +71,26 @@
     --color: var(--m3-scheme-on-surface);
     background-color: rgb(var(--color) / 0.12);
   }
-  input:enabled + .layer:active::before {
-    transform: scale(0.9);
-  }
   input:checked + .layer {
     --color: var(--m3-scheme-primary);
   }
-  input:checked + .layer::after {
-    inset: 0.9375rem;
-    width: 0.625rem;
-    height: 0.625rem;
+  input:checked + .layer::before {
+    background-color: rgb(var(--color));
+  }
+  input:checked + .layer svg {
+    opacity: 1;
   }
 
   input:disabled + .layer {
     background-color: transparent;
     --color: var(--m3-scheme-on-surface) / 0.38;
     pointer-events: none;
+  }
+  input:disabled + .layer svg {
+    color: rgb(var(--m3-scheme-surface));
+  }
+  input:disabled:checked + .layer::before {
+    border-color: transparent;
   }
 
   .m3-container {

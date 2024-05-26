@@ -144,9 +144,4 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  @media screen and (forced-colors: active) {
-    button {
-      outline: solid 0.25rem;
-    }
-  }
 </style>

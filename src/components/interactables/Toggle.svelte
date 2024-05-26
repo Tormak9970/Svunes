@@ -180,19 +180,4 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  @media screen and (forced-colors: active) {
-    input:checked {
-      background-color: canvastext !important;
-    }
-    .layer {
-      background-color: canvastext !important;
-    }
-    input:checked + .layer {
-      background-color: canvas !important;
-    }
-    input:disabled,
-    input:disabled + .layer {
-      opacity: 0.38;
-    }
-  }
 </style>

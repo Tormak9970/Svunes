@@ -176,28 +176,4 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  @media screen and (forced-colors: active) {
-    .track::before {
-      background-color: selecteditem;
-    }
-    .track::after {
-      background-color: canvastext;
-    }
-    .thumb {
-      background-color: selecteditem;
-    }
-    .value {
-      border: 2px solid selecteditem;
-      overflow: hidden;
-    }
-    input:disabled + .track::before {
-      background-color: canvastext;
-    }
-    input:disabled + .track::after {
-      background-color: graytext;
-    }
-    input:disabled ~ .thumb {
-      background-color: graytext;
-    }
-  }
 </style>

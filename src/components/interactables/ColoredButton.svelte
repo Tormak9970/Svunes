@@ -27,7 +27,7 @@
     height: 2.5rem;
     padding: 0 1.5rem;
     border-radius: var(--m3-button-shape);
-    color: rgb(var(--text));
+    color: rgb(var(--text-color));
     transition: all 200ms;
 
     align-items: center;
@@ -62,7 +62,7 @@
 
   .m3-container:enabled.filled {
     background-color: rgb(var(--m3-scheme-primary));
-    --text: var(--m3-scheme-background);
+    --text-color: var(--m3-scheme-background);
   }
 
   .m3-container.outlined {
@@ -71,7 +71,7 @@
   }
   .m3-container:enabled.outlined {
     border: 0.1rem solid rgb(var(--m3-scheme-primary));
-    --text: var(--m3-scheme-primary);
+    --text-color: var(--m3-scheme-primary);
   }
 
   .m3-container {
@@ -79,7 +79,7 @@
   }
   @media (hover: hover) {
     .m3-container:enabled:hover > .layer {
-      background-color: rgb(var(--text) / 0.08);
+      background-color: rgb(var(--text-color) / 0.08);
     }
     .m3-container:enabled.filled:hover {
       box-shadow: var(--m3-util-elevation-1);
@@ -87,20 +87,11 @@
   }
   .m3-container:enabled:focus-visible > .layer,
   .m3-container:enabled:active > .layer {
-    background-color: rgb(var(--text) / 0.12);
+    background-color: rgb(var(--text-color) / 0.12);
   }
 
   .m3-container {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
-  }
-  @media screen and (forced-colors: active) {
-    .m3-container:is(.filled) {
-      background-color: transparent;
-      border: 0.0625rem solid;
-    }
-    .m3-container:disabled {
-      opacity: 0.38;
-    }
   }
 </style>

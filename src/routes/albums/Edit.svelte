@@ -8,15 +8,15 @@
   import { albumsMap } from "../../stores/State";
   import TextField from "../../components/interactables/TextField.svelte";
   import NumberField from "../../components/interactables/NumberField.svelte";
-  import ErrorSnackbar, { type ErrorSnackbarIn } from "../../components/snackbars/error/ErrorSnackbar.svelte";
+  import ErrorSnackbar from "../../components/snackbars/ErrorSnackbar.svelte";
   import { AppController } from "../../lib/controllers/AppController";
   import { LogController } from "../../lib/controllers/LogController";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import { Album } from "../../lib/models/Album";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
-    import { pop } from "svelte-spa-router";
+  import { pop } from "svelte-spa-router";
 
-  let snackbar: (data: ErrorSnackbarIn) => void;
+  let snackbar: (data: ShowSnackbarOptions) => void;
 
   export let params: { key?: string } = {};
   $: album = params.key ? $albumsMap[params.key] : null;

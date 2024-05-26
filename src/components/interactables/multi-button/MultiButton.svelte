@@ -44,8 +44,8 @@
     align-items: center;
     justify-content: center;
 
-    --text: var(--m3-scheme-on-surface);
-    color: rgb(var(--text));
+    --text-color: var(--m3-scheme-on-surface);
+    color: rgb(var(--text-color));
     transition: all 200ms;
 
     cursor: pointer;
@@ -122,17 +122,17 @@
   }
   @media (hover: hover) {
     input:not(:disabled) + label:hover > .layer {
-      background-color: rgb(var(--text) / 0.08);
+      background-color: rgb(var(--text-color) / 0.08);
     }
   }
 
   input:checked + label {
     background-color: rgb(var(--m3-scheme-secondary-container));
-    --text: var(--m3-scheme-on-secondary-container);
+    --text-color: var(--m3-scheme-on-secondary-container);
   }
   input:enabled:focus-visible + label > .layer,
   input:enabled + label:active > .layer {
-    background-color: rgb(var(--text) / 0.12);
+    background-color: rgb(var(--text-color) / 0.12);
   }
 
   input {

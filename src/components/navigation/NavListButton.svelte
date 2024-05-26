@@ -34,8 +34,8 @@
     text-align: center;
 
     background-color: transparent;
-    --text: var(--m3-scheme-on-surface-variant);
-    color: rgb(var(--text));
+    --text-color: var(--m3-scheme-on-surface-variant);
+    color: rgb(var(--text-color));
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
   }
@@ -95,7 +95,7 @@
   }
 
   .selected {
-    --text: var(--m3-scheme-on-surface);
+    --text-color: var(--m3-scheme-on-surface);
   }
   .selected > .icon-space::before {
     opacity: 1;
@@ -112,23 +112,17 @@
 
   @media (hover: hover) {
     .m3-container:hover > .icon-space {
-      background-color: rgb(var(--text) / 0.08);
+      background-color: rgb(var(--text-color) / 0.08);
     }
   }
   .m3-container:focus-visible > .icon-space,
   .m3-container:active > .icon-space {
-    background-color: rgb(var(--text) / 0.12);
+    background-color: rgb(var(--text-color) / 0.12);
   }
 
   .selected {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
-  }
-  @media screen and (forced-colors: active) {
-    .icon-space::before {
-      background-color: selecteditem;
-      color: selecteditemtext;
-    }
   }
 
   @keyframes icon-select {

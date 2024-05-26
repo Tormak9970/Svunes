@@ -3,6 +3,7 @@
 
   import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
   import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
+  
 </script>
 
 <SettingsBody>
