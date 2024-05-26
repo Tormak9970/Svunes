@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
   import Button from "../Button.svelte";
-    import TextField from "../TextField.svelte";
 
 	const dispatch = createEventDispatcher<{
 		input: { hsv?: any; rgb?: any; hex?: string };
@@ -61,7 +60,7 @@
 	}
 </script>
 
-<div class="text-input">
+<div class="text-input" class:alpha={isAlpha}>
 	<div class="input-container">
 		{#if mode === 'hex'}
 			<input aria-label={texts.label.hex} value={hex} on:input={updateHex} style:flex={3} />

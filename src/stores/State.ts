@@ -50,7 +50,7 @@ export const isSwitchingView = writable(false);
 // * Settings stores
 export const palette = writable<Palette>("Auto");
 export const useOledPalette = writable(false);
-export const themePrimaryColor = writable("#7bdd69");
+export const themePrimaryColor = writable("");
 
 // # Now Playing Settings
 export const showExtraSongInfo = writable(false);

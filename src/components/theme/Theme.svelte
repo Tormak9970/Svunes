@@ -19,8 +19,10 @@
 
   onMount(() => {
     primaryColorUnsub = themePrimaryColor.subscribe((color) => {
-      darkScheme = serializeScheme(new SchemeTonalSpot(Hct.fromInt(argbFromHex(color)), true, contrast));
-      lightScheme = serializeScheme(new SchemeTonalSpot(Hct.fromInt(argbFromHex(color)), false, contrast));
+      if (color !== "") {
+        darkScheme = serializeScheme(new SchemeTonalSpot(Hct.fromInt(argbFromHex(color)), true, contrast));
+        lightScheme = serializeScheme(new SchemeTonalSpot(Hct.fromInt(argbFromHex(color)), false, contrast));
+      }
     });
 
     paletteUnsub = palette.subscribe((newPalette) => {

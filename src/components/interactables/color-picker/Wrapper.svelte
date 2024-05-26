@@ -15,7 +15,7 @@
   });
 </script>
 
-<md-menu bind:this={wrapper} open={isOpen} positioning="popover" role={'dialog'} style="--md-menu-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-selected-container-color: rgb(var(--m3-scheme-secondary-container));">
+<md-menu bind:this={wrapper} open={isOpen} positioning="popover" role={isDialog ? 'dialog' : ''} style="--md-menu-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-selected-container-color: rgb(var(--m3-scheme-secondary-container));">
   <div class="wrapper" style="padding: 0px 8px;">
     <slot />
   </div>
