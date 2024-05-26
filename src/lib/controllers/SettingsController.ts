@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, APP_LANGUAGE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
+import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors } from "../../stores/State";
 import { View } from "../../types/View";
@@ -400,7 +400,7 @@ export class SettingsController {
     this.blacklistedFoldersUnsub = blacklistedFolders.subscribe(this.updateStoreIfChanged<string[]>("blacklistedFolders"));
     this.pauseOnVolumeZeroUnsub = pauseOnVolumeZero.subscribe(this.updateStoreIfChanged<boolean>("pauseOnVolumeZero"));
     this.filterSongDurationUnsub = filterSongDuration.subscribe(this.updateStoreIfChanged<number>("filterSongDuration"));
-    this.selectedLanguageUnsub = selectedLanguage.subscribe(this.updateStoreIfChanged<APP_LANGUAGE>("selectedLanguage"));
+    this.selectedLanguageUnsub = selectedLanguage.subscribe(this.updateStoreIfChanged<AppLanguage>("selectedLanguage"));
 
     this.albumsUnsub = albums.subscribe((albums) => {
       this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", Object.fromEntries(albums.map((album) => {

@@ -21,7 +21,7 @@
       <!-- svelte-ignore missing-declaration -->
       <!-- svelte-ignore a11y-missing-attribute -->
       <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" />
-      <span slot="placeholder">
+      <span slot="placeholder" style="display: flex; width: {imageSize}px; height: {imageSize}px;">
         <MusicNotePlaceholder height={80} width={80} backgroundColor="--m3-scheme-surface-container-lowest" fillColor="--m3-scheme-on-secondary" />
       </span>
     </Lazy>

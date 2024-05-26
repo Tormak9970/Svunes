@@ -25,7 +25,8 @@
   onMount(async () => {
     loadingUnsub = isLoading.subscribe((newStatus) => {
       if (!newStatus) push(viewRoutesLUT[$selectedView]);
-    })
+    });
+
     await SettingsController.init();
     AppController.init();
 
@@ -65,8 +66,8 @@
 
 <style>
   .content {
-    flex-grow: 1;
     width: 100%;
+    height: 100%;
     
     position: relative;
   }

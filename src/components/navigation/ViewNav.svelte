@@ -14,7 +14,7 @@
   import { viewRoutesLUT } from "../../routes";
   import { fly } from "svelte/transition";
   import NavList from "./NavList.svelte";
-    import NavListButton from "./NavListButton.svelte";
+  import NavListButton from "./NavListButton.svelte";
   
   const icons = {
     0: QueueMusic,
@@ -35,7 +35,7 @@
     $lastView = $selectedView;
     $selectedView = view;
     $selected = [];
-    $isSwitchingView = true;
+    $isSwitchingView = view !== View.SETTINGS && view !== View.SEARCH;
     
     if (!$isLoading) {
       push(viewRoutesLUT[view]);

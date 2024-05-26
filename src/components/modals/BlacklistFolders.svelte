@@ -32,7 +32,6 @@
    */
   function clear() {
     $blacklistedFolders = [];
-    $showBlacklistFolders = false;
   }
 
   /**
@@ -63,7 +62,7 @@
   });
 </script>
 
-<ModalBody show={$showBlacklistFolders} headline={"Blacklisted Folders"}>
+<ModalBody show={$showBlacklistFolders} headline={"Blacklisted Folders"} onClose={() => $showBlacklistFolders = false }>
   <div slot="content">
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
   import type { TransitionConfig } from "svelte/transition";
-  import { easeEmphasizedAccel, easeEmphasizedDecel } from "../animations/easing";
-  import { outroClass } from "../animations/animations";
+  import { easeEmphasizedAccel, easeEmphasizedDecel } from "../utils/animations/easing";
+  import { outroClass } from "../utils/animations/animations";
   
   /**
    * The bottom sheet height animation.
@@ -22,9 +22,12 @@
 
   let fullHeight: number;
   export let height = 1000;
+  export let closeThreshold = 2;
   
   let isDragging = false;
   let startY = 0;
+
+  let isMovingBack = false;
 
   const dispatch = createEventDispatcher();
 
@@ -63,10 +66,15 @@
   function onDragEnd() {
     isDragging = false;
 
-    if (height < fullHeight / 2) {
+    if (height < fullHeight / closeThreshold) {
       dispatch("close", "low");
     } else {
+      isMovingBack = true;
       height = fullHeight;
+
+      setTimeout(() => {
+        isMovingBack = false;
+      }, 300);
     }
   }
 
@@ -86,15 +94,12 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
   class="m3-container"
+  class:moving-back={isMovingBack}
   style="max-height: {height}px"
   use:open
   use:outroClass
-  on:cancel|preventDefault={() => {
-    dispatch("close", "browser");
-  }}
-  on:mousedown|self={() => {
-    dispatch("close", "click");
-  }}
+  on:cancel|preventDefault={() => dispatch("close", "browser")}
+  on:mousedown|self={() => dispatch("close", "click")}
   in:heightAnim
   out:heightAnim={{ easing: easeEmphasizedAccel, duration: 300 }}
   bind:this={dialogElement}
@@ -157,6 +162,11 @@
     height: 0.25rem;
     border-radius: 0.25rem;
   }
+
+  .moving-back {
+    transition: max-height 0.3s cubic-bezier(0.356, 0.701, 0, 1.004);
+  }
+
   @keyframes backdrop {
     0% {
       background-color: transparent;

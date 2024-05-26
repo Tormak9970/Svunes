@@ -5,7 +5,7 @@
   export let width = 30;
   export let height = 30;
   export let backgroundColor = "--m3-scheme-surface-container-low";
-  export let fillColor = "--m3-scheme-on-secondary-container";
+  export let fillColor = "--m3-scheme-secondary-container";
 </script>
 
 <div class="placeholder-background" style="--background-color: var({backgroundColor}); --fill-color: var({fillColor});">

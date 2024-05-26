@@ -7,6 +7,7 @@
   import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./utils/FolderEntry.svelte";
   import Button from "../interactables/Button.svelte";
+    import { location } from "svelte-spa-router";
 
   let musicDirectoriesUnsub: Unsubscriber;
 
@@ -55,7 +56,7 @@
   });
 </script>
 
-<ModalBody show={$showEditMusicFolders} headline={"Music Folders"}>
+<ModalBody show={$showEditMusicFolders} headline={"Music Folders"} canClose={$location.startsWith("/settings")} onClose={() => $showEditMusicFolders = false }>
   <div slot="content">
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />

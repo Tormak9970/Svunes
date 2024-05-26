@@ -3,18 +3,18 @@
   import { selectedLanguage } from "../../stores/State";
   import { showSelectLanguage } from "../../stores/Modals";
   import RadioInput from "../interactables/RadioInput.svelte";
-  import { APP_LANGUAGE, getLanguage } from "../../types/Settings";
+  import { AppLanguage, getLanguage } from "../../types/Settings";
 
   /**
    * Sets the app language.
    * @param lang The new language.
    */
-  function setLanguage(lang: APP_LANGUAGE) {
+  function setLanguage(lang: AppLanguage) {
     $selectedLanguage = lang;
     $showSelectLanguage = false;
   }
 
-  const langs: APP_LANGUAGE[] = Object.values(APP_LANGUAGE).filter((v) => !isNaN(Number(v))) as APP_LANGUAGE[];
+  const langs: AppLanguage[] = Object.values(AppLanguage).filter((v) => !isNaN(Number(v))) as AppLanguage[];
 </script>
 
 <Body headline="Select Language" bind:open={$showSelectLanguage}>

@@ -28,7 +28,7 @@
     height: 2.5rem;
     padding: 0 1.5rem;
     border-radius: var(--m3-button-shape);
-    color: rgb(var(--text));
+    color: rgb(var(--text-color));
     transition: all 200ms;
 
     align-items: center;

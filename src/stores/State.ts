@@ -1,6 +1,6 @@
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { APP_LANGUAGE, GridSize, GridStyle, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { AppLanguage, GridSize, GridStyle, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -31,7 +31,7 @@ export const queue: Writable<Song[]> = writable([]);
 export const blacklistedFolders: Writable<string[]> = writable([]);
 export const pauseOnVolumeZero = writable(false);
 export const filterSongDuration = writable(30);
-export const selectedLanguage = writable(APP_LANGUAGE.SYSTEM);
+export const selectedLanguage = writable(AppLanguage.SYSTEM);
 
 export const artists: Writable<Artist[]> = writable([]);
 export const artistsMap: Readable<Record<string, Artist>> = derived(artists, (artists: Artist[]) => {
