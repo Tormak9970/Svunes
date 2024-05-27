@@ -15,15 +15,12 @@
   import VirtualList from "../../components/layout/VirtualList.svelte";
   import ListEntry from "../../components/views/songs/ListEntry.svelte";
   import type { Song } from "../../lib/models/Song";
-  import { onMount } from "svelte";
-  import type { Genre } from "../../lib/models/Genre";
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
 
   export let params: { key?: string } = {};
-  let genre: Genre;
-
-  let genreSongs: Song[] = [];
+  $: genre = params.key ? $genresMap[params.key] : undefined;
+  $: genreSongs = genre?.songKeys.map((key) => $songsMap[key]) ?? [];
 
   let isAtTop = true;
 
@@ -51,7 +48,7 @@
   /**
    * Queues this genre.
    */
-  function queueArtist() {
+  function queueGenre() {
     QueueController.queueSongs(genre!.songKeys);
   }
 
@@ -62,14 +59,6 @@
     $genreToAdd = genre!.name;
     $showAddToPlaylist = true;
   }
-
-  onMount(async () => {
-    console.log(params);
-    genre = $genresMap[params!.key!];
-    console.log(genre);
-    // genreSongs = genre!.songKeys.map((key) => $songsMap[key]);
-    console.log(genreSongs);
-  });
 </script>
 
 <DetailsBody bind:isAtTop={isAtTop}>
@@ -79,13 +68,13 @@
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div>{genre?.name}</div>
+        <div style="font-size: 20px;">{genre?.name}</div>
       </span>
       <span slot="right" style="display: flex; flex-direction: row;">
         <MenuButton icon={MoreVert}>
           <MenuItem on:click={playGenre}>Play</MenuItem>
           <MenuItem on:click={playNext}>Play Next</MenuItem>
-          <MenuItem on:click={queueArtist}>Add to Queue</MenuItem>
+          <MenuItem on:click={queueGenre}>Add to Queue</MenuItem>
           <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
         </MenuButton>
       </span>
@@ -101,6 +90,7 @@
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
