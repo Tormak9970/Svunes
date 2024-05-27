@@ -1,6 +1,7 @@
 import { get } from "svelte/store";
 import { artistsMap, genresMap, songsMap } from "../../stores/State";
-import { formatTime, sumColorString } from "../utils/Utils";
+import { formatTime } from "../utils/Utils";
+import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
 import { RustInterop } from "../controllers/RustInterop";
 
 /**
@@ -33,21 +34,14 @@ export class Artist {
   set imagePath(path: string | undefined) {
     this._imagePath = path;
     
-    if (this._imagePath) {
-      RustInterop.getColorsFromImage(this._imagePath).then((colors) => {
+    if (path) {
+      RustInterop.getColorsFromImage(path).then((colors) => {
         if (colors.length) {
-          let brightestColor = colors[0];
-          let brightest = sumColorString(colors[0]);
+          this.backgroundColor = colors[0];
 
-          for (const color of colors) {
-            const sum = sumColorString(color);
-            if (sum > brightest) {
-              brightest = sum;
-              brightestColor = color;
-            }
+          if ((checkGreyness(this.backgroundColor, 20) || checkChannels(this.backgroundColor, 123)) && (sumColorString(colors[0]) < sumColorString(colors[1]))) {
+            this.backgroundColor = colors[1];
           }
-
-          this.backgroundColor = brightestColor;
         }
       });
     }

@@ -1,14 +1,15 @@
 import { get } from "svelte/store";
 import { RustInterop } from "../controllers/RustInterop";
 import { songsMap } from "../../stores/State";
-import { formatTime, getISODate, sumColorString } from "../utils/Utils";
+import { formatTime, getISODate } from "../utils/Utils";
+import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
 
 /**
  * Represents an album.
  */
 export class Album {
   name: string;
-  artPath: string | undefined;
+  _artPath: string | undefined;
   lastPlayedOn: string;
   _albumArtist: string | undefined;
   artists: Set<string>;
@@ -36,24 +37,23 @@ export class Album {
     this.numTimesPlayed = numTimesPlayed ?? 0;
     this.songKeys = [];
     this.artists = new Set();
+  }
+
+  get artPath(): string | undefined {
+    return this._artPath;
+  }
+
+  set artPath(path: string | undefined) {
+    this._artPath = path;
     
-    this.backgroundColor = undefined;
-
-    if (this.artPath) {
-      RustInterop.getColorsFromImage(this.artPath).then((colors) => {
+    if (path) {
+      RustInterop.getColorsFromImage(path).then((colors) => {
         if (colors.length) {
-          let brightestColor = colors[0];
-          let brightest = sumColorString(colors[0]);
+          this.backgroundColor = colors[0];
 
-          for (const color of colors) {
-            const sum = sumColorString(color);
-            if (sum > brightest) {
-              brightest = sum;
-              brightestColor = color;
-            }
+          if ((checkGreyness(this.backgroundColor, 20) || checkChannels(this.backgroundColor, 123)) && (sumColorString(colors[0]) < sumColorString(colors[1]))) {
+            this.backgroundColor = colors[1];
           }
-
-          this.backgroundColor = brightestColor;
         }
       });
     }

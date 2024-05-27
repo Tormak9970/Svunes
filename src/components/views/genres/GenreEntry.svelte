@@ -25,8 +25,10 @@
   onMount(() => {
     if ((!genre.backgroundColor || !genre.textColor) && genre.imagePreviewPath) {
       RustInterop.getColorsFromImage(genre.imagePreviewPath).then((colors) => {
-        genre.backgroundColor = colors[0];
-        genre.textColor = colors[1];
+        if (colors.length) {
+          genre.backgroundColor = colors[0];
+          genre.textColor = colors[1];
+        }
       });
     }
   });

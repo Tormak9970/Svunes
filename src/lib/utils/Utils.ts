@@ -163,16 +163,6 @@ export function formatTime(totalSeconds: number): string {
 }
 
 /**
- * Sums the components of a color.
- * @param color The color to sum.
- * @returns The some of the color's components.
- */
-export function sumColorString(color: string): number {
-  const parts = color.split(" ").map((part) => parseInt(part));
-  return parts[0] + parts[1] + parts[2];
-}
-
-/**
  * Checks if an artist is singular.
  * @param artist The artist to check
  */
@@ -437,17 +427,4 @@ export function getGenre(value?: string) {
   } else {
     return value;
   }
-}
-
-/**
- * Gets a rgb value from an argb value.
- * @param argb The argb value.
- * @returns The rgb representation (red, green, blue).
- */
-export function rgbFromArgb(argb: number): string {
-  const red = (argb >> 16) & 255;
-  const green = (argb >> 8) & 255;
-  const blue = argb & 255;
-
-  return `${red}, ${green}, ${blue}`;
 }
