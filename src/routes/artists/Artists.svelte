@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { albumGridSize, artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "../../stores/State";
+  import { artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "../../stores/State";
   import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
   import ListEntry from "../../components/views/artists/ListEntry.svelte";
   import GridEntry from "../../components/views/artists/GridEntry.svelte";
@@ -51,7 +51,7 @@
           <ListEntry artist={entry} />
         </VirtualList>
       {:else}
-        <VirtualGrid name="artistsView" itemHeight={GRID_IMAGE_DIMENSIONS[$albumGridSize].height + GRID_IMAGE_DIMENSIONS[$albumGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$albumGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} items={sortedArtists} keyFunction={keyFunction} bind:isAtTop={$artistsIsAtTop} let:entry>
+        <VirtualGrid name="artistsView" itemHeight={GRID_IMAGE_DIMENSIONS[$artistGridSize].height + GRID_IMAGE_DIMENSIONS[$artistGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$artistGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$artistGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$artistGridSize].gap} items={sortedArtists} keyFunction={keyFunction} bind:isAtTop={$artistsIsAtTop} let:entry>
           <GridEntry artist={entry} />
         </VirtualGrid>
       {/if}

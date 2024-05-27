@@ -30,7 +30,7 @@ struct Payload {
   cwd: String,
 }
 
-fn color_to_rgb(color: Color) -> String {
+fn color_to_rgb(color: &Color) -> String {
   return format!("{} {} {}", color.r, color.g, color.b);
 }
 
@@ -178,10 +178,13 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
       let color_palette = get_palette_with_options(img.as_bytes(),
         PixelEncoding::Rgb,
         Quality::new(5),
-        MaxColors::new(2),
+        MaxColors::new(5),
         PixelFilter::White);
 
-      let colors = vec![Value::String(color_to_rgb(color_palette[0])), Value::String(color_to_rgb(color_palette[1]))];
+      let colors: Vec<Value> = color_palette.iter().map(| color | {
+        return Value::String(color_to_rgb(color))
+      }).collect();
+      
       return serde_json::to_string(&colors).expect("Couldn't serialize json!");
     } else {
       logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}.", image_path).as_str(), 2);

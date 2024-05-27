@@ -1,7 +1,7 @@
 import { path } from "@tauri-apps/api";
 import { albumsMap } from "../../stores/State";
 import { get } from "svelte/store";
-import { artistIsSingular, formatTime, getISODate } from "../utils/Utils";
+import { artistIsSingular, formatTime, getGenre, getISODate } from "../utils/Utils";
 
 /**
  * Class representing a song.
@@ -48,7 +48,7 @@ export class Song {
     this.artPath = artPath;
     this.lastPlayedOn = lastPlayedOn;
     this.numTimesPlayed = numTimesPlayed;
-    this.genre = genre;
+    this.genre = getGenre(genre);
     this.trackNumber = trackNumber;
     this.totalTracks = totalTracks;
 

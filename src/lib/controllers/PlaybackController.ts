@@ -5,6 +5,7 @@ import type { Artist } from "../models/Artist";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
 import { SettingsController } from "./SettingsController";
+import type { Genre } from "../models/Genre";
 
 // ! Add logging to this file
 
@@ -52,6 +53,14 @@ export class PlaybackController {
    * @param shuffle Whether to shuffle this artist or not.
    */
   static playArtist(artist: Artist, shuffle = false) {
+
+  }
+  
+  /**
+   * Plays the provided genre.
+   * @param genre The genre to play.
+   */
+  static playGenre(genre: Genre) {
 
   }
 

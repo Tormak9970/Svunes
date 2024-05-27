@@ -9,8 +9,8 @@
   }
   let virtualListCache: Record<string, CacheEntry> = {};
 
-  function getCacheEntry(name: string): CacheEntry {
-    if (!virtualListCache[name]) {
+  function getCacheEntry(name: string, saveState: boolean): CacheEntry {
+    if (!virtualListCache[name] || !saveState) {
       virtualListCache[name] = {
         start: 0,
         end: 0,
@@ -35,10 +35,11 @@
   export let width = "100%";
 	export let itemHeight: any = undefined;
   export let isAtTop = true;
+  export let saveState = true;
   
   export let keyFunction = (entry: any) => entry.index;
 
-  $: cacheEntry = getCacheEntry(name);
+  $: cacheEntry = getCacheEntry(name, saveState);
 
   // * Local State
 	let mounted: boolean;

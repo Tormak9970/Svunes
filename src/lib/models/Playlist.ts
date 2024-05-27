@@ -15,11 +15,13 @@ export class Playlist {
   lastPlayedOn: string;
   numTimesPlayed: number;
   isUserPlaylist: boolean;
+  pinned: boolean;
 
   /**
    * Creates a new playlist.
    */
   constructor(name: string, songKeys: string[], isUserPlaylist: boolean, albumArtLUT?: Record<string, number>, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
+    this.pinned = false;
     this.name = name;
     this.songKeys = songKeys;
     this.albumArtLUT = albumArtLUT ?? {};

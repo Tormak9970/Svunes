@@ -20,7 +20,7 @@
   }
 </script>
 
-<ModalBody headline={$dialogModalTitle} show={$showDialogModal} canClose={false}>
+<ModalBody headline={$dialogModalTitle} show={$showDialogModal} canClose={false} onClose={() => {}}>
   <div slot="content" class="content">
     {$dialogModalMessage}
   </div>

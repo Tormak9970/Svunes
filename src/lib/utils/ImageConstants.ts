@@ -28,3 +28,8 @@ export const GRID_IMAGE_DIMENSIONS: Record<GridSize, any> = {
     infoHeight: 50
   }
 }
+
+export const TILTED_DIMENSIONS = {
+  width: 70,
+  height: 70
+}

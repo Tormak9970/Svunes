@@ -32,6 +32,7 @@
     --m3-card-shape: var(--m3-util-rounding-medium);
   }
   .m3-container {
+    display: flex;
     flex-direction: column;
     position: relative;
     padding: 1rem; /* protip: use margin: -1rem (adjust as needed) to make images stretch to the end */

@@ -20,8 +20,8 @@
     0: QueueMusic,
     1: Album,
     2: MusicNote,
-    3: LibraryMusic,
-    4: Artist,
+    3: Artist,
+    4: LibraryMusic,
     5: Settings,
     6: Search,
     7: Home
