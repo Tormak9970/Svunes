@@ -7,7 +7,9 @@ import type { Song } from "./Song";
  * Represents a user playlist.
  */
 export class Playlist {
+  pinned: boolean;
   name: string;
+  description: string;
   imagePath?: string;
   songKeys: string[];
   albumArtLUT: Record<string, number>
@@ -15,14 +17,14 @@ export class Playlist {
   lastPlayedOn: string;
   numTimesPlayed: number;
   isUserPlaylist: boolean;
-  pinned: boolean;
 
   /**
    * Creates a new playlist.
    */
-  constructor(name: string, songKeys: string[], isUserPlaylist: boolean, albumArtLUT?: Record<string, number>, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
-    this.pinned = false;
+  constructor(pinned: boolean, name: string, description: string, songKeys: string[], isUserPlaylist: boolean, albumArtLUT?: Record<string, number>, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
+    this.pinned = pinned;
     this.name = name;
+    this.description = description;
     this.songKeys = songKeys;
     this.albumArtLUT = albumArtLUT ?? {};
     this.isUserPlaylist = isUserPlaylist;
@@ -55,6 +57,20 @@ export class Playlist {
    */
   displayLength(): string {
     return formatTime(this.length);
+  }
+
+  /**
+   * Adds a song from the playlist.
+   * @param song The song to add.
+   */
+  addSong(song: Song) {
+    this.songKeys.push(song.key);
+
+    if (song.album) {
+      if (!this.albumArtLUT[song.album]) this.albumArtLUT[song.album] = 0;
+
+      this.albumArtLUT[song.album] += 1;
+    }
   }
 
   /**
@@ -94,5 +110,14 @@ export class Playlist {
         delete this.albumArtLUT[song.album];
       }
     }
+  }
+
+  /**
+   * Gets a playlist object from its json object.
+   * @param json The playlist json object.
+   * @returns The Playlist object.
+   */
+  static fromJSON(json: any): Playlist {
+    return new Playlist(json.pinned, json.name, json.description, json.songKeys, json.isUserPlaylist, json.albumArtLUT, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
   }
 }

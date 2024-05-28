@@ -15,15 +15,16 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
+import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists } from "../../stores/State";
 import { View } from "../../types/View";
-import type { Playlist } from "../models/Playlist";
-import type { Song } from "../models/Song";
+import { Playlist } from "../models/Playlist";
+import { Song } from "../models/Song";
 import type { Album } from "../models/Album";
 import type { Unsubscriber } from "svelte/store";
 import { debounce } from "../utils/Utils";
+import type { Artist } from "../models/Artist";
 
 /**
  * Sets settings to defaults if they do not exist.
@@ -100,6 +101,7 @@ export class SettingsController {
 
   private static albumsUnsub: Unsubscriber;
   private static songsUnsub: Unsubscriber;
+  private static artistsUnsub: Unsubscriber;
   private static songProgressUnsub: Unsubscriber;
   private static songNameUnsub: Unsubscriber;
   private static nowPlayingListNameUnsub: Unsubscriber;
@@ -320,9 +322,9 @@ export class SettingsController {
     autoPlayOnBluetooth.set(audio.autoPlayBluetooth);
 
 
-    playlists.set(this.settings.playlists);
+    playlists.set(this.settings.playlists.map((playlist) => Playlist.fromJSON(playlist)));
 
-    queue.set(this.settings.queue);
+    queue.set(this.settings.queue.map((song) => Song.fromJSON(song)));
 
     blacklistedFolders.set(this.settings.blacklistedFolders);
     pauseOnVolumeZero.set(this.settings.pauseOnVolumeZero);
@@ -402,8 +404,8 @@ export class SettingsController {
     this.filterSongDurationUnsub = filterSongDuration.subscribe(this.updateStoreIfChanged<number>("filterSongDuration"));
     this.selectedLanguageUnsub = selectedLanguage.subscribe(this.updateStoreIfChanged<AppLanguage>("selectedLanguage"));
 
-    this.albumsUnsub = albums.subscribe((albums) => {
-      this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", Object.fromEntries(albums.map((album) => {
+    this.albumsUnsub = albums.subscribe((newAlbums) => {
+      this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", Object.fromEntries(newAlbums.map((album) => {
         return [
           album.name,
           {
@@ -413,9 +415,9 @@ export class SettingsController {
         ]
       })));
     });
-    this.songsUnsub = songs.subscribe((songs) => {
-      this.updateSetting<number>("cache.numSongs", songs.length);
-      this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", Object.fromEntries(songs.map((song) => {
+    this.songsUnsub = songs.subscribe((newSongs) => {
+      this.updateSetting<number>("cache.numSongs", newSongs.length);
+      this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", Object.fromEntries(newSongs.map((song) => {
         return [
           song.key,
           {
@@ -425,6 +427,17 @@ export class SettingsController {
         ]
       })));
     });
+    this.artistsUnsub = artists.subscribe((newArtists) => {
+      this.updateSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata", Object.fromEntries(newArtists.map((artist) => {
+        return [
+          artist.name,
+          {
+            "imagePath": artist.imagePath
+          }
+        ]
+      })));
+    });
+
     this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
     this.songNameUnsub = songName.subscribe(this.updateStoreIfChanged<string>("cache.songName"));
     this.nowPlayingListNameUnsub = nowPlayingListName.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingListName"));
@@ -477,7 +490,21 @@ export class SettingsController {
     await fs.writeFile({
       path: filePath,
       contents: JSON.stringify(this.settings),
-    })
+    });
+  }
+
+  /**
+   * Updates the saved metadata for the provided artist.
+   * @param artists The artists to update.
+   */
+  static updateArtistsMetadata(artists: Artist[]) {
+    for (const artist of artists) {
+      this.settings.cache.artistsMetadata[artist.name] = {
+        "imagePath": artist.imagePath
+      }
+    }
+
+    this.updateSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata", this.settings.cache.artistsMetadata);
   }
 
   /**
@@ -492,7 +519,7 @@ export class SettingsController {
       }
     }
 
-    this.updateSetting<Record<string, SongMetadata>>("cache.albumsMetadata", this.settings.cache.albumsMetadata);
+    this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", this.settings.cache.albumsMetadata);
   }
 
   /**
@@ -546,6 +573,7 @@ export class SettingsController {
 
     if (this.albumsUnsub) this.albumsUnsub();
     if (this.songsUnsub) this.songsUnsub();
+    if (this.artistsUnsub) this.artistsUnsub();
     if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.songNameUnsub) this.songNameUnsub();
     if (this.nowPlayingListNameUnsub) this.nowPlayingListNameUnsub();

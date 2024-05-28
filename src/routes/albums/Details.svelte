@@ -2,6 +2,7 @@
   import Button from "../../components/interactables/Button.svelte";
   import Icon from "../../components/utils/Icon.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
@@ -98,6 +99,13 @@
   }
 
   /**
+   * Shows all albums by artist.
+   */
+  function showAllAlbums() {
+    push(`/albums/${params.key}/albums-by-artist`);
+  }
+
+  /**
    * Sorts the album's songs.
    * @param songsList The list of songs.
    * @param sortOrder The order to sort by.
@@ -170,7 +178,12 @@
     </div>
     {#if album && artist && artist.albumNames.size > 1}
       <div class="similar">
-        <h3 class="section-header">More from {album?.albumArtist}</h3>
+        <div class="section-header">
+          <h3 class="label">More from {album?.albumArtist}</h3>
+          <Button type="text" iconType="full" on:click={showAllAlbums}>
+            <Icon icon={ForwardArrow} width="20px" height="20px" />
+          </Button>
+        </div>
         <AlbumCarousel albums={artistOtherAlbums} />
       </div>
     {/if}
@@ -244,5 +257,11 @@
     overflow: hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
+  }
+
+  
+  .similar .section-header {
+    width: calc(100% - 20px);
+    margin-bottom: 5px;
   }
 </style>

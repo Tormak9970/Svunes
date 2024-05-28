@@ -9,8 +9,8 @@
   }
   let virtualGridCache: Record<string, CacheEntry> = {};
 
-  function getCacheEntry(name: string): CacheEntry {
-    if (!virtualGridCache[name]) {
+  function getCacheEntry(name: string, saveState: boolean): CacheEntry {
+    if (!virtualGridCache[name] || !saveState) {
       virtualGridCache[name] = {
         start: 0,
         end: 0,
@@ -39,10 +39,11 @@
   export let columnGap: number;
   export let rowGap: number;
   export let isAtTop = true;
+  export let saveState = true;
 
   export let keyFunction = (entry: any) => entry.index;
 
-  $: cacheEntry = getCacheEntry(name);
+  $: cacheEntry = getCacheEntry(name, saveState);
 
   // * Local State
   let mounted: boolean;

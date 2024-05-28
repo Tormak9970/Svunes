@@ -8,7 +8,7 @@ import { SettingsController } from "./SettingsController";
 import { LogController } from "./LogController";
 import { Genre } from "../models/Genre";
 import { Artist } from "../models/Artist";
-import type { AlbumMetadata, SongMetadata } from "../../types/Settings";
+import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { getAllArtistNames } from "../utils/Utils";
 
 /**
@@ -96,13 +96,15 @@ export class AppController {
    * @param songs The loaded songs.
    */
   private static loadArtistsFromSongs(songs: Song[]) {
+    const artistsMetadataMap = SettingsController.getSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata");
     const artistMap = new Map<string, Artist>();
 
     for (const song of songs) {
       if (song.artist) {
         for (const artistName of getAllArtistNames(song.artist)) {
           if (!artistMap.get(artistName)) {
-            const artist = new Artist(artistName, song.artPath);
+            const metadata = artistsMetadataMap[artistName];
+            const artist = new Artist(artistName, metadata?.imagePath ?? song.artPath);
             artist.songKeys.push(song.key);
             
             if (song.album && song.albumArtist?.includes(artistName)) artist.albumNames.add(song.album);
@@ -144,7 +146,11 @@ export class AppController {
         const genre = new Genre(songGenre, song.artPath);
         genre.songKeys.push(song.key);
 
-        if (song.artist) genre.artists.add(song.artist);
+        if (song.artist) {
+          for (const artist of getAllArtistNames(song.artist)) {
+            genre.artists.add(artist);
+          }
+        }
 
         genreMap.set(songGenre, genre);
       } else {
@@ -152,7 +158,11 @@ export class AppController {
         genre.songKeys.push(song.key);
 
         if (!genre.imagePreviewPath) genre.imagePreviewPath = song.artPath;
-        if (song.artist) genre.artists.add(song.artist);
+        if (song.artist) {
+          for (const artist of getAllArtistNames(song.artist)) {
+            genre.artists.add(artist);
+          }
+        }
       }
     }
 
@@ -168,7 +178,6 @@ export class AppController {
    * @param blacklistedFolders The user's blacklisted folders.
    */
   static async loadSongs(musicFolders: string[], blacklistedFolders: string[]) {
-    console.log("loading songs...");
     const maxLength = SettingsController.getSetting<number>("filterSongDuration") * 60;
     const songsMetadataMap = SettingsController.getSetting<Record<string, SongMetadata>>("cache.songsMetadata");
 

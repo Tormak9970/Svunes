@@ -83,6 +83,10 @@ export type AlbumMetadata = {
   numTimesPlayed: number | undefined
 }
 
+export type ArtistMetadata = {
+  imagePath: string | undefined,
+}
+
 export type Settings = {
   FILE_SIG_DO_NOT_EDIT: "dev.travislane.tunistic",
   version: string,
@@ -131,6 +135,7 @@ export type Settings = {
 
   cache: {
     albumsMetadata: Record<string, AlbumMetadata>,
+    artistsMetadata: Record<string, ArtistMetadata>,
     numSongs: number,
     songsMetadata: Record<string, SongMetadata>,
     songProgress: number,
@@ -160,7 +165,7 @@ export type Settings = {
   }
 }
 
-const FAVORITES_PLAYLIST = new Playlist("Favorites", [], false, undefined, undefined, undefined, 0);
+const FAVORITES_PLAYLIST = new Playlist(false, "Favorites", "", [], false, undefined, undefined, undefined, 0);
 
 export const DEFAULT_SETTINGS: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
@@ -209,6 +214,7 @@ export const DEFAULT_SETTINGS: Settings = {
   "selectedLanguage": AppLanguage.SYSTEM,
 
   "cache": {
+    "artistsMetadata": {},
     "albumsMetadata": {},
     "numSongs": 0,
     "songsMetadata": {},

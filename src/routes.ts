@@ -21,6 +21,9 @@ import PersonalizeSettings from "./routes/settings/Personalize.svelte";
 import OtherSettings from "./routes/settings/Other.svelte";
 import BackupSettings from "./routes/settings/Backup.svelte";
 import AboutSettings from "./routes/settings/About.svelte";
+import PlaylistEditor from "./routes/playlists/Edit.svelte";
+import AlbumsByArtist from "./routes/albums/AlbumsByArtist.svelte";
+import SimilarArtists from "./routes/artists/SimilarArtists.svelte";
 
 /**
  * A LUT for mapping Views to their routes.
@@ -44,11 +47,13 @@ export const routes = {
 
   "/playlists": Playlists,
   "/playlists/:key": PlaylistDetails,
+  "/playlists/:key/edit": PlaylistEditor,
 
   "/albums": Albums,
   "/albums/:key": AblumDetails,
   "/albums/:key/alt": AblumDetails,
   "/albums/:key/edit": AlbumEditor,
+  "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
   "/songs/:key": SongDetails,
@@ -57,6 +62,7 @@ export const routes = {
   "/artists": Artists,
   "/artists/:key": ArtistDetails,
   "/artists/:key/alt": ArtistDetails,
+  "/artists/:key/similar": SimilarArtists,
 
   "/genres": Genres,
   "/genres/:key": GenreDetails,

@@ -2,6 +2,7 @@
   import Button from "../../components/interactables/Button.svelte";
   import Icon from "../../components/utils/Icon.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
@@ -17,7 +18,7 @@
   import MenuButton from "../../components/interactables/MenuButton.svelte";
   import RadioMenuItem from "../../components/interactables/RadioMenuItem.svelte";
   import ColoredButton from "../../components/interactables/ColoredButton.svelte";
-  import { pop } from "svelte-spa-router";
+  import { pop, push } from "svelte-spa-router";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { Song } from "../../lib/models/Song";
   import { getRandomElements, stringSort } from "../../lib/utils/Utils";
@@ -83,6 +84,13 @@
   function addToPlaylist() {
     $artistToAdd = artist!.name
     $showAddToPlaylist = true;
+  }
+
+  /**
+   * Shows all similar artists.
+   */
+  function showAllSimilar() {
+    push(`/artists/${params.key}/similar`);
   }
 
   /**
@@ -165,7 +173,12 @@
     </div>
     {#if similarArtists && similarArtists?.length > 0}
       <div class="similar">
-        <h3 class="section-header">Similar Artists</h3>
+        <div class="section-header">
+          <h3 class="label">Similar Artists</h3>
+          <Button type="text" iconType="full" on:click={showAllSimilar}>
+            <Icon icon={ForwardArrow} width="20px" height="20px" />
+          </Button>
+        </div>
         <ArtistCarousel artists={similarArtists} />
       </div>
     {/if}
@@ -236,5 +249,14 @@
   .songs .section-header {
     width: calc(100% - 30px);
     margin-left: 15px;
+  }
+
+  .albums .section-header {
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+  
+  .similar .section-header {
+    width: calc(100% - 20px);
   }
 </style>
