@@ -6,6 +6,7 @@
   import { push } from "svelte-spa-router";
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Playlist } from "../../../lib/models/Playlist";
+    import { playlists } from "../../../stores/State";
 
   export let menuIsOpen: boolean;
   export let playlist: Playlist;
@@ -51,6 +52,15 @@
   }
 
   /**
+   * Toggles whether the playlist is pinned or not.
+   */
+  function togglePinned() {
+    playlist.pinned = !playlist.pinned;
+    $playlists = [ ...$playlists ];
+    closeOptions();
+  }
+
+  /**
    * Shows the edit playlist overlay.
    */
   function showPlaylistEdit() {
@@ -79,6 +89,9 @@
 <MenuItem on:click={playNext}>Play Next</MenuItem>
 <MenuItem on:click={queuePlaylist}>Add to Queue</MenuItem>
 <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
-<MenuItem on:click={showPlaylistEdit}>Edit</MenuItem>
-<MenuItem on:click={deletePlaylist}>Delete</MenuItem>
+<MenuItem on:click={togglePinned}>{playlist?.pinned ? "Unpin" : "Pin"}</MenuItem>
+{#if playlist.isUserPlaylist}
+  <MenuItem on:click={showPlaylistEdit}>Edit</MenuItem>
+  <MenuItem on:click={deletePlaylist}>Delete</MenuItem>
+{/if}
 <MenuItem on:click={exportPlaylist}>Export</MenuItem>

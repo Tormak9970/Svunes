@@ -135,7 +135,7 @@
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
-          AppController.deletePlaylistsFromDevice($selected);
+          AppController.deletePlaylistsFromDevice($selected.filter((name) => $playlistsMap[name].isUserPlaylist));
         } else {
           AppController.deleteSongsFromDevice($selected);
         }
@@ -169,7 +169,7 @@
         break;
       }
     }
-    AppController.deleteSongsFromDevice(getSongsFromSelected());
+    
     $selected = [];
     menuIsOpen = false;
   }

@@ -4,6 +4,7 @@
   import { selectedChip } from "../../../stores/Search";
   import Search from "@ktibow/iconset-material-symbols/search";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Add from "@ktibow/iconset-material-symbols/add-rounded";
   import Button from "../../interactables/Button.svelte";
   import Icon from "../../utils/Icon.svelte";
   import { showGridSize, showPlaylistSortOrder } from "../../../stores/Modals";
@@ -64,11 +65,13 @@
       <Icon icon={Search} width="20px" height="20px" />
     </Button>
   </div>
-  <div slot="right">
+  <div slot="right" style="display: flex; align-items: center;">
+    <Button type="text" iconType="full" on:click={() => { $showCreatePlaylist = true; }}>
+      <Icon icon={Add} width="20px" height="20px" />
+    </Button>
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>Grid Size</MenuItem>
       <MenuItem on:click={() => { $showPlaylistSortOrder = true; menuIsOpen = false; }}>Sort By</MenuItem>
-      <MenuItem on:click={() => { $showCreatePlaylist = true; }}>New Playlist</MenuItem>
       <MenuItem on:click={importPlaylist}>Import</MenuItem>
       <MenuItem on:click={goToSettings}>Settings</MenuItem>
     </MenuButton>
