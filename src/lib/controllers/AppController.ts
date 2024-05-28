@@ -10,6 +10,7 @@ import { Genre } from "../models/Genre";
 import { Artist } from "../models/Artist";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { getAllArtistNames } from "../utils/Utils";
+import type { Playlist } from "../models/Playlist";
 
 /**
  * The core app controller.
@@ -269,11 +270,39 @@ export class AppController {
   }
 
   /**
+   * Deletes the provided artists from the device.
+   * @param artistNames The names of the artists to delete.
+   */
+  static async deleteArtistsFromDevice(artistNames: string[]) {
+    // TODO: show popup to confirm if they really want to.
+    // TODO: update relevant stores
+    // ! Add logging
+  }
+
+  /**
+   * Deletes the provided playlists from the device.
+   * @param playlists The names of the playlists to delete.
+   */
+  static async deletePlaylistsFromDevice(playlists: string[]) {
+    // TODO: show popup to confirm if they really want to.
+    // TODO: update relevant stores
+    // ! Add logging
+  }
+
+  /**
    * Shares the provided songs.
    * @param songNames The names of the songs to share.
    */
   static async share(songNames: string[]) {
     // TODO: implement per platform.
     // ! Add logging
+  }
+
+  static async importPlaylist(playlistPath: string) {
+
+  }
+
+  static async exportPlaylist(playlist: Playlist) {
+
   }
 }

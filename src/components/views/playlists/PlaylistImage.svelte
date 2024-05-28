@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Playlist } from "../../lib/models/Playlist";
+  import type { Playlist } from "../../../lib/models/Playlist";
 
   export let playlist: Playlist;
 </script>

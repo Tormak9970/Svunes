@@ -10,9 +10,15 @@
    */
   async function pickImage() {
     const path = await dialog.open({
-      title: "Choose a Folder",
+      title: "Choose an Image",
       directory: false,
       multiple: false,
+      filters: [
+        {
+          "name": "image",
+          "extensions": [ "png", "PNG", "jpg", "JPG", "jpeg", "JPEG" ]
+        }
+      ]
     });
 
     if (path && path !== "") {

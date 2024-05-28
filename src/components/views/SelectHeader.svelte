@@ -132,6 +132,43 @@
    * Prompts the user if they really want to delete everything they've selected.
    */
   function deleteFromDevice() {
+    switch ($selectedView) {
+      case View.PLAYLISTS: {
+        if ($location === "/playlists") {
+          AppController.deletePlaylistsFromDevice($selected);
+        } else {
+          AppController.deleteSongsFromDevice($selected);
+        }
+        break;
+      }
+      case View.ALBUMS: {
+        if ($location === "/albums") {
+          AppController.deleteAlbumsFromDevice($selected);
+        } else {
+          AppController.deleteSongsFromDevice($selected);
+        }
+        break;
+      }
+      case View.ARTISTS: {
+        if ($location === "/artists") {
+          AppController.deleteArtistsFromDevice($selected);
+        } else {
+          AppController.deleteSongsFromDevice($selected);
+        }
+        break;
+      }
+      case View.SONGS:
+      case View.GENRES: {
+        AppController.deleteSongsFromDevice($selected);
+        break;
+      }
+      case View.HOME:
+      case View.SEARCH:
+      case View.SETTINGS: {
+        LogController.error("Shouldn't be able to get here!");
+        break;
+      }
+    }
     AppController.deleteSongsFromDevice(getSongsFromSelected());
     $selected = [];
     menuIsOpen = false;
