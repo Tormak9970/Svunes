@@ -50,10 +50,12 @@
       <RadioInput name="gridSize" checked={gridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)} />
       <div class="radio">Medium</div>
     </label>
-    <label style="height: 2.5rem;">
-      <RadioInput name="gridSize" checked={gridSize === GridSize.SMALL} on:input={() => gridSizeChange(GridSize.SMALL)} />
-      <div class="radio">Small</div>
-    </label>
+    {#if $selectedView !== View.PLAYLISTS}
+      <label style="height: 2.5rem;">
+        <RadioInput name="gridSize" checked={gridSize === GridSize.SMALL} on:input={() => gridSizeChange(GridSize.SMALL)} />
+        <div class="radio">Small</div>
+      </label>
+    {/if}
   </div>
 </Body>
 

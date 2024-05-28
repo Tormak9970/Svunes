@@ -5,9 +5,9 @@
   import Lazy from "../../layout/Lazy.svelte";
   import AlbumPlaceholder from "../../layout/placeholders/AlbumPlaceholder.svelte";
   import Favorites from "../../layout/placeholders/Favorites.svelte";
-  import { albumsMap, playlistGridSize } from "../../../stores/State";
+  import { albums, albumsMap, playlistGridSize } from "../../../stores/State";
   import { GridSize } from "../../../types/Settings";
-    import PlaylistGrid from "./PlaylistGrid.svelte";
+  import PlaylistGrid from "./PlaylistGrid.svelte";
 
   export let playlist: Playlist;
   export let height: number;
@@ -15,10 +15,9 @@
   export let isList = false;
 
   $: albumKeys = Object.keys(playlist.albumArtLUT);
-  $: numAlbums = albumKeys.length;
-  $: albums = albumKeys.map((albumName) => $albumsMap[albumName]);
+  $: images = albumKeys.map((albumName) => $albumsMap[albumName].artPath);
   
-  $: convertedPath = albums[0]?.artPath ? tauri.convertFileSrc(albums[0].artPath) : "";
+  $: convertedPath = images[0] ? tauri.convertFileSrc(images[0]) : "";
   $: size = isList ? 20 : ($playlistGridSize === GridSize.SMALL ? 40 : 60);
 </script>
 
@@ -32,18 +31,18 @@
   {:else}
     {#if playlist.name === "Favorites"}
       <Favorites width={size} height={size} />
-    {:else if numAlbums === 0}
+    {:else if images.length === 0}
       <AlbumPlaceholder width={size} height={size} />
-    {:else if numAlbums === 1}
+    {:else if images.length === 1}
       <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{convertedPath}" style="width: {width}px; height: {height}px;" draggable="false" on:error={onError} />
+        <img src="{convertedPath}" style="width: {size}px; height: {size}px;" draggable="false" on:error={onError} />
         <span slot="placeholder">
           <AlbumPlaceholder width={size} height={size} />
         </span>
       </Lazy>
     {:else}
-      <PlaylistGrid albums={albums} />
+    <PlaylistGrid images={images} imageSize={$playlistGridSize === GridSize.LARGE ? 75 : 50} placeholderIconSize={$playlistGridSize === GridSize.LARGE ? 30 : 20} />
     {/if}
   {/if}
 </div>
