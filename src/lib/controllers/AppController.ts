@@ -1,6 +1,6 @@
 import { showEditMusicFolders } from "../../stores/Modals";
 import { RustInterop } from "./RustInterop";
-import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, playlists, queue, showInfoSnackbar, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
@@ -11,6 +11,7 @@ import { Artist } from "../models/Artist";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { getAllArtistNames } from "../utils/Utils";
 import type { Playlist } from "../models/Playlist";
+import { DialogController } from "./DialogController";
 
 /**
  * The core app controller.
@@ -281,12 +282,26 @@ export class AppController {
 
   /**
    * Deletes the provided playlists from the device.
-   * @param playlists The names of the playlists to delete.
+   * @param playlistNames The names of the playlists to delete.
    */
-  static async deletePlaylistsFromDevice(playlists: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores
-    // ! Add logging
+  static async deletePlaylistsFromDevice(playlistNames: string[]) {
+    const numPlaylistMessage = `${playlistNames.length} ${playlistNames.length === 1 ? "playlist" : "playlists"}`;
+
+    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numPlaylistMessage}?`, "Yes", "No").then((shouldContinue) => {
+      if (shouldContinue) {
+        const playlistList = get(playlists);
+        
+        for (const name of playlistNames) {
+          const index = playlistList.findIndex((playlist) => playlist.name === name);
+          playlistList.splice(index, 1);
+        }
+
+        playlists.set(playlistList);
+
+        LogController.log(`Deleted ${numPlaylistMessage}.`);
+        get(showInfoSnackbar)({ message: numPlaylistMessage + " deleted", timeout: 1500 });
+      }
+    });
   }
 
   /**

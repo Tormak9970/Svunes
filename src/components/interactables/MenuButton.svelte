@@ -11,16 +11,18 @@
   let menuElement: any;
 
   export let open = false;
+  $: menuElement && (menuElement.open = open);
 
   function onMouseUp(e: Event) {
-    if (e.target !== buttonElement) menuElement.open = open = false;
+    if (e.target !== buttonElement) open = false;
   }
 
   function onClick(e: Event) {
     if (!buttonElement) buttonElement = e.target as HTMLButtonElement;
     if (!menuElement.anchorElement) menuElement.anchorElement = buttonElement;
-    menuElement.open = open = !open;
+    open = !open;
   }
+
 </script>
 
 <svelte:window on:mouseup={onMouseUp} />

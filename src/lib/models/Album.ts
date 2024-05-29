@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { RustInterop } from "../controllers/RustInterop";
 import { songsMap } from "../../stores/State";
-import { formatTime, getISODate } from "../utils/Utils";
+import { formatTime } from "../utils/Utils";
 import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
 
 /**
@@ -83,7 +83,7 @@ export class Album {
    * Sets the last played date to now.
    */
   setLastPlayed() {
-    this.lastPlayedOn = getISODate(new Date());
+    this.lastPlayedOn = (new Date()).toISOString();
   }
 
   /**

@@ -3,7 +3,7 @@
   import ViewNav from "./navigation/ViewNav.svelte";
   import MiniPlayer from "./overlays/MiniPlayer.svelte";
   import Titlebar from "./Titlebar.svelte";
-  import { isLoading, selectedView, showMiniPlayer } from "../stores/State";
+  import { isLoading, selectedView, showErrorSnackbar, showInfoSnackbar, showMiniPlayer } from "../stores/State";
   import Overlays from "./overlays/Overlays.svelte";
   import { AppController } from "../lib/controllers/AppController";
   import { SettingsController } from "../lib/controllers/SettingsController";
@@ -16,6 +16,8 @@
   import Router, { location, push } from 'svelte-spa-router'
   import { routes, viewRoutesLUT } from "../routes";
   import type { Unsubscriber } from "svelte/store";
+    import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
+    import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
 
   let loadingUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;
@@ -48,6 +50,8 @@
 
 <Overlays />
 <Modals />
+<ErrorSnackbar bind:show={$showErrorSnackbar} />
+<InfoSnackbar bind:show={$showInfoSnackbar} />
 {#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}
   <ViewNav />
 {/if}

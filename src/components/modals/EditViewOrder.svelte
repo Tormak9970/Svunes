@@ -4,7 +4,7 @@
   import type { Unsubscriber } from "svelte/store";
 	import {dragHandleZone, dragHandle} from "svelte-dnd-action";
   
-  import { viewsToRender } from "../../stores/State";
+  import { showErrorSnackbar, viewsToRender } from "../../stores/State";
   import { showEditViewOrder } from "../../stores/Modals";
   import { View, Views, getViewName } from "../../types/View";
 
@@ -12,11 +12,8 @@
   import Button from "../interactables/Button.svelte";
   import Checkbox from "../interactables/Checkbox.svelte";
   import Icon from "../utils/Icon.svelte";
-  import ErrorSnackbar from "../snackbars/ErrorSnackbar.svelte";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
-  
-  let snackbar: (data: ShowSnackbarOptions) => void;
 
   type ListEntry = {
     id: number,
@@ -44,10 +41,10 @@
       const item = items.find((item) => item.view === view)!;
       
       if (numChecked === 3 && !checked) {
-        snackbar({ message: "Min page count is 3", closable: false, timeout: 3000 });
+        $showErrorSnackbar({ message: "Min page count is 3", closable: false, timeout: 3000 });
         reset = !reset;
       } else if (numChecked === 5 && checked) {
-        snackbar({ message: "Max page count is 5", closable: false, timeout: 3000 });
+        $showErrorSnackbar({ message: "Max page count is 5", closable: false, timeout: 3000 });
         reset = !reset;
       } else {
         item.checked = checked;
@@ -113,7 +110,6 @@
         {/each}
       </div>
     {/key}
-    <ErrorSnackbar bind:show={snackbar} />
   </div>
   <div class="actions" slot="actions">
     <div class="left" />

@@ -24,7 +24,7 @@
   import { pop, push } from "svelte-spa-router";
   import { LogController } from "../../lib/controllers/LogController";
   import type { Song } from "../../lib/models/Song";
-  import { nullishNumberSort, stringSort } from "../../lib/utils/Utils";
+  import { nullishNumberSort, stringSort } from "../../lib/utils/Sorters";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
   import MenuItem from "../../components/layout/MenuItem.svelte";
 

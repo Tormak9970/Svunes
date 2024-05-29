@@ -1,5 +1,5 @@
 <script>
-  import AddToPlaylists from "./AddToPlaylists.svelte";
+  import AddToPlaylists from "./add-to-playlists/AddToPlaylists.svelte";
   import CreatePlaylist from "./CreatePlaylist.svelte";
   import NowPlaying from "./NowPlaying.svelte";
   import Queue from "./Queue.svelte";

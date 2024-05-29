@@ -23,6 +23,7 @@
   let fullHeight: number;
   export let height = 1000;
   export let closeThreshold = 2;
+  export let padding = "0 1rem";
   
   let isDragging = false;
   let startY = 0;
@@ -105,7 +106,7 @@
   bind:this={dialogElement}
 >
   <div
-    class="container"
+    style="padding: {padding}"
     on:touchstart={(e) => onDragStart(e.touches[0].clientY)}
   >
     <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -144,9 +145,6 @@
   dialog:global(.leaving)::backdrop {
     background-color: transparent;
     animation: backdropReverse 400ms;
-  }
-  .container {
-    padding: 0 1rem;
   }
   .handle-container {
     display: flex;

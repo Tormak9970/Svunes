@@ -1,7 +1,7 @@
 import { path } from "@tauri-apps/api";
 import { albumsMap } from "../../stores/State";
 import { get } from "svelte/store";
-import { artistIsSingular, formatTime, getGenre, getISODate } from "../utils/Utils";
+import { artistIsSingular, formatTime, getGenre } from "../utils/Utils";
 
 /**
  * Class representing a song.
@@ -65,7 +65,7 @@ export class Song {
    * Sets the last played date to now.
    */
   setLastPlayed() {
-    this.lastPlayedOn = getISODate(new Date());
+    this.lastPlayedOn = (new Date()).toISOString();
   }
 
   /**

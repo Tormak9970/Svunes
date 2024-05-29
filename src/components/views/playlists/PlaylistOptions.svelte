@@ -6,7 +6,7 @@
   import { push } from "svelte-spa-router";
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Playlist } from "../../../lib/models/Playlist";
-    import { playlists } from "../../../stores/State";
+  import { playlists } from "../../../stores/State";
 
   export let menuIsOpen: boolean;
   export let playlist: Playlist;
@@ -22,33 +22,33 @@
    * Plays this playlist.
    */
   function playPlaylist() {
+    menuIsOpen = false;
     PlaybackController.playPlaylist(playlist);
-    closeOptions();
   }
 
   /**
    * Plays this playlist next.
    */
   function playNext() {
+    menuIsOpen = false;
     QueueController.playPlaylistsNext([playlist.name]);
-    closeOptions();
   }
 
   /**
    * Queues this playlist.
    */
   function queuePlaylist() {
+    menuIsOpen = false;
     QueueController.queuePlaylists([playlist.name]);
-    closeOptions();
   }
 
   /**
    * Opens the add to playlist dialog with this playlist set to be added.
    */
   function addToPlaylist() {
+    menuIsOpen = false;
     $playlistToAdd = playlist.name;
     $showAddToPlaylist = true;
-    closeOptions();
   }
 
   /**
@@ -57,29 +57,30 @@
   function togglePinned() {
     playlist.pinned = !playlist.pinned;
     $playlists = [ ...$playlists ];
-    closeOptions();
+    menuIsOpen = false;
   }
 
   /**
    * Shows the edit playlist overlay.
    */
   function showPlaylistEdit() {
+    menuIsOpen = false;
     push(`/playlists/${playlist.name}/edit`);
-    closeOptions();
   }
 
   /**
    * Prompts the user to confirm if they want to delete this song.
    */
   function deletePlaylist() {
+    menuIsOpen = false;
     AppController.deletePlaylistsFromDevice([playlist.name]);
-    closeOptions();
   }
 
   /**
    * Exports the playlist to a json file.
    */
   function exportPlaylist() {
+    menuIsOpen = false;
     AppController.exportPlaylist(playlist);
     closeOptions();
   }

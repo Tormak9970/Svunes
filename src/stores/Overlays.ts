@@ -3,6 +3,7 @@ import { writable, type Writable } from "svelte/store";
 export const showNowPlaying = writable(true); // ! will be false after tested.
 
 export const showCreatePlaylist = writable(false);
+export const songsForNewPlaylist: Writable<string[]> = writable([]);
 
 export const showAddToPlaylist = writable(false);
 export const songToAdd: Writable<string | null> = writable(null);

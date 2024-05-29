@@ -10,7 +10,7 @@
   import { LogController } from "../../lib/controllers/LogController";
   import type { Song } from "../../lib/models/Song";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { stringSort, dateSort } from "../../lib/utils/Utils";
+  import { stringSort, dateSort } from "../../lib/utils/Sorters";
   import { songs, songSortOrder, songGridSize, songsIsAtTop } from "../../stores/State";
   import { type SongSortOrder, GridSize } from "../../types/Settings";
 

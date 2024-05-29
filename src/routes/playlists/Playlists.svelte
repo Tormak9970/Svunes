@@ -6,7 +6,7 @@
   import { LogController } from "../../lib/controllers/LogController";
   import type { Playlist } from "../../lib/models/Playlist";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { stringSort, dateSort } from "../../lib/utils/Utils";
+  import { stringSort, dateSort } from "../../lib/utils/Sorters";
   import { playlists, playlistSortOrder, playlistGridSize, playlistsIsAtTop } from "../../stores/State";
   import { type PlaylistSortOrder, GridSize } from "../../types/Settings";
   import ListEntry from "../../components/views/playlists/ListEntry.svelte";

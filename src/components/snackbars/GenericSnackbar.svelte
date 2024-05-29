@@ -4,6 +4,15 @@
   import { fly } from "svelte/transition";
   import iconX from "@ktibow/iconset-material-symbols/close";
   import Icon from "../utils/Icon.svelte";
+  
+  /**
+   * Handles opening the snackbar.
+   */
+  const open = (node: HTMLDialogElement) => {
+    node.inert = true;
+    node.showModal();
+    node.inert = false;
+  }
 
   type SnackbarData = {
     message: string;
@@ -11,7 +20,7 @@
     timeout: number | null;
   };
 
-  export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
+  export let extraWrapperOptions: HTMLAttributes<HTMLDialogElement> = {};
   export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
   
   export const show = ({ message, closable = false, timeout = 4000 }: ShowSnackbarOptions) => {
@@ -37,7 +46,7 @@
 </script>
 
 {#if snackbar}
-  <div class="holder" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }} {...extraWrapperOptions}>
+  <dialog class="holder" use:open in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }} {...extraWrapperOptions}>
     <div class="m3-container" style:--background-color={backgroundColor} style:--text-color={textColor} {...extraOptions}>
       <p class="m3-font-body-medium">{snackbar.message}</p>
       {#if snackbar.closable}
@@ -45,8 +54,8 @@
           <Icon icon={iconX} />
         </button>
       {/if}
-      </div>
-  </div>
+    </div>
+  </dialog>
 {/if}
 
 <style>
@@ -55,15 +64,27 @@
   }
 
   .holder {
-    position: fixed;
+    margin: auto 0 0 0;
+    border: 0;
+    padding: 0;
+
+    width: 100%;
     padding-bottom: 1rem;
-    bottom: var(--m3-util-bottom-offset);
+
+    position: fixed;
     left: 50%;
+    bottom: var(--m3-util-bottom-offset);
+
     transform: translate(-50%, 0);
-    z-index: 3;
+    background-color: transparent;
+    z-index: 1000;
   }
   p {
     margin-right: auto;
+  }
+
+  .holder::backdrop {
+    background-color: transparent;
   }
 
   .m3-container {
@@ -77,6 +98,7 @@
     box-shadow: var(--m3-util-elevation-3);
     background-color: rgb(var(--background-color));
     color: rgb(var(--text-color));
+    overflow: hidden;
   }
 
   button {

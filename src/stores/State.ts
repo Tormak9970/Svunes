@@ -9,6 +9,9 @@ import type { Genre } from "../lib/models/Genre";
 
 export const isLoading = writable(true);
 
+export const showInfoSnackbar: Writable<(data: ShowSnackbarOptions) => void> = writable(() => {});
+export const showErrorSnackbar: Writable<(data: ShowSnackbarOptions) => void> = writable(() => {});
+
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);

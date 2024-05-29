@@ -21,7 +21,8 @@
   import { pop, push } from "svelte-spa-router";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { Song } from "../../lib/models/Song";
-  import { getRandomElements, stringSort } from "../../lib/utils/Utils";
+  import { getRandomElements } from "../../lib/utils/Utils";
+  import { stringSort } from "../../lib/utils/Sorters";
   import { LogController } from "../../lib/controllers/LogController";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
   import ArtistCarousel from "../../components/layout/artist-carousel/ArtistCarousel.svelte";

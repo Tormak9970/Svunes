@@ -1,6 +1,6 @@
 import { get } from "svelte/store";
 import { songsMap } from "../../stores/State";
-import { formatTime, getISODate } from "../utils/Utils";
+import { formatTime } from "../utils/Utils";
 import type { Song } from "./Song";
 
 /**
@@ -12,7 +12,6 @@ export class Playlist {
   description: string;
   imagePath?: string;
   songKeys: string[];
-  albumArtLUT: Record<string, number>
   dateCreated: string;
   lastPlayedOn: string;
   numTimesPlayed: number;
@@ -21,14 +20,13 @@ export class Playlist {
   /**
    * Creates a new playlist.
    */
-  constructor(pinned: boolean, name: string, description: string, songKeys: string[], isUserPlaylist: boolean, albumArtLUT?: Record<string, number>, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
+  constructor(pinned: boolean, name: string, description: string, songKeys: string[], isUserPlaylist: boolean, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
     this.pinned = pinned;
     this.name = name;
     this.description = description;
     this.songKeys = songKeys;
-    this.albumArtLUT = albumArtLUT ?? {};
     this.isUserPlaylist = isUserPlaylist;
-    this.dateCreated = dateCreated ?? getISODate(new Date());
+    this.dateCreated = dateCreated ?? (new Date()).toISOString();
     this.lastPlayedOn = lastPlayedOn ?? "Never";
     this.numTimesPlayed = numTimesPlayed ?? 0;
   }
@@ -49,7 +47,7 @@ export class Playlist {
    * Sets the last played date to now.
    */
   setLastPlayed() {
-    this.lastPlayedOn = getISODate(new Date());
+    this.lastPlayedOn = (new Date()).toISOString();
   }
 
   /**
@@ -65,12 +63,6 @@ export class Playlist {
    */
   addSong(song: Song) {
     this.songKeys.push(song.key);
-
-    if (song.album) {
-      if (!this.albumArtLUT[song.album]) this.albumArtLUT[song.album] = 0;
-
-      this.albumArtLUT[song.album] += 1;
-    }
   }
 
   /**
@@ -79,19 +71,19 @@ export class Playlist {
    * @param oldAlbumName The song's old album name.
    */
   updateAssociatedValues(song: Song, oldAlbumName: string) {
-    this.albumArtLUT[oldAlbumName] -= 1;
+    // this.albumArtLUT[oldAlbumName] -= 1;
 
-    if (this.albumArtLUT[oldAlbumName] === 0) {
-      delete this.albumArtLUT[oldAlbumName];
-    }
+    // if (this.albumArtLUT[oldAlbumName] === 0) {
+    //   delete this.albumArtLUT[oldAlbumName];
+    // }
 
-    if (song.album) {
-      if (!this.albumArtLUT[song.album]) {
-        this.albumArtLUT[song.album] = 1;
-      } else {
-        this.albumArtLUT[song.album] += 1;
-      }
-    }
+    // if (song.album) {
+    //   if (!this.albumArtLUT[song.album]) {
+    //     this.albumArtLUT[song.album] = 1;
+    //   } else {
+    //     this.albumArtLUT[song.album] += 1;
+    //   }
+    // }
   }
 
   /**
@@ -100,16 +92,7 @@ export class Playlist {
    */
   removeSong(song: Song) {
     const key = song.key;
-
     this.songKeys.splice(this.songKeys.indexOf(key), 1);
-
-    if (song.album) {
-      this.albumArtLUT[song.album] -= 1;
-
-      if (this.albumArtLUT[song.album] === 0) {
-        delete this.albumArtLUT[song.album];
-      }
-    }
   }
 
   /**
@@ -118,6 +101,6 @@ export class Playlist {
    * @returns The Playlist object.
    */
   static fromJSON(json: any): Playlist {
-    return new Playlist(json.pinned, json.name, json.description, json.songKeys, json.isUserPlaylist, json.albumArtLUT, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
+    return new Playlist(json.pinned, json.name, json.description, json.songKeys, json.isUserPlaylist, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
   }
 }

@@ -9,7 +9,7 @@
   import { GridSize, type AlbumSortOrder } from "../../types/Settings";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
   import { LogController } from "../../lib/controllers/LogController";
-  import { dateSort, stringSort } from "../../lib/utils/Utils";
+  import { dateSort, stringSort } from "../../lib/utils/Sorters";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Icon from "../../components/utils/Icon.svelte";
   import type { Album } from "../../lib/models/Album";

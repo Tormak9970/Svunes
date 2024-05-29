@@ -135,7 +135,8 @@
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
-          AppController.deletePlaylistsFromDevice($selected.filter((name) => $playlistsMap[name].isUserPlaylist));
+          const toDelete = $selected.filter((name) => $playlistsMap[name].isUserPlaylist);
+          if (toDelete.length > 0) AppController.deletePlaylistsFromDevice(toDelete);
         } else {
           AppController.deleteSongsFromDevice($selected);
         }

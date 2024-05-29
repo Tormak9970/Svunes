@@ -5,18 +5,15 @@
   import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import { songsMap } from "../../stores/State";
+  import { showErrorSnackbar, songsMap } from "../../stores/State";
   import TextField from "../../components/interactables/TextField.svelte";
   import NumberField from "../../components/interactables/NumberField.svelte";
-  import ErrorSnackbar from "../../components/snackbars/ErrorSnackbar.svelte";
   import { AppController } from "../../lib/controllers/AppController";
   import { LogController } from "../../lib/controllers/LogController";
   import { Song } from "../../lib/models/Song";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
-
-  let snackbar: (data: ShowSnackbarOptions) => void;
 
   export let params: { key?: string } = {};
   $: song = params.key ? $songsMap[params.key] : null;
@@ -79,7 +76,7 @@
       canSave = false;
       back();
     } else {
-      snackbar({ message: "Title is required!", closable: true, timeout: 3000 });
+      $showErrorSnackbar({ message: "Title is required!", closable: true, timeout: 3000 });
       LogController.error("Failed to save changes! A title is required!");
     }
   }
@@ -128,7 +125,6 @@
         <NumberField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} extraOptions={{ type: "number" }} />
       </div>
     </div>
-    <ErrorSnackbar bind:show={snackbar} />
   </span>
 </OverlayBody>
 
