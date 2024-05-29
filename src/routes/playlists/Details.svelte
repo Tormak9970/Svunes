@@ -21,8 +21,8 @@
   import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
   import type { Playlist } from "../../lib/models/Playlist";
   import { onMount } from "svelte";
-    import PlayButton from "../../components/views/utils/PlayButton.svelte";
-    import Marquee from "../../components/layout/Marquee.svelte";
+  import PlayButton from "../../components/views/utils/PlayButton.svelte";
+  import Marquee from "../../components/layout/Marquee.svelte";
 
   export let params: { key?: string } = {};
   let playlist: Playlist;

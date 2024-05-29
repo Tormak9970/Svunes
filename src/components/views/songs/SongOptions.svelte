@@ -1,11 +1,11 @@
 <script lang="ts">
   import { AppController } from "../../../lib/controllers/AppController";
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
   import { QueueController } from "../../../lib/controllers/QueueController";
   import { showAddToPlaylist, songToAdd } from "../../../stores/Overlays";
-  import { push } from "svelte-spa-router";
+  import { location, push } from "svelte-spa-router";
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Song } from "../../../lib/models/Song";
+  import { playlists, playlistsMap } from "../../../stores/State";
 
   export let menuIsOpen: boolean;
   export let song: Song;
@@ -18,10 +18,14 @@
   }
 
   /**
-   * Plays this song.
+   * Removes this song from the current playlist.
    */
-  function playSong() {
-    PlaybackController.playSong(song!);
+  function removeFromPlaylist() {
+    const key = $location.slice(11);
+    const playlist = $playlistsMap[key];
+    playlist.removeSong(song);
+    $playlists = [ ...$playlists ];
+    console.log($playlists);
     closeOptions();
   }
 
@@ -99,7 +103,9 @@
   }
 </script>
 
-<MenuItem on:click={playSong}>Play</MenuItem>
+{#if $location.startsWith("/playlists")}
+<MenuItem on:click={removeFromPlaylist}>Remove from Playlist</MenuItem>
+{/if}
 <MenuItem on:click={playNext}>Play Next</MenuItem>
 <MenuItem on:click={queueSong}>Add to Queue</MenuItem>
 <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
