@@ -39,10 +39,6 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">
-      <RadioInput name="gridSize" checked={gridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)} />
-      <div class="radio">List</div>
-    </label>
-    <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LARGE} on:input={() => gridSizeChange(GridSize.LARGE)} />
       <div class="radio">Large</div>
     </label>
@@ -50,12 +46,10 @@
       <RadioInput name="gridSize" checked={gridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)} />
       <div class="radio">Medium</div>
     </label>
-    {#if $selectedView !== View.PLAYLISTS}
-      <label style="height: 2.5rem;">
-        <RadioInput name="gridSize" checked={gridSize === GridSize.SMALL} on:input={() => gridSizeChange(GridSize.SMALL)} />
-        <div class="radio">Small</div>
-      </label>
-    {/if}
+    <label style="height: 2.5rem;">
+      <RadioInput name="gridSize" checked={gridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)} />
+      <div class="radio">List</div>
+    </label>
   </div>
 </Body>
 

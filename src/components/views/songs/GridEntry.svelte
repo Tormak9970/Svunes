@@ -19,6 +19,7 @@
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.key);
+  $: size = $songGridSize === GridSize.MEDIUM ? 40 : 60;
 
   /**
    * Handles when the user clicks on the entry.
@@ -59,11 +60,11 @@
           <!-- svelte-ignore a11y-missing-attribute -->
           <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
-            <MusicNotePlaceholder />
+            <MusicNotePlaceholder width={size} height={size} />
           </span>
         </Lazy>
       {:else}
-        <MusicNotePlaceholder />
+        <MusicNotePlaceholder width={size} height={size} />
       {/if}
     </div>
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight}px;" class:expand={$songGridSize !== GridSize.LARGE}>

@@ -8,11 +8,13 @@
   import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
+    import { GridSize } from "../../../types/Settings";
 
   export let artist: Artist;
 
   $: convertedPath = artist.imagePath ? tauri.convertFileSrc(artist.imagePath) : "";
   $: highlighted = $selected.includes(artist.name);
+  $: size = $artistGridSize === GridSize.MEDIUM ? 40 : 60;
 
   /**
    * Handles when the user clicks on the entry.
@@ -51,11 +53,11 @@
           <!-- svelte-ignore a11y-missing-attribute -->
           <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$artistGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$artistGridSize].height}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
-            <MusicNotePlaceholder />
+            <MusicNotePlaceholder width={size} height={size} />
           </span>
         </Lazy>
       {:else}
-        <MusicNotePlaceholder />
+        <MusicNotePlaceholder width={size} height={size} />
       {/if}
     </div>
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$artistGridSize].infoHeight}px;">

@@ -10,11 +10,13 @@
   import { renderDate } from "../../../lib/utils/Utils";
   import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
+  import { GridSize } from "../../../types/Settings";
 
   export let album: Album;
 
   $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
+  $: size = $albumGridSize === GridSize.MEDIUM ? 40 : 60;
 
   /**
    * Handles when the user clicks on the entry.
@@ -53,11 +55,11 @@
           <!-- svelte-ignore a11y-missing-attribute -->
           <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$albumGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$albumGridSize].height}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
-            <MusicNotePlaceholder />
+            <MusicNotePlaceholder width={size} height={size} />
           </span>
         </Lazy>
       {:else}
-        <MusicNotePlaceholder />
+        <MusicNotePlaceholder width={size} height={size} />
       {/if}
     </div>
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$albumGridSize].infoHeight}px;">

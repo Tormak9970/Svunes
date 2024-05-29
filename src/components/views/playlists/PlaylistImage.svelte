@@ -34,7 +34,7 @@
   $: images = albumKeys.map((albumName) => $albumsMap[albumName].artPath);
   
   $: convertedPath = images[0] ? tauri.convertFileSrc(images[0]) : "";
-  $: size = isList ? 20 : ($playlistGridSize === GridSize.SMALL ? 40 : 60);
+  $: size = isList ? 20 : ($playlistGridSize === GridSize.MEDIUM ? 40 : 60);
 </script>
 
 <div class="playlist-image" class:isList style="width: {width}px; height: {height}px;">

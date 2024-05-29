@@ -11,8 +11,11 @@
   import { type PlaylistSortOrder, GridSize } from "../../types/Settings";
   import ListEntry from "../../components/views/playlists/ListEntry.svelte";
   import GridEntry from "../../components/views/playlists/GridEntry.svelte";
+  import { afterUpdate } from "svelte";
 
   const keyFunction = (entry: { data: Playlist }) => `${entry.data.name}${entry.data.songKeys.length}${entry.data.numTimesPlayed}${entry.data.lastPlayedOn}`;
+
+  let gridSize = $playlistGridSize;
 
   /**
    * Sorts the playlists.
@@ -44,6 +47,13 @@
   $: sortedUnPinned = sortPlaylists(unPinned, $playlistSortOrder);
 
   $: sortedPlaylists = [ ...sortedPinned, ...sortedUnPinned ];
+  
+  afterUpdate(() => {
+    if ($playlistGridSize !== gridSize) {
+      gridSize = $playlistGridSize;
+      $playlistsIsAtTop = true;
+    }
+  });
 </script>
 
 <ViewContainer>

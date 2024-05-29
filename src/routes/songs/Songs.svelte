@@ -13,8 +13,11 @@
   import { stringSort, dateSort } from "../../lib/utils/Sorters";
   import { songs, songSortOrder, songGridSize, songsIsAtTop } from "../../stores/State";
   import { type SongSortOrder, GridSize } from "../../types/Settings";
+  import { afterUpdate } from "svelte";
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
+
+  let gridSize = $songGridSize;
 
   /**
    * Sorts the songs.
@@ -44,6 +47,13 @@
   }
 
   $: sortedSongs = sortSongs($songs, $songSortOrder);
+  
+  afterUpdate(() => {
+    if ($songGridSize !== gridSize) {
+      gridSize = $songGridSize;
+      $songsIsAtTop = true;
+    }
+  });
 </script>
 
 <ViewContainer>

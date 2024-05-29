@@ -3,18 +3,22 @@
     start: number,
     end: number,
     heightMap: any[],
+    itemHeight: number
     top: number,
     bottom: number,
     listScrollTop: number
   }
   let virtualGridCache: Record<string, CacheEntry> = {};
 
-  function getCacheEntry(name: string, saveState: boolean): CacheEntry {
-    if (!virtualGridCache[name] || !saveState) {
+  function getCacheEntry(name: string, saveState: boolean, itemHeight: number): CacheEntry {
+    const cacheEntry = virtualGridCache[name];
+
+    if (!cacheEntry || !saveState || cacheEntry.itemHeight !== itemHeight) {
       virtualGridCache[name] = {
         start: 0,
         end: 0,
         heightMap: [],
+        itemHeight: itemHeight,
         top: 0,
         bottom: 0,
         listScrollTop: 0
@@ -43,7 +47,7 @@
 
   export let keyFunction = (entry: any) => entry.index;
 
-  $: cacheEntry = getCacheEntry(name, saveState);
+  $: cacheEntry = getCacheEntry(name, saveState, itemHeight);
 
   // * Local State
   let mounted: boolean;
@@ -91,7 +95,6 @@
 				entry = entries[i - cacheEntry.start];
 			}
 
-      // TODO: maybe try only adding rowGap if we're not on the last row.
 			const entryHeight = cacheEntry.heightMap[i] = (itemHeight + rowGap);
       // * Only increase the contentHeight if this is the last element in the row, or the last element.
       if (i % numEntriesPerRow === numEntriesPerRow - 1 || i === items.length - 1) contentHeight += entryHeight;
@@ -99,7 +102,6 @@
 			i++;
 		}
 
-    // TODO: see if this is needed.
     contentHeight -= rowGap;
 
 		cacheEntry.end = i;
