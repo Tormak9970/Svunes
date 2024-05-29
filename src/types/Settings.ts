@@ -140,6 +140,8 @@ export type Settings = {
     songsMetadata: Record<string, SongMetadata>,
     songProgress: number,
     songName: string,
+    shuffle: boolean,
+    isPaused: boolean,
     nowPlayingListName: string,
     nowPlayingType: NowPlayingType
   },
@@ -165,7 +167,7 @@ export type Settings = {
   }
 }
 
-const FAVORITES_PLAYLIST = new Playlist(false, "Favorites", "", [], false, undefined, undefined, undefined, 0);
+const FAVORITES_PLAYLIST = new Playlist(false, "Favorites", "", [], false, undefined, undefined, 0);
 
 export const DEFAULT_SETTINGS: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
@@ -220,6 +222,8 @@ export const DEFAULT_SETTINGS: Settings = {
     "songsMetadata": {},
     "songProgress": 0,
     "songName": "",
+    "shuffle": true,
+    "isPaused": false,
     "nowPlayingListName": "",
     "nowPlayingType": "Songs"
   },

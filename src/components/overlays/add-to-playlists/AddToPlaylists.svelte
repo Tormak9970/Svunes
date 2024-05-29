@@ -9,7 +9,7 @@
   import BottomSheet from "../../layout/BottomSheet.svelte";
   import PlaylistEntry from "./PlaylistEntry.svelte";
   import { fade } from "svelte/transition";
-  import { onMount } from "svelte";
+  import { afterUpdate } from "svelte";
   
   let scrollContainer: HTMLDivElement;
   let selectedPlaylists: string[] = [];
@@ -156,8 +156,10 @@
     $selected = [];
   }
 
-  onMount(() => {
-    showShadow = scrollContainer.clientHeight !== scrollContainer.scrollHeight && scrollContainer?.scrollHeight - scrollContainer?.scrollTop !== scrollContainer.clientHeight;
+  afterUpdate(() => {
+    if ($showAddToPlaylist) {
+      showShadow = scrollContainer.clientHeight !== scrollContainer.scrollHeight && scrollContainer?.scrollHeight - scrollContainer?.scrollTop !== scrollContainer.clientHeight;
+    }
   });
 </script>
 
@@ -229,6 +231,6 @@
 
     width: calc(100% + 1rem);
     height: 40px;
-    background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(var(--m3-scheme-scrim) / 0.5) 100%);
+    background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(var(--m3-scheme-surface-container-low)) 100%);
   }
 </style>

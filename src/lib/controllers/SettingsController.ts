@@ -17,7 +17,7 @@
 import { fs, path } from "@tauri-apps/api";
 import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, isPaused } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
@@ -104,6 +104,8 @@ export class SettingsController {
   private static artistsUnsub: Unsubscriber;
   private static songProgressUnsub: Unsubscriber;
   private static songNameUnsub: Unsubscriber;
+  private static shuffleUnsub: Unsubscriber;
+  private static isPausedUnsub: Unsubscriber;
   private static nowPlayingListNameUnsub: Unsubscriber;
   private static nowPlayingTypeUnsub: Unsubscriber;
 
@@ -335,6 +337,8 @@ export class SettingsController {
     const cache = this.settings.cache;
     songProgress.set(cache.songProgress);
     songName.set(cache.songName);
+    shuffle.set(cache.shuffle);
+    isPaused.set(cache.isPaused);
     nowPlayingListName.set(cache.nowPlayingListName);
     nowPlayingType.set(cache.nowPlayingType);
 
@@ -440,6 +444,8 @@ export class SettingsController {
 
     this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
     this.songNameUnsub = songName.subscribe(this.updateStoreIfChanged<string>("cache.songName"));
+    this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
+    this.isPausedUnsub = isPaused.subscribe(this.updateStoreIfChanged<boolean>("cache.isPaused"));
     this.nowPlayingListNameUnsub = nowPlayingListName.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingListName"));
     this.nowPlayingTypeUnsub = nowPlayingType.subscribe(this.updateStoreIfChanged<NowPlayingType>("cache.nowPlayingType"));
 
@@ -576,6 +582,8 @@ export class SettingsController {
     if (this.artistsUnsub) this.artistsUnsub();
     if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.songNameUnsub) this.songNameUnsub();
+    if (this.shuffleUnsub) this.shuffleUnsub();
+    if (this.isPausedUnsub) this.isPausedUnsub();
     if (this.nowPlayingListNameUnsub) this.nowPlayingListNameUnsub();
     if (this.nowPlayingTypeUnsub) this.nowPlayingTypeUnsub();
 

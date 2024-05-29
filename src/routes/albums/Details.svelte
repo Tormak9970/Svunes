@@ -10,7 +10,7 @@
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { AlbumEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artistsMap, songsMap, useAlbumColors } from "../../stores/State";
+  import { albumsMap, artistsMap, isPaused, nowPlayingListName, songsMap, useAlbumColors } from "../../stores/State";
   import { albumToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -27,6 +27,9 @@
   import { nullishNumberSort, stringSort } from "../../lib/utils/Sorters";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
   import MenuItem from "../../components/layout/MenuItem.svelte";
+    import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
+    import PlayButton from "../../components/views/utils/PlayButton.svelte";
+    import Marquee from "../../components/layout/Marquee.svelte";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
@@ -52,14 +55,13 @@
    * Plays this album.
    */
   function playAlbum() {
-    PlaybackController.playAlbum(album!);
-  }
-
-  /**
-   * Shuffles then plays this album.
-   */
-  function playShuffledAlbum() {
-    PlaybackController.playAlbum(album!, true);
+    if (!$isPaused && $nowPlayingListName === album!.name) {
+      $isPaused = true;
+    } else {
+      $isPaused = false;
+      $nowPlayingListName = album!.name;
+      PlaybackController.playAlbum(album!);
+    }
   }
 
   /**
@@ -153,16 +155,14 @@
     <DetailsArtPicture artPath={album?.artPath} />
     <div class="details">
       <div class="info">
-        <h3 class="name">{album?.name}</h3>
+        <Marquee pauseOnHover speed={50} gap={100}>
+          <h3 class="name">{album?.name}</h3>
+        </Marquee>
         <div class="other"><div class="album-artist">{album?.albumArtist ?? ""}</div>{album?.albumArtist ? " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear : ""}{album?.releaseYear !== -1 ? " • " : ""}{album?.displayAlbumLength()}</div>
       </div>
       <div class="buttons" style="{(album?.backgroundColor && $useAlbumColors) ? `--m3-scheme-primary: ${album.backgroundColor};` : ""}">
-        <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 5px)" }} on:click={playAlbum}>
-          <Icon icon={Play} /> Play All
-        </ColoredButton>
-        <ColoredButton type="filled" extraOptions={{ style: "display: flex; width: calc(50% - 5px)" }} on:click={playShuffledAlbum}>
-          <Icon icon={Shuffle} /> Shuffle
-        </ColoredButton>
+        <ToggleShuffleButton />
+        <PlayButton name={album?.name} on:click={playAlbum} />
       </div>
     </div>
     <div class="songs" style="margin-top: 5px;">
@@ -201,12 +201,16 @@
 
   .info {
     margin-top: 10px;
-    width: 100%;
+    width: calc(100% - 110px);
   }
 
   .name {
     margin: 0px;
     margin-bottom: 5px;
+
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    overflow: hidden;
   }
 
   .other {
@@ -215,13 +219,6 @@
 
     display: flex;
     align-items: center;
-  }
-
-  .buttons {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 
   .section-header {
@@ -239,6 +236,17 @@
   .details {
     width: calc(100% - 30px);
     margin: 0px 15px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .buttons {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
   }
 
   .similar,
@@ -248,7 +256,7 @@
 
   .similar .section-header,
   .songs .section-header {
-    width: calc(100% - 30px);
+    width: calc(100% - 20px);
     margin-left: 15px;
   }
 

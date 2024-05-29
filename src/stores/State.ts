@@ -8,6 +8,8 @@ import type { Artist } from "../lib/models/Artist";
 import type { Genre } from "../lib/models/Genre";
 
 export const isLoading = writable(true);
+export const shuffle = writable(true);
+export const isPaused = writable(false);
 
 export const showInfoSnackbar: Writable<(data: ShowSnackbarOptions) => void> = writable(() => {});
 export const showErrorSnackbar: Writable<(data: ShowSnackbarOptions) => void> = writable(() => {});

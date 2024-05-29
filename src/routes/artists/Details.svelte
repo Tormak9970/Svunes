@@ -8,7 +8,7 @@
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import type { ArtistEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artistsMap, songsMap, useArtistColors } from "../../stores/State";
+  import { albumsMap, artistsMap, isPaused, nowPlayingListName, songsMap, useArtistColors } from "../../stores/State";
   import { artistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -28,6 +28,9 @@
   import ArtistCarousel from "../../components/layout/artist-carousel/ArtistCarousel.svelte";
   import { Artist } from "../../lib/models/Artist";
   import MenuItem from "../../components/layout/MenuItem.svelte";
+    import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
+    import PlayButton from "../../components/views/utils/PlayButton.svelte";
+    import Marquee from "../../components/layout/Marquee.svelte";
 
   let artistSortMethod: ArtistEntriesSortOrder = "Album";
 
@@ -55,14 +58,20 @@
    * Plays this artist.
    */
   function playArtist() {
-    PlaybackController.playArtist(artist!);
+    if (!$isPaused && $nowPlayingListName === artist!.name) {
+      $isPaused = true;
+    } else {
+      $isPaused = false;
+      $nowPlayingListName = artist!.name;
+      PlaybackController.playArtist(artist!);
+    }
   }
 
   /**
    * Shuffles then plays this artist.
    */
   function playShuffledArtist() {
-    PlaybackController.playArtist(artist!, true);
+    PlaybackController.playArtist(artist!);
   }
 
   /**
@@ -139,16 +148,14 @@
     <DetailsArtPicture artPath={artist?.imagePath} />
     <div class="details">
       <div class="info">
-        <h3 class="name">{artist?.name}</h3>
+        <Marquee pauseOnHover speed={50} gap={100}>
+          <h3 class="name">{artist?.name}</h3>
+        </Marquee>
         <div class="other">{artist?.albumNames.size + ` Album${artist?.albumNames.size === 1 ? "" : "s"} • `}{artist?.songKeys.length + ` Song${artist?.songKeys.length === 1 ? "" : "s"} • `}{artist?.displayArtistSongLength()}</div>
       </div>
       <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
-        <ColoredButton type="outlined" extraOptions={{ style: "display: flex; width: calc(50% - 10px)" }} on:click={playArtist}>
-          <Icon icon={Play} /> Play All
-        </ColoredButton>
-        <ColoredButton type="filled" extraOptions={{ style: "display: flex; width: calc(50% - 10px)" }} on:click={playShuffledArtist}>
-          <Icon icon={Shuffle} /> Shuffle
-        </ColoredButton>
+        <ToggleShuffleButton />
+        <PlayButton name={artist?.name} on:click={playArtist} />
       </div>
     </div>
     {#if artistAlbums.length > 0 }
@@ -197,24 +204,21 @@
 
   .info {
     margin-top: 10px;
-    width: 100%;
+    width: calc(100% - 110px);
   }
 
   .name {
     margin: 0px;
     margin-bottom: 5px;
+
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    overflow: hidden;
   }
 
   .other {
     font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
-  }
-
-  .buttons {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
   }
 
   .section-header {
@@ -233,6 +237,18 @@
   .details {
     width: calc(100% - 30px);
     margin: 0px 15px;
+    margin-bottom: 5px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .buttons {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
   }
 
   .similar,
@@ -241,23 +257,14 @@
     width: 100%;
   }
 
-  .similar {
-    margin-top: 5px;
-  }
-
   .similar .section-header,
   .albums .section-header,
   .songs .section-header {
-    width: calc(100% - 30px);
+    width: calc(100% - 20px);
     margin-left: 15px;
   }
 
   .albums .section-header {
-    margin-top: 15px;
-    margin-bottom: 5px;
-  }
-  
-  .similar .section-header {
-    width: calc(100% - 20px);
+    margin-bottom: 10px; /* this accounts for other containers having padding on the following element */
   }
 </style>

@@ -5,7 +5,7 @@
   import Lazy from "../../layout/Lazy.svelte";
   import AlbumPlaceholder from "../../layout/placeholders/AlbumPlaceholder.svelte";
   import Favorites from "../../layout/placeholders/Favorites.svelte";
-  import { albums, albumsMap, playlistGridSize, songsMap } from "../../../stores/State";
+  import { albumsMap, playlistGridSize, songsMap } from "../../../stores/State";
   import { GridSize } from "../../../types/Settings";
   import PlaylistGrid from "./PlaylistGrid.svelte";
 
@@ -22,7 +22,7 @@
     for (const songName of playlist.songKeys) {
       const song = $songsMap[songName];
 
-      if (song.album) {
+      if (song?.album) {
         if (!albumArtLUT[song.album]) albumArtLUT[song.album] = 0;
   
         albumArtLUT[song.album] += 1;

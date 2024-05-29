@@ -58,7 +58,7 @@
     width: 2.5rem;
     padding: 0;
   }
-  .icon-full > :global(svg) {
+  .icon-full :global(svg) {
     width: 1.5rem;
     height: 1.5rem;
   }
