@@ -5,9 +5,10 @@
   export let extraOptions: HTMLAttributes<HTMLLabelElement> = {};
   export let checked = false;
   export let disabled = false;
+  export let transition = true;
 </script>
 
-<label class="m3-container" style="display: {display};" {...extraOptions}>
+<label class="m3-container" style="display: {display};" {...extraOptions} style:--transition={transition ? "all" : "none"}>
   <input type="checkbox" bind:checked={checked} on:input disabled={disabled} />
   <div class="layer">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +39,7 @@
     height: 2.5rem;
     border-radius: var(--m3-util-rounding-full);
 
-    transition: all 200ms;
+    transition: var(--transition) 200ms;
     cursor: pointer;
     --color: var(--m3-scheme-on-surface-variant);
     -webkit-tap-highlight-color: transparent;
@@ -50,7 +51,7 @@
     inset: 0.6875rem;
     border-radius: 0.125rem;
     border: solid 0.125rem rgb(var(--color));
-    transition: all 200ms;
+    transition: var(--transition) 200ms;
   }
   svg {
     position: absolute;

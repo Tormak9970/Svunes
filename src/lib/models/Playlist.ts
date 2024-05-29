@@ -66,33 +66,11 @@ export class Playlist {
   }
 
   /**
-   * Updates the values associated with this song.
-   * @param song The song to use.
-   * @param oldAlbumName The song's old album name.
-   */
-  updateAssociatedValues(song: Song, oldAlbumName: string) {
-    // this.albumArtLUT[oldAlbumName] -= 1;
-
-    // if (this.albumArtLUT[oldAlbumName] === 0) {
-    //   delete this.albumArtLUT[oldAlbumName];
-    // }
-
-    // if (song.album) {
-    //   if (!this.albumArtLUT[song.album]) {
-    //     this.albumArtLUT[song.album] = 1;
-    //   } else {
-    //     this.albumArtLUT[song.album] += 1;
-    //   }
-    // }
-  }
-
-  /**
    * Removes a song from the playlist.
-   * @param song The song to remove.
+   * @param songKey The key of the song to remove.
    */
-  removeSong(song: Song) {
-    const key = song.key;
-    this.songKeys.splice(this.songKeys.indexOf(key), 1);
+  removeSong(songKey: string) {
+    this.songKeys.splice(this.songKeys.indexOf(songKey), 1);
   }
 
   /**

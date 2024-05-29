@@ -10,6 +10,7 @@
   import { AppController } from "../../lib/controllers/AppController";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
   import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
+  import PlaylistRemove from "@ktibow/iconset-material-symbols/indeterminate-check-box-rounded";
   import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { location } from "svelte-spa-router";
@@ -287,10 +288,26 @@
     menuIsOpen = false;
   }
 
+  /**
+   * Removes the selected songs from this playlist.
+   */
+  function removeFromPlaylist() {
+    const playlistName = $location.substring(11);
+    const playlist = $playlistsMap[playlistName];
+    
+    for (const songKey of $selected) {
+      playlist.removeSong(songKey);
+    }
+
+    $playlists = [ ...$playlists ];
+    $selected = [];
+    menuIsOpen = false;
+  }
+
   let menuIsOpen = false;
 </script>
 
-<div class="select-header" transition:fly={{ y: -50, duration: 250 }}>
+<dialog open class="select-header" transition:fly={{ y: -50, duration: 250 }}>
   <div class="left">
     <Button type="text" iconType="full" on:click={back}>
       <Icon icon={BackArrow} width="36px" height="36px" />
@@ -303,6 +320,11 @@
     <Button type="text" iconType="full" on:click={queue}>
       <Icon icon={QueueAdd} width="36px" height="36px" />
     </Button>
+    {#if $location.startsWith("/playlists/")}
+      <Button type="text" iconType="full" on:click={removeFromPlaylist}>
+        <Icon icon={PlaylistRemove} width="36px" height="36px" />
+      </Button>
+    {/if}
     <Button type="text" iconType="full" on:click={addToPlaylist}>
       <Icon icon={PlaylistAdd} width="36px" height="36px" />
     </Button>
@@ -313,22 +335,28 @@
       <MenuItem on:click={selectAll}>Select All</MenuItem>
     </MenuButton>
   </div>
-</div>
+</dialog>
 
 <style>
   .select-header {
+    border: 0;
     padding: 5px 0px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     
+    color: rgb(var(--m3-scheme-on-background));
     background-color: rgb(var(--m3-scheme-surface-container-highest));
 
     position: absolute;
     top: 0;
 
-    z-index: 2;
+    z-index: 3;
+  }
+
+  .select-header::backdrop {
+    display: none;
   }
 
   .title {

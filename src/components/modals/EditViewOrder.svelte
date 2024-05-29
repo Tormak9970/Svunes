@@ -27,6 +27,7 @@
   let items: ListEntry[] = [];
 
   let reset = false;
+  let transition = true;
 
   const flipDurationMs = 100;
 
@@ -69,6 +70,14 @@
     $showEditViewOrder = false;
   }
 
+  function handleMouseDown() {
+    transition = false;
+  }
+
+  function handleMouseUp() {
+    transition = true;
+  }
+
   onMount(() => {
     viewsToRenderUnsub = viewsToRender.subscribe((newViews) => {
       items = Views.map((view) => {
@@ -87,6 +96,8 @@
   });
 </script>
 
+<svelte:window on:mouseup={handleMouseUp} />
+
 <ModalBody show={$showEditViewOrder} headline={"Library Order"} onClose={() => $showEditViewOrder = false }>
   <div slot="content">
     {#key reset}
@@ -99,11 +110,12 @@
           <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
             <div class="left">
               <div class="checkbox-container">
-                <Checkbox checked={item.checked} on:input={checkboxHandler(item.view)} />
+                <Checkbox checked={item.checked} transition={transition} on:input={checkboxHandler(item.view)} />
               </div>
               <div>{item.name}</div>
             </div>
-            <div class="handle" use:dragHandle>
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <div class="handle" use:dragHandle on:mousedown={handleMouseDown}>
               <Icon icon={DragIndicator} height="30px" width="24px" />
             </div>
           </div>
@@ -135,6 +147,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    user-select: none;
 	}
 
   .left {

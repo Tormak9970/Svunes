@@ -13,19 +13,17 @@
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import MenuButton from "../../components/interactables/MenuButton.svelte";
   import { pop, push } from "svelte-spa-router";
-  import SongsList from "../../components/layout/songs-list/SongsList.svelte";
+  import PlaylistSongs from "./PlaylistSongs.svelte";
   import MenuItem from "../../components/layout/MenuItem.svelte";
   import PlaylistImage from "../../components/views/playlists/PlaylistImage.svelte";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
   import { GridSize } from "../../types/Settings";
   import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
-  import type { Playlist } from "../../lib/models/Playlist";
-  import { onMount } from "svelte";
   import PlayButton from "../../components/views/utils/PlayButton.svelte";
   import Marquee from "../../components/layout/Marquee.svelte";
 
   export let params: { key?: string } = {};
-  let playlist: Playlist;
+  $: playlist = params.key ? $playlistsMap[params.key!] : undefined;
   $: songs = playlist?.songKeys?.map((key) => $songsMap[key]) ?? [];
 
   let isAtTop = true;
@@ -41,12 +39,12 @@
    * Plays this playlist.
    */
   function playPlaylist() {
-    if (!$isPaused && $nowPlayingListName === playlist.name) {
+    if (!$isPaused && $nowPlayingListName === playlist!.name) {
       $isPaused = true;
     } else {
       $isPaused = false;
-      $nowPlayingListName = playlist.name;
-      PlaybackController.playPlaylist(playlist);
+      $nowPlayingListName = playlist!.name;
+      PlaybackController.playPlaylist(playlist!);
     }
   }
 
@@ -54,21 +52,21 @@
    * Plays this playlist next.
    */
   function playNext() {
-    QueueController.playPlaylistsNext([playlist.name]);
+    QueueController.playPlaylistsNext([playlist!.name]);
   }
 
   /**
    * Queues this playlist.
    */
   function queuePlaylist() {
-    QueueController.queuePlaylists([playlist.name]);
+    QueueController.queuePlaylists([playlist!.name]);
   }
 
   /**
    * Opens the add to playlist dialog with this playlist set to be added.
    */
   function addToPlaylist() {
-    $playlistToAdd = playlist.name;
+    $playlistToAdd = playlist!.name;
     $showAddToPlaylist = true;
   }
 
@@ -83,12 +81,8 @@
    * Prompts the user to confirm if they want to delete this playlist.
    */
   function deletePlaylist() {
-    AppController.deletePlaylistsFromDevice([playlist.name]);
+    AppController.deletePlaylistsFromDevice([playlist!.name]);
   }
-
-  onMount(() => {
-    playlist = $playlistsMap[params.key!];
-  });
 </script>
 
 <DetailsBody bind:isAtTop={isAtTop}>
@@ -120,24 +114,24 @@
   <span class="content" slot="content">
     {#if playlist}
       <PlaylistImage playlist={playlist} height={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height} width={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height} />
-    {/if}
-    <div class="details">
-      <div class="info">
-        <Marquee pauseOnHover speed={50} gap={100}>
-          <h3 class="name">{playlist?.name}</h3>
-        </Marquee>
-        <div class="other">
-          <div>{playlist?.songKeys?.length === 1 ? `1 Song` : `${playlist?.songKeys?.length} Songs`} • {playlist?.displayLength()}</div>
+      <div class="details">
+        <div class="info">
+          <Marquee pauseOnHover speed={50} gap={100}>
+            <h3 class="name">{playlist?.name}</h3>
+          </Marquee>
+          <div class="other">
+            <div>{playlist?.songKeys?.length === 1 ? `1 Song` : `${playlist?.songKeys?.length} Songs`} • {playlist?.displayLength()}</div>
+          </div>
+        </div>
+        <div class="buttons">
+          <ToggleShuffleButton />
+          <PlayButton name={playlist?.name} on:click={playPlaylist} />
         </div>
       </div>
-      <div class="buttons">
-        <ToggleShuffleButton />
-        <PlayButton name={playlist?.name} on:click={playPlaylist} />
+      <div class="songs" style="margin-top: 5px;">
+        <PlaylistSongs songs={songs} />
       </div>
-    </div>
-    <div class="songs" style="margin-top: 5px;">
-      <SongsList songs={songs} />
-    </div>
+    {/if}
   </span>
 </DetailsBody>
 
