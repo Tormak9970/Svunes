@@ -1,7 +1,7 @@
 import { path } from "@tauri-apps/api";
 import { albumsMap } from "../../stores/State";
 import { get } from "svelte/store";
-import { artistIsSingular, formatTime, getGenre } from "../utils/Utils";
+import { artistIsSingular, formatTime, getGenre, normalizeString } from "../utils/Utils";
 
 /**
  * Class representing a song.
@@ -34,8 +34,8 @@ export class Song {
     this.title = title;
     this.album = album;
     this.composer = composer;
-    this.albumArtist = albumArtist;
-    this.artist = artist;
+    this.albumArtist = albumArtist ? normalizeString(albumArtist) : undefined;
+    this.artist = artist ? normalizeString(artist) : undefined;
 
     if (!this.artist && this.albumArtist && artistIsSingular(this.albumArtist)) this.artist = this.albumArtist;
 

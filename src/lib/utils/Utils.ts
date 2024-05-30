@@ -356,3 +356,23 @@ export function getGenre(value?: string) {
     return value;
   }
 }
+
+/**
+ * Normalizes a string.
+ * @param value The string to normalize.
+ */
+export function normalizeString(value: string): string {
+  const accentMap: Record<string, string> = {
+    "ą": "a",
+    "ć": "c",
+    "ę": "e",
+    "ł": "l",
+    "ń": "n",
+    "ó": "o",
+    "ś": "s",
+    "ź": "z",
+    "ż": "z"
+  };
+  
+  return value.normalize("NFD").replace(/[ąćęłńóśźż]/g, (matched) => accentMap[matched]);
+}
