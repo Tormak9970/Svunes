@@ -6,10 +6,11 @@
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
 
   export let name: string | undefined;
+  export let type: "filled" | "text" = "filled";
 </script>
 
 <div class="play-container">
-  <Button type="filled" iconType="full" on:click>
+  <Button type={type} iconType="full" on:click>
     {#if $nowPlayingListName === name && !$isPaused}
       <Icon icon={Pause} />
     {:else}

@@ -10,6 +10,7 @@
   export let elevation: "normal" | "lowered" | "none" = "normal";
   export let icon: IconifyIcon | undefined = undefined;
   export let text: string | undefined = undefined;
+
   $: {
     if (!icon && !text) console.warn("you need at least something in a FAB");
     if (size != "normal" && text) console.warn("extended fabs are supposed to use size normal");

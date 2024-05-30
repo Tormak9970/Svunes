@@ -58,6 +58,8 @@
 		height: 40px;
 		z-index: 2;
     bottom: 0;
+
+    pointer-events: none;
 	}
 
   .content:hover {

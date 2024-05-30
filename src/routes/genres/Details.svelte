@@ -3,7 +3,7 @@
   import Icon from "../../components/utils/Icon.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { genresMap, songsMap } from "../../stores/State";
+  import { genresMap, songsMap, isPaused, nowPlayingListName } from "../../stores/State";
   import { genreToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -15,6 +15,7 @@
   import VirtualList from "../../components/layout/VirtualList.svelte";
   import ListEntry from "../../components/views/songs/ListEntry.svelte";
   import type { Song } from "../../lib/models/Song";
+  import PlayButton from "../../components/views/utils/PlayButton.svelte";
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
 
@@ -35,7 +36,13 @@
    * Plays this genre.
    */
   function playGenre() {
-    PlaybackController.playGenre(genre!);
+    if (!$isPaused && $nowPlayingListName === genre!.name) {
+      $isPaused = true;
+    } else {
+      $isPaused = false;
+      $nowPlayingListName = genre!.name;
+      PlaybackController.playGenre(genre!);
+    }
   }
 
   /**
@@ -70,9 +77,9 @@
         </Button>
         <div style="font-size: 20px;">{genre?.name}</div>
       </span>
-      <span slot="right" style="display: flex; flex-direction: row;">
+      <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
+        <PlayButton type={"text"} name={genre?.name} on:click={playGenre} />
         <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playGenre}>Play</MenuItem>
           <MenuItem on:click={playNext}>Play Next</MenuItem>
           <MenuItem on:click={queueGenre}>Add to Queue</MenuItem>
           <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>

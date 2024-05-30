@@ -27,9 +27,9 @@
   import { nullishNumberSort, stringSort } from "../../lib/utils/Sorters";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
   import MenuItem from "../../components/layout/MenuItem.svelte";
-    import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
-    import PlayButton from "../../components/views/utils/PlayButton.svelte";
-    import Marquee from "../../components/layout/Marquee.svelte";
+  import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
+  import PlayButton from "../../components/views/utils/PlayButton.svelte";
+  import Marquee from "../../components/layout/Marquee.svelte";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
