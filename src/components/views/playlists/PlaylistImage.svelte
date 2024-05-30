@@ -5,14 +5,12 @@
   import Lazy from "../../layout/Lazy.svelte";
   import AlbumPlaceholder from "../../layout/placeholders/AlbumPlaceholder.svelte";
   import Favorites from "../../layout/placeholders/Favorites.svelte";
-  import { albumsMap, playlistGridSize, songsMap } from "../../../stores/State";
-  import { GridSize } from "../../../types/Settings";
+  import { albumsMap, songsMap } from "../../../stores/State";
   import PlaylistGrid from "./PlaylistGrid.svelte";
 
   export let playlist: Playlist;
   export let height: number;
   export let width: number;
-  export let isList = false;
 
   $: chosenImagePath = playlist?.imagePath ? tauri.convertFileSrc(playlist.imagePath) : undefined;
 
@@ -36,39 +34,50 @@
   $: images = albumKeys.map((albumName) => $albumsMap[albumName].artPath);
   
   $: convertedPath = images[0] ? tauri.convertFileSrc(images[0]) : "";
-  $: size = isList ? 20 : ($playlistGridSize === GridSize.MEDIUM ? 40 : 60);
+  
+  $: gap = 0.05 * width;
+  $: gridSize = 0.4 * width;
+  $: iconSize = Math.max(Math.floor(width / 50) * 20, 20);
 </script>
 
-<div class="playlist-image" class:isList style="width: {width}px; height: {height}px;">
-  {#if isList}
+<div class="playlist-image" class:isList={width <= 40} style="width: {width}px; height: {height}px;">
+  {#if width <= 40}
     {#if playlist.name === "Favorites"}
-      <Favorites width={size} height={size} />
-    {:else}
-      <AlbumPlaceholder width={size} height={size} />
-    {/if}
-  {:else}
-    {#if playlist.name === "Favorites"}
-      <Favorites width={size} height={size} />
+      <Favorites width={iconSize} height={iconSize} />
     {:else if chosenImagePath}
       <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
         <!-- svelte-ignore a11y-missing-attribute -->
         <img src="{chosenImagePath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
         <span slot="placeholder">
-          <AlbumPlaceholder width={size} height={size} />
+          <AlbumPlaceholder width={iconSize} height={iconSize} />
+        </span>
+      </Lazy>
+    {:else}
+      <AlbumPlaceholder width={iconSize} height={iconSize} />
+    {/if}
+  {:else}
+    {#if playlist.name === "Favorites"}
+      <Favorites width={iconSize} height={iconSize} />
+    {:else if chosenImagePath}
+      <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <img src="{chosenImagePath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
+        <span slot="placeholder">
+          <AlbumPlaceholder width={iconSize} height={iconSize} />
         </span>
       </Lazy>
     {:else if images.length === 0}
-      <AlbumPlaceholder width={size} height={size} />
+      <AlbumPlaceholder width={iconSize} height={iconSize} />
     {:else if images.length === 1}
       <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
         <!-- svelte-ignore a11y-missing-attribute -->
         <img src="{convertedPath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
         <span slot="placeholder">
-          <AlbumPlaceholder width={size} height={size} />
+          <AlbumPlaceholder width={iconSize} height={iconSize} />
         </span>
       </Lazy>
     {:else}
-      <PlaylistGrid images={images} imageSize={$playlistGridSize === GridSize.LARGE ? 75 : 50} placeholderIconSize={$playlistGridSize === GridSize.LARGE ? 30 : 20} />
+      <PlaylistGrid images={images} size={gridSize} gap={gap} iconSize={iconSize / 2} />
     {/if}
   {/if}
 </div>

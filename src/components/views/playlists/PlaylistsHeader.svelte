@@ -9,7 +9,7 @@
   import Icon from "../../utils/Icon.svelte";
   import { showGridSize, showPlaylistSortOrder } from "../../../stores/Modals";
   import { push } from "svelte-spa-router";
-  import { selectedView } from "../../../stores/State";
+  import { lastView, selectedView } from "../../../stores/State";
   import { View } from "../../../types/View";
   import MenuItem from "../../layout/MenuItem.svelte";
   import { dialog } from "@tauri-apps/api";
@@ -22,6 +22,7 @@
    * Navigates to the settings view.
    */
   function goToSettings() {
+    $lastView = $selectedView;
     $selectedView = View.SETTINGS;
     push("/settings");
   }
@@ -30,6 +31,7 @@
    * Navigates to the search view.
    */
   function openSearch() {
+    $lastView = $selectedView;
     $selectedView = View.SEARCH;
     $selectedChip = "all";
     push("/search");

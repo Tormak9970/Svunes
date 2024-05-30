@@ -6,7 +6,7 @@
   import Button from "../../interactables/Button.svelte";
   import Icon from "../../utils/Icon.svelte";
   import { push } from "svelte-spa-router";
-  import { selectedView } from "../../../stores/State";
+  import { lastView, selectedView } from "../../../stores/State";
   import { View } from "../../../types/View";
 
   export let highlight: boolean;
@@ -15,6 +15,7 @@
    * Navigates to the settings view.
    */
   function goToSettings() {
+    $lastView = $selectedView;
     $selectedView = View.SETTINGS;
     push("/settings");
   }
@@ -23,6 +24,7 @@
    * Navigates to the search view.
    */
   function openSearch() {
+    $lastView = $selectedView;
     $selectedView = View.SEARCH;
     $selectedChip = "all";
     push("/search");

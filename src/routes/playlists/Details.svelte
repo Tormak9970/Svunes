@@ -25,6 +25,7 @@
   export let params: { key?: string } = {};
   $: playlist = params.key ? $playlistsMap[params.key!] : undefined;
 
+  let imageSize = 370;
   let isAtTop = true;
 
   /**
@@ -112,7 +113,7 @@
   </span>
   <span class="content" slot="content">
     {#if playlist}
-      <PlaylistImage playlist={playlist} height={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height} width={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height} />
+      <PlaylistImage playlist={playlist} height={imageSize} width={imageSize} />
       <div class="details">
         <div class="info">
           <Marquee pauseOnHover speed={50} gap={100}>

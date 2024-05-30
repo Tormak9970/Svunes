@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import type { Playlist } from "../../../lib/models/Playlist";
   import { LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
   import Checkbox from "../../interactables/Checkbox.svelte";
@@ -17,7 +17,7 @@
 <CardClickable type="transparent" on:click={() => dispatch("click")} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 0px;" }}>
   <div class="content">
     <div class="left">
-      <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} isList />
+      <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} />
       <div class="info">
         <div class="name">
           {playlist.name}

@@ -3,11 +3,11 @@
   import Lazy from "../../layout/Lazy.svelte";
   import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
   import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
-    import { playlistGridSize } from "../../../stores/State";
 
   export let images: (string | undefined)[];
-  export let imageSize: number;
-  export let placeholderIconSize: number;
+  export let size: number;
+  export let gap: number;
+  export let iconSize: number;
 
   let imagesToRender: (string | undefined)[] = [];
 
@@ -32,15 +32,15 @@
   $: converted = imagesToRender.map((image) => image ? tauri.convertFileSrc(image) : image);
 </script>
 
-<div class="grid-container">
-  {#key $playlistGridSize}
+<div class="grid-container" style:--gap={gap + "px"}>
+  {#key size}
     {#each converted as image}
-      <div class="image-container" style="width: {imageSize}px; height: {imageSize}px;">
-        <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+      <div class="image-container" style="width: {size}px; height: {size}px;">
+        <Lazy height={size} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
           <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{image}" style="width: {imageSize}px; height: {imageSize}px;" draggable="false" on:error={onError} />
+          <img src="{image}" style="width: {size}px; height: {size}px;" draggable="false" on:error={onError} />
           <span slot="placeholder">
-            <MusicNotePlaceholder width={placeholderIconSize} height={placeholderIconSize} />
+            <MusicNotePlaceholder width={iconSize} height={iconSize} />
           </span>
         </Lazy>
       </div>
@@ -54,12 +54,12 @@
     width: fit-content;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
+    gap: var(--gap);
 
     background-color: rgb(var(--m3-scheme-surface-container-high));
 
     transform: rotate(10deg);
-    translate: -28px -28px;
+    translate: -10% -10%;
   }
 
   .image-container {

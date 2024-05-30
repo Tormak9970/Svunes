@@ -2,7 +2,7 @@
   import type { Playlist } from "../../../lib/models/Playlist";
   import { inSelectMode, selected } from "../../../stores/Select";
   import { LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { playlistSortOrder } from "../../../stores/State";
+  import { playlistGridSize, playlistSortOrder } from "../../../stores/State";
   import { fade } from "svelte/transition";
   import { renderDate } from "../../../lib/utils/Utils";
   import CardClickable from "../../layout/CardClickable.svelte";
@@ -52,7 +52,7 @@
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content">
     <div class="left">
-      <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} isList />
+      <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} />
       <div class="info">
         <div class="name">
           {playlist.name}
