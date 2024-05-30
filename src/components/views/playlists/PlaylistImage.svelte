@@ -14,6 +14,8 @@
   export let width: number;
   export let isList = false;
 
+  $: chosenImagePath = playlist?.imagePath ? tauri.convertFileSrc(playlist.imagePath) : undefined;
+
   let albumArtLUT: Record<string, number> = {};
 
   $: if (playlist.songKeys) {
@@ -47,18 +49,26 @@
   {:else}
     {#if playlist.name === "Favorites"}
       <Favorites width={size} height={size} />
+    {:else if chosenImagePath}
+      <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <img src="{chosenImagePath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
+        <span slot="placeholder">
+          <AlbumPlaceholder width={size} height={size} />
+        </span>
+      </Lazy>
     {:else if images.length === 0}
       <AlbumPlaceholder width={size} height={size} />
     {:else if images.length === 1}
       <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{convertedPath}" style="width: {size}px; height: {size}px;" draggable="false" on:error={onError} />
+        <img src="{convertedPath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
         <span slot="placeholder">
           <AlbumPlaceholder width={size} height={size} />
         </span>
       </Lazy>
     {:else}
-    <PlaylistGrid images={images} imageSize={$playlistGridSize === GridSize.LARGE ? 75 : 50} placeholderIconSize={$playlistGridSize === GridSize.LARGE ? 30 : 20} />
+      <PlaylistGrid images={images} imageSize={$playlistGridSize === GridSize.LARGE ? 75 : 50} placeholderIconSize={$playlistGridSize === GridSize.LARGE ? 30 : 20} />
     {/if}
   {/if}
 </div>
