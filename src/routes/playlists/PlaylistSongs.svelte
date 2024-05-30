@@ -80,8 +80,10 @@
 
   .handle {
     height: 100%;
+    width: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 </style>

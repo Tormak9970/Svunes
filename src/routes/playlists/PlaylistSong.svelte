@@ -146,7 +146,7 @@
   }
 
   .content {
-    width: calc(100% - 24px); 
+    width: calc(100% - 40px); 
     display: flex;
     align-items: center;
   }
@@ -154,11 +154,12 @@
   .left {
     display: flex;
     align-items: center;
-    width: calc(100% - 40px);
+    width: calc(100% - 50px);
+    margin-right: 10px;
   }
 
   .info {
-    width: calc(100% - 75px);
+    width: calc(100% - 60px);
   }
 
   .name {
@@ -182,7 +183,7 @@
     height: 40px;
     width: 40px;
 
-    margin-left: 10px;
+    margin-left: 5px;
     margin-right: 15px;
   }
 </style>

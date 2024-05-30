@@ -46,6 +46,20 @@
     transition: scrollbar-color 0.2s ease-in-out;
   }
 
+  .content::before {
+		background: linear-gradient(
+			to top,
+			rgb(var(--m3-scheme-background) / 0.8),
+			transparent
+		);
+		content: "";
+		width: 100%;
+		position: absolute;
+		height: 40px;
+		z-index: 2;
+    bottom: 0;
+	}
+
   .content:hover {
     scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
   }
