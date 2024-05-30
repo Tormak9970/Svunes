@@ -16,8 +16,8 @@
   import Router, { location, push } from 'svelte-spa-router'
   import { routes, viewRoutesLUT } from "../routes";
   import type { Unsubscriber } from "svelte/store";
-    import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
-    import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
+  import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
+  import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
 
   let loadingUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;

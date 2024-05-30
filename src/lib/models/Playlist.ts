@@ -32,12 +32,14 @@ export class Playlist {
   }
   
   get length() {
-    const songKeysMap = get(songsMap);
+    const songMap = get(songsMap);
     let totalLength = 0;
 
-    for (const songKey of this.songKeys) {
-      const song = songKeysMap[songKey];
-      totalLength += song.length;
+    if (Object.keys(songMap).length > 0) {
+      for (const songKey of this.songKeys) {
+        const song = songMap[songKey];
+        totalLength += song.length;
+      }
     }
 
     return totalLength;

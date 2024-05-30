@@ -13,7 +13,7 @@
   import MenuButton from "../../interactables/MenuButton.svelte";
   import PlaylistOptions from "./PlaylistOptions.svelte";
   import Icon from "../../utils/Icon.svelte";
-    import { GridSize } from "../../../types/Settings";
+  import { GridSize } from "../../../types/Settings";
 
   export let playlist: Playlist;
 

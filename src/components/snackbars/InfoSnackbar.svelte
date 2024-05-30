@@ -2,7 +2,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import GenericSnackbar from "./GenericSnackbar.svelte";
 
-  export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
+  export let extraWrapperOptions: HTMLAttributes<HTMLDialogElement> = {};
   export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
   
   export let show: (data: ShowSnackbarOptions) => void;

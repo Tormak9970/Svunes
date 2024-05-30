@@ -61,14 +61,16 @@
     <PlaylistsHeader highlight={!$playlistsIsAtTop} />
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
-    {#if $playlistGridSize === GridSize.LIST}
-      <VirtualList name="playlistsView" itemHeight={60} items={sortedPlaylists} keyFunction={keyFunction} bind:isAtTop={$playlistsIsAtTop} let:entry>
-        <ListEntry playlist={entry} />
-      </VirtualList>
-    {:else}
-      <VirtualGrid name="playlistsView" itemHeight={GRID_IMAGE_DIMENSIONS[$playlistGridSize].height + GRID_IMAGE_DIMENSIONS[$playlistGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$playlistGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$playlistGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$playlistGridSize].gap} items={sortedPlaylists} keyFunction={keyFunction} bind:isAtTop={$playlistsIsAtTop} let:entry>
-        <GridEntry playlist={entry} />
-      </VirtualGrid>
+    {#if sortedPlaylists.length > 0}
+      {#if $playlistGridSize === GridSize.LIST}
+        <VirtualList name="playlistsView" itemHeight={60} items={sortedPlaylists} keyFunction={keyFunction} bind:isAtTop={$playlistsIsAtTop} let:entry>
+          <ListEntry playlist={entry} />
+        </VirtualList>
+      {:else}
+        <VirtualGrid name="playlistsView" itemHeight={GRID_IMAGE_DIMENSIONS[$playlistGridSize].height + GRID_IMAGE_DIMENSIONS[$playlistGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$playlistGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$playlistGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$playlistGridSize].gap} items={sortedPlaylists} keyFunction={keyFunction} bind:isAtTop={$playlistsIsAtTop} let:entry>
+          <GridEntry playlist={entry} />
+        </VirtualGrid>
+      {/if}
     {/if}
   </div>
 </ViewContainer>

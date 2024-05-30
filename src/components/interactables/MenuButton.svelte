@@ -2,7 +2,9 @@
   import type { IconifyIcon } from "@iconify/types";
   import Button from "./Button.svelte";
   import Icon from "../utils/Icon.svelte";
+  import type { HTMLAttributes } from "svelte/elements";
 
+  export let extraOptions: HTMLAttributes<HTMLButtonElement> = {};
   export let width = "36px";
   export let height = "36px";
   export let icon: IconifyIcon;
@@ -30,7 +32,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="container" on:click|stopPropagation style="--md-menu-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-selected-container-color: rgb(var(--m3-scheme-secondary-container));">
-  <Button type="text" iconType="full" on:click={onClick}>
+  <Button type="text" iconType="full" on:click={onClick} extraOptions={extraOptions}>
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
   <md-menu bind:this={menuElement} positioning="popover">

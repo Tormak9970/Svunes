@@ -1,6 +1,5 @@
 <script lang="ts">
   import { tauri } from "@tauri-apps/api";
-  import CardClickable from "../../components/layout/CardClickable.svelte";
   import Lazy from "../../components/layout/Lazy.svelte";
   import MusicNotePlaceholder from "../../components/layout/placeholders/MusicNotePlaceholder.svelte";
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
@@ -10,11 +9,13 @@
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import MenuButton from "../../components/interactables/MenuButton.svelte";
   import SongOptions from "../../components/views/songs/SongOptions.svelte";
+  import { holdEvent } from "../../lib/directives/HoldEvent";
 
   export let song: Song;
+  export let transition: boolean;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
-  $: highlighted = $selected.includes(song.key);
+  $: highlight = $selected.includes(song.key);
 
   /**
    * Handles when the user clicks on the entry.
@@ -47,44 +48,105 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
-  <div class="content">
-    <div class="left">
-      <div class="album">
-        {#if convertedPath !== ""}
-          <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
-            <span slot="placeholder">
-              <MusicNotePlaceholder />
-            </span>
-          </Lazy>
-        {:else}
-          <MusicNotePlaceholder />
-        {/if}
-      </div>
-      <div class="info">
-        <div class="name">
-          {song.title}
+<button
+  on:click|stopPropagation={onClick}
+  style:--transition={transition ? "all" : "none"}
+  class="m3-container"
+>
+  <div class="layer" class:highlight />
+  <div class="content-wrapper">
+    <slot />
+    <div class="content" use:holdEvent={{ onHold: select, duration: 300 }}>
+      <div class="left">
+        <div class="album">
+          {#if convertedPath !== ""}
+            <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
+              <span slot="placeholder">
+                <MusicNotePlaceholder />
+              </span>
+            </Lazy>
+          {:else}
+            <MusicNotePlaceholder />
+          {/if}
         </div>
-        <div class="secondary">
-          <div class="artist">
-            {song.artist ?? "Unkown"}
+        <div class="info">
+          <div class="name">
+            {song.title}
+          </div>
+          <div class="secondary">
+            <div class="artist">
+              {song.artist ?? "Unkown"}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="options">
-      <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-        <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
-      </MenuButton>
+      <div class="options">
+        <MenuButton icon={MoreVert} bind:open={menuIsOpen} extraOptions={{ style: transition ? "display: flex;" : "display: flex; transition: none !important" }}>
+          <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
+        </MenuButton>
+      </div>
     </div>
   </div>
-</CardClickable>
+</button>
 
 <style>
-  .content {
+  :root {
+    --m3-card-shape: var(--m3-util-rounding-medium);
+  }
+  .m3-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 10px 0px;
+    border: none;
+    border-radius: 10px;
+    margin: 2px 0px;
+    background-color: transparent;
+    color: rgb(var(--m3-scheme-on-surface));
+  }
+  .layer {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transition: var(--transition) 200ms;
+    pointer-events: none;
+  }
+
+  button {
+    text-align: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (hover: hover) {
+    button:hover {
+      box-shadow: var(--m3-util-elevation-1);
+    }
+    button:hover > .layer {
+      background-color: rgb(var(--m3-scheme-on-surface) / 0.08);
+    }
+  }
+  button:is(:focus-visible, :active) > .layer {
+    background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
+  }
+  
+  .highlight.layer,
+  button:hover > .highlight.layer {
+    background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
+  }
+
+  .content-wrapper {
     width: 100%; 
+    display: flex;
+    align-items: center;
+  }
+
+  .content {
+    width: calc(100% - 24px); 
     display: flex;
     align-items: center;
   }

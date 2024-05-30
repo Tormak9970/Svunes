@@ -4,7 +4,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { isPaused, nowPlayingListName, playlistsMap, songsMap } from "../../stores/State";
+  import { isPaused, nowPlayingListName, playlistsMap } from "../../stores/State";
   import { playlistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -24,7 +24,6 @@
 
   export let params: { key?: string } = {};
   $: playlist = params.key ? $playlistsMap[params.key!] : undefined;
-  $: songs = playlist?.songKeys?.map((key) => $songsMap[key]) ?? [];
 
   let isAtTop = true;
 
@@ -129,7 +128,9 @@
         </div>
       </div>
       <div class="songs" style="margin-top: 5px;">
-        <PlaylistSongs songs={songs} />
+        {#if playlist}
+          <PlaylistSongs playlist={playlist} />
+        {/if}
       </div>
     {/if}
   </span>

@@ -2,13 +2,14 @@ import type { Action } from "svelte/action"
 
 type HoldEventParams = {
   onHold: () => void,
-  duration: number
+  duration: number,
+  holdable?: boolean
 }
 
 /**
  * A Svelte directive for applying scroll shadow to elements.
  */
-export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, duration }) => {
+export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, holdable, duration }) => {
   let startTime = Date.now();
   let shouldTrigger = true;
   let blockClick = false;
@@ -50,12 +51,14 @@ export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElemen
     shouldTrigger = false;
   }
 
-  node.addEventListener("mousedown", mouseDown);
-  node.addEventListener("mouseup", mouseUp);
-  node.addEventListener('click', checkClick, true);
+  if (holdable || holdable === undefined) {
+    node.addEventListener("mousedown", mouseDown);
+    node.addEventListener("mouseup", mouseUp);
+    node.addEventListener('click', checkClick, true);
+  }
 
   return {
-    update({ onHold, duration }: HoldEventParams) {
+    update({ onHold, holdable, duration }: HoldEventParams) {
       
     },
     destroy() {
