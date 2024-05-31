@@ -154,7 +154,7 @@
       }
       case View.ARTISTS: {
         if ($location === "/artists") {
-          EditController.deleteArtistsFromDevice($selected);
+          LogController.error("Shouldn't be able to get here!");
         } else {
           EditController.deleteSongsFromDevice($selected);
         }
@@ -332,7 +332,9 @@
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       <MenuItem on:click={playNext}>Play Next</MenuItem>
       <MenuItem on:click={share}>Share</MenuItem>
-      <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
+      {#if $location !== "/artists"}
+        <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
+      {/if}
       <MenuItem on:click={selectAll}>Select All</MenuItem>
     </MenuButton>
   </div>

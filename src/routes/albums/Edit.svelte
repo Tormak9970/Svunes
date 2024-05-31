@@ -70,7 +70,7 @@
       canSave = false;
       back();
     } else {
-      $showErrorSnackbar({ message: "Album is required!", closable: true, timeout: 3000 });
+      $showErrorSnackbar({ message: "Album is required!", timeout: 2000 });
       LogController.error("Failed to save changes! A album is required!");
     }
   }
@@ -79,8 +79,9 @@
    * Handles prompting the user to change the album's art.
    */
   function onAlbumArtClick() {
-    $onArtOptionsDone = (path: string | undefined) => {
-      artPath = path;
+    $onArtOptionsDone = async (path: string | undefined) => {
+      const copiedPath = await EditController.copyAlbumImage(path);
+      artPath = copiedPath;
     }
     $showArtOptions = true;
   }

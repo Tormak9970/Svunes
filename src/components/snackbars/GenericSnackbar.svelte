@@ -1,30 +1,17 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import type { HTMLAttributes } from "svelte/elements";
   import { fly } from "svelte/transition";
   import iconX from "@ktibow/iconset-material-symbols/close";
   import Icon from "../utils/Icon.svelte";
-  
-  /**
-   * Handles opening the snackbar.
-   */
-  const open = (node: HTMLDialogElement) => {
-    node.inert = true;
-    node.showModal();
-    node.inert = false;
-  }
 
   type SnackbarData = {
     message: string;
     closable: boolean;
     timeout: number | null;
   };
-
-  export let extraWrapperOptions: HTMLAttributes<HTMLDialogElement> = {};
-  export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
   
-  export const show = ({ message, closable = false, timeout = 4000 }: ShowSnackbarOptions) => {
-    snackbar = { message, closable, timeout };
+  export const show = ({ message, timeout = 4000 }: ShowSnackbarOptions) => {
+    snackbar = { message, closable: false, timeout };
     clearTimeout(timeoutId);
 
     if (timeout) {
@@ -46,8 +33,8 @@
 </script>
 
 {#if snackbar}
-  <dialog class="holder" use:open in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }} {...extraWrapperOptions}>
-    <div class="m3-container" style:--background-color={backgroundColor} style:--text-color={textColor} {...extraOptions}>
+  <dialog class="holder" open in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
+    <div class="m3-container" style:--background-color={backgroundColor} style:--text-color={textColor}>
       <p class="m3-font-body-medium">{snackbar.message}</p>
       {#if snackbar.closable}
         <button class="close" on:click={() => { snackbar = undefined; }}>
@@ -64,27 +51,26 @@
   }
 
   .holder {
-    margin: auto 0 0 0;
     border: 0;
     padding: 0;
 
-    width: 100%;
+    width: calc(100% - 2rem);
     padding-bottom: 1rem;
 
-    position: fixed;
+    position: absolute;
     left: 50%;
     bottom: var(--m3-util-bottom-offset);
 
     transform: translate(-50%, 0);
     background-color: transparent;
-    z-index: 1000;
+    z-index: 3;
   }
   p {
     margin-right: auto;
   }
 
   .holder::backdrop {
-    background-color: transparent;
+    display: none;
   }
 
   .m3-container {

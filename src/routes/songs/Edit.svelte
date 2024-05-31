@@ -5,7 +5,7 @@
   import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import { showErrorSnackbar, songsMap } from "../../stores/State";
+  import { showErrorSnackbar, showInfoSnackbar, songsMap } from "../../stores/State";
   import TextField from "../../components/interactables/TextField.svelte";
   import NumberField from "../../components/interactables/NumberField.svelte";
   import { LogController } from "../../lib/controllers/utils/LogController";
@@ -86,7 +86,7 @@
       canSave = false;
       back();
     } else {
-      $showErrorSnackbar({ message: "Title is required!", closable: true, timeout: 3000 });
+      $showErrorSnackbar({ message: "Title is required!", timeout: 2000 });
       LogController.error("Failed to save changes! A title is required!");
     }
   }
@@ -95,10 +95,15 @@
    * Handles prompting the user to change the song's art.
    */
   function onAlbumArtClick() {
-    $onArtOptionsDone = (path: string | undefined) => {
-      artPath = path;
+    if (!album) {
+      $onArtOptionsDone = async (path: string | undefined) => {
+        const copiedPath = await EditController.copyAlbumImage(path);
+        artPath = copiedPath;
+      }
+      $showArtOptions = true;
+    } else {
+      $showInfoSnackbar({ message: "Can't edit because this song is in an album", timeout: 2500 });
     }
-    $showArtOptions = true;
   }
 
   onMount(() => {

@@ -108,4 +108,12 @@ export class RustInterop {
   static async writeMusicFiles(changes: Record<string, SongEditFields>): Promise<boolean> {
     return await invoke<boolean>("write_music_files", { changesStr: JSON.stringify(changes) });
   }
+
+  /**
+   * Deletes the provided songs from the device.
+   * @param paths The paths of the songs to delete.
+   */
+  static async deleteSongs(paths: string[]): Promise<boolean> {
+    return await invoke<boolean>("delete_songs", { filePathsStr: JSON.stringify(paths) });
+  }
 }

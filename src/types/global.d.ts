@@ -8,7 +8,6 @@ type DialogModalType = "INFO" | "WARNING" | "ERROR";
 
 type ShowSnackbarOptions = {
   message: string;
-  closable?: boolean;
   timeout?: number | null;
 }
 

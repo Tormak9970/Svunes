@@ -56,8 +56,6 @@
 
 <Overlays />
 <Modals />
-<ErrorSnackbar bind:show={$showErrorSnackbar} />
-<InfoSnackbar bind:show={$showInfoSnackbar} />
 {#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}
   <ViewNav />
 {/if}
@@ -65,6 +63,8 @@
   <MiniPlayer />
 {/if}
 <div class="content">
+  <ErrorSnackbar bind:show={$showErrorSnackbar} />
+  <InfoSnackbar bind:show={$showInfoSnackbar} />
   {#if $inSelectMode}
     <SelectHeader />
   {/if}

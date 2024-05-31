@@ -57,6 +57,32 @@ fn write_music_files(app_handle: AppHandle, changes_str: String) {
   // TODO: multi thread it
 }
 
+#[tauri::command]
+/// Deletes the given songs.
+fn delete_songs(app_handle: AppHandle, file_paths_str: String) -> bool {
+  let mut success = true;
+  let file_paths: Vec<String> = serde_json::from_str(&file_paths_str).expect("Couldn't deserialize file paths array.");
+
+  for file_path_str in file_paths {
+    let file_path = PathBuf::from(&file_path_str);
+
+    let result = fs::remove_file(file_path);
+
+    if result.is_err() {
+      success = false;
+      let err = result.err().unwrap();
+      logger::log_to_file(app_handle.to_owned(), format!("Failed to delete {}: {}", &file_path_str, err.to_string()).as_str(), 0);
+      break;
+    }
+  }
+
+  if !success {
+    logger::log_to_file(app_handle.to_owned(), "Successfully deleted songs.", 0);
+  }
+
+  return success;
+}
+
 /// Reads a music file and returns the info.
 fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String, max_length: u64) -> Map<String, Value> {
   if file_type.eq_ignore_ascii_case("mp3") {
@@ -286,7 +312,8 @@ fn main() {
       read_music_folders,
       get_colors_from_image,
       copy_album_image,
-      copy_artist_image
+      copy_artist_image,
+      delete_songs
     ])
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);

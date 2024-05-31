@@ -49,7 +49,7 @@ export class EditController {
    */
   static async editSong(original: Song, editedFields: SongEditFields) {
     const changes: Record<string, SongEditFields> = {};
-    changes[original.key] = editedFields;
+    changes[original.filePath] = editedFields;
     const successPromise = RustInterop.writeMusicFiles(changes);
       
     this.editSongFields(original, editedFields);
@@ -102,7 +102,7 @@ export class EditController {
       song.releaseYear = editFields.releaseYear ?? -1;
       song.genre = editFields.genre;
 
-      changes[song.key] = editFields;
+      changes[song.filePath] = editFields;
     }
 
     const songsList = get(songs);
@@ -124,12 +124,39 @@ export class EditController {
 
   /**
    * Deletes the provided songs from the device.
-   * @param songNames The names of the songs to delete.
+   * @param songKeys The keys of the songs to delete.
    */
-  static async deleteSongsFromDevice(songNames: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores (recalc genres, albums, artists, remove from playlists)
-    // ! Add logging
+  static async deleteSongsFromDevice(songKeys: string[]) {
+    const numSongsMessage = `${songKeys.length} ${songKeys.length === 1 ? "song" : "songs"}`;
+
+    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
+      if (shouldContinue) {
+        const filePaths: string[] = [];
+        const songList = get(songs);
+
+        for (const key of songKeys) {
+          const index = songList.findIndex((song) => song.key === key);
+          const [song] = songList.splice(index, 1);
+          filePaths.push(song.filePath);
+        }
+
+        songs.set(songList);
+        
+        const successPromise = RustInterop.deleteSongs(filePaths);
+
+        AppController.loadAlbumsFromSongs(songList);
+        AppController.loadArtistsFromSongs(songList);
+        AppController.loadGenresFromSongs(songList);
+        
+        const success = await successPromise;
+
+        if (success) {
+          get(showInfoSnackbar)({ message: numSongsMessage + " deleted", timeout: 1500 });
+        } else {
+          get(showErrorSnackbar)({ message: "Failed to delete all selected songs."})
+        }
+      }
+    });
   }
 
   /**
@@ -137,19 +164,43 @@ export class EditController {
    * @param albumNames The names of the albums to delete.
    */
   static async deleteAlbumsFromDevice(albumNames: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores (recalc genres, songs, artists, remove from playlists)
-    // ! Add logging
-  }
+    const numSongsMessage = `${albumNames.length} ${albumNames.length === 1 ? "album" : "albums"}`;
 
-  /**
-   * Deletes the provided artists from the device.
-   * @param artistNames The names of the artists to delete.
-   */
-  static async deleteArtistsFromDevice(artistNames: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores
-    // ! Add logging
+    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
+      if (shouldContinue) {
+        const filePaths: string[] = [];
+        const albumList = get(albums);
+        const songList = get(songs);
+
+        for (const albumName of albumNames) {
+          const albumIndex = albumList.findIndex((album) => album.name === albumName);
+          const [album] = albumList.splice(albumIndex, 1);
+          
+          for (const key of album.songKeys) {
+            const songIndex = songList.findIndex((song) => song.key === key);
+            const [song] = songList.splice(songIndex, 1);
+            filePaths.push(song.filePath);
+          }
+        }
+
+        albums.set(albumList);
+        songs.set(songList);
+        
+        const successPromise = RustInterop.deleteSongs(filePaths);
+
+        AppController.loadAlbumsFromSongs(songList);
+        AppController.loadArtistsFromSongs(songList);
+        AppController.loadGenresFromSongs(songList);
+        
+        const success = await successPromise;
+
+        if (success) {
+          get(showInfoSnackbar)({ message: numSongsMessage + " deleted", timeout: 1500 });
+        } else {
+          get(showErrorSnackbar)({ message: "Failed to delete all selected albums."});
+        }
+      }
+    });
   }
 
   /**
