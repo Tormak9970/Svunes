@@ -8,7 +8,6 @@
   import { playlistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
-  import { AppController } from "../../lib/controllers/AppController";
   import DetailsBody from "../../components/utils/DetailsBody.svelte";
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import MenuButton from "../../components/interactables/MenuButton.svelte";
@@ -16,11 +15,10 @@
   import PlaylistSongs from "./PlaylistSongs.svelte";
   import MenuItem from "../../components/layout/MenuItem.svelte";
   import PlaylistImage from "../../components/views/playlists/PlaylistImage.svelte";
-  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { GridSize } from "../../types/Settings";
   import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
   import PlayButton from "../../components/views/utils/PlayButton.svelte";
   import Marquee from "../../components/layout/Marquee.svelte";
+  import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { key?: string } = {};
   $: playlist = params.key ? $playlistsMap[params.key!] : undefined;
@@ -81,7 +79,7 @@
    * Prompts the user to confirm if they want to delete this playlist.
    */
   function deletePlaylist() {
-    AppController.deletePlaylistsFromDevice([playlist!.name]);
+    EditController.deletePlaylistsFromDevice([playlist!.name]);
   }
 </script>
 

@@ -1,4 +1,4 @@
-import { dialogModalCancel, dialogModalCancelText, dialogModalConfirm, dialogModalConfirmText, dialogModalMessage, dialogModalTitle, showDialogModal } from "../../stores/Modals";
+import { dialogModalCancel, dialogModalCancelText, dialogModalConfirm, dialogModalConfirmText, dialogModalMessage, dialogModalTitle, showDialogModal } from "../../../stores/Modals";
 
 /**
  * Controller class for handling dialog modals.

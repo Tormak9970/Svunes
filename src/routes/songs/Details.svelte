@@ -27,6 +27,7 @@
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop, push } from "svelte-spa-router";
   import MenuItem from "../../components/layout/MenuItem.svelte";
+  import { EditController } from "../../lib/controllers/EditController";
   
   export let params: { key?: string } = {};
   $: song = params.key ? $songsMap[params.key] : null;
@@ -101,7 +102,7 @@
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    AppController.deleteSongsFromDevice([song!.key]);
+    EditController.deleteSongsFromDevice([song!.key]);
   }
 </script>
 

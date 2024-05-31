@@ -8,7 +8,7 @@ mod common;
 mod music_readers;
 mod mpa_reader;
 
-use std::{fs::{self, DirEntry}, io::Error, panic::{self, Location}, path::PathBuf, process::exit};
+use std::{fs::{self, create_dir_all, DirEntry}, io::Error, panic::{self, Location}, path::PathBuf, process::exit};
 
 use music_readers::{read_flac, read_mp3, read_wav};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
@@ -16,13 +16,13 @@ use rayon::iter::IntoParallelRefIterator;
 use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
+use audiotags;
 use tauri::{
-  api::dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, AppHandle, FsScope, Manager
+  api::{dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, path::cache_dir}, AppHandle, FsScope, Manager
 };
 
 use image::io::Reader as ImageReader;
 use rayon::prelude::*;
-// use id3::{frame::Picture, Tag, TagLike};
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
@@ -32,6 +32,29 @@ struct Payload {
 
 fn color_to_rgb(color: &Color) -> String {
   return format!("{} {} {}", color.r, color.g, color.b);
+}
+
+// Writes changes to a music file.
+fn write_music_file(app_handle: AppHandle) {
+  // TODO: make backup
+
+  // artPath
+  // title
+  // album
+  // composer
+  // albumArtist
+  // artist
+  // releaseYear
+  // genre
+  // trackNumber
+
+  // TODO: if any fail, restore backup
+}
+
+#[tauri::command]
+/// Writes changes to a list of music files.
+fn write_music_files(app_handle: AppHandle, changes_str: String) {
+  // TODO: multi thread it
 }
 
 /// Reads a music file and returns the info.
@@ -163,6 +186,62 @@ async fn toggle_dev_tools(app_handle: AppHandle, enable: bool) {
 }
 
 #[tauri::command]
+/// copies the provided image to the albums directory
+async fn copy_album_image(app_handle: AppHandle, image_path: String) -> String {
+  let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
+  
+  let app_cache_dir = cache_dir().expect("Couldn't resolve app cache dir.");
+  let mut file_path = app_cache_dir.join(&bundle_id).join("albums");
+
+  if !file_path.exists() {
+    let _ = create_dir_all(&file_path);
+  }
+
+  let image_pathbuf = PathBuf::from(&image_path);
+  let file_name = image_pathbuf.file_name().expect("Couldn't get filename of album image.");
+  file_path.push(file_name);
+
+  let copy_res = fs::copy(&image_path, &file_path);
+
+  if copy_res.is_ok() {
+    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
+  } else {
+    let err = copy_res.err().unwrap();
+    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
+  }
+
+  return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
+}
+
+#[tauri::command]
+/// copies the provided image to the artists directory
+async fn copy_artist_image(app_handle: AppHandle, image_path: String) -> String {
+  let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
+  
+  let app_cache_dir = cache_dir().expect("Couldn't resolve app cache dir.");
+  let mut file_path = app_cache_dir.join(&bundle_id).join("artists");
+
+  if !file_path.exists() {
+    let _ = create_dir_all(&file_path);
+  }
+
+  let image_pathbuf = PathBuf::from(&image_path);
+  let file_name = image_pathbuf.file_name().expect("Couldn't get filename of artist image.");
+  file_path.push(file_name);
+
+  let copy_res = fs::copy(&image_path, &file_path);
+
+  if copy_res.is_ok() {
+    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
+  } else {
+    let err = copy_res.err().unwrap();
+    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
+  }
+
+  return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
+}
+
+#[tauri::command]
 /// Gets the two primary colors from an image
 async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> String {
   let image_reader_res = ImageReader::open(image_path.to_owned());
@@ -205,7 +284,9 @@ fn main() {
       add_path_to_scope,
       toggle_dev_tools,
       read_music_folders,
-      get_colors_from_image
+      get_colors_from_image,
+      copy_album_image,
+      copy_artist_image
     ])
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);

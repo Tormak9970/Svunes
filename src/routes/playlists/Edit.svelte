@@ -7,7 +7,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { playlists, playlistsMap, showErrorSnackbar } from "../../stores/State";
   import TextField from "../../components/interactables/TextField.svelte";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";

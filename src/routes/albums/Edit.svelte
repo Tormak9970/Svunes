@@ -8,12 +8,12 @@
   import { albumsMap, showErrorSnackbar } from "../../stores/State";
   import TextField from "../../components/interactables/TextField.svelte";
   import NumberField from "../../components/interactables/NumberField.svelte";
-  import { AppController } from "../../lib/controllers/AppController";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import { Album } from "../../lib/models/Album";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
+  import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { key?: string } = {};
   $: album = params.key ? $albumsMap[params.key] : null;
@@ -59,10 +59,14 @@
    */
   function saveChanges() {
     if (albumName !== "") {
-      const original = $albumsMap[params.key!];
-      const editedAlbum = new Album(albumName, artPath, albumArtist, releaseYear ? parseInt(releaseYear) : -1, genre, original.lastPlayedOn, original.numTimesPlayed);
-      editedAlbum.songKeys = original.songKeys;
-      AppController.editAlbum(original, editedAlbum);
+      const editFields: AlbumEditFields = {
+        "artPath": artPath,
+        "name": albumName,
+        "artist": albumArtist,
+        "releaseYear": releaseYear ? parseInt(releaseYear) : undefined,
+        "genre": genre
+      }
+      EditController.editAlbum($albumsMap[params.key!], editFields);
       canSave = false;
       back();
     } else {

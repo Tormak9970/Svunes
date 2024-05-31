@@ -3,7 +3,7 @@
   import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
   import VirtualList from "../../components/layout/VirtualList.svelte";
   import PlaylistsHeader from "../../components/views/playlists/PlaylistsHeader.svelte";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import type { Playlist } from "../../lib/models/Playlist";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
   import { stringSort, dateSort } from "../../lib/utils/Sorters";

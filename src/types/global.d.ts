@@ -22,3 +22,23 @@ declare namespace svelte.JSX {
 		onfinalize?: (event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }) => void;
 	}
 }
+
+type SongEditFields = {
+  artPath: string | undefined,
+  title: string | undefined,
+  album: string | undefined,
+  composer: string | undefined,
+  albumArtist: string | undefined,
+  artist: string | undefined,
+  releaseYear: number | undefined,
+  genre: string | undefined,
+  trackNumber: number | undefined
+}
+
+type AlbumEditFields = {
+  artPath: string | undefined,
+  name: string,
+  artist: string | undefined,
+  releaseYear: number | undefined,
+  genre: string | undefined
+}

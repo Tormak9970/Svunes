@@ -8,12 +8,12 @@
   import { showErrorSnackbar, songsMap } from "../../stores/State";
   import TextField from "../../components/interactables/TextField.svelte";
   import NumberField from "../../components/interactables/NumberField.svelte";
-  import { AppController } from "../../lib/controllers/AppController";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import { Song } from "../../lib/models/Song";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
+  import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { key?: string } = {};
   $: song = params.key ? $songsMap[params.key] : null;
@@ -71,8 +71,18 @@
    */
   function saveChanges() {
     if (title !== "") {
-      const editedSong = new Song(title, album !== "" ? album : undefined, artist !== "" ? artist : undefined, composer !== "" ? composer : undefined, albumArtist !== "" ? albumArtist : undefined, releaseYear ? parseInt(releaseYear) : -1, song!.length, song!.bitRate, song!.sampleRate, song!.size, song!.filePath, artPath ? artPath : "", song!.lastPlayedOn, song!.numTimesPlayed, genre !== "" ? genre : undefined, trackNumber ? parseInt(trackNumber) : undefined, song!.totalTracks);
-      AppController.editSong($songsMap[params!.key!], editedSong);
+      const editFields: SongEditFields = {
+        "artPath": artPath,
+        "title": title === song?.key ? undefined : title,
+        "album": album !== "" ? album : undefined,
+        "composer": composer !== "" ? composer : undefined,
+        "albumArtist": albumArtist !== "" ? albumArtist : undefined,
+        "artist": artist !== "" ? artist : undefined,
+        "releaseYear":  releaseYear ? parseInt(releaseYear) : undefined,
+        "genre": genre !== "" ? genre : undefined,
+        "trackNumber": trackNumber ? parseInt(trackNumber) : undefined
+      }
+      EditController.editSong($songsMap[params!.key!], editFields);
       canSave = false;
       back();
     } else {

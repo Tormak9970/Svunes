@@ -2,7 +2,7 @@ import { get } from "svelte/store";
 import { artistsMap, genresMap, songsMap } from "../../stores/State";
 import { formatTime } from "../utils/Utils";
 import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
-import { RustInterop } from "../controllers/RustInterop";
+import { RustInterop } from "../controllers/utils/RustInterop";
 
 /**
  * Represents an Artist.
@@ -33,6 +33,7 @@ export class Artist {
 
   set imagePath(path: string | undefined) {
     this._imagePath = path;
+    this.backgroundColor = undefined;
     
     if (path) {
       RustInterop.getColorsFromImage(path).then((colors) => {

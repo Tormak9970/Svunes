@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import { Playlist } from "../../lib/models/Playlist";
   import { showCreatePlaylist, songsForNewPlaylist } from "../../stores/Overlays";
   import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "../../stores/State";

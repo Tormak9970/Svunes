@@ -1,17 +1,73 @@
 import { showEditMusicFolders } from "../../stores/Modals";
-import { RustInterop } from "./RustInterop";
-import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, playlists, queue, showInfoSnackbar, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { RustInterop } from "./utils/RustInterop";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, playlists, queue, showErrorSnackbar, showInfoSnackbar, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
 import { SettingsController } from "./SettingsController";
-import { LogController } from "./LogController";
+import { LogController } from "./utils/LogController";
 import { Genre } from "../models/Genre";
 import { Artist } from "../models/Artist";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { getAllArtistNames } from "../utils/Utils";
 import type { Playlist } from "../models/Playlist";
-import { DialogController } from "./DialogController";
+
+/**
+ * Gets the edited fields for the provided song.
+ * @param original The original song.
+ * @param edited The edited song.
+ * @returns The edited fields.
+ */
+function getEditedSongFields(original: Song, edited: Song): SongEditFields {
+  const editFields: SongEditFields = {
+    "artPath": undefined,
+    "title": undefined,
+    "album": undefined,
+    "composer": undefined,
+    "albumArtist": undefined,
+    "artist": undefined,
+    "releaseYear": undefined,
+    "genre": undefined,
+    "trackNumber": undefined,
+    "totalTracks": undefined
+  }
+
+  for (const key of Object.keys(editFields)) {
+    const songKey = key as keyof Song;
+    if (original[songKey] !== edited[songKey]) {
+      // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
+      editFields[key as keyof SongEditFields] = edited[songKey];
+    }
+  }
+
+  return editFields;
+}
+
+/**
+ * Gets the edited fields for the provided album.
+ * @param original The original album.
+ * @param edited The edited album.
+ * @returns The edited fields.
+ */
+function getEditedAlbumFields(original: Album, edited: Album): AlbumEditFields {
+  const editFields: AlbumEditFields = {
+    "artPath": undefined,
+    "name": undefined,
+    "artist": undefined,
+    "releaseYear": undefined,
+    "genre": undefined
+  }
+
+  for (const key of Object.keys(editFields)) {
+    const songKey = key as keyof Album;
+    if (original[songKey] !== edited[songKey]) {
+      // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
+      editFields[key as keyof AlbumEditFields] = edited[songKey];
+    }
+  }
+
+  return editFields;
+}
 
 /**
  * The core app controller.
@@ -62,7 +118,7 @@ export class AppController {
    * Generates all of the albums from the loaded songs.
    * @param songs The loaded songs.
    */
-  private static loadAlbumsFromSongs(songs: Song[]) {
+  static loadAlbumsFromSongs(songs: Song[]) {
     const albumsMetadataMap = SettingsController.getSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata");
     const albumMap = new Map<string, Album>();
 
@@ -97,7 +153,7 @@ export class AppController {
    * Generates all of the artists from the loaded songs.
    * @param songs The loaded songs.
    */
-  private static loadArtistsFromSongs(songs: Song[]) {
+  static loadArtistsFromSongs(songs: Song[]) {
     const artistsMetadataMap = SettingsController.getSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata");
     const artistMap = new Map<string, Artist>();
 
@@ -138,7 +194,7 @@ export class AppController {
    * Generates all of the genres from the loaded songs.
    * @param songs The loaded songs.
    */
-  private static loadGenresFromSongs(songs: Song[]) {
+  static loadGenresFromSongs(songs: Song[]) {
     const genreMap = new Map<string, Genre>();
 
     for (const song of songs) {
@@ -230,78 +286,6 @@ export class AppController {
       this.loadGenresFromSongs(loadedSongs);
       this.loadArtistsFromSongs(loadedSongs);
     }
-  }
-
-  /**
-   * Applies the changes made to a song, and updates the artist/album (or creates/deletes them) as needed.
-   * @param originalSong The original song.
-   * @param edited The edited song.
-   */
-  static async editSong(originalSong: Song, edited: Song) {
-
-  }
-
-  /**
-   * Applies the changes made to an album, and updates the songs/artists (or creates/deletes them) as needed.
-   * @param originalAlbum The original album.
-   * @param edited The edited album.
-   */
-  static async editAlbum(originalAlbum: Album, edited: Album) {
-
-  }
-
-  /**
-   * Deletes the provided songs from the device.
-   * @param songNames The names of the songs to delete.
-   */
-  static async deleteSongsFromDevice(songNames: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores (recalc genres, albums, artists, remove from playlists)
-    // ! Add logging
-  }
-
-  /**
-   * Deletes the provided albums from the device.
-   * @param albumNames The names of the albums to delete.
-   */
-  static async deleteAlbumsFromDevice(albumNames: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores (recalc genres, songs, artists, remove from playlists)
-    // ! Add logging
-  }
-
-  /**
-   * Deletes the provided artists from the device.
-   * @param artistNames The names of the artists to delete.
-   */
-  static async deleteArtistsFromDevice(artistNames: string[]) {
-    // TODO: show popup to confirm if they really want to.
-    // TODO: update relevant stores
-    // ! Add logging
-  }
-
-  /**
-   * Deletes the provided playlists from the device.
-   * @param playlistNames The names of the playlists to delete.
-   */
-  static async deletePlaylistsFromDevice(playlistNames: string[]) {
-    const numPlaylistMessage = `${playlistNames.length} ${playlistNames.length === 1 ? "playlist" : "playlists"}`;
-
-    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numPlaylistMessage}?`, "Yes", "No").then((shouldContinue) => {
-      if (shouldContinue) {
-        const playlistList = get(playlists);
-        
-        for (const name of playlistNames) {
-          const index = playlistList.findIndex((playlist) => playlist.name === name);
-          playlistList.splice(index, 1);
-        }
-
-        playlists.set(playlistList);
-
-        LogController.log(`Deleted ${numPlaylistMessage}.`);
-        get(showInfoSnackbar)({ message: numPlaylistMessage + " deleted", timeout: 1500 });
-      }
-    });
   }
 
   /**

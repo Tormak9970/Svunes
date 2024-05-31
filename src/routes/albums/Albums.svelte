@@ -8,7 +8,7 @@
   import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
   import { GridSize, type AlbumSortOrder } from "../../types/Settings";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import { dateSort, stringSort } from "../../lib/utils/Sorters";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Icon from "../../components/utils/Icon.svelte";

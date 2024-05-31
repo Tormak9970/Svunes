@@ -1,5 +1,7 @@
 import { writable, type Writable } from "svelte/store";
 
+export const showSavingSettings = writable(false);
+
 export const showEditMusicFolders = writable(false);
 export const showBlacklistFolders = writable(false);
 

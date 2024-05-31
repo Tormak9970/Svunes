@@ -5,8 +5,6 @@
   import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { AlbumEntriesSortOrder } from "../../types/Settings";
@@ -14,15 +12,13 @@
   import { albumToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
-  import { AppController } from "../../lib/controllers/AppController";
   import DetailsBody from "../../components/utils/DetailsBody.svelte";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import MenuButton from "../../components/interactables/MenuButton.svelte";
   import RadioMenuItem from "../../components/interactables/RadioMenuItem.svelte";
-  import ColoredButton from "../../components/interactables/ColoredButton.svelte";
   import { pop, push } from "svelte-spa-router";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import type { Song } from "../../lib/models/Song";
   import { nullishNumberSort, stringSort } from "../../lib/utils/Sorters";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
@@ -30,6 +26,7 @@
   import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
   import PlayButton from "../../components/views/utils/PlayButton.svelte";
   import Marquee from "../../components/layout/Marquee.svelte";
+  import { EditController } from "../../lib/controllers/EditController";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
@@ -97,7 +94,7 @@
    * Prompts the user to confirm if they want to delete this album.
    */
   function deleteAlbum() {
-    AppController.deleteAlbumsFromDevice([album!.name]);
+    EditController.deleteAlbumsFromDevice([album!.name]);
   }
 
   /**

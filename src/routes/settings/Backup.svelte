@@ -2,7 +2,7 @@
   import { dialog, process } from "@tauri-apps/api";
   import { pop } from "svelte-spa-router";
   import { SettingsController } from "../../lib/controllers/SettingsController";
-  import { DialogController } from "../../lib/controllers/DialogController";
+  import { DialogController } from "../../lib/controllers/utils/DialogController";
 
   import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
   import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";

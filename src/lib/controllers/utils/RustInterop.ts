@@ -69,8 +69,8 @@ export class RustInterop {
    * @returns The list of songs found.
    */
   static async readMusicFolders(folders: string[], blacklist: string[], maxLength: number): Promise<any[]> {
-    const results = await invoke("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders), blacklistFolderPathsStr: JSON.stringify(blacklist), maxLength: maxLength });
-    return JSON.parse(results as string);
+    const results = await invoke<string>("read_music_folders", { musicFolderPathsStr: JSON.stringify(folders), blacklistFolderPathsStr: JSON.stringify(blacklist), maxLength: maxLength });
+    return JSON.parse(results);
   }
 
   /**
@@ -79,7 +79,33 @@ export class RustInterop {
    * @returns The background and text color.
    */
   static async getColorsFromImage(imagePath: string): Promise<string[]> {
-    const results = await invoke("get_colors_from_image", { imagePath: imagePath });
-    return JSON.parse(results as string);
+    const results = await invoke<string>("get_colors_from_image", { imagePath: imagePath });
+    return JSON.parse(results);
+  }
+
+  /**
+   * Copies the provided image to the "albums" cache directory.
+   * @param imagePath The image path to copy.
+   * @returns The resulting path.
+   */
+  static async copyAlbumsImage(imagePath: string): Promise<string> {
+    return await invoke<string>("copy_album_image", { imagePath: imagePath });
+  }
+
+  /**
+   * Copies the provided image to the "artists" cache directory.
+   * @param imagePath The image path to copy.
+   * @returns The resulting path.
+   */
+  static async copyArtistImage(imagePath: string): Promise<string> {
+    return await invoke<string>("copy_artist_image", { imagePath: imagePath });
+  }
+
+  /**
+   * Writes the provided changes to the music files.
+   * @param changes The changes to write.
+   */
+  static async writeMusicFiles(changes: Record<string, SongEditFields>): Promise<boolean> {
+    return await invoke<boolean>("write_music_files", { changesStr: JSON.stringify(changes) });
   }
 }

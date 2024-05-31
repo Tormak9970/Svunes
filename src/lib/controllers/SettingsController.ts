@@ -16,13 +16,13 @@
  */
 import { fs, path } from "@tauri-apps/api";
 import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
-import { LogController } from "../controllers/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, isPaused } from "../../stores/State";
+import { LogController } from "./utils/LogController";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingListName, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, songName, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, isPaused, showInfoSnackbar, showErrorSnackbar } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
 import type { Album } from "../models/Album";
-import type { Unsubscriber } from "svelte/store";
+import { get, type Unsubscriber } from "svelte/store";
 import { debounce } from "../utils/Utils";
 import type { Artist } from "../models/Artist";
 
@@ -64,6 +64,7 @@ function setIfNotExist(object: any, defaults: any): any {
  * The controller for settings.
  */
 export class SettingsController {
+  static settingsHaveChanged = false;
   private static settingsPath = "";
   private static settings: Settings;
 
@@ -197,7 +198,7 @@ export class SettingsController {
     parentObject[fieldPath[fieldPath.length - 1]] = val;
 
     this.settings = settings;
-    this.save();
+    this.save()
 
     const stringified = JSON.stringify(val);
     LogController.log(stringified.length < 200 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
@@ -271,8 +272,10 @@ export class SettingsController {
 
         await this.save();
 
+        get(showInfoSnackbar)({ message: "Success!", timeout: 1000 });
         LogController.log("Successfully restored backup.");
       } else {
+        get(showErrorSnackbar)({ message: "Invalid backup file", timeout: 2000 });
         LogController.error("Backup did not contain the FILE_SIG.");
       }
     } else {
@@ -287,6 +290,7 @@ export class SettingsController {
     this.settings = structuredClone(DEFAULT_SETTINGS);
     await this.save();
 
+    get(showInfoSnackbar)({ message: "Success!", timeout: 1000 });
     LogController.log("Successfully reset settings.");
   }
 
@@ -482,8 +486,12 @@ export class SettingsController {
    * Saves the settings object.
    */
   static async save() {
-    return new Promise((resolve, reject) => {
-      this.saveCallback = resolve;
+    this.settingsHaveChanged = true;
+    return new Promise<void>((resolve, reject) => {
+      this.saveCallback = () => {
+        this.settingsHaveChanged = false;
+        resolve();
+      };
       this.debouncedSave();
     })
   }

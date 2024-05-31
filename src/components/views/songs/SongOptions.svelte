@@ -6,6 +6,7 @@
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Song } from "../../../lib/models/Song";
   import { playlists, playlistsMap } from "../../../stores/State";
+  import { EditController } from "../../../lib/controllers/EditController";
 
   export let menuIsOpen: boolean;
   export let song: Song;
@@ -97,7 +98,7 @@
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    AppController.deleteSongsFromDevice([song!.key]);
+    EditController.deleteSongsFromDevice([song!.key]);
     closeOptions();
   }
 </script>

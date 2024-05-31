@@ -10,7 +10,7 @@
   import SelectHeader from "./views/SelectHeader.svelte";
   import { inSelectMode } from "../stores/Select";
   import { window } from "@tauri-apps/api";
-  import type { UnlistenFn } from "@tauri-apps/api/event";
+  import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./modals/Modals.svelte";
   import { exit } from "@tauri-apps/api/process";
   import Router, { location, push } from 'svelte-spa-router'
@@ -18,6 +18,7 @@
   import type { Unsubscriber } from "svelte/store";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
+    import { showSavingSettings } from "../stores/Modals";
 
   let loadingUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;
@@ -32,10 +33,15 @@
     await SettingsController.init();
     AppController.init();
 
-    closeRequestListener = await window.appWindow.listen("tauri://close-requested", async (e) => {
-      // TODO: check if settings save is in progress, if show, show overlay
-      await SettingsController.save();
-      await exit(0);
+    closeRequestListener = await window.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, (e) => {
+      if (SettingsController.settingsHaveChanged) {
+        SettingsController.save().then(() => {
+          $showSavingSettings = true;
+          exit(0);
+        });
+      } else {
+        exit(0);
+      }
     });
   });
 

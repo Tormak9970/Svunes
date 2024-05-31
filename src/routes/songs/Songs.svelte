@@ -7,7 +7,7 @@
   import GridEntry from "../../components/views/songs/GridEntry.svelte";
   import ListEntry from "../../components/views/songs/ListEntry.svelte";
   import SongsHeader from "../../components/views/songs/SongsHeader.svelte";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import type { Song } from "../../lib/models/Song";
   import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
   import { stringSort, dateSort } from "../../lib/utils/Sorters";

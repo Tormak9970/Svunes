@@ -4,11 +4,9 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import type { ArtistEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artistsMap, isPaused, nowPlayingListName, songsMap, useArtistColors } from "../../stores/State";
+  import { albumsMap, artists, artistsMap, isPaused, nowPlayingListName, songsMap, useArtistColors } from "../../stores/State";
   import { artistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -17,20 +15,21 @@
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import MenuButton from "../../components/interactables/MenuButton.svelte";
   import RadioMenuItem from "../../components/interactables/RadioMenuItem.svelte";
-  import ColoredButton from "../../components/interactables/ColoredButton.svelte";
   import { pop, push } from "svelte-spa-router";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { Song } from "../../lib/models/Song";
   import { getRandomElements } from "../../lib/utils/Utils";
   import { stringSort } from "../../lib/utils/Sorters";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
   import ArtistCarousel from "../../components/layout/artist-carousel/ArtistCarousel.svelte";
   import { Artist } from "../../lib/models/Artist";
   import MenuItem from "../../components/layout/MenuItem.svelte";
-    import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
-    import PlayButton from "../../components/views/utils/PlayButton.svelte";
-    import Marquee from "../../components/layout/Marquee.svelte";
+  import ToggleShuffleButton from "../../components/views/utils/ToggleShuffleButton.svelte";
+  import PlayButton from "../../components/views/utils/PlayButton.svelte";
+  import Marquee from "../../components/layout/Marquee.svelte";
+  import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
+  import { EditController } from "../../lib/controllers/EditController";
 
   let artistSortMethod: ArtistEntriesSortOrder = "Album";
 
@@ -125,6 +124,18 @@
     }
     return sorted;
   }
+
+  /**
+   * Handles prompting the user to change the artist's art.
+   */
+  function onArtistArtClick() {
+    $onArtOptionsDone = async (path: string | undefined) => {
+      const copiedPath = await EditController.copyArtistImage(path);
+      artist!.imagePath = copiedPath;
+      $artists = [ ...$artists ];
+    }
+    $showArtOptions = true;
+  }
 </script>
 
 <DetailsBody bind:isAtTop={isAtTop}>
@@ -145,7 +156,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <DetailsArtPicture artPath={artist?.imagePath} />
+    <DetailsArtPicture artPath={artist?.imagePath} clickable on:click={onArtistArtClick} />
     <div class="details">
       <div class="info">
         <Marquee pauseOnHover speed={50} gap={100}>

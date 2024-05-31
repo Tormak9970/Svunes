@@ -5,7 +5,7 @@
 
   import type { Genre } from "../../../lib/models/Genre";
   import { IMAGE_FADE_OPTIONS, TILTED_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { RustInterop } from "../../../lib/controllers/RustInterop";
+  import { RustInterop } from "../../../lib/controllers/utils/RustInterop";
 
   import CardClickable from "../../layout/CardClickable.svelte";
   import Lazy from "../../layout/Lazy.svelte";

@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { RustInterop } from "../controllers/RustInterop";
+import { RustInterop } from "../controllers/utils/RustInterop";
 import { songsMap } from "../../stores/State";
 import { formatTime } from "../utils/Utils";
 import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
@@ -45,6 +45,7 @@ export class Album {
 
   set artPath(path: string | undefined) {
     this._artPath = path;
+    this.backgroundColor = undefined;
     
     if (path) {
       RustInterop.getColorsFromImage(path).then((colors) => {

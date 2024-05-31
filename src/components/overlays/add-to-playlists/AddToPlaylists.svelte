@@ -1,6 +1,6 @@
 <script lang="ts">
   import { location } from "svelte-spa-router";
-  import { LogController } from "../../../lib/controllers/LogController";
+  import { LogController } from "../../../lib/controllers/utils/LogController";
   import { albumToAdd, artistToAdd, genreToAdd, playlistToAdd, showAddToPlaylist, showCreatePlaylist, songToAdd, songsForNewPlaylist } from "../../../stores/Overlays";
   import { selected } from "../../../stores/Select";
   import { albumsMap, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar } from "../../../stores/State";

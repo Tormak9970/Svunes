@@ -7,6 +7,7 @@
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Playlist } from "../../../lib/models/Playlist";
   import { playlists } from "../../../stores/State";
+  import { EditController } from "../../../lib/controllers/EditController";
 
   export let menuIsOpen: boolean;
   export let playlist: Playlist;
@@ -73,7 +74,7 @@
    */
   function deletePlaylist() {
     menuIsOpen = false;
-    AppController.deletePlaylistsFromDevice([playlist.name]);
+    EditController.deletePlaylistsFromDevice([playlist.name]);
   }
 
   /**

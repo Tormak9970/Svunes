@@ -11,6 +11,7 @@
   import EditViewOrder from "./EditViewOrder.svelte";
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
   import Controlled from "./Controlled.svelte";
+  import SavingSettings from "./SavingSettings.svelte";
 
 </script>
 
@@ -31,3 +32,4 @@
 <LanguageSelect />
 <EditViewOrder />
 <NowPlayingTheme />
+<SavingSettings />

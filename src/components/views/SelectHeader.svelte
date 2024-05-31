@@ -5,7 +5,7 @@
   import { selected } from "../../stores/Select";
   import { showAddToPlaylist } from "../../stores/Overlays";
   import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../../stores/State";
-  import { LogController } from "../../lib/controllers/LogController";
+  import { LogController } from "../../lib/controllers/utils/LogController";
   import { QueueController } from "../../lib/controllers/QueueController";
   import { AppController } from "../../lib/controllers/AppController";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
@@ -17,6 +17,7 @@
   import Button from "../interactables/Button.svelte";
   import Icon from "../utils/Icon.svelte";
   import MenuItem from "../layout/MenuItem.svelte";
+  import { EditController } from "../../lib/controllers/EditController";
 
   /**
    * Gets the names of the songs from the selected items.
@@ -137,31 +138,31 @@
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
           const toDelete = $selected.filter((name) => $playlistsMap[name].isUserPlaylist);
-          if (toDelete.length > 0) AppController.deletePlaylistsFromDevice(toDelete);
+          if (toDelete.length > 0) EditController.deletePlaylistsFromDevice(toDelete);
         } else {
-          AppController.deleteSongsFromDevice($selected);
+          EditController.deleteSongsFromDevice($selected);
         }
         break;
       }
       case View.ALBUMS: {
         if ($location === "/albums") {
-          AppController.deleteAlbumsFromDevice($selected);
+          EditController.deleteAlbumsFromDevice($selected);
         } else {
-          AppController.deleteSongsFromDevice($selected);
+          EditController.deleteSongsFromDevice($selected);
         }
         break;
       }
       case View.ARTISTS: {
         if ($location === "/artists") {
-          AppController.deleteArtistsFromDevice($selected);
+          EditController.deleteArtistsFromDevice($selected);
         } else {
-          AppController.deleteSongsFromDevice($selected);
+          EditController.deleteSongsFromDevice($selected);
         }
         break;
       }
       case View.SONGS:
       case View.GENRES: {
-        AppController.deleteSongsFromDevice($selected);
+        EditController.deleteSongsFromDevice($selected);
         break;
       }
       case View.HOME:
