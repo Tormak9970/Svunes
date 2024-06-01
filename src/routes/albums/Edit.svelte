@@ -11,7 +11,7 @@
   import { LogController } from "../../lib/controllers/utils/LogController";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
-  import { pop } from "svelte-spa-router";
+  import { pop, replace } from "svelte-spa-router";
   import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { key?: string } = {};
@@ -25,6 +25,7 @@
   let releaseYear: string | undefined;
 
   let isAtTop = true;
+  let albumNameChanged = false;
   
   $: canSave = (
     artPath !== album?.artPath ||
@@ -51,6 +52,9 @@
    */
   function back() {
     pop();
+    if (albumNameChanged) {
+      replace(`/albums/${albumName}`);
+    }
   }
 
   /**
@@ -65,6 +69,7 @@
         "releaseYear": releaseYear ? parseInt(releaseYear) : undefined,
         "genre": genre
       }
+      albumNameChanged = albumName !== album?.name;
       EditController.editAlbum($albumsMap[params.key!], editFields);
       canSave = false;
       back();
@@ -78,11 +83,14 @@
    * Handles prompting the user to change the album's art.
    */
   function onAlbumArtClick() {
-    $onArtOptionsDone = async (path: string | undefined) => {
-      const copiedPath = await EditController.copyAlbumImage(path);
-      artPath = copiedPath;
+    if (albumName !== "") {
+      $onArtOptionsDone = async (path: string | undefined) => {
+        artPath = path;
+      }
+      $showArtOptions = true;
+    } else {
+      $showErrorSnackbar({ message: "Album name is required!" });
     }
-    $showArtOptions = true;
   }
 
   onMount(() => {

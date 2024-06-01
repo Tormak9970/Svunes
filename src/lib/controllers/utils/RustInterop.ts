@@ -86,10 +86,11 @@ export class RustInterop {
   /**
    * Copies the provided image to the "albums" cache directory.
    * @param imagePath The image path to copy.
+   * @param albumName The name of the album.
    * @returns The resulting path.
    */
-  static async copyAlbumsImage(imagePath: string): Promise<string> {
-    return await invoke<string>("copy_album_image", { imagePath: imagePath });
+  static async copyAlbumsImage(imagePath: string, albumName: string): Promise<string> {
+    return await invoke<string>("copy_album_image", { imagePath: imagePath, albumName: albumName });
   }
 
   /**
@@ -99,6 +100,15 @@ export class RustInterop {
    */
   static async copyArtistImage(imagePath: string): Promise<string> {
     return await invoke<string>("copy_artist_image", { imagePath: imagePath });
+  }
+
+  /**
+   * Copies the provided image to the "playlists" cache directory.
+   * @param imagePath The image path to copy.
+   * @returns The resulting path.
+   */
+  static async copyPlaylistImage(imagePath: string): Promise<string> {
+    return await invoke<string>("copy_playlist_image", { imagePath: imagePath });
   }
 
   /**

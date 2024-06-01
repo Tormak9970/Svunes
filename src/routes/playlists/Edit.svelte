@@ -11,6 +11,7 @@
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
+    import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { key?: string } = {};
   $: playlist = params.key ? $playlistsMap[params.key] : null;
@@ -62,8 +63,8 @@
    * Handles prompting the user to change the playlist's cover.
    */
   function onImageClick() {
-    $onArtOptionsDone = (path: string | undefined) => {
-      imagePath = path;
+    $onArtOptionsDone = async (path: string | undefined) => {
+      imagePath = await EditController.copyPlaylistImage(imagePath);
     }
     $showArtOptions = true;
   }

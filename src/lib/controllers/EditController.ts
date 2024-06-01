@@ -48,6 +48,11 @@ export class EditController {
    * @param editedFields The edited fields.
    */
   static async editSong(original: Song, editedFields: SongEditFields) {
+    // if (changedAlbumFields.artPath) {
+    //   const copiedPath = await this.copyAlbumImage(changedAlbumFields.artPath, original.name);
+    //   changedAlbumFields.artPath = copiedPath;
+    // }
+
     const changes: Record<string, SongEditFields> = {};
     changes[original.filePath] = editedFields;
     const success = await RustInterop.writeMusicFiles(changes);
@@ -74,6 +79,11 @@ export class EditController {
    * @param changedAlbumFields The edited album fields.
    */
   static async editAlbum(original: Album, changedAlbumFields: AlbumEditFields) {
+    if (changedAlbumFields.artPath) {
+      const copiedPath = await this.copyAlbumImage(changedAlbumFields.artPath, original.name);
+      changedAlbumFields.artPath = copiedPath;
+    }
+
     const songMap = get(songsMap);
     const changes: Record<string, SongEditFields> = {};
 
@@ -109,7 +119,6 @@ export class EditController {
         song.genre = change.genre;
       }
 
-      // TODO: this isnt working
       const songsList = get(songs);
       songs.set(songsList);
       AppController.loadArtistsFromSongs(songsList);
@@ -229,11 +238,19 @@ export class EditController {
   /**
    * Copies the provided image to the "albums" directory.
    * @param imagePath The image path to copy.
+   * @param albumName The name of the album.
    * @returns The image path, or undefined if it was undefined.
    */
-  static async copyAlbumImage(imagePath: string | undefined): Promise<string | undefined> {
+  static async copyAlbumImage(imagePath: string | undefined, albumName: string): Promise<string | undefined> {
     if (!imagePath) return undefined;
-    return await RustInterop.copyArtistImage(imagePath);
+    
+    const result = await RustInterop.copyAlbumsImage(imagePath, albumName);
+    if (result === "") {
+      get(showErrorSnackbar)({ message: "Invalid image selected", timeout: 2000 })
+      return undefined;
+    }
+
+    return result;
   }
 
   /**
@@ -243,6 +260,30 @@ export class EditController {
    */
   static async copyArtistImage(imagePath: string | undefined): Promise<string | undefined> {
     if (!imagePath) return undefined;
-    return await RustInterop.copyArtistImage(imagePath);
+
+    const result = await RustInterop.copyArtistImage(imagePath);
+    if (result === "") {
+      get(showErrorSnackbar)({ message: "Invalid image selected", timeout: 2000 })
+      return undefined;
+    }
+
+    return result;
+  }
+
+  /**
+   * Copies the provided image to the "Playlists" directory.
+   * @param imagePath The image path to copy.
+   * @returns The image path, or undefined if it was undefined.
+   */
+  static async copyPlaylistImage(imagePath: string | undefined): Promise<string | undefined> {
+    if (!imagePath) return undefined;
+
+    const result = await RustInterop.copyPlaylistImage(imagePath);
+    if (result === "") {
+      get(showErrorSnackbar)({ message: "Invalid image selected", timeout: 2000 })
+      return undefined;
+    }
+
+    return result;
   }
 }

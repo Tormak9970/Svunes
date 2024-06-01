@@ -11,7 +11,7 @@ mod mpa_reader;
 
 use std::{fs::{self, create_dir_all}, panic::{self, Location}, path::PathBuf, process::exit};
 
-use music_readers::read_music_folder;
+use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use rayon::iter::IntoParallelRefIterator;
@@ -22,7 +22,7 @@ use tauri::{
   api::{dialog::{blocking::MessageDialogBuilder, MessageDialogButtons}, path::cache_dir}, AppHandle, FsScope, Manager
 };
 
-use image::io::Reader as ImageReader;
+use image::{imageops::FilterType, io::Reader as ImageReader};
 use rayon::prelude::*;
 
 #[derive(Clone, serde::Serialize)]
@@ -146,7 +146,7 @@ async fn toggle_dev_tools(app_handle: AppHandle, enable: bool) {
 
 #[tauri::command]
 /// copies the provided image to the albums directory
-async fn copy_album_image(app_handle: AppHandle, image_path: String) -> String {
+async fn copy_album_image(app_handle: AppHandle, image_path: String, album_name: String) -> String {
   let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
   
   let app_cache_dir = cache_dir().expect("Couldn't resolve app cache dir.");
@@ -156,16 +156,37 @@ async fn copy_album_image(app_handle: AppHandle, image_path: String) -> String {
     let _ = create_dir_all(&file_path);
   }
 
-  let image_pathbuf = PathBuf::from(&image_path);
-  let file_name = image_pathbuf.file_name().expect("Couldn't get filename of album image.");
+  let mut file_name = format_album_name_for_image(album_name);
+  file_name.push_str(".jpeg");
   file_path.push(file_name);
 
-  let copy_res = fs::copy(&image_path, &file_path);
+  let image_reader_res = ImageReader::open(image_path.to_owned());
+  
+  if image_reader_res.is_err() {
+    let err = image_reader_res.err().unwrap();
+    logger::log_to_file(app_handle.to_owned(), format!("failed to read {}: {}.", image_path, err.to_string()).as_str(), 2);
+    return "".to_owned();
+  }
 
-  if copy_res.is_ok() {
+  let image_reader = image_reader_res.ok().unwrap();
+  let image_res = image_reader.decode();
+
+  if image_res.is_err() {
+    let err = image_res.err().unwrap();
+    logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}: {}.", image_path, err.to_string()).as_str(), 2);
+    return "".to_owned();
+  }
+
+  let img = image_res.ok().unwrap();
+
+  let resized = img.resize(512, 512, FilterType::CatmullRom);
+
+  let write_res = resized.save(&file_path);
+
+  if write_res.is_ok() {
     logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
   } else {
-    let err = copy_res.err().unwrap();
+    let err = write_res.err().unwrap();
     logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
   }
 
@@ -186,6 +207,34 @@ async fn copy_artist_image(app_handle: AppHandle, image_path: String) -> String 
 
   let image_pathbuf = PathBuf::from(&image_path);
   let file_name = image_pathbuf.file_name().expect("Couldn't get filename of artist image.");
+  file_path.push(file_name);
+
+  let copy_res = fs::copy(&image_path, &file_path);
+
+  if copy_res.is_ok() {
+    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
+  } else {
+    let err = copy_res.err().unwrap();
+    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
+  }
+
+  return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
+}
+
+#[tauri::command]
+/// copies the provided image to the playlists directory
+async fn copy_playlist_image(app_handle: AppHandle, image_path: String) -> String {
+  let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
+  
+  let app_cache_dir = cache_dir().expect("Couldn't resolve app cache dir.");
+  let mut file_path = app_cache_dir.join(&bundle_id).join("playlists");
+
+  if !file_path.exists() {
+    let _ = create_dir_all(&file_path);
+  }
+
+  let image_pathbuf = PathBuf::from(&image_path);
+  let file_name = image_pathbuf.file_name().expect("Couldn't get filename of playlist image.");
   file_path.push(file_name);
 
   let copy_res = fs::copy(&image_path, &file_path);

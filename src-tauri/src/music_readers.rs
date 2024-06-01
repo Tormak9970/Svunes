@@ -8,6 +8,13 @@ use tauri::{api::path::cache_dir, AppHandle};
 
 use crate::{logger, mpa_reader::MpaReader};
 
+/// Formats the album name for the album image cache.
+pub fn format_album_name_for_image(album_title: String) -> String {
+  let mut file_name = (&album_title[1..album_title.len() - 1]).to_owned();
+  file_name = file_name.replace(&[':'][..], "");
+  return file_name;
+}
+
 /// Writes the album visual to the cache folder and returns the path
 fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: String) -> String {
   let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
@@ -28,10 +35,9 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
     file_type = &lower_case;
   }
 
-  let mut file_name = (&album_title[1..album_title.len() - 1]).to_owned();
+  let mut file_name = format_album_name_for_image(album_title);
   file_name.push_str(".");
   file_name.push_str(file_type);
-  file_name = file_name.replace(&[':'][..], "");
 
   file_path = file_path.join(file_name.to_owned());
 

@@ -97,8 +97,9 @@
   function onAlbumArtClick() {
     if (!album) {
       $onArtOptionsDone = async (path: string | undefined) => {
-        const copiedPath = await EditController.copyAlbumImage(path);
-        artPath = copiedPath;
+        // const copiedPath = await EditController.copyAlbumImage(path, title);
+        // artPath = copiedPath;
+        $showInfoSnackbar({ message: "Need to implement this", timeout: 2500 });
       }
       $showArtOptions = true;
     } else {
