@@ -25,6 +25,7 @@ fn get_image_data(app_handle: AppHandle, image_path: String) -> Vec<u8> {
   
   if image_reader_res.is_ok() {
     let image_reader = image_reader_res.ok().unwrap();
+    println!("{}", image_reader.format().unwrap().extensions_str().join(", "));
 
     let image_res = image_reader.decode();
 
@@ -61,15 +62,8 @@ fn write_flac_file(app_handle: AppHandle, file_path: String, edited_fields: Song
 
     if data.len() > 0 {
       tag.remove_picture_type(metaflac::block::PictureType::CoverFront);
-
-      let mut mime = "image/jpeg";
-      if image_path.to_lowercase().ends_with(".png") {
-        mime = "image/png";
-      }
   
-      let picture_type = metaflac::block::PictureType::CoverFront;
-  
-      tag.add_picture(mime, picture_type, data.to_owned());
+      tag.add_picture("image/jpeg", metaflac::block::PictureType::CoverFront, data.to_owned());
     }
   } else {
     tag.remove_picture_type(metaflac::block::PictureType::CoverFront);
@@ -153,14 +147,11 @@ fn write_mp3_file(app_handle: AppHandle, file_path: String, edited_fields: SongE
 
     if data.len() > 0 {
       tag.remove_picture_by_type(id3::frame::PictureType::CoverFront);
-
-      let mut mime = "image/jpeg";
-      if image_path.to_lowercase().ends_with(".png") {
-        mime = "image/png";
-      }
+      tag.remove_picture_by_type(id3::frame::PictureType::Other);
+      tag.remove_picture_by_type(id3::frame::PictureType::OtherIcon);
   
       tag.add_frame(Picture {
-        mime_type: mime.to_owned(),
+        mime_type: "image/jpeg".to_owned(),
         picture_type: id3::frame::PictureType::CoverFront,
         description: "".to_owned(),
         data: data.to_owned()
@@ -168,6 +159,8 @@ fn write_mp3_file(app_handle: AppHandle, file_path: String, edited_fields: SongE
     }
   } else {
     tag.remove_picture_by_type(id3::frame::PictureType::CoverFront);
+    tag.remove_picture_by_type(id3::frame::PictureType::Other);
+    tag.remove_picture_by_type(id3::frame::PictureType::OtherIcon);
   }
 
   if edited_fields.title.is_some() {

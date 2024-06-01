@@ -181,7 +181,7 @@ async fn copy_album_image(app_handle: AppHandle, image_path: String, album_name:
 
   let resized = img.resize(512, 512, FilterType::CatmullRom);
 
-  let write_res = resized.save(&file_path);
+  let write_res = resized.save_with_format(&file_path, image::ImageFormat::Jpeg);
 
   if write_res.is_ok() {
     logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
@@ -295,6 +295,7 @@ fn main() {
       get_colors_from_image,
       copy_album_image,
       copy_artist_image,
+      copy_playlist_image,
       delete_songs,
       write_music_files
     ])
