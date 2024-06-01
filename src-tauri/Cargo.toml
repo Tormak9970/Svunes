@@ -21,11 +21,12 @@ tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-wo
 chrono = "0.4.34"
 panic-message = "0.3.0"
 rayon = "1.10.0"
-symphonia = { version = "0.5.4", features = [ "flac", "mpa" ] }
-symphonia-metadata = "0.5.4"
-audiotags = "0.5.0"
 palette_extract = "0.1.0"
 image = "0.25.1"
+symphonia = { version = "0.5.4", features = [ "flac", "mpa" ] }
+symphonia-metadata = "0.5.4"
+metaflac = "0.2.7"
+id3 = "1.13.1"
 
 [features]
 # by default Tauri runs in production mode

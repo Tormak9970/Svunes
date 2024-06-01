@@ -78,9 +78,9 @@
         "composer": composer !== "" ? composer : undefined,
         "albumArtist": albumArtist !== "" ? albumArtist : undefined,
         "artist": artist !== "" ? artist : undefined,
-        "releaseYear":  releaseYear ? parseInt(releaseYear) : undefined,
+        "releaseYear":  releaseYear && releaseYear !== "" ? parseInt(releaseYear) : undefined,
         "genre": genre !== "" ? genre : undefined,
-        "trackNumber": trackNumber ? parseInt(trackNumber) : undefined
+        "trackNumber": trackNumber && trackNumber !== "" ? parseInt(trackNumber) : undefined
       }
       EditController.editSong($songsMap[params!.key!], editFields);
       canSave = false;
@@ -136,8 +136,8 @@
       <TextField name="Composer" bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Genre" bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
         <div class="two-wide">
-        <NumberField name="Track #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} extraOptions={{ type: "number" }} />
-        <NumberField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} extraOptions={{ type: "number" }} />
+        <NumberField name="Track #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
+        <NumberField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
       </div>
     </div>
   </span>

@@ -10,7 +10,6 @@
   import NumberField from "../../components/interactables/NumberField.svelte";
   import { LogController } from "../../lib/controllers/utils/LogController";
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
-  import { Album } from "../../lib/models/Album";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
   import { EditController } from "../../lib/controllers/EditController";

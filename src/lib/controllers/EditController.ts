@@ -21,8 +21,8 @@ export class EditController {
       const songKey = key as keyof Song;
       let newValue = editFields[key as keyof SongEditFields];
       
-      if (key === "releaseYear") newValue = -1;
-      if (key === "title") newValue = original.key;
+      if (key === "releaseYear" && !newValue) newValue = -1;
+      if (key === "title" && !newValue) newValue = original.key;
 
       // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
       original[songKey] = newValue;
@@ -50,20 +50,18 @@ export class EditController {
   static async editSong(original: Song, editedFields: SongEditFields) {
     const changes: Record<string, SongEditFields> = {};
     changes[original.filePath] = editedFields;
-    const successPromise = RustInterop.writeMusicFiles(changes);
-      
-    this.editSongFields(original, editedFields);
-    const songsList = get(songs);
-    songs.set(songsList);
+    const success = await RustInterop.writeMusicFiles(changes);
     
-    AppController.loadAlbumsFromSongs(songsList);
-    AppController.loadArtistsFromSongs(songsList);
-    AppController.loadGenresFromSongs(songsList);
-
-    const success = await successPromise;
-
     if (success) {
-      get(showErrorSnackbar)({ message: "Finished writing changes", timeout: 2000 });
+      this.editSongFields(original, editedFields);
+      const songsList = get(songs);
+      songs.set(songsList);
+      
+      AppController.loadAlbumsFromSongs(songsList);
+      AppController.loadArtistsFromSongs(songsList);
+      AppController.loadGenresFromSongs(songsList);
+
+      get(showInfoSnackbar)({ message: "Finished writing changes", timeout: 2000 });
       LogController.log(`Finished writing edits to ${original.key}`);
     } else {
       get(showErrorSnackbar)({ message: "Failed to write all changes", timeout: 2000 });
@@ -79,13 +77,9 @@ export class EditController {
     const songMap = get(songsMap);
     const changes: Record<string, SongEditFields> = {};
 
-    this.editAlbumFields(original, changedAlbumFields);
-    const albumsList = get(albums);
-    albums.set(albumsList);
-
     for (const songKey of original.songKeys) {
       const song = songMap[songKey];
-      const editFields: SongEditFields = {
+      changes[song.filePath] = {
         "artPath": changedAlbumFields.artPath,
         "title": song.title,
         "album": changedAlbumFields.name,
@@ -95,27 +89,32 @@ export class EditController {
         "releaseYear": changedAlbumFields.releaseYear,
         "genre": changedAlbumFields.genre,
         "trackNumber": song.trackNumber
-      }
-
-      song.artPath = editFields.artPath;
-      song.albumArtist = editFields.albumArtist;
-      song.releaseYear = editFields.releaseYear ?? -1;
-      song.genre = editFields.genre;
-
-      changes[song.filePath] = editFields;
+      };
     }
-
-    const songsList = get(songs);
-    songs.set(songsList);
     
-    const successPromise = RustInterop.writeMusicFiles(changes);
-
-    AppController.loadArtistsFromSongs(songsList);
-
-    const success = await successPromise;
+    const success = await RustInterop.writeMusicFiles(changes);
 
     if (success) {
-      get(showErrorSnackbar)({ message: "Finished writing changes", timeout: 2000 });
+      this.editAlbumFields(original, changedAlbumFields);
+      const albumsList = get(albums);
+      albums.set(albumsList);
+
+      for (const songKey of original.songKeys) {
+        const song = songMap[songKey];
+        const change = changes[song.filePath];
+
+        song.artPath = change.artPath;
+        song.albumArtist = change.albumArtist;
+        song.releaseYear = change.releaseYear ?? -1;
+        song.genre = change.genre;
+      }
+
+      // TODO: this isnt working
+      const songsList = get(songs);
+      songs.set(songsList);
+      AppController.loadArtistsFromSongs(songsList);
+
+      get(showInfoSnackbar)({ message: "Finished writing changes", timeout: 2000 });
       LogController.log(`Finished writing edits to ${original.name}`);
     } else {
       get(showErrorSnackbar)({ message: "Failed to write all changes", timeout: 2000 });

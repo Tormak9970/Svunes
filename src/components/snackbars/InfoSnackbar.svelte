@@ -1,9 +1,5 @@
 <script lang="ts">
-  import type { HTMLAttributes } from "svelte/elements";
   import GenericSnackbar from "./GenericSnackbar.svelte";
-
-  export let extraWrapperOptions: HTMLAttributes<HTMLDialogElement> = {};
-  export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
   
   export let show: (data: ShowSnackbarOptions) => void;
 
@@ -11,4 +7,4 @@
   const textColor = "var(--m3-scheme-inverse-on-surface)";
 </script>
 
-<GenericSnackbar extraWrapperOptions={extraWrapperOptions} extraOptions={extraOptions} backgroundColor={backgroundColor} textColor={textColor} bind:show={show} />
+<GenericSnackbar backgroundColor={backgroundColor} textColor={textColor} bind:show={show} />
