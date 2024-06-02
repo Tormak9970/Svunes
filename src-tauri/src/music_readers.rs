@@ -28,12 +28,20 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
 
   let file_type;
   let lower_case = visual.media_type.to_ascii_lowercase();
+  let png_header: Vec<u8> = vec![137, 80, 78, 71, 13, 10, 26, 10, 0];
+  let mut data: Vec<u8> = vec![];
 
   if visual.media_type.contains("/") {
     file_type = &visual.media_type[6..];
+  } else if lower_case.eq_ignore_ascii_case("PNG") {
+    // ! this accounts for symphonia messing up when the MIME is just "PNG"
+    file_type = &lower_case;
+    data = png_header;
   } else {
     file_type = &lower_case;
   }
+
+  data = [data, visual.data.clone().into_vec()].concat();
 
   let name_no_quotes = (&album_title[1..album_title.len() - 1]).to_owned();
   let mut file_name = format_album_name_for_image(name_no_quotes);
@@ -44,7 +52,7 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
 
   if !file_path.exists() {
     let mut dest_file: File = File::create(&file_path).expect("Dest path should have existed.");
-    let write_res = dest_file.write_all(visual.data.as_ref());
+    let write_res = dest_file.write_all(data.as_ref());
 
     if write_res.is_ok() {
       logger::log_to_file(app_handle.to_owned(), format!("Writing of {} finished.", file_name).as_str(), 0);
@@ -180,10 +188,11 @@ fn read_mp3(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<S
 
   let mut tags = vec![];
   let mut visuals = vec![];
-  if let Some(metadata_rev) = probed.format.metadata().current() {
-    tags = metadata_rev.tags().to_owned();
-    visuals = metadata_rev.visuals().to_owned();
-  } else if let Some(metadata_rev) = probed.metadata.get().as_ref().and_then(|m| m.current()) {
+  // if let Some(metadata_rev) = probed.format.metadata().current() {
+  //   tags = metadata_rev.tags().to_owned();
+  //   visuals = metadata_rev.visuals().to_owned();
+  // } else 
+  if let Some(metadata_rev) = probed.metadata.get().as_ref().and_then(|m| m.current()) {
     tags = metadata_rev.tags().to_owned();
     visuals = metadata_rev.visuals().to_owned();
   }

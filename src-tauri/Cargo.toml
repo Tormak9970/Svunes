@@ -23,7 +23,7 @@ panic-message = "0.3.0"
 rayon = "1.10.0"
 palette_extract = "0.1.0"
 image = "0.25.1"
-symphonia = { version = "0.5.4", features = [ "flac", "mpa" ] }
+symphonia = { version = "0.5.4", features = [ "flac" ] }
 symphonia-metadata = "0.5.4"
 metaflac = "0.2.7"
 id3 = "1.13.1"

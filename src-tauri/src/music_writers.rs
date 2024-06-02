@@ -145,7 +145,7 @@ fn write_mp3_file(log_sender: &mut Sender<String>, file_path: String, edited_fie
     return false;
   }
 
-  let mut tag = id3::Tag::read_from_path(file_path.clone()).unwrap();
+  let mut tag = tag_res.unwrap();
 
   if edited_fields.artPath.is_some() {
     let image_path = edited_fields.artPath.unwrap();
