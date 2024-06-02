@@ -1,5 +1,5 @@
 use std::{fs, path::PathBuf, sync::mpsc::Sender};
-use id3::{frame::Picture, Frame, TagLike};
+use id3::{frame::Picture, no_tag_ok, Frame, TagLike};
 use metaflac;
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -137,7 +137,9 @@ fn write_flac_file(log_sender: &mut Sender<String>, file_path: String, edited_fi
 
 // Writes changes to a mp3 file.
 fn write_mp3_file(log_sender: &mut Sender<String>, file_path: String, edited_fields: SongEditFields) -> bool {
-  let tag_res = id3::Tag::read_from_path(file_path.clone());
+  let tag_res = no_tag_ok(id3::Tag::read_from_path(file_path.clone()));
+
+  let mut tag: id3::Tag;
 
   if tag_res.is_err() {
     let err = tag_res.err().unwrap();
@@ -145,7 +147,13 @@ fn write_mp3_file(log_sender: &mut Sender<String>, file_path: String, edited_fie
     return false;
   }
 
-  let mut tag = tag_res.unwrap();
+  let tag_opt = tag_res.unwrap();
+
+  if tag_opt.is_some() {
+    tag = tag_opt.unwrap();
+  } else {
+    tag = id3::Tag::new();
+  }
 
   if edited_fields.artPath.is_some() {
     let image_path = edited_fields.artPath.unwrap();
