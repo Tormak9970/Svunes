@@ -3,7 +3,7 @@
   import { PlaybackController } from "../../../lib/controllers/PlaybackController";
   import { QueueController } from "../../../lib/controllers/QueueController";
   import { playlistToAdd, showAddToPlaylist, songToAdd } from "../../../stores/Overlays";
-  import { push } from "svelte-spa-router";
+  import { location, push, replace } from "svelte-spa-router";
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Playlist } from "../../../lib/models/Playlist";
   import { playlists } from "../../../stores/State";
@@ -11,13 +11,6 @@
 
   export let menuIsOpen: boolean;
   export let playlist: Playlist;
-
-  /**
-   * Handles closing the options.
-   */
-  function closeOptions() {
-    menuIsOpen = false;
-  }
 
   /**
    * Plays this playlist.
@@ -75,6 +68,7 @@
   function deletePlaylist() {
     menuIsOpen = false;
     EditController.deletePlaylistsFromDevice([playlist.name]);
+    if ($location.startsWith("/playlists/")) replace("/playlists");
   }
 
   /**
@@ -83,7 +77,6 @@
   function exportPlaylist() {
     menuIsOpen = false;
     AppController.exportPlaylist(playlist);
-    closeOptions();
   }
 </script>
 

@@ -9,7 +9,7 @@ import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
  */
 export class Album {
   name: string;
-  _artPath: string | undefined;
+  artPath: string | undefined;
   lastPlayedOn: string;
   _albumArtist: string | undefined;
   artists: Set<string>;
@@ -28,6 +28,7 @@ export class Album {
   constructor(name: string, artPath: string | undefined, albumArtist: string | undefined, releaseYear: number, genre?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
     this.name = name;
     this.artPath = artPath;
+    this.setBackgroundFromImage();
     this._albumArtist = albumArtist;
 
     this.releaseYear = releaseYear;
@@ -39,16 +40,12 @@ export class Album {
     this.artists = new Set();
   }
 
-  get artPath(): string | undefined {
-    return this._artPath;
-  }
-
-  set artPath(path: string | undefined) {
-    this._artPath = path;
-    this.backgroundColor = undefined;
-    
-    if (path) {
-      RustInterop.getColorsFromImage(path).then((colors) => {
+  /**
+   * Sets the primary color from the album's image
+   */
+  async setBackgroundFromImage() {
+    if (this.artPath) {
+      await RustInterop.getColorsFromImage(this.artPath).then((colors) => {
         if (colors.length) {
           this.backgroundColor = colors[0];
 
@@ -57,6 +54,8 @@ export class Album {
           }
         }
       });
+    } else {
+      this.backgroundColor = undefined;
     }
   }
 

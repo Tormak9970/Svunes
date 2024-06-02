@@ -2,7 +2,7 @@
   import { AppController } from "../../../lib/controllers/AppController";
   import { QueueController } from "../../../lib/controllers/QueueController";
   import { showAddToPlaylist, songToAdd } from "../../../stores/Overlays";
-  import { location, push } from "svelte-spa-router";
+  import { location, push, replace } from "svelte-spa-router";
   import MenuItem from "../../layout/MenuItem.svelte";
   import type { Song } from "../../../lib/models/Song";
   import { playlists, playlistsMap } from "../../../stores/State";
@@ -100,6 +100,7 @@
   function deleteSong() {
     EditController.deleteSongsFromDevice([song!.key]);
     closeOptions();
+    if ($location.startsWith("/songs/")) replace("/songs");
   }
 </script>
 

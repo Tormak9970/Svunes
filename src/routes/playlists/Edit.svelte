@@ -11,7 +11,7 @@
   import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
-    import { EditController } from "../../lib/controllers/EditController";
+  import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { key?: string } = {};
   $: playlist = params.key ? $playlistsMap[params.key] : null;
@@ -20,6 +20,7 @@
   let playlistName: string;
 
   let isAtTop = true;
+  let rerenderArt = true;
   
   $: canSave = (
     imagePath !== playlist?.imagePath ||
@@ -64,7 +65,8 @@
    */
   function onImageClick() {
     $onArtOptionsDone = async (path: string | undefined) => {
-      imagePath = await EditController.copyPlaylistImage(imagePath);
+      imagePath = await EditController.copyPlaylistImage(path);
+      rerenderArt = !rerenderArt;
     }
     $showArtOptions = true;
   }
@@ -90,7 +92,9 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <DetailsArtPicture artPath={imagePath} clickable on:click={onImageClick} />
+    {#key rerenderArt}
+      <DetailsArtPicture artPath={imagePath} clickable on:click={onImageClick} />
+    {/key}
     <div class="fields">
       <TextField name="Name" bind:value={playlistName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
     </div>

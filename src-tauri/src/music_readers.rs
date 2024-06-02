@@ -10,7 +10,7 @@ use crate::{logger, mpa_reader::MpaReader};
 
 /// Formats the album name for the album image cache.
 pub fn format_album_name_for_image(album_title: String) -> String {
-  let mut file_name = (&album_title[1..album_title.len() - 1]).to_owned();
+  let mut file_name = album_title.to_owned();
   file_name = file_name.replace(&[':'][..], "");
   return file_name;
 }
@@ -35,7 +35,8 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
     file_type = &lower_case;
   }
 
-  let mut file_name = format_album_name_for_image(album_title);
+  let name_no_quotes = (&album_title[1..album_title.len() - 1]).to_owned();
+  let mut file_name = format_album_name_for_image(name_no_quotes);
   file_name.push_str(".");
   file_name.push_str(file_type);
 

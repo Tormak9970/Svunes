@@ -9,7 +9,7 @@ mod music_readers;
 mod music_writers;
 mod mpa_reader;
 
-use std::{fs::{self, create_dir_all}, panic::{self, Location}, path::PathBuf, process::exit};
+use std::{fs::{self, create_dir_all}, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel};
 
 use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
@@ -40,14 +40,20 @@ fn color_to_rgb(color: &Color) -> String {
 fn write_music_files(app_handle: AppHandle, changes_str: String) -> bool {
   let changes: Map<String, Value> = serde_json::from_str(&changes_str).expect("Couldn't deserialize changes map.");
   
-  let status: Vec<bool> = changes.keys().par_bridge().map(| key | {
+  let (sender, receiver) = channel();
+  
+  let status: Vec<bool> = changes.keys().par_bridge().map_with(sender, | log_sender, key | {
     let file_path = key.to_owned();
 
     let value = changes.get(key).unwrap().to_owned();
     let changed_fields: SongEditFields = serde_json::from_value(value).unwrap();
 
-    return write_music_file(app_handle.clone(), file_path, changed_fields);
+    return write_music_file(log_sender, file_path, changed_fields);
   }).collect();
+
+  receiver.iter().for_each(| log: String | {
+    logger::log_to_file(app_handle.clone(), &log, 2);
+  });
 
   return status.into_iter().all(| success | { return success; });
 }
@@ -66,13 +72,13 @@ fn delete_songs(app_handle: AppHandle, file_paths_str: String) -> bool {
     if result.is_err() {
       success = false;
       let err = result.err().unwrap();
-      logger::log_to_file(app_handle.to_owned(), format!("Failed to delete {}: {}", &file_path_str, err.to_string()).as_str(), 0);
+      logger::log_to_file(app_handle.clone(), format!("Failed to delete {}: {}", &file_path_str, err.to_string()).as_str(), 0);
       break;
     }
   }
 
   if !success {
-    logger::log_to_file(app_handle.to_owned(), "Successfully deleted songs.", 0);
+    logger::log_to_file(app_handle.clone(), "Successfully deleted songs.", 0);
   }
 
   return success;
@@ -81,17 +87,17 @@ fn delete_songs(app_handle: AppHandle, file_paths_str: String) -> bool {
 #[tauri::command]
 /// Reads the contents of the provided directories.
 async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String, blacklist_folder_paths_str: String, max_length: u64) -> String {
-  let music_folder_paths: Vec<String> = serde_json::from_str(music_folder_paths_str.as_str()).expect("Couldn't deserialize music folders array.");
-  let blacklist_folder_paths: Vec<String> = serde_json::from_str(blacklist_folder_paths_str.as_str()).expect("Couldn't deserialize blacklist folders array.");
+  let music_folder_paths: Vec<String> = serde_json::from_str(&music_folder_paths_str).expect("Couldn't deserialize music folders array.");
+  let blacklist_folder_paths: Vec<String> = serde_json::from_str(&blacklist_folder_paths_str).expect("Couldn't deserialize blacklist folders array.");
 
   for music_folder in &music_folder_paths {
-    add_path_to_scope(app_handle.to_owned(), music_folder.to_owned()).await;
+    add_path_to_scope(app_handle.clone(), music_folder.clone()).await;
   }
 
   let entries: Vec<Value> = music_folder_paths.par_iter().filter(| folder | !blacklist_folder_paths.contains(&folder)).map(| music_folder | {
-    let folder_path: PathBuf = PathBuf::from(music_folder.to_owned());
+    let folder_path: PathBuf = PathBuf::from(&music_folder);
 
-    let folder_entries = read_music_folder(app_handle.to_owned(), folder_path, &blacklist_folder_paths, max_length);
+    let folder_entries = read_music_folder(app_handle.clone(), folder_path, &blacklist_folder_paths, max_length);
     return folder_entries;
   }).flatten().collect();
 
@@ -104,7 +110,7 @@ async fn add_path_to_scope(app_handle: AppHandle, target_path: String) -> bool {
   let path_as_buf: PathBuf = PathBuf::from(&target_path);
 
   if !path_as_buf.as_path().exists() {
-    logger::log_to_file(app_handle.to_owned(), format!("Error adding {} to scope. Path does not exist.", &target_path).as_str(), 2);
+    logger::log_to_file(app_handle.clone(), format!("Error adding {} to scope. Path does not exist.", &target_path).as_str(), 2);
     return false;
   }
 
@@ -115,18 +121,18 @@ async fn add_path_to_scope(app_handle: AppHandle, target_path: String) -> bool {
   let asset_res = FsScope::allow_directory(&asset_scope, &path_as_buf, true);
 
   if fs_res.is_ok() && asset_res.is_ok() {
-    logger::log_to_file(app_handle.to_owned(), format!("Added {} to scope.", &target_path).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Added {} to scope.", &target_path).as_str(), 0);
     return true;
   } else if fs_res.is_err() {
     let err = fs_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Error adding {} to scope. FS Scope Error: {}", &target_path, err.to_string()).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Error adding {} to scope. FS Scope Error: {}", &target_path, err.to_string()).as_str(), 2);
   } else if asset_res.is_err() {
     let err = asset_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Error adding {} to scope. Asset Scope Error: {}", &target_path, err.to_string()).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Error adding {} to scope. Asset Scope Error: {}", &target_path, err.to_string()).as_str(), 2);
   } else {
     let fs_err = fs_res.err().unwrap();
     let asset_err = asset_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Error adding {} to scope. FS Scope Error: {}. Asset Scope Error: {}", &target_path, fs_err.to_string(), asset_err.to_string()).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Error adding {} to scope. FS Scope Error: {}. Asset Scope Error: {}", &target_path, fs_err.to_string(), asset_err.to_string()).as_str(), 2);
   }
 
   return false;
@@ -157,23 +163,27 @@ async fn copy_album_image(app_handle: AppHandle, image_path: String, album_name:
   }
 
   let mut file_name = format_album_name_for_image(album_name);
-  file_name.push_str(".jpeg");
+  let path_as_buf = PathBuf::from(&image_path);
+  let extension = path_as_buf.extension().expect("Couldn't get extension").to_str().unwrap();
+  file_name.push('.');
+  file_name.push_str(extension);
   file_path.push(file_name);
 
-  let image_reader_res = ImageReader::open(image_path.to_owned());
+  let image_reader_res = ImageReader::open(&image_path);
   
   if image_reader_res.is_err() {
     let err = image_reader_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("failed to read {}: {}.", image_path, err.to_string()).as_str(), 2);
+    logger::log_to_file(app_handle.clone(), format!("failed to read {}: {}.", image_path, err.to_string()).as_str(), 2);
     return "".to_owned();
   }
 
   let image_reader = image_reader_res.ok().unwrap();
+  let image_format = image_reader.format().expect("Image didn't have a format!");
   let image_res = image_reader.decode();
 
   if image_res.is_err() {
     let err = image_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}: {}.", image_path, err.to_string()).as_str(), 2);
+    logger::log_to_file(app_handle.clone(), format!("failed to decode {}: {}.", image_path, err.to_string()).as_str(), 2);
     return "".to_owned();
   }
 
@@ -181,13 +191,13 @@ async fn copy_album_image(app_handle: AppHandle, image_path: String, album_name:
 
   let resized = img.resize(512, 512, FilterType::CatmullRom);
 
-  let write_res = resized.save_with_format(&file_path, image::ImageFormat::Jpeg);
+  let write_res = resized.save_with_format(&file_path, image_format);
 
   if write_res.is_ok() {
-    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Copying of {} finished.", image_path).as_str(), 0);
   } else {
     let err = write_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 2);
   }
 
   return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
@@ -212,10 +222,10 @@ async fn copy_artist_image(app_handle: AppHandle, image_path: String) -> String 
   let copy_res = fs::copy(&image_path, &file_path);
 
   if copy_res.is_ok() {
-    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Copying of {} finished.", image_path).as_str(), 0);
   } else {
     let err = copy_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 2);
   }
 
   return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
@@ -240,10 +250,10 @@ async fn copy_playlist_image(app_handle: AppHandle, image_path: String) -> Strin
   let copy_res = fs::copy(&image_path, &file_path);
 
   if copy_res.is_ok() {
-    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} finished.", image_path).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Copying of {} finished.", image_path).as_str(), 0);
   } else {
     let err = copy_res.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 0);
+    logger::log_to_file(app_handle.clone(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 2);
   }
 
   return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
@@ -274,11 +284,11 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
       
       return serde_json::to_string(&colors).expect("Couldn't serialize json!");
     } else {
-      logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}.", image_path).as_str(), 2);
+      logger::log_to_file(app_handle.clone(), format!("failed to decode {}.", image_path).as_str(), 2);
       return serde_json::to_string::<Vec::<Value>>(&vec![]).expect("Couldn't serialize json!");
     }
   } else {
-    logger::log_to_file(app_handle.to_owned(), format!("failed to read {}.", image_path).as_str(), 2);
+    logger::log_to_file(app_handle.clone(), format!("failed to read {}.", image_path).as_str(), 2);
     return serde_json::to_string::<Vec::<Value>>(&vec![]).expect("Couldn't serialize json!");
   }
 }

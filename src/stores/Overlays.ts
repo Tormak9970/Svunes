@@ -11,3 +11,5 @@ export const playlistToAdd: Writable<string | null> = writable(null);
 export const albumToAdd: Writable<string | null> = writable(null);
 export const artistToAdd: Writable<string | null> = writable(null);
 export const genreToAdd: Writable<string | null> = writable(null);
+
+export const showWritingChanges = writable(false);

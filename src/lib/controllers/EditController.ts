@@ -106,6 +106,8 @@ export class EditController {
 
     if (success) {
       this.editAlbumFields(original, changedAlbumFields);
+      await original.setBackgroundFromImage();
+      
       const albumsList = get(albums);
       albums.set(albumsList);
 
@@ -122,6 +124,7 @@ export class EditController {
       const songsList = get(songs);
       songs.set(songsList);
       AppController.loadArtistsFromSongs(songsList);
+      AppController.loadGenresFromSongs(songsList);
 
       get(showInfoSnackbar)({ message: "Finished writing changes", timeout: 2000 });
       LogController.log(`Finished writing edits to ${original.name}`);

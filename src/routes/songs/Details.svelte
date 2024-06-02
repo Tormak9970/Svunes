@@ -25,7 +25,7 @@
   import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
   import DetailsBody from "../../components/utils/DetailsBody.svelte";
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
-  import { pop, push } from "svelte-spa-router";
+  import { pop, push, replace } from "svelte-spa-router";
   import MenuItem from "../../components/layout/MenuItem.svelte";
   import { EditController } from "../../lib/controllers/EditController";
   
@@ -103,6 +103,7 @@
    */
   function deleteSong() {
     EditController.deleteSongsFromDevice([song!.key]);
+    replace("/songs");
   }
 </script>
 

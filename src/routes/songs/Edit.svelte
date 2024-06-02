@@ -14,6 +14,7 @@
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
   import { EditController } from "../../lib/controllers/EditController";
+    import { showWritingChanges } from "../../stores/Overlays";
 
   export let params: { key?: string } = {};
   $: song = params.key ? $songsMap[params.key] : null;
@@ -82,9 +83,12 @@
         "genre": genre !== "" ? genre : undefined,
         "trackNumber": trackNumber && trackNumber !== "" ? parseInt(trackNumber) : undefined
       }
-      EditController.editSong($songsMap[params!.key!], editFields);
-      canSave = false;
-      back();
+      $showWritingChanges = true;
+      EditController.editSong($songsMap[params!.key!], editFields).then(() => {
+        canSave = false;
+        $showWritingChanges = false;
+        back();
+      });
     } else {
       $showErrorSnackbar({ message: "Title is required!", timeout: 2000 });
       LogController.error("Failed to save changes! A title is required!");

@@ -45,6 +45,7 @@
   $: similarArtists = (allSimilarArtists && allSimilarArtists?.length > 5) ? getRandomElements<Artist>(allSimilarArtists, 5) : similarArtists;
 
   let isAtTop = true;
+  let rerenderArt = false;
 
   /**
    * Closes the details overlay.
@@ -64,13 +65,6 @@
       $nowPlayingListName = artist!.name;
       PlaybackController.playArtist(artist!);
     }
-  }
-
-  /**
-   * Shuffles then plays this artist.
-   */
-  function playShuffledArtist() {
-    PlaybackController.playArtist(artist!);
   }
 
   /**
@@ -130,9 +124,10 @@
    */
   function onArtistArtClick() {
     $onArtOptionsDone = async (path: string | undefined) => {
-      const copiedPath = await EditController.copyArtistImage(path);
-      artist!.imagePath = copiedPath;
+      artist!.imagePath = await EditController.copyArtistImage(path);
+      await artist?.setBackgroundFromImage();
       $artists = [ ...$artists ];
+      rerenderArt = !rerenderArt;
     }
     $showArtOptions = true;
   }
@@ -156,7 +151,9 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <DetailsArtPicture artPath={artist?.imagePath} clickable on:click={onArtistArtClick} />
+    {#key rerenderArt}
+      <DetailsArtPicture artPath={artist?.imagePath} clickable on:click={onArtistArtClick} />
+    {/key}
     <div class="details">
       <div class="info">
         <Marquee pauseOnHover speed={50} gap={100}>
@@ -164,10 +161,12 @@
         </Marquee>
         <div class="other">{artist?.albumNames.size + ` Album${artist?.albumNames.size === 1 ? "" : "s"} • `}{artist?.songKeys.length + ` Song${artist?.songKeys.length === 1 ? "" : "s"} • `}{artist?.displayArtistSongLength()}</div>
       </div>
-      <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
-        <ToggleShuffleButton />
-        <PlayButton name={artist?.name} on:click={playArtist} />
-      </div>
+      {#key rerenderArt}
+        <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
+          <ToggleShuffleButton />
+          <PlayButton name={artist?.name} on:click={playArtist} />
+        </div>
+      {/key}
     </div>
     {#if artistAlbums.length > 0 }
       <div class="albums">

@@ -1,10 +1,6 @@
-use std::path::PathBuf;
+use std::{fs, path::PathBuf, sync::mpsc::Sender};
 use id3::{frame::Picture, Frame, TagLike};
 use metaflac;
-use tauri::AppHandle;
-use image::io::Reader as ImageReader;
-
-use crate::logger;
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
 #[allow(non_snake_case)]
@@ -20,28 +16,6 @@ pub struct SongEditFields {
   trackNumber: Option<u16>
 }
 
-fn get_image_data(app_handle: AppHandle, image_path: String) -> Vec<u8> {
-  let image_reader_res = ImageReader::open(image_path.to_owned());
-  
-  if image_reader_res.is_ok() {
-    let image_reader = image_reader_res.ok().unwrap();
-    println!("{}", image_reader.format().unwrap().extensions_str().join(", "));
-
-    let image_res = image_reader.decode();
-
-    if image_res.is_ok() {
-      let img = image_res.ok().unwrap();
-      return img.as_bytes().to_owned();
-    } else {
-      logger::log_to_file(app_handle.to_owned(), format!("failed to decode {}.", image_path).as_str(), 2);
-      return vec![];
-    }
-  } else {
-    logger::log_to_file(app_handle.to_owned(), format!("failed to read {}.", image_path).as_str(), 2);
-    return vec![];
-  }
-}
-
 /// Sets a flac meta tag.
 fn set_flac_tag(tag: &mut metaflac::Tag, key: &str, value: &str) {
   tag.vorbis_comments_mut().set(key, vec![value]);
@@ -53,20 +27,44 @@ fn remove_flac_tag(tag: &mut metaflac::Tag, key: &str) {
 }
 
 // Writes changes to a flac file.
-fn write_flac_file(app_handle: AppHandle, file_path: String, edited_fields: SongEditFields) -> bool {
-  let mut tag = metaflac::Tag::read_from_path(file_path.clone()).expect("Unsupported file format.");
+fn write_flac_file(log_sender: &mut Sender<String>, file_path: String, edited_fields: SongEditFields) -> bool {
+  let tag_res = metaflac::Tag::read_from_path(file_path.clone());
+
+  if tag_res.is_err() {
+    let err = tag_res.err().unwrap();
+    let _ = log_sender.send(format!("Failed to open {}: {}", &file_path, err.to_string()));
+    return false;
+  }
+  let mut tag = tag_res.unwrap();
 
   if edited_fields.artPath.is_some() {
     let image_path = edited_fields.artPath.unwrap();
-    let data = get_image_data(app_handle.clone(), image_path.clone());
+    let data_res = fs::read(image_path.clone());
+
+    if data_res.is_err() {
+      let err = data_res.err().unwrap();
+      let _ = log_sender.send(format!("Failed to read {}: {}", &file_path, err.to_string()));
+      return false;
+    }
+
+    let data = data_res.ok().unwrap();
 
     if data.len() > 0 {
       tag.remove_picture_type(metaflac::block::PictureType::CoverFront);
+      tag.remove_picture_type(metaflac::block::PictureType::Other);
+      tag.remove_picture_type(metaflac::block::PictureType::OtherIcon);
+
+      let mut mime = "image/jpeg";
+      if file_path.to_ascii_lowercase().ends_with(".png") {
+        mime = "image/png";
+      }
   
-      tag.add_picture("image/jpeg", metaflac::block::PictureType::CoverFront, data.to_owned());
+      tag.add_picture(mime, metaflac::block::PictureType::CoverFront, data.to_owned());
     }
   } else {
     tag.remove_picture_type(metaflac::block::PictureType::CoverFront);
+    tag.remove_picture_type(metaflac::block::PictureType::Other);
+    tag.remove_picture_type(metaflac::block::PictureType::OtherIcon);
   }
 
   if edited_fields.title.is_some() {
@@ -130,7 +128,7 @@ fn write_flac_file(app_handle: AppHandle, file_path: String, edited_fields: Song
 
   if result.is_err() {
     let err = result.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Failed to save {}: {}", &file_path, err.to_string()).as_str(), 0);
+    let _ = log_sender.send(format!("Failed to save {}: {}", &file_path, err.to_string()));
     return false;
   }
 
@@ -138,20 +136,41 @@ fn write_flac_file(app_handle: AppHandle, file_path: String, edited_fields: Song
 }
 
 // Writes changes to a mp3 file.
-fn write_mp3_file(app_handle: AppHandle, file_path: String, edited_fields: SongEditFields) -> bool {
-  let mut tag = id3::Tag::read_from_path(file_path.clone()).expect("Unsupported file format.");
+fn write_mp3_file(log_sender: &mut Sender<String>, file_path: String, edited_fields: SongEditFields) -> bool {
+  let tag_res = id3::Tag::read_from_path(file_path.clone());
+
+  if tag_res.is_err() {
+    let err = tag_res.err().unwrap();
+    let _ = log_sender.send(format!("Failed to open {}: {}", &file_path, err.to_string()));
+    return false;
+  }
+
+  let mut tag = id3::Tag::read_from_path(file_path.clone()).unwrap();
 
   if edited_fields.artPath.is_some() {
     let image_path = edited_fields.artPath.unwrap();
-    let data = get_image_data(app_handle.clone(), image_path.clone());
+    let data_res = fs::read(image_path.clone());
+
+    if data_res.is_err() {
+      let err = data_res.err().unwrap();
+      let _ = log_sender.send(format!("Failed to read {}: {}", &file_path, err.to_string()));
+      return false;
+    }
+
+    let data = data_res.ok().unwrap();
 
     if data.len() > 0 {
       tag.remove_picture_by_type(id3::frame::PictureType::CoverFront);
       tag.remove_picture_by_type(id3::frame::PictureType::Other);
       tag.remove_picture_by_type(id3::frame::PictureType::OtherIcon);
+
+      let mut mime = "image/jpeg";
+      if file_path.to_ascii_lowercase().ends_with(".png") {
+        mime = "image/png";
+      }
   
       tag.add_frame(Picture {
-        mime_type: "image/jpeg".to_owned(),
+        mime_type: mime.to_owned(),
         picture_type: id3::frame::PictureType::CoverFront,
         description: "".to_owned(),
         data: data.to_owned()
@@ -224,7 +243,7 @@ fn write_mp3_file(app_handle: AppHandle, file_path: String, edited_fields: SongE
 
   if result.is_err() {
     let err = result.err().unwrap();
-    logger::log_to_file(app_handle.to_owned(), format!("Failed to save {}: {}", &file_path, err.to_string()).as_str(), 0);
+    let _ = log_sender.send(format!("Failed to save {}: {}", &file_path, err.to_string()));
     return false;
   }
 
@@ -232,13 +251,13 @@ fn write_mp3_file(app_handle: AppHandle, file_path: String, edited_fields: SongE
 }
 
 // Writes changes to a music file.
-pub fn write_music_file(app_handle: AppHandle, file_path: String, edited_fields: SongEditFields) -> bool {
+pub fn write_music_file(log_sender: &mut Sender<String>, file_path: String, edited_fields: SongEditFields) -> bool {
   let file_path_buf = PathBuf::from(&file_path);
   let file_type = file_path_buf.extension().expect("Couldn't get file extension for song.");
   
   if file_type.eq_ignore_ascii_case("mp3") {
-    return write_mp3_file(app_handle, file_path, edited_fields);
+    return write_mp3_file(log_sender, file_path, edited_fields);
   } else {
-    return write_flac_file(app_handle, file_path, edited_fields);
+    return write_flac_file(log_sender, file_path, edited_fields);
   }
 }

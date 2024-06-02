@@ -17,7 +17,7 @@
   import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
   import MenuButton from "../../components/interactables/MenuButton.svelte";
   import RadioMenuItem from "../../components/interactables/RadioMenuItem.svelte";
-  import { pop, push } from "svelte-spa-router";
+  import { pop, push, replace } from "svelte-spa-router";
   import { LogController } from "../../lib/controllers/utils/LogController";
   import type { Song } from "../../lib/models/Song";
   import { nullishNumberSort, stringSort } from "../../lib/utils/Sorters";
@@ -27,6 +27,7 @@
   import PlayButton from "../../components/views/utils/PlayButton.svelte";
   import Marquee from "../../components/layout/Marquee.svelte";
   import { EditController } from "../../lib/controllers/EditController";
+    import { onMount } from "svelte";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
@@ -39,6 +40,8 @@
   
   $: songs = album?.songKeys?.map((key) => $songsMap[key]);
   $: sortedSongs = songs ? sortSongs(songs, albumSortMethod) : [];
+
+  $: backgroundColor = $useAlbumColors ? album?.backgroundColor : undefined;
 
   let isAtTop = true;
 
@@ -96,6 +99,7 @@
    */
   function deleteAlbum() {
     EditController.deleteAlbumsFromDevice([album!.name]);
+    replace("/albums");
   }
 
   /**
@@ -158,7 +162,7 @@
         </Marquee>
         <div class="other"><div class="album-artist">{album?.albumArtist ?? ""}</div>{album?.albumArtist ? " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear : ""}{album?.releaseYear !== -1 ? " • " : ""}{album?.displayAlbumLength()}</div>
       </div>
-      <div class="buttons" style="{(album?.backgroundColor && $useAlbumColors) ? `--m3-scheme-primary: ${album.backgroundColor};` : ""}">
+      <div class="buttons" style="{backgroundColor ? `--m3-scheme-primary: ${backgroundColor};` : ""}">
         <ToggleShuffleButton />
         <PlayButton name={album?.name} on:click={playAlbum} />
       </div>

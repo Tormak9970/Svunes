@@ -13,6 +13,7 @@
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop, replace } from "svelte-spa-router";
   import { EditController } from "../../lib/controllers/EditController";
+    import { showWritingChanges } from "../../stores/Overlays";
 
   export let params: { key?: string } = {};
   $: album = params.key ? $albumsMap[params.key] : null;
@@ -70,9 +71,12 @@
         "genre": genre
       }
       albumNameChanged = albumName !== album?.name;
-      EditController.editAlbum($albumsMap[params.key!], editFields);
-      canSave = false;
-      back();
+      $showWritingChanges = true;
+      EditController.editAlbum($albumsMap[params.key!], editFields).then(() => {
+        canSave = false;
+        $showWritingChanges = false;
+        back();
+      });
     } else {
       $showErrorSnackbar({ message: "Album is required!", timeout: 2000 });
       LogController.error("Failed to save changes! A album is required!");

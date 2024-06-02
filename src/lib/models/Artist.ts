@@ -9,7 +9,7 @@ import { RustInterop } from "../controllers/utils/RustInterop";
  */
 export class Artist {
   name: string;
-  _imagePath: string | undefined;
+  imagePath: string | undefined;
   albumNames: Set<string>;
   genres: Set<string>;
   songKeys: string[];
@@ -22,21 +22,18 @@ export class Artist {
   constructor(name: string, imagePath: string | undefined) {
     this.name = name;
     this.imagePath = imagePath;
+    this.setBackgroundFromImage();
     this.albumNames = new Set();
     this.genres = new Set();
     this.songKeys = [];
   }
 
-  get imagePath(): string | undefined {
-    return this._imagePath;
-  }
-
-  set imagePath(path: string | undefined) {
-    this._imagePath = path;
-    this.backgroundColor = undefined;
-    
-    if (path) {
-      RustInterop.getColorsFromImage(path).then((colors) => {
+  /**
+   * Sets the primary color from the artist's image
+   */
+  async setBackgroundFromImage() {
+    if (this.imagePath) {
+      await RustInterop.getColorsFromImage(this.imagePath).then((colors) => {
         if (colors.length) {
           this.backgroundColor = colors[0];
 
@@ -45,6 +42,8 @@ export class Artist {
           }
         }
       });
+    } else {
+      this.backgroundColor = undefined;
     }
   }
 
