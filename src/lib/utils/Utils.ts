@@ -376,3 +376,12 @@ export function normalizeString(value: string): string {
   
   return value.normalize("NFD").replace(/[ąćęłńóśźż]/g, (matched) => accentMap[matched]);
 }
+
+/**
+ * Adds an "s" to the value if lengthOfValues !== 1.
+ * @param value The value to pluralize.
+ * @param lengthOfValues The length of the values.
+ */
+export function pluralize(value: string, lengthOfValues?: number): string {
+  return lengthOfValues === 1 ? value : value + "s";
+}

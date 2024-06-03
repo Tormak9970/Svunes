@@ -4,7 +4,7 @@
   import MenuButton from "../interactables/MenuButton.svelte";
   import { selected } from "../../stores/Select";
   import { showAddToPlaylist } from "../../stores/Overlays";
-  import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap } from "../../stores/State";
+  import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap, showInfoSnackbar } from "../../stores/State";
   import { LogController } from "../../lib/controllers/utils/LogController";
   import { QueueController } from "../../lib/controllers/QueueController";
   import { AppController } from "../../lib/controllers/AppController";
@@ -18,6 +18,7 @@
   import Icon from "../utils/Icon.svelte";
   import MenuItem from "../layout/MenuItem.svelte";
   import { EditController } from "../../lib/controllers/EditController";
+    import { pluralize } from "../../lib/utils/Utils";
 
   /**
    * Gets the names of the songs from the selected items.
@@ -301,6 +302,9 @@
     }
 
     $playlists = [ ...$playlists ];
+
+    $showInfoSnackbar({ message: `Removed ${$selected.length} ${pluralize("song", $selected.length)}` });
+
     $selected = [];
     menuIsOpen = false;
   }

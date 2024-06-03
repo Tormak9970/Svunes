@@ -6,6 +6,7 @@ import { Album } from "../models/Album";
 import { LogController } from "./utils/LogController";
 import { DialogController } from "./utils/DialogController";
 import { AppController } from "./AppController";
+import { pluralize } from "../utils/Utils";
 
 /**
  * The controller for editing music, albums and artists.
@@ -138,7 +139,7 @@ export class EditController {
    * @param songKeys The keys of the songs to delete.
    */
   static async deleteSongsFromDevice(songKeys: string[]) {
-    const numSongsMessage = `${songKeys.length} ${songKeys.length === 1 ? "song" : "songs"}`;
+    const numSongsMessage = `${songKeys.length} ${pluralize("song", songKeys.length)}`;
 
     DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
       if (shouldContinue) {
@@ -186,7 +187,7 @@ export class EditController {
    * @param albumNames The names of the albums to delete.
    */
   static async deleteAlbumsFromDevice(albumNames: string[]) {
-    const numSongsMessage = `${albumNames.length} ${albumNames.length === 1 ? "album" : "albums"}`;
+    const numSongsMessage = `${albumNames.length} ${pluralize("album", albumNames.length)}`;
 
     DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
       if (shouldContinue) {
@@ -244,7 +245,7 @@ export class EditController {
    * @param playlistNames The names of the playlists to delete.
    */
   static async deletePlaylistsFromDevice(playlistNames: string[]) {
-    const numPlaylistMessage = `${playlistNames.length} ${playlistNames.length === 1 ? "playlist" : "playlists"}`;
+    const numPlaylistMessage = `${playlistNames.length} ${pluralize("playlist", playlistNames.length)}`;
 
     DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numPlaylistMessage}?`, "Yes", "No").then((shouldContinue) => {
       if (shouldContinue) {

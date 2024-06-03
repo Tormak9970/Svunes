@@ -10,6 +10,7 @@
   import PlaylistEntry from "./PlaylistEntry.svelte";
   import { fade } from "svelte/transition";
   import { afterUpdate } from "svelte";
+    import { pluralize } from "../../../lib/utils/Utils";
   
   let scrollContainer: HTMLDivElement;
   let selectedPlaylists: string[] = [];
@@ -118,7 +119,7 @@
     close();
 
     if (selectedPlaylists.length > 0) {
-      const numAddedMessage = `${songs.length} ${songs.length === 1 ? "song" : "songs"}`;
+      const numAddedMessage = `${songs.length} ${pluralize("song", songs.length)}`;
       $showInfoSnackbar({ message: `Added ${numAddedMessage}` });
       LogController.log(`Added ${numAddedMessage}.`);
     }

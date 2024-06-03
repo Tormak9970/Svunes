@@ -18,7 +18,7 @@
   import { pop, push } from "svelte-spa-router";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { Song } from "../../lib/models/Song";
-  import { getRandomElements } from "../../lib/utils/Utils";
+  import { getRandomElements, pluralize } from "../../lib/utils/Utils";
   import { stringSort } from "../../lib/utils/Sorters";
   import { LogController } from "../../lib/controllers/utils/LogController";
   import SongsList from "../../components/layout/songs-list/SongsList.svelte";
@@ -159,7 +159,7 @@
         <Marquee pauseOnHover speed={50} gap={100}>
           <h3 class="name">{artist?.name}</h3>
         </Marquee>
-        <div class="other">{artist?.albumNames.size + ` Album${artist?.albumNames.size === 1 ? "" : "s"} • `}{artist?.songKeys.length + ` Song${artist?.songKeys.length === 1 ? "" : "s"} • `}{artist?.displayArtistSongLength()}</div>
+        <div class="other">{`${artist?.albumNames.size} ${pluralize("Album", artist?.albumNames.size)} • `}{`${artist?.songKeys.length} ${pluralize("Song", artist?.songKeys.length)} • `}{artist?.displayArtistSongLength()}</div>
       </div>
       {#key rerenderArt}
         <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">

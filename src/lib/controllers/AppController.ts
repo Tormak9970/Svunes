@@ -13,63 +13,6 @@ import { getAllArtistNames } from "../utils/Utils";
 import type { Playlist } from "../models/Playlist";
 
 /**
- * Gets the edited fields for the provided song.
- * @param original The original song.
- * @param edited The edited song.
- * @returns The edited fields.
- */
-function getEditedSongFields(original: Song, edited: Song): SongEditFields {
-  const editFields: SongEditFields = {
-    "artPath": undefined,
-    "title": undefined,
-    "album": undefined,
-    "composer": undefined,
-    "albumArtist": undefined,
-    "artist": undefined,
-    "releaseYear": undefined,
-    "genre": undefined,
-    "trackNumber": undefined,
-    "totalTracks": undefined
-  }
-
-  for (const key of Object.keys(editFields)) {
-    const songKey = key as keyof Song;
-    if (original[songKey] !== edited[songKey]) {
-      // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
-      editFields[key as keyof SongEditFields] = edited[songKey];
-    }
-  }
-
-  return editFields;
-}
-
-/**
- * Gets the edited fields for the provided album.
- * @param original The original album.
- * @param edited The edited album.
- * @returns The edited fields.
- */
-function getEditedAlbumFields(original: Album, edited: Album): AlbumEditFields {
-  const editFields: AlbumEditFields = {
-    "artPath": undefined,
-    "name": undefined,
-    "artist": undefined,
-    "releaseYear": undefined,
-    "genre": undefined
-  }
-
-  for (const key of Object.keys(editFields)) {
-    const songKey = key as keyof Album;
-    if (original[songKey] !== edited[songKey]) {
-      // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
-      editFields[key as keyof AlbumEditFields] = edited[songKey];
-    }
-  }
-
-  return editFields;
-}
-
-/**
  * The core app controller.
  */
 export class AppController {

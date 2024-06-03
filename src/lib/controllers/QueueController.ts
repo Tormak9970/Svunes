@@ -1,7 +1,8 @@
 import { get } from "svelte/store";
-import { albumsMap, artistsMap, playlists, playlistsMap, queue, songsMap } from "../../stores/State";
+import { albumsMap, artistsMap, playlists, playlistsMap, queue, showInfoSnackbar, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
+import { pluralize } from "../utils/Utils";
 
 // ! Add logging to this file
 
@@ -42,7 +43,7 @@ export class QueueController {
       
       queue.set(songQueue);
     } else {
-      // ! show user snackbar
+      // TODO: disable back button if history is length 0
     }
   }
 
@@ -66,6 +67,8 @@ export class QueueController {
     }
 
     playlists.set([ ...get(playlists) ]);
+
+    get(showInfoSnackbar)({ message: `Queued ${playlistNames.length} ${pluralize("playlist", playlistNames.length)}`})
     
     queue.set(songQueue);
   }
@@ -81,6 +84,8 @@ export class QueueController {
     for (const songKey of songKeys) {
       songQueue.push(songMap[songKey]);
     }
+
+    get(showInfoSnackbar)({ message: `Queued ${songKeys.length} ${pluralize("song", songKeys.length)}`})
     
     queue.set(songQueue);
   }
@@ -104,6 +109,8 @@ export class QueueController {
       }
     }
 
+    get(showInfoSnackbar)({ message: `Queued ${albumNames.length} ${pluralize("album", albumNames.length)}`})
+    
     SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
     queue.set(songQueue);
@@ -123,6 +130,8 @@ export class QueueController {
         songQueue.push(songMap[songName]);
       }
     }
+    
+    get(showInfoSnackbar)({ message: `Queued ${artistNames.length} ${pluralize("artist", artistNames.length)}`})
     
     queue.set(songQueue);
   }
