@@ -119,7 +119,7 @@
 
     if (selectedPlaylists.length > 0) {
       const numAddedMessage = `${songs.length} ${songs.length === 1 ? "song" : "songs"}`;
-      $showInfoSnackbar({ message: `Added ${numAddedMessage}`, timeout: 1500 });
+      $showInfoSnackbar({ message: `Added ${numAddedMessage}` });
       LogController.log(`Added ${numAddedMessage}.`);
     }
   }

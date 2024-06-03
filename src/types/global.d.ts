@@ -6,9 +6,18 @@ declare const IS_DEBUG: string;
 
 type DialogModalType = "INFO" | "WARNING" | "ERROR";
 
+type ShowErrorOptions = {
+  message: string,
+  faster?: boolean
+}
+
+type ShowInfoOptions = {
+  message: string
+}
+
 type ShowSnackbarOptions = {
-  message: string;
-  timeout?: number | null;
+  message: string,
+  timeout?: number | null
 }
 
 declare module "svelte-icons/md/*.svelte";

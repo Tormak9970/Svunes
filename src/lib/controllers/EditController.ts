@@ -66,10 +66,10 @@ export class EditController {
       AppController.loadArtistsFromSongs(songsList);
       AppController.loadGenresFromSongs(songsList);
 
-      get(showInfoSnackbar)({ message: "Finished writing changes", timeout: 2000 });
+      get(showInfoSnackbar)({ message: "Finished writing changes" });
       LogController.log(`Finished writing edits to ${original.key}`);
     } else {
-      get(showErrorSnackbar)({ message: "Failed to write all changes", timeout: 2000 });
+      get(showErrorSnackbar)({ message: "Failed to write all changes" });
     }
   }
 
@@ -126,10 +126,10 @@ export class EditController {
       AppController.loadArtistsFromSongs(songsList);
       AppController.loadGenresFromSongs(songsList);
 
-      get(showInfoSnackbar)({ message: "Finished writing changes", timeout: 2000 });
+      get(showInfoSnackbar)({ message: "Finished writing changes" });
       LogController.log(`Finished writing edits to ${original.name}`);
     } else {
-      get(showErrorSnackbar)({ message: "Failed to write all changes", timeout: 2000 });
+      get(showErrorSnackbar)({ message: "Failed to write all changes" });
     }
   }
 
@@ -173,7 +173,7 @@ export class EditController {
         const success = await successPromise;
 
         if (success) {
-          get(showInfoSnackbar)({ message: numSongsMessage + " deleted", timeout: 1500 });
+          get(showInfoSnackbar)({ message: numSongsMessage + " deleted" });
         } else {
           get(showErrorSnackbar)({ message: "Failed to delete all selected songs."})
         }
@@ -231,7 +231,7 @@ export class EditController {
         const success = await successPromise;
 
         if (success) {
-          get(showInfoSnackbar)({ message: numSongsMessage + " deleted", timeout: 1500 });
+          get(showInfoSnackbar)({ message: numSongsMessage + " deleted" });
         } else {
           get(showErrorSnackbar)({ message: "Failed to delete all selected albums."});
         }
@@ -258,7 +258,7 @@ export class EditController {
         playlists.set(playlistList);
 
         LogController.log(`Deleted ${numPlaylistMessage}.`);
-        get(showInfoSnackbar)({ message: numPlaylistMessage + " deleted", timeout: 1500 });
+        get(showInfoSnackbar)({ message: numPlaylistMessage + " deleted" });
       }
     });
   }
@@ -274,7 +274,7 @@ export class EditController {
     
     const result = await RustInterop.copyAlbumsImage(imagePath, albumName);
     if (result === "") {
-      get(showErrorSnackbar)({ message: "Invalid image selected", timeout: 2000 })
+      get(showErrorSnackbar)({ message: "Invalid image selected", faster: true })
       return undefined;
     }
 
@@ -291,7 +291,7 @@ export class EditController {
 
     const result = await RustInterop.copyArtistImage(imagePath);
     if (result === "") {
-      get(showErrorSnackbar)({ message: "Invalid image selected", timeout: 2000 })
+      get(showErrorSnackbar)({ message: "Invalid image selected", faster: true })
       return undefined;
     }
 
@@ -308,7 +308,7 @@ export class EditController {
 
     const result = await RustInterop.copyPlaylistImage(imagePath);
     if (result === "") {
-      get(showErrorSnackbar)({ message: "Invalid image selected", timeout: 2000 })
+      get(showErrorSnackbar)({ message: "Invalid image selected", faster: true })
       return undefined;
     }
 

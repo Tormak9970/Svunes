@@ -236,7 +236,7 @@ pub fn read_music_folder(app_handle: AppHandle, log_sender: &mut Sender<String>,
 
   if contents_res.is_err() {
     let err: Error = contents_res.err().unwrap();
-    log_sender.send(format!("Encountered error while reading {}. Error: {}", folder_path.to_owned().to_str().unwrap(), err.to_string()));
+    let _ = log_sender.send(format!("Encountered error while reading {}. Error: {}", folder_path.to_owned().to_str().unwrap(), err.to_string()));
     return entries;
   }
 

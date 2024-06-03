@@ -13,7 +13,7 @@
    */
   function createPlaylist() {
     if ($playlistsMap[newPlaylistName]) {
-      $showErrorSnackbar({ message: "Playlist with that name already exists", timeout: 2000 });
+      $showErrorSnackbar({ message: "Playlist with that name already exists", faster: true });
       return;
     }
 
@@ -23,7 +23,7 @@
     $songsForNewPlaylist = [];
     $showCreatePlaylist = false;
     LogController.log(`Created playlist ${newPlaylistName}.`);
-    $showInfoSnackbar({ message: "Playlist created", timeout: 1500 });
+    $showInfoSnackbar({ message: "Playlist created" });
   }
 
   /**

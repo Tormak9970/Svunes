@@ -90,7 +90,7 @@
         back();
       });
     } else {
-      $showErrorSnackbar({ message: "Title is required!", timeout: 2000 });
+      $showErrorSnackbar({ message: "Title is required!", faster: true });
       LogController.error("Failed to save changes! A title is required!");
     }
   }
@@ -103,11 +103,11 @@
       $onArtOptionsDone = async (path: string | undefined) => {
         // const copiedPath = await EditController.copyAlbumImage(path, title);
         // artPath = copiedPath;
-        $showInfoSnackbar({ message: "Need to implement this", timeout: 2500 });
+        $showInfoSnackbar({ message: "Need to implement this" });
       }
       $showArtOptions = true;
     } else {
-      $showInfoSnackbar({ message: "Can't edit because this song is in an album", timeout: 2500 });
+      $showInfoSnackbar({ message: "Can't edit because this song is in an album" });
     }
   }
 

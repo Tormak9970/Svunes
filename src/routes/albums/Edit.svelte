@@ -78,7 +78,7 @@
         back();
       });
     } else {
-      $showErrorSnackbar({ message: "Album is required!", timeout: 2000 });
+      $showErrorSnackbar({ message: "Album is required!", faster: true });
       LogController.error("Failed to save changes! A album is required!");
     }
   }

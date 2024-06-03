@@ -272,10 +272,10 @@ export class SettingsController {
 
         await this.save();
 
-        get(showInfoSnackbar)({ message: "Success!", timeout: 1000 });
+        get(showInfoSnackbar)({ message: "Success!" });
         LogController.log("Successfully restored backup.");
       } else {
-        get(showErrorSnackbar)({ message: "Invalid backup file", timeout: 2000 });
+        get(showErrorSnackbar)({ message: "Invalid backup file", faster: true });
         LogController.error("Backup did not contain the FILE_SIG.");
       }
     } else {
@@ -290,7 +290,7 @@ export class SettingsController {
     this.settings = structuredClone(DEFAULT_SETTINGS);
     await this.save();
 
-    get(showInfoSnackbar)({ message: "Success!", timeout: 1000 });
+    get(showInfoSnackbar)({ message: "Success!" });
     LogController.log("Successfully reset settings.");
   }
 

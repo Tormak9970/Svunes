@@ -42,10 +42,10 @@
       const item = items.find((item) => item.view === view)!;
       
       if (numChecked === 3 && !checked) {
-        $showErrorSnackbar({ message: "Min page count is 3", timeout: 3000 });
+        $showErrorSnackbar({ message: "Min page count is 3" });
         reset = !reset;
       } else if (numChecked === 5 && checked) {
-        $showErrorSnackbar({ message: "Max page count is 5", timeout: 3000 });
+        $showErrorSnackbar({ message: "Max page count is 5" });
         reset = !reset;
       } else {
         item.checked = checked;

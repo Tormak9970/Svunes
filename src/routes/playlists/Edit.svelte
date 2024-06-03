@@ -55,7 +55,7 @@
       canSave = false;
       back();
     } else {
-      $showErrorSnackbar({ message: "Name is required!", timeout: 2000 });
+      $showErrorSnackbar({ message: "Name is required!", faster: true });
       LogController.error("Failed to save changes! A name is required!");
     }
   }

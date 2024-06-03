@@ -11,8 +11,8 @@ export const isLoading = writable(true);
 export const shuffle = writable(true);
 export const isPaused = writable(false);
 
-export const showInfoSnackbar: Writable<(data: ShowSnackbarOptions) => void> = writable(() => {});
-export const showErrorSnackbar: Writable<(data: ShowSnackbarOptions) => void> = writable(() => {});
+export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable(() => {});
+export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = writable(() => {});
 
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
