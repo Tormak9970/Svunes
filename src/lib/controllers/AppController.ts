@@ -1,6 +1,6 @@
 import { showEditMusicFolders } from "../../stores/Modals";
 import { RustInterop } from "./utils/RustInterop";
-import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, playlists, queue, showErrorSnackbar, showInfoSnackbar, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";

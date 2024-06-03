@@ -336,7 +336,7 @@ export class SettingsController {
     }
 
     playlists.set(playlistList);
-    queue.set(this.settings.queue.map((song) => Song.fromJSON(song)).filter((song) => !!this.settings.cache.songsMetadata[song.key]));
+    queue.set(this.settings.queue.filter((key) => !!this.settings.cache.songsMetadata[key]));
 
 
     const audio = this.settings.audio;
@@ -417,7 +417,7 @@ export class SettingsController {
 
     this.playlistsUnsub = playlists.subscribe(this.updateStoreIfChanged<Playlist[]>("playlists"));
 
-    this.queueUnsub = queue.subscribe(this.updateStoreIfChanged<Song[]>("queue"));
+    this.queueUnsub = queue.subscribe(this.updateStoreIfChanged<string[]>("queue"));
     
     this.blacklistedFoldersUnsub = blacklistedFolders.subscribe(this.updateStoreIfChanged<string[]>("blacklistedFolders"));
     this.pauseOnVolumeZeroUnsub = pauseOnVolumeZero.subscribe(this.updateStoreIfChanged<boolean>("pauseOnVolumeZero"));

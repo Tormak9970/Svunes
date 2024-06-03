@@ -18,7 +18,7 @@
   import type { Unsubscriber } from "svelte/store";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
-    import { showSavingSettings } from "../stores/Modals";
+  import { showSavingSettings } from "../stores/Modals";
 
   let loadingUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;

@@ -31,7 +31,7 @@ export const playlistsMap: Readable<Record<string, Playlist>> = derived(playlist
   return Object.fromEntries(entries);
 });
 
-export const queue: Writable<Song[]> = writable([]);
+export const queue: Writable<string[]> = writable([]);
 
 export const blacklistedFolders: Writable<string[]> = writable([]);
 export const pauseOnVolumeZero = writable(false);

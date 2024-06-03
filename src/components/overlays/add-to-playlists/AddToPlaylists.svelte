@@ -10,12 +10,12 @@
   import PlaylistEntry from "./PlaylistEntry.svelte";
   import { fade } from "svelte/transition";
   import { afterUpdate } from "svelte";
-    import { pluralize } from "../../../lib/utils/Utils";
+  import { pluralize } from "../../../lib/utils/Utils";
   
   let scrollContainer: HTMLDivElement;
   let selectedPlaylists: string[] = [];
 
-  $: playlistToRender = $playlistToAdd ? $playlists.filter((playlist) => playlist.name !== $playlistToAdd) : $playlists;
+  $: playlistToRender = $location.startsWith("/playlists") ? $playlists.filter((playlist) => playlist.name !== $playlistToAdd && !$selected.includes(playlist.name)) : $playlists;
   let showShadow = true;
 
   function handleScroll() {

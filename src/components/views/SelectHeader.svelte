@@ -18,7 +18,7 @@
   import Icon from "../utils/Icon.svelte";
   import MenuItem from "../layout/MenuItem.svelte";
   import { EditController } from "../../lib/controllers/EditController";
-    import { pluralize } from "../../lib/utils/Utils";
+  import { pluralize } from "../../lib/utils/Utils";
 
   /**
    * Gets the names of the songs from the selected items.
@@ -187,7 +187,7 @@
         if ($location === "/playlists") {
           $selected = $playlists.map((playlist) => playlist.name);
         } else {
-          const playlistName = $location.substring(11);
+          const playlistName = $location.substring(11).replaceAll("%20", " ");
           $selected = [ ...$playlistsMap[playlistName].songKeys ];
         }
         break;
@@ -196,7 +196,7 @@
         if ($location === "/albums") {
           $selected = $albums.map((album) => album.name);
         } else {
-          const albumName = $location.substring(8);
+          const albumName = $location.substring(8).replaceAll("%20", " ");
           $selected = [ ...$albumsMap[albumName].songKeys ];
         }
         break;
@@ -209,13 +209,13 @@
         if ($location === "/artists") {
           $selected = $artists.map((artist) => artist.name);
         } else {
-          const artistName = $location.substring(9);
+          const artistName = $location.substring(9).replaceAll("%20", " ");
           $selected = [ ...$artistsMap[artistName].songKeys ];
         }
         break;
       }
       case View.GENRES: {
-        const genreName = $location.substring(8);
+        const genreName = $location.substring(8).replaceAll("%20", " ");
         $selected = [ ...$genresMap[genreName].songKeys ];
         break;
       }
@@ -294,7 +294,7 @@
    * Removes the selected songs from this playlist.
    */
   function removeFromPlaylist() {
-    const playlistName = $location.substring(11);
+    const playlistName = $location.substring(11).replaceAll("%20", " ");
     const playlist = $playlistsMap[playlistName];
     
     for (const songKey of $selected) {

@@ -126,7 +126,7 @@ export type Settings = {
 
   playlists: Playlist[],
 
-  queue: Song[],
+  queue: string[],
 
   blacklistedFolders: string[],
   pauseOnVolumeZero: boolean,

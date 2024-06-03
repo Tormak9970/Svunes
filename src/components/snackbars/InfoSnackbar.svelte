@@ -4,7 +4,7 @@
   let showInfo: (data: ShowSnackbarOptions) => void;
   
   export const show: (data: ShowInfoOptions) => void = (data) => {
-    showInfo({ message: data.message, timeout: 1500 });
+    showInfo({ message: data.message, timeout: 2500 });
   }
 
   const backgroundColor = "var(--m3-scheme-inverse-surface)";
