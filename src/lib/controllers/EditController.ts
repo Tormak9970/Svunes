@@ -144,11 +144,22 @@ export class EditController {
       if (shouldContinue) {
         const filePaths: string[] = [];
         const songList = get(songs);
+        const playlistList = get(playlists);
 
         for (const key of songKeys) {
           const index = songList.findIndex((song) => song.key === key);
           const [song] = songList.splice(index, 1);
           filePaths.push(song.filePath);
+        }
+
+        for (const playlist of playlistList) {
+          for (const key of songKeys) {
+            const index = playlist.songKeys.indexOf(key);
+
+            if (index > -1) {
+              playlist.songKeys.splice(index, 1);
+            }
+          }
         }
 
         songs.set(songList);
@@ -182,6 +193,9 @@ export class EditController {
         const filePaths: string[] = [];
         const albumList = get(albums);
         const songList = get(songs);
+        const playlistList = get(playlists);
+
+        let deletedSongKeys: string[] = [];
 
         for (const albumName of albumNames) {
           const albumIndex = albumList.findIndex((album) => album.name === albumName);
@@ -191,6 +205,17 @@ export class EditController {
             const songIndex = songList.findIndex((song) => song.key === key);
             const [song] = songList.splice(songIndex, 1);
             filePaths.push(song.filePath);
+            deletedSongKeys.push(key);
+          }
+        }
+
+        for (const playlist of playlistList) {
+          for (const key of deletedSongKeys) {
+            const index = playlist.songKeys.indexOf(key);
+
+            if (index > -1) {
+              playlist.songKeys.splice(index, 1);
+            }
           }
         }
 

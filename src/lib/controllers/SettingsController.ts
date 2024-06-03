@@ -322,15 +322,27 @@ export class SettingsController {
     const personalization = this.settings.personalization;
     viewsToRender.set(personalization.viewsToRender);
 
+    const playlistList = this.settings.playlists.map((playlist) => Playlist.fromJSON(playlist));
+    const songMetadata: Record<string, SongMetadata> = this.settings.cache.songsMetadata;
+
+    for (const playlist of playlistList) {
+      for (const key of playlist.songKeys) {
+        if (!songMetadata[key]) {
+          const index = playlist.songKeys.indexOf(key);
+          playlist.songKeys.splice(index, 1);
+        }
+      }
+
+    }
+
+    playlists.set(playlistList);
+    queue.set(this.settings.queue.map((song) => Song.fromJSON(song)).filter((song) => !!this.settings.cache.songsMetadata[song.key]));
+
+
     const audio = this.settings.audio;
     fadeAudioOnPause.set(audio.fade);
     autoPlayOnConnect.set(audio.autoPlay);
     autoPlayOnBluetooth.set(audio.autoPlayBluetooth);
-
-
-    playlists.set(this.settings.playlists.map((playlist) => Playlist.fromJSON(playlist)));
-
-    queue.set(this.settings.queue.map((song) => Song.fromJSON(song)));
 
     blacklistedFolders.set(this.settings.blacklistedFolders);
     pauseOnVolumeZero.set(this.settings.pauseOnVolumeZero);
