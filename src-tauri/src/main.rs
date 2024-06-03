@@ -1,7 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod reader;
-mod writer;
 mod logger;
 mod header;
 mod common;
@@ -90,16 +88,22 @@ async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: Strin
   let music_folder_paths: Vec<String> = serde_json::from_str(&music_folder_paths_str).expect("Couldn't deserialize music folders array.");
   let blacklist_folder_paths: Vec<String> = serde_json::from_str(&blacklist_folder_paths_str).expect("Couldn't deserialize blacklist folders array.");
 
+  let (sender, receiver) = channel();
+
   for music_folder in &music_folder_paths {
     add_path_to_scope(app_handle.clone(), music_folder.clone()).await;
   }
 
-  let entries: Vec<Value> = music_folder_paths.par_iter().filter(| folder | !blacklist_folder_paths.contains(&folder)).map(| music_folder | {
+  let entries: Vec<Value> = music_folder_paths.par_iter().filter(| folder | !blacklist_folder_paths.contains(&folder)).map_with(sender, | log_sender, music_folder | {
     let folder_path: PathBuf = PathBuf::from(&music_folder);
 
-    let folder_entries = read_music_folder(app_handle.clone(), folder_path, &blacklist_folder_paths, max_length);
+    let folder_entries = read_music_folder(app_handle.clone(), log_sender, folder_path, &blacklist_folder_paths, max_length);
     return folder_entries;
   }).flatten().collect();
+  
+  receiver.iter().for_each(| log: String | {
+    logger::log_to_file(app_handle.clone(), &log, 2);
+  });
 
   return serde_json::to_string(&entries).expect("Can't serialize entries to string.");
 }
