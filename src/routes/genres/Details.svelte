@@ -21,7 +21,7 @@
 
   export let params: { key?: string } = {};
   $: genre = params.key ? $genresMap[params.key] : undefined;
-  $: genreSongs = genre?.songKeys.map((key) => $songsMap[key]) ?? [];
+  $: genreSongs = genre?.songIds.map((id) => $songsMap[id]) ?? [];
 
   let isAtTop = true;
 
@@ -49,14 +49,14 @@
    * Plays this genre next.
    */
   function playNext() {
-    QueueController.playSongsNext(genre!.songKeys);
+    QueueController.playSongsNext(genre!.songIds);
   }
 
   /**
    * Queues this genre.
    */
   function queueGenre() {
-    QueueController.queueSongs(genre!.songKeys);
+    QueueController.queueSongs(genre!.songIds);
   }
 
   /**

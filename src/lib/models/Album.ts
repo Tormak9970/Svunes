@@ -16,7 +16,7 @@ export class Album {
   genre?: string;
   numTimesPlayed: number;
 
-  songKeys: string[];
+  songIds: string[];
   
   releaseYear: number;
   
@@ -36,7 +36,7 @@ export class Album {
 
     this.lastPlayedOn = lastPlayedOn ?? "Never";
     this.numTimesPlayed = numTimesPlayed ?? 0;
-    this.songKeys = [];
+    this.songIds = [];
     this.artists = new Set();
   }
 
@@ -68,11 +68,11 @@ export class Album {
   }
 
   get albumLength() {
-    const songKeysMap = get(songsMap);
+    const songMap = get(songsMap);
     let totalLength = 0;
 
-    for (const songKey of this.songKeys) {
-      const song = songKeysMap[songKey];
+    for (const id of this.songIds) {
+      const song = songMap[id];
       totalLength += song.length;
     }
 

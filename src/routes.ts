@@ -46,8 +46,8 @@ export const routes = {
   "/": HomeLoadingAnimation,
 
   "/playlists": Playlists,
-  "/playlists/:key": PlaylistDetails,
-  "/playlists/:key/edit": PlaylistEditor,
+  "/playlists/:id": PlaylistDetails,
+  "/playlists/:id/edit": PlaylistEditor,
 
   "/albums": Albums,
   "/albums/:key": AblumDetails,
@@ -56,8 +56,8 @@ export const routes = {
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
-  "/songs/:key": SongDetails,
-  "/songs/:key/edit": SongEditor,
+  "/songs/:id": SongDetails,
+  "/songs/:id/edit": SongEditor,
 
   "/artists": Artists,
   "/artists/:key": ArtistDetails,

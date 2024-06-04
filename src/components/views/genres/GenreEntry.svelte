@@ -38,7 +38,7 @@
   <div class="genre-entry" style:--background-color={backgroundColor} style:--text-color={textColor}>
     <div class="info-container">
       <div class="name">{genre.name}</div>
-      <div class="song-count">{genre.songKeys.length} Songs</div>
+      <div class="song-count">{genre.songIds.length} Songs</div>
     </div>
     <div class="cover" style="width: {TILTED_DIMENSIONS.width}px; height: {TILTED_DIMENSIONS.height}px;">
       {#if convertedPath !== ""}

@@ -15,19 +15,19 @@
   export let transition: boolean;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
-  $: highlight = $selected.includes(song.key);
+  $: highlight = $selected.includes(song.id);
 
   /**
    * Handles when the user clicks on the entry.
    */
   function onClick(e: MouseEvent) {
     if ($inSelectMode) {
-      const titleIndex = $selected.indexOf(song.key);
+      const titleIndex = $selected.indexOf(song.id);
       if (titleIndex !== -1) {
         $selected.splice(titleIndex, 1);
         $selected = [ ...$selected ];
       } else {
-        $selected = [ ...$selected, song.key ];
+        $selected = [ ...$selected, song.id ];
       }
     } else {
       PlaybackController.playSong(song);
@@ -39,7 +39,7 @@
    */
   function select() {
     if (!$inSelectMode) {
-      $selected = [ ...$selected, song.key ];
+      $selected = [ ...$selected, song.id ];
     }
   }
   

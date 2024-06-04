@@ -326,17 +326,17 @@ export class SettingsController {
     const songMetadata: Record<string, SongMetadata> = this.settings.cache.songsMetadata;
 
     for (const playlist of playlistList) {
-      for (const key of playlist.songKeys) {
-        if (!songMetadata[key]) {
-          const index = playlist.songKeys.indexOf(key);
-          playlist.songKeys.splice(index, 1);
+      for (const id of playlist.songIds) {
+        if (!songMetadata[id]) {
+          const index = playlist.songIds.indexOf(id);
+          playlist.songIds.splice(index, 1);
         }
       }
 
     }
 
     playlists.set(playlistList);
-    queue.set(this.settings.queue.filter((key) => !!this.settings.cache.songsMetadata[key]));
+    queue.set(this.settings.queue.filter((id) => !!this.settings.cache.songsMetadata[id]));
 
 
     const audio = this.settings.audio;
@@ -439,7 +439,7 @@ export class SettingsController {
       this.updateSetting<number>("cache.numSongs", newSongs.length);
       this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", Object.fromEntries(newSongs.map((song) => {
         return [
-          song.key,
+          song.id,
           {
             "lastPlayedOn": song.lastPlayedOn,
             "numTimesPlayed": song.numTimesPlayed
@@ -553,7 +553,7 @@ export class SettingsController {
    * @param song The song to update.
    */
   static updateSongMetadata(song: Song) {
-    this.settings.cache.songsMetadata[song.key] = {
+    this.settings.cache.songsMetadata[song.id] = {
       "lastPlayedOn": song.lastPlayedOn,
       "numTimesPlayed": song.numTimesPlayed
     }

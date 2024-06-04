@@ -1,12 +1,13 @@
 import { path } from "@tauri-apps/api";
 import { albumsMap } from "../../stores/State";
 import { get } from "svelte/store";
-import { artistIsSingular, formatTime, getGenre, normalizeString } from "../utils/Utils";
+import { artistIsSingular, formatTime, getGenre, hash64, normalizeString } from "../utils/Utils";
 
 /**
  * Class representing a song.
  */
 export class Song {
+  private _id: string;
   title: string;
   album?: string;
   artist?: string;
@@ -55,10 +56,12 @@ export class Song {
     const fileNameStart = this.filePath.lastIndexOf(path.sep);
     this.fileName = this.filePath.substring(fileNameStart+1);
     this.folderPath = this.filePath.substring(0, fileNameStart);
+
+    this._id = hash64(this.fileName);
   }
 
-  get key() {
-    return this.fileName;
+  get id() {
+    return this._id;
   }
 
   /**
@@ -76,7 +79,7 @@ export class Song {
     if (this.trackNumber && this.totalTracks) {
       return this.trackNumber.toString() + " / " + this.totalTracks.toString();
     } else if (this.trackNumber && this.album && albumMap[this.album]) {
-      return this.trackNumber.toString() + " / " + albumMap[this.album].songKeys.length.toString();
+      return this.trackNumber.toString() + " / " + albumMap[this.album].songIds.length.toString();
     } else if (this.trackNumber) {
       return this.trackNumber.toString();
     } else {

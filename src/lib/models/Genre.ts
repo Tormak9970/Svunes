@@ -4,7 +4,7 @@
 export class Genre {
   name: string;
   imagePreviewPath: string | undefined;
-  songKeys: string[];
+  songIds: string[];
   artists: Set<string>;
   backgroundColor: string | undefined;
   textColor: string | undefined;
@@ -15,7 +15,7 @@ export class Genre {
   constructor(name: string, imagePreviewPath: string | undefined) {
     this.name = name;
     this.imagePreviewPath = imagePreviewPath;
-    this.songKeys = [];
+    this.songIds = [];
     this.artists = new Set();
   }
 }

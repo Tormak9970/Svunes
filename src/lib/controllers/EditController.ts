@@ -23,7 +23,7 @@ export class EditController {
       let newValue = editFields[key as keyof SongEditFields];
       
       if (key === "releaseYear" && !newValue) newValue = -1;
-      if (key === "title" && !newValue) newValue = original.key;
+      if (key === "title" && !newValue) newValue = original.fileName;
 
       // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
       original[songKey] = newValue;
@@ -68,7 +68,7 @@ export class EditController {
       AppController.loadGenresFromSongs(songsList);
 
       get(showInfoSnackbar)({ message: "Finished writing changes" });
-      LogController.log(`Finished writing edits to ${original.key}`);
+      LogController.log(`Finished writing edits to ${original.id}`);
     } else {
       get(showErrorSnackbar)({ message: "Failed to write all changes" });
     }
@@ -88,8 +88,8 @@ export class EditController {
     const songMap = get(songsMap);
     const changes: Record<string, SongEditFields> = {};
 
-    for (const songKey of original.songKeys) {
-      const song = songMap[songKey];
+    for (const id of original.songIds) {
+      const song = songMap[id];
       changes[song.filePath] = {
         "artPath": changedAlbumFields.artPath,
         "title": song.title,
@@ -112,8 +112,8 @@ export class EditController {
       const albumsList = get(albums);
       albums.set(albumsList);
 
-      for (const songKey of original.songKeys) {
-        const song = songMap[songKey];
+      for (const id of original.songIds) {
+        const song = songMap[id];
         const change = changes[song.filePath];
 
         song.artPath = change.artPath;
@@ -136,10 +136,10 @@ export class EditController {
 
   /**
    * Deletes the provided songs from the device.
-   * @param songKeys The keys of the songs to delete.
+   * @param songIds The ids of the songs to delete.
    */
-  static async deleteSongsFromDevice(songKeys: string[]) {
-    const numSongsMessage = `${songKeys.length} ${pluralize("song", songKeys.length)}`;
+  static async deleteSongsFromDevice(songIds: string[]) {
+    const numSongsMessage = `${songIds.length} ${pluralize("song", songIds.length)}`;
 
     DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
       if (shouldContinue) {
@@ -147,18 +147,18 @@ export class EditController {
         const songList = get(songs);
         const playlistList = get(playlists);
 
-        for (const key of songKeys) {
-          const index = songList.findIndex((song) => song.key === key);
+        for (const id of songIds) {
+          const index = songList.findIndex((song) => song.id === id);
           const [song] = songList.splice(index, 1);
           filePaths.push(song.filePath);
         }
 
         for (const playlist of playlistList) {
-          for (const key of songKeys) {
-            const index = playlist.songKeys.indexOf(key);
+          for (const id of songIds) {
+            const index = playlist.songIds.indexOf(id);
 
             if (index > -1) {
-              playlist.songKeys.splice(index, 1);
+              playlist.songIds.splice(index, 1);
             }
           }
         }
@@ -196,26 +196,26 @@ export class EditController {
         const songList = get(songs);
         const playlistList = get(playlists);
 
-        let deletedSongKeys: string[] = [];
+        let deletedSongIds: string[] = [];
 
         for (const albumName of albumNames) {
           const albumIndex = albumList.findIndex((album) => album.name === albumName);
           const [album] = albumList.splice(albumIndex, 1);
           
-          for (const key of album.songKeys) {
-            const songIndex = songList.findIndex((song) => song.key === key);
+          for (const id of album.songIds) {
+            const songIndex = songList.findIndex((song) => song.id === id);
             const [song] = songList.splice(songIndex, 1);
             filePaths.push(song.filePath);
-            deletedSongKeys.push(key);
+            deletedSongIds.push(id);
           }
         }
 
         for (const playlist of playlistList) {
-          for (const key of deletedSongKeys) {
-            const index = playlist.songKeys.indexOf(key);
+          for (const id of deletedSongIds) {
+            const index = playlist.songIds.indexOf(id);
 
             if (index > -1) {
-              playlist.songKeys.splice(index, 1);
+              playlist.songIds.splice(index, 1);
             }
           }
         }

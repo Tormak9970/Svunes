@@ -20,10 +20,10 @@ export class QueueController {
     let songMap = get(songsMap);
     
     if (songQueue.length) {
-      const skippedKey = songQueue.shift();
-      this.history.push(skippedKey!);
+      const skippedId = songQueue.shift();
+      this.history.push(skippedId!);
 
-      PlaybackController.playSong(songMap[skippedKey!]);
+      PlaybackController.playSong(songMap[skippedId!]);
       queue.set(songQueue);
     }
   }
@@ -36,10 +36,10 @@ export class QueueController {
     let songMap = get(songsMap);
 
     if (this.history.length > 0) {
-      let lastPlayedSongKey = this.history.pop();
+      let lastPlayedSongId = this.history.pop();
 
-      songQueue.unshift(lastPlayedSongKey!);
-      PlaybackController.playSong(songMap[lastPlayedSongKey!]);
+      songQueue.unshift(lastPlayedSongId!);
+      PlaybackController.playSong(songMap[lastPlayedSongId!]);
       
       queue.set(songQueue);
     } else {
@@ -60,8 +60,8 @@ export class QueueController {
       playlist.numTimesPlayed++;
       playlist.setLastPlayed();
       
-      for (const songKey of playlist.songKeys) {
-        songQueue.push(songKey);
+      for (const id of playlist.songIds) {
+        songQueue.push(id);
       }
     }
 
@@ -74,16 +74,16 @@ export class QueueController {
 
   /**
    * Queues the provided songs.
-   * @param songKeys The song names to queue.
+   * @param songIds The song names to queue.
    */
-  static queueSongs(songKeys: string[]) {
+  static queueSongs(songIds: string[]) {
     let songQueue = get(queue);
 
-    for (const songKey of songKeys) {
-      songQueue.push(songKey);
+    for (const id of songIds) {
+      songQueue.push(id);
     }
 
-    get(showInfoSnackbar)({ message: `Queued ${songKeys.length} ${pluralize("song", songKeys.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${songIds.length} ${pluralize("song", songIds.length)}`});
     
     queue.set(songQueue);
   }
@@ -101,8 +101,8 @@ export class QueueController {
       album.numTimesPlayed++;
       album.setLastPlayed();
       
-      for (const songKey of album.songKeys) {
-        songQueue.push(songKey);
+      for (const id of album.songIds) {
+        songQueue.push(id);
       }
     }
 
@@ -122,8 +122,8 @@ export class QueueController {
     let songQueue = get(queue);
 
     for (const artistName of artistNames) {
-      for (const songKey of artistMap[artistName].songKeys) {
-        songQueue.push(songKey);
+      for (const id of artistMap[artistName].songIds) {
+        songQueue.push(id);
       }
     }
     
@@ -134,12 +134,12 @@ export class QueueController {
 
   /**
    * Dequeues the provided song.
-   * @param songKey The song key to dequeue.
+   * @param songId The song id to dequeue.
    */
-  static dequeueSong(songKey: string) {
+  static dequeueSong(songId: string) {
     let songQueue = get(queue);
 
-    const songIndex = songQueue.findIndex((key) => key === songKey);
+    const songIndex = songQueue.findIndex((id) => id === songId);
     if (songIndex !== -1) songQueue.splice(songIndex, 1);
     
     queue.set(songQueue);
@@ -158,8 +158,8 @@ export class QueueController {
       playlist.numTimesPlayed++;
       playlist.setLastPlayed();
       
-      for (const songKey of playlist.songKeys.reverse()) {
-        songQueue.unshift(songKey);
+      for (const id of playlist.songIds.reverse()) {
+        songQueue.unshift(id);
       }
     }
 
@@ -172,16 +172,16 @@ export class QueueController {
 
   /**
    * Queues the provided songs right after the current song.
-   * @param songKeys The song keys to queue.
+   * @param songIds The song ids to queue.
    */
-  static playSongsNext(songKeys: string[]) {
+  static playSongsNext(songIds: string[]) {
     let songQueue = get(queue);
 
-    for (const songKey of songKeys.reverse()) {
-      songQueue.unshift(songKey);
+    for (const songId of songIds.reverse()) {
+      songQueue.unshift(songId);
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${songKeys.length} ${pluralize("song", songKeys.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${songIds.length} ${pluralize("song", songIds.length)}`});
     
     queue.set(songQueue);
   }
@@ -199,8 +199,8 @@ export class QueueController {
       album.numTimesPlayed++;
       album.setLastPlayed();
       
-      for (const songKey of album.songKeys.reverse()) {
-        songQueue.unshift(songKey);
+      for (const id of album.songIds.reverse()) {
+        songQueue.unshift(id);
       }
     }
     
@@ -220,8 +220,8 @@ export class QueueController {
     let songQueue = get(queue);
 
     for (const artistName of artistNames.reverse()) {
-      for (const songKey of artistMap[artistName].songKeys.reverse()) {
-        songQueue.unshift(songKey);
+      for (const id of artistMap[artistName].songIds.reverse()) {
+        songQueue.unshift(id);
       }
     }
     

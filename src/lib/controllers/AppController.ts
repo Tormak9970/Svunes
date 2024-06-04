@@ -70,14 +70,14 @@ export class AppController {
         if (!albumMap.get(song.album)) {
           const metadata = albumsMetadataMap[song.album];
           const album = new Album(song.album, song.artPath, song.albumArtist, song.releaseYear, song.genre, metadata?.lastPlayedOn, metadata?.numTimesPlayed);
-          album.songKeys.push(song.key);
+          album.songIds.push(song.id);
           
           if (song.artist) album.artists.add(song.artist);
   
           albumMap.set(album.name, album);
         } else {
           const album = albumMap.get(song.album)!;
-          album.songKeys.push(song.key);
+          album.songIds.push(song.id);
           
           if (song.artist) album.artists.add(song.artist);
           if (!album.albumArtist) album.albumArtist = song.albumArtist;
@@ -106,7 +106,7 @@ export class AppController {
           if (!artistMap.get(artistName)) {
             const metadata = artistsMetadataMap[artistName];
             const artist = new Artist(artistName, metadata?.imagePath ?? song.artPath);
-            artist.songKeys.push(song.key);
+            artist.songIds.push(song.id);
             
             if (song.album && song.albumArtist?.includes(artistName)) artist.albumNames.add(song.album);
             if (song.genre) artist.genres.add(song.genre);
@@ -114,7 +114,7 @@ export class AppController {
             artistMap.set(artistName, artist);
           } else {
             const artist = artistMap.get(artistName)!;
-            artist.songKeys.push(song.key);
+            artist.songIds.push(song.id);
   
             if (song.album && song.albumArtist?.includes(artistName)) artist.albumNames.add(song.album);
             if (song.genre) artist.genres.add(song.genre);
@@ -145,7 +145,7 @@ export class AppController {
 
       if (!genreMap.get(songGenre)) {
         const genre = new Genre(songGenre, song.artPath);
-        genre.songKeys.push(song.key);
+        genre.songIds.push(song.id);
 
         if (song.artist) {
           for (const artist of getAllArtistNames(song.artist)) {
@@ -156,7 +156,7 @@ export class AppController {
         genreMap.set(songGenre, genre);
       } else {
         const genre = genreMap.get(songGenre)!;
-        genre.songKeys.push(song.key);
+        genre.songIds.push(song.id);
 
         if (!genre.imagePreviewPath) genre.imagePreviewPath = song.artPath;
         if (song.artist) {
@@ -188,7 +188,7 @@ export class AppController {
       const songsJson = await RustInterop.readMusicFolders(musicFolders, blacklistedFolders, maxLength);
       const loadedSongs: Song[] = songsJson.map((json) => {
         const song = Song.fromJSON(json);
-        const metadata = songsMetadataMap[song.key];
+        const metadata = songsMetadataMap[song.id];
         
         if (metadata) {
           song.lastPlayedOn = metadata.lastPlayedOn ?? "Never";

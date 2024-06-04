@@ -64,7 +64,7 @@
             </div>
           {/if}
           {#if $playlistSortOrder === "Alphabetical" || $playlistSortOrder === "Song Count"}
-            <div in:fade={{ duration: 200 }}>{playlist.songKeys.length === 1 ? `1 Song` : `${playlist.songKeys.length} Songs`} • {playlist.displayLength()}</div>
+            <div in:fade={{ duration: 200 }}>{playlist.songIds.length === 1 ? `1 Song` : `${playlist.songIds.length} Songs`} • {playlist.displayLength()}</div>
           {:else if $playlistSortOrder === "Most Played"}
             <div in:fade={{ duration: 200 }}>Played {playlist.numTimesPlayed} Times</div>
           {:else if $playlistSortOrder === "Last Played"}

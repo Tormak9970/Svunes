@@ -27,7 +27,6 @@
   import PlayButton from "../../components/views/utils/PlayButton.svelte";
   import Marquee from "../../components/layout/Marquee.svelte";
   import { EditController } from "../../lib/controllers/EditController";
-    import { onMount } from "svelte";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 
@@ -38,7 +37,7 @@
   $: artist = album?.albumArtist ? $artistsMap[album?.albumArtist] : undefined;
   $: artistOtherAlbums = Array.from(artist?.albumNames ?? []).filter((name) => name !== album?.name).map((name) => $albumsMap[name]);
   
-  $: songs = album?.songKeys?.map((key) => $songsMap[key]);
+  $: songs = album?.songIds?.map((id) => $songsMap[id]);
   $: sortedSongs = songs ? sortSongs(songs, albumSortMethod) : [];
 
   $: backgroundColor = $useAlbumColors ? album?.backgroundColor : undefined;

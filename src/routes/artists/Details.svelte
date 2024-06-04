@@ -37,7 +37,7 @@
   $: artist = params.key ? $artistsMap[params!.key!] : undefined;
   $: artistAlbums = Array.from(artist?.albumNames ?? []).map((name) => $albumsMap[name]);
 
-  $: songs = artist?.songKeys?.map((key) => $songsMap[key]);
+  $: songs = artist?.songIds?.map((id) => $songsMap[id]);
   $: sortedSongs = songs ? sortSongs(songs, artistSortMethod) : [];
 
   $: allSimilarArtists = artist?.similarArtists;
@@ -159,7 +159,7 @@
         <Marquee pauseOnHover speed={50} gap={100}>
           <h3 class="name">{artist?.name}</h3>
         </Marquee>
-        <div class="other">{`${artist?.albumNames.size} ${pluralize("Album", artist?.albumNames.size)} • `}{`${artist?.songKeys.length} ${pluralize("Song", artist?.songKeys.length)} • `}{artist?.displayArtistSongLength()}</div>
+        <div class="other">{`${artist?.albumNames.size} ${pluralize("Album", artist?.albumNames.size)} • `}{`${artist?.songIds.length} ${pluralize("Song", artist?.songIds.length)} • `}{artist?.displayArtistSongLength()}</div>
       </div>
       {#key rerenderArt}
         <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">

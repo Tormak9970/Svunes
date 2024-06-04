@@ -77,7 +77,7 @@
           {:else if $albumSortOrder === "Length"}
             <div in:fade={{ duration: 200 }}>{album.displayAlbumLength()}</div>
           {:else if $albumSortOrder === "Track Count"}
-            <div in:fade={{ duration: 200 }}>{album.songKeys.length + " tracks"}</div>
+            <div in:fade={{ duration: 200 }}>{album.songIds.length + " tracks"}</div>
           {:else if $albumSortOrder === "Most Played"}
             <div in:fade={{ duration: 200 }}>{album.numTimesPlayed}</div>
           {:else if $albumSortOrder === "Last Played"}

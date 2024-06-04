@@ -15,7 +15,7 @@
   import type { Artist } from "../../lib/models/Artist";
   import { afterUpdate } from "svelte";
 
-  const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songKeys.length}`;
+  const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songIds.length}`;
 
   let gridSize = $artistGridSize;
 
@@ -32,7 +32,7 @@
     } else if (sortOrder === "Album Count") {
       sorted = artistsList.sort((a: Artist, b: Artist) => b.albumNames.size - a.albumNames.size);
     } else if (sortOrder === "Track Count") {
-      sorted = artistsList.sort((a: Artist, b: Artist) => b.songKeys.length - a.songKeys.length);
+      sorted = artistsList.sort((a: Artist, b: Artist) => b.songIds.length - a.songIds.length);
     } else {
       LogController.error("Unkown song sort order!");
       sorted = [];

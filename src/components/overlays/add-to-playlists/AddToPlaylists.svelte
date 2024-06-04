@@ -23,7 +23,7 @@
   }
 
   /**
-   * Gets the song keys from the current selection.
+   * Gets the song ids from the current selection.
    */
   function getSongsFromSelected(): string[] {
     let songNames: string[] = [];
@@ -33,7 +33,7 @@
         if ($location === "/playlists") {
           for (const playlistName of $selected) {
             const playlist = $playlistsMap[playlistName];
-            songNames.push(...playlist.songKeys);
+            songNames.push(...playlist.songIds);
           }
         } else {
           songNames = $selected;
@@ -44,7 +44,7 @@
         if ($location === "/albums") {
           for (const albumName of $selected) {
             const album = $albumsMap[albumName];
-            songNames.push(...album.songKeys);
+            songNames.push(...album.songIds);
           }
         } else {
           songNames = $selected;
@@ -55,7 +55,7 @@
         if ($location === "/artists") {
           for (const artistName of $selected) {
             const artist = $artistsMap[artistName];
-            songNames.push(...artist.songKeys);
+            songNames.push(...artist.songIds);
           }
         } else {
           songNames = $selected;
@@ -79,7 +79,7 @@
   }
 
   /**
-   * Gets the song keys from the selected type.
+   * Gets the song ids from the selected type.
    */
   function getSongs(): string[] {
     if ($selected.length > 0) {
@@ -87,13 +87,13 @@
     } else if ($songToAdd) {
       return [ $songToAdd ];
     } else if ($playlistToAdd) {
-      return $playlistsMap[$playlistToAdd].songKeys;
+      return $playlistsMap[$playlistToAdd].songIds;
     } else if ($albumToAdd) {
-      return $albumsMap[$albumToAdd].songKeys;
+      return $albumsMap[$albumToAdd].songIds;
     } else if ($artistToAdd) {
-      return $artistsMap[$artistToAdd].songKeys;
+      return $artistsMap[$artistToAdd].songIds;
     } else if ($genreToAdd) {
-      return $genresMap[$genreToAdd].songKeys;
+      return $genresMap[$genreToAdd].songIds;
     } else {
       LogController.error("Shouldn't be able to get here!");
       return [];
@@ -109,8 +109,8 @@
     for (const playlistName of selectedPlaylists) {
       const playlist = $playlistsMap[playlistName];
 
-      for (const songKey of songs) {
-        if (!playlist.songKeys.includes(songKey)) playlist.songKeys.push(songKey);
+      for (const id of songs) {
+        if (!playlist.songIds.includes(id)) playlist.songIds.push(id);
       }
     }
 

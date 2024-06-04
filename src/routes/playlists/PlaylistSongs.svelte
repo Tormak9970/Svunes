@@ -12,7 +12,7 @@
 
   export let playlist: Playlist;
 
-  $: songs = playlist.songKeys.map((key) => $songsMap[key]) ?? [];
+  $: songs = playlist.songIds.map((id) => $songsMap[id]) ?? [];
   let oldLength = 0;
   let items: { id: string, song: Song }[] = [];
 
@@ -39,10 +39,10 @@
    */
   function finalize(e: any) {
     items = e.detail.items;
-    const newKeys = items.map((item) => item.song.key);
+    const newIds = items.map((item) => item.song.id);
     
-    if (JSON.stringify(newKeys) !== JSON.stringify(playlist.songKeys)) {
-      playlist.songKeys = newKeys;
+    if (JSON.stringify(newIds) !== JSON.stringify(playlist.songIds)) {
+      playlist.songIds = newIds;
       $playlists = [ ...$playlists ];
     }
   }
@@ -52,7 +52,7 @@
       oldLength = songs.length;
       items = songs.map((song) => {
         return {
-          id: song.key,
+          id: song.id,
           song: song
         }
       });

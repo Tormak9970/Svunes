@@ -29,8 +29,8 @@
   import MenuItem from "../../components/layout/MenuItem.svelte";
   import { EditController } from "../../lib/controllers/EditController";
   
-  export let params: { key?: string } = {};
-  $: song = params.key ? $songsMap[params.key] : null;
+  export let params: { id?: string } = {};
+  $: song = params.id ? $songsMap[params.id] : null;
 
   let isAtTop = true;
 
@@ -52,21 +52,21 @@
    * Plays this song next.
    */
   function playNext() {
-    QueueController.playSongsNext([song!.key]);
+    QueueController.playSongsNext([song!.id]);
   }
 
   /**
    * Queues this song.
    */
   function queueSong() {
-    QueueController.queueSongs([song!.key]);
+    QueueController.queueSongs([song!.id]);
   }
 
   /**
    * Opens the add to playlist dialog with this song set to be added.
    */
   function addToPlaylist() {
-    $songToAdd = song!.key;
+    $songToAdd = song!.id;
     $showAddToPlaylist = true;
   }
 
@@ -88,21 +88,21 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    push(`/songs/${song!.key}/edit`);
+    push(`/songs/${song!.id}/edit`);
   }
 
   /**
    * Opens the platform's share ui.
    */
   function share() {
-    AppController.share([song!.key]);
+    AppController.share([song!.id]);
   }
 
   /**
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    EditController.deleteSongsFromDevice([song!.key]);
+    EditController.deleteSongsFromDevice([song!.id]);
     replace("/songs");
   }
 </script>

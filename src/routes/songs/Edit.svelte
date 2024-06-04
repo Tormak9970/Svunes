@@ -14,10 +14,10 @@
   import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
   import { pop } from "svelte-spa-router";
   import { EditController } from "../../lib/controllers/EditController";
-    import { showWritingChanges } from "../../stores/Overlays";
+  import { showWritingChanges } from "../../stores/Overlays";
 
-  export let params: { key?: string } = {};
-  $: song = params.key ? $songsMap[params.key] : null;
+  export let params: { id?: string } = {};
+  $: song = params.id ? $songsMap[params.id] : null;
   
   let artPath: string | undefined;
 
@@ -74,7 +74,7 @@
     if (title !== "") {
       const editFields: SongEditFields = {
         "artPath": artPath,
-        "title": title === song?.key ? undefined : title,
+        "title": title === song?.fileName ? undefined : title,
         "album": album !== "" ? album : undefined,
         "composer": composer !== "" ? composer : undefined,
         "albumArtist": albumArtist !== "" ? albumArtist : undefined,
@@ -84,7 +84,7 @@
         "trackNumber": trackNumber && trackNumber !== "" ? parseInt(trackNumber) : undefined
       }
       $showWritingChanges = true;
-      EditController.editSong($songsMap[params!.key!], editFields).then(() => {
+      EditController.editSong($songsMap[params!.id!], editFields).then(() => {
         canSave = false;
         $showWritingChanges = false;
         back();

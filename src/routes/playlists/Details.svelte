@@ -118,7 +118,7 @@
             <h3 class="name">{playlist?.name}</h3>
           </Marquee>
           <div class="other">
-            <div>{playlist?.songKeys?.length === 1 ? `1 Song` : `${playlist?.songKeys?.length} Songs`} • {playlist?.displayLength()}</div>
+            <div>{playlist?.songIds?.length === 1 ? `1 Song` : `${playlist?.songIds?.length} Songs`} • {playlist?.displayLength()}</div>
           </div>
         </div>
         <div class="buttons">

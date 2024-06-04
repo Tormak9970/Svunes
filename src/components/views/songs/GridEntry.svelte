@@ -18,7 +18,7 @@
   export let song: Song;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
-  $: highlighted = $selected.includes(song.key);
+  $: highlighted = $selected.includes(song.id);
   $: size = $songGridSize === GridSize.MEDIUM ? 40 : 60;
 
   /**
@@ -26,12 +26,12 @@
    */
   function onClick() {
     if ($inSelectMode) {
-      const titleIndex = $selected.indexOf(song.key);
+      const titleIndex = $selected.indexOf(song.id);
       if (titleIndex !== -1) {
         $selected.splice(titleIndex, 1);
         $selected = [ ...$selected ];
       } else {
-        $selected = [ ...$selected, song.key ];
+        $selected = [ ...$selected, song.id ];
       }
     } else {
       PlaybackController.playSong(song);
@@ -43,7 +43,7 @@
    */
   function select() {
     if (!$inSelectMode) {
-      $selected = [ ...$selected, song.key ];
+      $selected = [ ...$selected, song.id ];
     }
   }
   

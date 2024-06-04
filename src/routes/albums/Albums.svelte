@@ -15,7 +15,7 @@
   import type { Album } from "../../lib/models/Album";
   import { afterUpdate } from "svelte";
 
-  const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songKeys.length}${entry.data.lastPlayedOn}`;
+  const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 
   let gridSize = $albumGridSize;
 
@@ -36,7 +36,7 @@
     } else if (sortOrder === "Length") {
       sorted = albumsList.sort((a: Album, b: Album) => b.albumLength - a.albumLength);
     } else if (sortOrder === "Track Count") {
-      sorted = albumsList.sort((a: Album, b: Album) => b.songKeys.length - a.songKeys.length);
+      sorted = albumsList.sort((a: Album, b: Album) => b.songIds.length - a.songIds.length);
     } else if (sortOrder === "Most Played") {
       sorted = albumsList.sort((a: Album, b: Album) => b.numTimesPlayed - a.numTimesPlayed);
     } else if (sortOrder === "Last Played") {

@@ -12,7 +12,7 @@
   import GridEntry from "../../components/views/artists/GridEntry.svelte";
   import type { Artist } from "../../lib/models/Artist";
   
-  const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songKeys.length}`;
+  const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songIds.length}`;
 
   export let params: { key?: string } = {};
   $: artist = params.key ? $artistsMap[params!.key!] : undefined;

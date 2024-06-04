@@ -25,7 +25,7 @@
     const key = $location.slice(11).replaceAll("%20", " ");;
     const playlist = $playlistsMap[key];
 
-    playlist.removeSong(song.key);
+    playlist.removeSong(song.id);
     
     $playlists = [ ...$playlists ];
     closeOptions();
@@ -35,7 +35,7 @@
    * Plays this song next.
    */
   function playNext() {
-    QueueController.playSongsNext([song!.key]);
+    QueueController.playSongsNext([song!.id]);
     closeOptions();
   }
 
@@ -43,7 +43,7 @@
    * Queues this song.
    */
   function queueSong() {
-    QueueController.queueSongs([song!.key]);
+    QueueController.queueSongs([song!.id]);
     closeOptions();
   }
 
@@ -51,7 +51,7 @@
    * Opens the add to playlist dialog with this song set to be added.
    */
   function addToPlaylist() {
-    $songToAdd = song!.key;
+    $songToAdd = song!.id;
     $showAddToPlaylist = true;
     closeOptions();
   }
@@ -76,7 +76,7 @@
    * Shows the song details overlay.
    */
   function showDetails() {
-    push(`/songs/${song!.key}`);
+    push(`/songs/${song!.id}`);
     closeOptions();
   }
 
@@ -84,7 +84,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    push(`/songs/${song!.key}/edit`);
+    push(`/songs/${song!.id}/edit`);
     closeOptions();
   }
 
@@ -92,7 +92,7 @@
    * Opens the platform's share ui.
    */
   function share() {
-    AppController.share([song!.key]);
+    AppController.share([song!.id]);
     closeOptions();
   }
 
@@ -100,7 +100,7 @@
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
-    EditController.deleteSongsFromDevice([song!.key]);
+    EditController.deleteSongsFromDevice([song!.id]);
     closeOptions();
     if ($location.startsWith("/songs/")) replace("/songs");
   }

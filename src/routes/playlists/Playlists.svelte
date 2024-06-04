@@ -13,7 +13,7 @@
   import GridEntry from "../../components/views/playlists/GridEntry.svelte";
   import { afterUpdate } from "svelte";
 
-  const keyFunction = (entry: { data: Playlist }) => `${entry.data.name}${entry.data.songKeys.length}${entry.data.numTimesPlayed}${entry.data.lastPlayedOn}`;
+  const keyFunction = (entry: { data: Playlist }) => `${entry.data.name}${entry.data.songIds.length}${entry.data.numTimesPlayed}${entry.data.lastPlayedOn}`;
 
   let gridSize = $playlistGridSize;
 
@@ -29,7 +29,7 @@
     if (sortOrder === "Alphabetical") {
       sorted = playlistsList.sort(stringSort<Playlist>("name"));
     } else if (sortOrder === "Song Count") {
-      sorted = playlistsList.sort((a: Playlist, b: Playlist) => b.songKeys.length - a.songKeys.length);
+      sorted = playlistsList.sort((a: Playlist, b: Playlist) => b.songIds.length - a.songIds.length);
     } else if (sortOrder === "Most Played") {
       sorted = playlistsList.sort((a: Playlist, b: Playlist) => b.numTimesPlayed - a.numTimesPlayed);
     } else if (sortOrder === "Last Played") {

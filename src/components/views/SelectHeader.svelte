@@ -31,7 +31,7 @@
         if ($location === "/playlists") {
           for (const playlistName of $selected) {
             const playlist = $playlistsMap[playlistName];
-            songNames.push(...playlist.songKeys);
+            songNames.push(...playlist.songIds);
           }
         } else {
           songNames = $selected;
@@ -42,7 +42,7 @@
         if ($location === "/albums") {
           for (const albumName of $selected) {
             const album = $albumsMap[albumName];
-            songNames.push(...album.songKeys);
+            songNames.push(...album.songIds);
           }
         } else {
           songNames = $selected;
@@ -53,7 +53,7 @@
         if ($location === "/artists") {
           for (const artistName of $selected) {
             const artist = $artistsMap[artistName];
-            songNames.push(...artist.songKeys);
+            songNames.push(...artist.songIds);
           }
         } else {
           songNames = $selected;
@@ -188,7 +188,7 @@
           $selected = $playlists.map((playlist) => playlist.name);
         } else {
           const playlistName = $location.substring(11).replaceAll("%20", " ");
-          $selected = [ ...$playlistsMap[playlistName].songKeys ];
+          $selected = [ ...$playlistsMap[playlistName].songIds ];
         }
         break;
       }
@@ -197,12 +197,12 @@
           $selected = $albums.map((album) => album.name);
         } else {
           const albumName = $location.substring(8).replaceAll("%20", " ");
-          $selected = [ ...$albumsMap[albumName].songKeys ];
+          $selected = [ ...$albumsMap[albumName].songIds ];
         }
         break;
       }
       case View.SONGS: {
-        $selected = $songs.map((song) => song.key);
+        $selected = $songs.map((song) => song.id);
         break;
       }
       case View.ARTISTS: {
@@ -210,13 +210,13 @@
           $selected = $artists.map((artist) => artist.name);
         } else {
           const artistName = $location.substring(9).replaceAll("%20", " ");
-          $selected = [ ...$artistsMap[artistName].songKeys ];
+          $selected = [ ...$artistsMap[artistName].songIds ];
         }
         break;
       }
       case View.GENRES: {
         const genreName = $location.substring(8).replaceAll("%20", " ");
-        $selected = [ ...$genresMap[genreName].songKeys ];
+        $selected = [ ...$genresMap[genreName].songIds ];
         break;
       }
       case View.SEARCH:
@@ -297,8 +297,8 @@
     const playlistName = $location.substring(11).replaceAll("%20", " ");
     const playlist = $playlistsMap[playlistName];
     
-    for (const songKey of $selected) {
-      playlist.removeSong(songKey);
+    for (const id of $selected) {
+      playlist.removeSong(id);
     }
 
     $playlists = [ ...$playlists ];

@@ -28,7 +28,7 @@
               <Icon icon={Keep} width="16px" height="16px" />
             </div>
           {/if}
-          <div>{playlist.songKeys.length === 1 ? `1 Song` : `${playlist.songKeys.length} Songs`}</div>
+          <div>{playlist.songIds.length === 1 ? `1 Song` : `${playlist.songIds.length} Songs`}</div>
         </div>
       </div>
     </div>

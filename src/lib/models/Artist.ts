@@ -12,7 +12,7 @@ export class Artist {
   imagePath: string | undefined;
   albumNames: Set<string>;
   genres: Set<string>;
-  songKeys: string[];
+  songIds: string[];
   
   backgroundColor: string | undefined;
 
@@ -25,7 +25,7 @@ export class Artist {
     this.setBackgroundFromImage();
     this.albumNames = new Set();
     this.genres = new Set();
-    this.songKeys = [];
+    this.songIds = [];
   }
 
   /**
@@ -48,11 +48,11 @@ export class Artist {
   }
 
   get artistSongsLength() {
-    const songKeysMap = get(songsMap);
+    const songMap = get(songsMap);
     let totalLength = 0;
 
-    for (const songKey of this.songKeys) {
-      const song = songKeysMap[songKey];
+    for (const id of this.songIds) {
+      const song = songMap[id];
       totalLength += song.length;
     }
 

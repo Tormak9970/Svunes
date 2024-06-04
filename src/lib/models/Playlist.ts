@@ -11,7 +11,7 @@ export class Playlist {
   name: string;
   description: string;
   imagePath?: string;
-  songKeys: string[];
+  songIds: string[];
   dateCreated: string;
   lastPlayedOn: string;
   numTimesPlayed: number;
@@ -20,11 +20,11 @@ export class Playlist {
   /**
    * Creates a new playlist.
    */
-  constructor(pinned: boolean, name: string, description: string, songKeys: string[], isUserPlaylist: boolean, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
+  constructor(pinned: boolean, name: string, description: string, songIds: string[], isUserPlaylist: boolean, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
     this.pinned = pinned;
     this.name = name;
     this.description = description;
-    this.songKeys = songKeys;
+    this.songIds = songIds;
     this.isUserPlaylist = isUserPlaylist;
     this.dateCreated = dateCreated ?? (new Date()).toISOString();
     this.lastPlayedOn = lastPlayedOn ?? "Never";
@@ -36,8 +36,8 @@ export class Playlist {
     let totalLength = 0;
 
     if (Object.keys(songMap).length > 0) {
-      for (const songKey of this.songKeys) {
-        const song = songMap[songKey];
+      for (const id of this.songIds) {
+        const song = songMap[id];
         totalLength += song.length;
       }
     }
@@ -64,15 +64,15 @@ export class Playlist {
    * @param song The song to add.
    */
   addSong(song: Song) {
-    this.songKeys.push(song.key);
+    this.songIds.push(song.id);
   }
 
   /**
    * Removes a song from the playlist.
-   * @param songKey The key of the song to remove.
+   * @param songId The id of the song to remove.
    */
-  removeSong(songKey: string) {
-    this.songKeys.splice(this.songKeys.indexOf(songKey), 1);
+  removeSong(songId: string) {
+    this.songIds.splice(this.songIds.indexOf(songId), 1);
   }
 
   /**
@@ -81,6 +81,6 @@ export class Playlist {
    * @returns The Playlist object.
    */
   static fromJSON(json: any): Playlist {
-    return new Playlist(json.pinned, json.name, json.description, json.songKeys, json.isUserPlaylist, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
+    return new Playlist(json.pinned, json.name, json.description, json.songIds, json.isUserPlaylist, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
   }
 }

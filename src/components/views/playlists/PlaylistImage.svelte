@@ -16,10 +16,10 @@
 
   let albumArtLUT: Record<string, number> = {};
 
-  $: if (playlist.songKeys) {
+  $: if (playlist.songIds) {
     albumArtLUT = {};
 
-    for (const songName of playlist.songKeys) {
+    for (const songName of playlist.songIds) {
       const song = $songsMap[songName];
 
       if (song?.album) {
