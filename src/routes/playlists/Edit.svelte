@@ -13,8 +13,8 @@
   import { pop } from "svelte-spa-router";
   import { EditController } from "../../lib/controllers/EditController";
 
-  export let params: { key?: string } = {};
-  $: playlist = params.key ? $playlistsMap[params.key] : null;
+  export let params: { id?: string } = {};
+  $: playlist = params.id ? $playlistsMap[params.id] : null;
   
   let imagePath: string | undefined;
   let playlistName: string;
@@ -48,7 +48,7 @@
    */
   function saveChanges() {
     if (playlistName !== "") {
-      const original = $playlistsMap[params.key!];
+      const original = $playlistsMap[params.id!];
       original.name = playlistName;
       original.imagePath = imagePath;
       $playlists = [ ...$playlists ];

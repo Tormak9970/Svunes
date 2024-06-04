@@ -1,6 +1,7 @@
 <script lang="ts">
   import { LogController } from "../../lib/controllers/utils/LogController";
   import { Playlist } from "../../lib/models/Playlist";
+  import { hash64 } from "../../lib/utils/Utils";
   import { showCreatePlaylist, songsForNewPlaylist } from "../../stores/Overlays";
   import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "../../stores/State";
   import Button from "../interactables/Button.svelte";
@@ -12,12 +13,12 @@
    * Creates a new playlist
    */
   function createPlaylist() {
-    if ($playlistsMap[newPlaylistName]) {
+    if ($playlistsMap[hash64(newPlaylistName)]) {
       $showErrorSnackbar({ message: "Playlist with that name already exists", faster: true });
       return;
     }
 
-    const playlist = new Playlist(false, newPlaylistName, "", [ ...$songsForNewPlaylist ], true);
+    const playlist = new Playlist(undefined, false, newPlaylistName, "", [ ...$songsForNewPlaylist ], true);
     $playlists = [ ...$playlists, playlist ];
 
     $songsForNewPlaylist = [];

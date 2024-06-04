@@ -31,8 +31,8 @@
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
-          for (const playlistName of $selected) {
-            const playlist = $playlistsMap[playlistName];
+          for (const playlistId of $selected) {
+            const playlist = $playlistsMap[playlistId];
             songNames.push(...playlist.songIds);
           }
         } else {
@@ -106,8 +106,8 @@
   function addToSelected() {
     const songs = getSongs();
 
-    for (const playlistName of selectedPlaylists) {
-      const playlist = $playlistsMap[playlistName];
+    for (const playlistId of selectedPlaylists) {
+      const playlist = $playlistsMap[playlistId];
 
       for (const id of songs) {
         if (!playlist.songIds.includes(id)) playlist.songIds.push(id);
@@ -134,13 +134,13 @@
     close();
   }
 
-  function togglePlaylistInclude(playlistName: string) {
-    const index = selectedPlaylists.indexOf(playlistName);
+  function togglePlaylistInclude(playlistId: string) {
+    const index = selectedPlaylists.indexOf(playlistId);
 
     if (index !== -1) {
       selectedPlaylists.splice(index, 1);
     } else {
-      selectedPlaylists.push(playlistName);
+      selectedPlaylists.push(playlistId);
     }
   }
 
@@ -171,7 +171,7 @@
         <Button type="tonal" on:click={setCreateNewPlaylist}>New Playlist</Button>
         <div class="playlists">
           {#each playlistToRender as playlist}
-            <PlaylistEntry playlist={playlist} checked={false} on:click={() => togglePlaylistInclude(playlist.name)} />
+            <PlaylistEntry playlist={playlist} checked={false} on:click={() => togglePlaylistInclude(playlist.id)} />
           {/each}
         </div>
       </div>

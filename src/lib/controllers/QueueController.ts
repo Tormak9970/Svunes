@@ -49,14 +49,14 @@ export class QueueController {
 
   /**
    * Queues the provided playlists.
-   * @param playlistNames The playlist names to queue.
+   * @param playlistIds The playlist ids to queue.
    */
-  static queuePlaylists(playlistNames: string[]) {
+  static queuePlaylists(playlistIds: string[]) {
     let playlistMap = get(playlistsMap);
     let songQueue = get(queue);
 
-    for (const playlistName of playlistNames) {
-      const playlist = playlistMap[playlistName];
+    for (const playlistId of playlistIds) {
+      const playlist = playlistMap[playlistId];
       playlist.numTimesPlayed++;
       playlist.setLastPlayed();
       
@@ -67,7 +67,7 @@ export class QueueController {
 
     playlists.set([ ...get(playlists) ]);
 
-    get(showInfoSnackbar)({ message: `Queued ${playlistNames.length} ${pluralize("playlist", playlistNames.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${playlistIds.length} ${pluralize("playlist", playlistIds.length)}`});
     
     queue.set(songQueue);
   }
@@ -147,14 +147,14 @@ export class QueueController {
 
   /**
    * Queues the provided playlists right after the current song.
-   * @param playlistNames The playlist names to queue.
+   * @param playlistIds The playlist ids to queue.
    */
-  static playPlaylistsNext(playlistNames: string[]) {
+  static playPlaylistsNext(playlistIds: string[]) {
     let playlistMap = get(playlistsMap);
     let songQueue = get(queue);
 
-    for (const playlistName of playlistNames.reverse()) {
-      const playlist = playlistMap[playlistName];
+    for (const playlistId of playlistIds.reverse()) {
+      const playlist = playlistMap[playlistId];
       playlist.numTimesPlayed++;
       playlist.setLastPlayed();
       
@@ -165,7 +165,7 @@ export class QueueController {
 
     playlists.set([ ...get(playlists) ]);
     
-    get(showInfoSnackbar)({ message: `Queued ${playlistNames.length} ${pluralize("playlist", playlistNames.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${playlistIds.length} ${pluralize("playlist", playlistIds.length)}`});
     
     queue.set(songQueue);
   }

@@ -1,12 +1,13 @@
 import { get } from "svelte/store";
 import { songsMap } from "../../stores/State";
-import { formatTime } from "../utils/Utils";
+import { formatTime, hash64 } from "../utils/Utils";
 import type { Song } from "./Song";
 
 /**
  * Represents a user playlist.
  */
 export class Playlist {
+  private _id: string;
   pinned: boolean;
   name: string;
   description: string;
@@ -20,7 +21,7 @@ export class Playlist {
   /**
    * Creates a new playlist.
    */
-  constructor(pinned: boolean, name: string, description: string, songIds: string[], isUserPlaylist: boolean, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
+  constructor(id: string | undefined, pinned: boolean, name: string, description: string, songIds: string[], isUserPlaylist: boolean, dateCreated?: string, lastPlayedOn?: string, numTimesPlayed?: number) {
     this.pinned = pinned;
     this.name = name;
     this.description = description;
@@ -29,6 +30,7 @@ export class Playlist {
     this.dateCreated = dateCreated ?? (new Date()).toISOString();
     this.lastPlayedOn = lastPlayedOn ?? "Never";
     this.numTimesPlayed = numTimesPlayed ?? 0;
+    this._id = id ?? hash64(this.name);
   }
   
   get length() {
@@ -43,6 +45,10 @@ export class Playlist {
     }
 
     return totalLength;
+  }
+
+  get id() {
+    return this._id;
   }
 
   /**
@@ -81,6 +87,6 @@ export class Playlist {
    * @returns The Playlist object.
    */
   static fromJSON(json: any): Playlist {
-    return new Playlist(json.pinned, json.name, json.description, json.songIds, json.isUserPlaylist, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
+    return new Playlist(json._id, json.pinned, json.name, json.description, json.songIds, json.isUserPlaylist, json.dateCreated, json.lastPlayedOn, json.numTimesPlayed);
   }
 }

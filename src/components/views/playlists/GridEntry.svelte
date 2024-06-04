@@ -17,22 +17,22 @@
 
   export let playlist: Playlist;
 
-  $: highlighted = $selected.includes(playlist.name);
+  $: highlighted = $selected.includes(playlist.id);
 
   /**
    * Handles when the user clicks on the entry.
    */
   function onClick() {
     if ($inSelectMode) {
-      const nameIndex = $selected.indexOf(playlist.name);
+      const nameIndex = $selected.indexOf(playlist.id);
       if (nameIndex !== -1) {
         $selected.splice(nameIndex, 1);
         $selected = [ ...$selected ];
       } else {
-        $selected = [ ...$selected, playlist.name ];
+        $selected = [ ...$selected, playlist.id ];
       }
     } else {
-      push(`/playlists/${playlist.name}`);
+      push(`/playlists/${playlist.id}`);
     }
   }
 
@@ -41,7 +41,7 @@
    */
   function select() {
     if (!$inSelectMode) {
-      $selected = [ ...$selected, playlist.name ];
+      $selected = [ ...$selected, playlist.id ];
     }
   }
   

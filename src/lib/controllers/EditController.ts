@@ -242,17 +242,17 @@ export class EditController {
 
   /**
    * Deletes the provided playlists from the device.
-   * @param playlistNames The names of the playlists to delete.
+   * @param playlistIds The ids of the playlists to delete.
    */
-  static async deletePlaylistsFromDevice(playlistNames: string[]) {
-    const numPlaylistMessage = `${playlistNames.length} ${pluralize("playlist", playlistNames.length)}`;
+  static async deletePlaylistsFromDevice(playlistIds: string[]) {
+    const numPlaylistMessage = `${playlistIds.length} ${pluralize("playlist", playlistIds.length)}`;
 
     DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numPlaylistMessage}?`, "Yes", "No").then((shouldContinue) => {
       if (shouldContinue) {
         const playlistList = get(playlists);
         
-        for (const name of playlistNames) {
-          const index = playlistList.findIndex((playlist) => playlist.name === name);
+        for (const id of playlistIds) {
+          const index = playlistList.findIndex((playlist) => playlist.id === id);
           playlistList.splice(index, 1);
         }
 

@@ -25,7 +25,7 @@
    */
   function playNext() {
     menuIsOpen = false;
-    QueueController.playPlaylistsNext([playlist.name]);
+    QueueController.playPlaylistsNext([playlist.id]);
   }
 
   /**
@@ -33,7 +33,7 @@
    */
   function queuePlaylist() {
     menuIsOpen = false;
-    QueueController.queuePlaylists([playlist.name]);
+    QueueController.queuePlaylists([playlist.id]);
   }
 
   /**
@@ -41,7 +41,7 @@
    */
   function addToPlaylist() {
     menuIsOpen = false;
-    $playlistToAdd = playlist.name;
+    $playlistToAdd = playlist.id;
     $showAddToPlaylist = true;
   }
 
@@ -59,7 +59,7 @@
    */
   function showPlaylistEdit() {
     menuIsOpen = false;
-    push(`/playlists/${playlist.name}/edit`);
+    push(`/playlists/${playlist.id}/edit`);
   }
 
   /**
@@ -67,7 +67,7 @@
    */
   function deletePlaylist() {
     menuIsOpen = false;
-    EditController.deletePlaylistsFromDevice([playlist.name]);
+    EditController.deletePlaylistsFromDevice([playlist.id]);
     if ($location.startsWith("/playlists/")) replace("/playlists");
   }
 

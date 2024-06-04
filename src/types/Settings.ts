@@ -167,7 +167,7 @@ export type Settings = {
   }
 }
 
-const FAVORITES_PLAYLIST = new Playlist(false, "Favorites", "", [], false, undefined, undefined, 0);
+const FAVORITES_PLAYLIST = new Playlist(undefined, false, "Favorites", "", [], false, undefined, undefined, 0);
 
 export const DEFAULT_SETTINGS: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",

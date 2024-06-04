@@ -20,8 +20,8 @@
   import Marquee from "../../components/layout/Marquee.svelte";
   import { EditController } from "../../lib/controllers/EditController";
 
-  export let params: { key?: string } = {};
-  $: playlist = params.key ? $playlistsMap[params.key!] : undefined;
+  export let params: { id?: string } = {};
+  $: playlist = params.id ? $playlistsMap[params.id!] : undefined;
 
   let imageSize = 370;
   let isAtTop = true;
@@ -37,11 +37,11 @@
    * Plays this playlist.
    */
   function playPlaylist() {
-    if (!$isPaused && $nowPlayingListName === playlist!.name) {
+    if (!$isPaused && $nowPlayingListName === playlist!.id) {
       $isPaused = true;
     } else {
       $isPaused = false;
-      $nowPlayingListName = playlist!.name;
+      $nowPlayingListName = playlist!.id;
       PlaybackController.playPlaylist(playlist!);
     }
   }
@@ -50,21 +50,21 @@
    * Plays this playlist next.
    */
   function playNext() {
-    QueueController.playPlaylistsNext([playlist!.name]);
+    QueueController.playPlaylistsNext([playlist!.id]);
   }
 
   /**
    * Queues this playlist.
    */
   function queuePlaylist() {
-    QueueController.queuePlaylists([playlist!.name]);
+    QueueController.queuePlaylists([playlist!.id]);
   }
 
   /**
    * Opens the add to playlist dialog with this playlist set to be added.
    */
   function addToPlaylist() {
-    $playlistToAdd = playlist!.name;
+    $playlistToAdd = playlist!.id;
     $showAddToPlaylist = true;
   }
 
@@ -72,14 +72,14 @@
    * Shows the edit playlist overlay.
    */
   function showPlaylistEdit() {
-    push(`/playlists/${params.key}/edit`);
+    push(`/playlists/${params.id}/edit`);
   }
 
   /**
    * Prompts the user to confirm if they want to delete this playlist.
    */
   function deletePlaylist() {
-    EditController.deletePlaylistsFromDevice([playlist!.name]);
+    EditController.deletePlaylistsFromDevice([playlist!.id]);
   }
 </script>
 
@@ -128,9 +128,6 @@
       </div>
       <div class="songs" style="margin-top: 5px;">
         {#if playlist}
-          <!-- {#key playlist}
-            <PlaylistSongs playlist={playlist} />
-          {/key} -->
           <PlaylistSongs playlist={playlist} />
         {/if}
       </div>

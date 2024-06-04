@@ -22,8 +22,8 @@
    * Removes this song from the current playlist.
    */
   function removeFromPlaylist() {
-    const key = $location.slice(11).replaceAll("%20", " ");;
-    const playlist = $playlistsMap[key];
+    const id = $location.slice(11);
+    const playlist = $playlistsMap[id];
 
     playlist.removeSong(song.id);
     

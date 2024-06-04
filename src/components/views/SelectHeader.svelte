@@ -29,8 +29,8 @@
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
-          for (const playlistName of $selected) {
-            const playlist = $playlistsMap[playlistName];
+          for (const id of $selected) {
+            const playlist = $playlistsMap[id];
             songNames.push(...playlist.songIds);
           }
         } else {
@@ -138,7 +138,7 @@
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
-          const toDelete = $selected.filter((name) => $playlistsMap[name].isUserPlaylist);
+          const toDelete = $selected.filter((id) => $playlistsMap[id].isUserPlaylist);
           if (toDelete.length > 0) EditController.deletePlaylistsFromDevice(toDelete);
         } else {
           EditController.deleteSongsFromDevice($selected);
@@ -185,10 +185,10 @@
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
-          $selected = $playlists.map((playlist) => playlist.name);
+          $selected = $playlists.map((playlist) => playlist.id);
         } else {
-          const playlistName = $location.substring(11).replaceAll("%20", " ");
-          $selected = [ ...$playlistsMap[playlistName].songIds ];
+          const playlistId = $location.substring(11);
+          $selected = [ ...$playlistsMap[playlistId].songIds ];
         }
         break;
       }
@@ -294,8 +294,8 @@
    * Removes the selected songs from this playlist.
    */
   function removeFromPlaylist() {
-    const playlistName = $location.substring(11).replaceAll("%20", " ");
-    const playlist = $playlistsMap[playlistName];
+    const playlistId = $location.substring(11);
+    const playlist = $playlistsMap[playlistId];
     
     for (const id of $selected) {
       playlist.removeSong(id);

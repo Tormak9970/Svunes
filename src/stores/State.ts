@@ -27,7 +27,7 @@ export const showMiniPlayer = writable(true);
 
 export const playlists: Writable<Playlist[]> = writable([]);
 export const playlistsMap: Readable<Record<string, Playlist>> = derived(playlists, (playlists: Playlist[]) => {
-  const entries: [string, Playlist][] = playlists.map((playlist) => [playlist.name, playlist]);
+  const entries: [string, Playlist][] = playlists.map((playlist) => [playlist.id, playlist]);
   return Object.fromEntries(entries);
 });
 
