@@ -4,7 +4,7 @@
   import type { Playlist } from "../../lib/models/Playlist";
   import { playlists, songsMap } from "../../stores/State";
   import { flip } from "svelte/animate";
-  import { onMount } from "svelte";
+  import { afterUpdate } from "svelte";
   import type { Song } from "../../lib/models/Song";
   
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle";
@@ -13,6 +13,7 @@
   export let playlist: Playlist;
 
   $: songs = playlist.songKeys.map((key) => $songsMap[key]) ?? [];
+  let oldLength = 0;
   let items: { id: string, song: Song }[] = [];
 
   const flipDurationMs = 100;
@@ -38,17 +39,24 @@
    */
   function finalize(e: any) {
     items = e.detail.items;
-    playlist.songKeys = items.map((item) => item.song.key);
-    $playlists = [ ...$playlists ];
+    const newKeys = items.map((item) => item.song.key);
+    
+    if (JSON.stringify(newKeys) !== JSON.stringify(playlist.songKeys)) {
+      playlist.songKeys = newKeys;
+      $playlists = [ ...$playlists ];
+    }
   }
 
-  onMount(() => {
-    items = songs.map((song) => {
-      return {
-        id: song.key,
-        song: song
-      }
-    });
+  afterUpdate(() => {
+    if (songs.length !== oldLength) {
+      oldLength = songs.length;
+      items = songs.map((song) => {
+        return {
+          id: song.key,
+          song: song
+        }
+      });
+    }
   });
 </script>
 

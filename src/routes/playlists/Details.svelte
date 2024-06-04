@@ -128,6 +128,9 @@
       </div>
       <div class="songs" style="margin-top: 5px;">
         {#if playlist}
+          <!-- {#key playlist}
+            <PlaylistSongs playlist={playlist} />
+          {/key} -->
           <PlaylistSongs playlist={playlist} />
         {/if}
       </div>
