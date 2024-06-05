@@ -8,7 +8,7 @@
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import AlbumCarousel from "../../components/layout/album-carousel/AlbumCarousel.svelte";
   import type { AlbumEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artistsMap, isPaused, nowPlayingListName, songsMap, useAlbumColors } from "../../stores/State";
+  import { albumsMap, artistsMap, isPaused, nowPlayingList, songsMap, useAlbumColors } from "../../stores/State";
   import { albumToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -55,11 +55,13 @@
    * Plays this album.
    */
   function playAlbum() {
-    if (!$isPaused && $nowPlayingListName === album!.name) {
-      $isPaused = true;
+    if ($nowPlayingList === album!.name) {
+      if (!$isPaused) {
+        PlaybackController.pause();
+      } else {
+        PlaybackController.resume();
+      }
     } else {
-      $isPaused = false;
-      $nowPlayingListName = album!.name;
       PlaybackController.playAlbum(album!);
     }
   }

@@ -3,7 +3,7 @@
   import Icon from "../../components/utils/Icon.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { genresMap, songsMap, isPaused, nowPlayingListName } from "../../stores/State";
+  import { genresMap, songsMap, isPaused, nowPlayingList } from "../../stores/State";
   import { genreToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -36,11 +36,13 @@
    * Plays this genre.
    */
   function playGenre() {
-    if (!$isPaused && $nowPlayingListName === genre!.name) {
-      $isPaused = true;
+    if ($nowPlayingList === genre!.name) {
+      if (!$isPaused) {
+        PlaybackController.pause();
+      } else {
+        PlaybackController.resume();
+      }
     } else {
-      $isPaused = false;
-      $nowPlayingListName = genre!.name;
       PlaybackController.playGenre(genre!);
     }
   }

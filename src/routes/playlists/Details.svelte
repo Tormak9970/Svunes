@@ -4,7 +4,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { isPaused, nowPlayingListName, playlistsMap } from "../../stores/State";
+  import { isPaused, nowPlayingList, playlistsMap } from "../../stores/State";
   import { playlistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -37,11 +37,13 @@
    * Plays this playlist.
    */
   function playPlaylist() {
-    if (!$isPaused && $nowPlayingListName === playlist!.id) {
-      $isPaused = true;
+    if ($nowPlayingList === playlist!.id) {
+      if (!$isPaused) {
+        PlaybackController.pause();
+      } else {
+        PlaybackController.resume();
+      }
     } else {
-      $isPaused = false;
-      $nowPlayingListName = playlist!.id;
       PlaybackController.playPlaylist(playlist!);
     }
   }
@@ -123,7 +125,7 @@
         </div>
         <div class="buttons">
           <ToggleShuffleButton />
-          <PlayButton name={playlist?.name} on:click={playPlaylist} />
+          <PlayButton name={playlist?.id} on:click={playPlaylist} />
         </div>
       </div>
       <div class="songs" style="margin-top: 5px;">

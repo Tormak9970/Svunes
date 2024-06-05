@@ -6,7 +6,7 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import type { ArtistEntriesSortOrder } from "../../types/Settings";
-  import { albumsMap, artists, artistsMap, isPaused, nowPlayingListName, songsMap, useArtistColors } from "../../stores/State";
+  import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, songsMap, useArtistColors } from "../../stores/State";
   import { artistToAdd, showAddToPlaylist } from "../../stores/Overlays";
   import { PlaybackController } from "../../lib/controllers/PlaybackController";
   import { QueueController } from "../../lib/controllers/QueueController";
@@ -58,11 +58,13 @@
    * Plays this artist.
    */
   function playArtist() {
-    if (!$isPaused && $nowPlayingListName === artist!.name) {
-      $isPaused = true;
+    if ($nowPlayingList === artist!.name) {
+      if (!$isPaused) {
+        PlaybackController.pause();
+      } else {
+        PlaybackController.resume();
+      }
     } else {
-      $isPaused = false;
-      $nowPlayingListName = artist!.name;
       PlaybackController.playArtist(artist!);
     }
   }

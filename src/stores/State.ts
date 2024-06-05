@@ -1,6 +1,6 @@
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { AppLanguage, GridSize, GridStyle, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { AppLanguage, GridSize, GridStyle, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -31,6 +31,7 @@ export const playlistsMap: Readable<Record<string, Playlist>> = derived(playlist
   return Object.fromEntries(entries);
 });
 
+export const history: Writable<string[]> = writable([]);
 export const queue: Writable<string[]> = writable([]);
 
 export const blacklistedFolders: Writable<string[]> = writable([]);
@@ -92,9 +93,8 @@ export const songsMap: Readable<Record<string, Song>> = derived(songs, (songs: S
   return Object.fromEntries(entries);
 });
 export const songProgress = writable(0);
-export const songName: Writable<string> = writable("");
-export const nowPlayingListName: Writable<string> = writable("");
-export const nowPlayingType: Writable<NowPlayingType> = writable("Songs");
+export const playingSongId: Writable<string> = writable("");
+export const nowPlayingList: Writable<string> = writable("");
 
 // # View Settings
 export const playlistGridSize: Writable<GridSize> = writable(GridSize.LARGE);

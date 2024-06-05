@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isPaused, nowPlayingListName } from "../../../stores/State";
+  import { isPaused, nowPlayingList } from "../../../stores/State";
   import Icon from "../../utils/Icon.svelte";
   import Button from "../../interactables/Button.svelte";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
@@ -11,7 +11,7 @@
 
 <div class="play-container">
   <Button type={type} iconType="full" on:click>
-    {#if $nowPlayingListName === name && !$isPaused}
+    {#if $nowPlayingList === name && !$isPaused}
       <Icon icon={Pause} />
     {:else}
       <Icon icon={Play} />

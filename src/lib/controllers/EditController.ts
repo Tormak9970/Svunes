@@ -1,5 +1,5 @@
 import { RustInterop } from "./utils/RustInterop";
-import { albums, playlists, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "../../stores/State";
+import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "../../stores/State";
 import { get } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
@@ -7,6 +7,7 @@ import { LogController } from "./utils/LogController";
 import { DialogController } from "./utils/DialogController";
 import { AppController } from "./AppController";
 import { pluralize } from "../utils/Utils";
+import { QueueController } from "./QueueController";
 
 /**
  * The controller for editing music, albums and artists.
@@ -146,10 +147,28 @@ export class EditController {
         const filePaths: string[] = [];
         const songList = get(songs);
         const playlistList = get(playlists);
+        const songQueue = get(queue);
+        const songHistory = get(history);
+        const nowPlayingSongId = get(playingSongId);
 
         for (const id of songIds) {
           const index = songList.findIndex((song) => song.id === id);
           const [song] = songList.splice(index, 1);
+
+          const queueIndex = songQueue.indexOf(id);
+          if (queueIndex !== -1) {
+            songQueue.splice(queueIndex, 1);
+          }
+
+          const historyIndex = songHistory.indexOf(id);
+          if (historyIndex !== -1) {
+            songHistory.splice(historyIndex, 1);
+          }
+          
+          if (id === nowPlayingSongId) {
+            QueueController.skip();
+          }
+
           filePaths.push(song.filePath);
         }
 
@@ -164,6 +183,8 @@ export class EditController {
         }
 
         songs.set(songList);
+        queue.set(songQueue);
+        history.set(songHistory);
         
         const successPromise = RustInterop.deleteSongs(filePaths);
 
@@ -195,6 +216,10 @@ export class EditController {
         const albumList = get(albums);
         const songList = get(songs);
         const playlistList = get(playlists);
+        const songQueue = get(queue);
+        const songHistory = get(history);
+        const nowPlayingName = get(nowPlayingList);
+        const nowPlayingSongId = get(playingSongId);
 
         let deletedSongIds: string[] = [];
 
@@ -205,8 +230,27 @@ export class EditController {
           for (const id of album.songIds) {
             const songIndex = songList.findIndex((song) => song.id === id);
             const [song] = songList.splice(songIndex, 1);
+
+            const queueIndex = songQueue.indexOf(id);
+            if (queueIndex !== -1) {
+              songQueue.splice(queueIndex, 1);
+            }
+  
+            const historyIndex = songHistory.indexOf(id);
+            if (historyIndex !== -1) {
+              songHistory.splice(historyIndex, 1);
+            }
+
+            if (id === nowPlayingSongId) {
+              QueueController.skip();
+            }
+
             filePaths.push(song.filePath);
             deletedSongIds.push(id);
+          }
+
+          if (albumName === nowPlayingName) {
+            nowPlayingList.set("");
           }
         }
 
@@ -222,6 +266,8 @@ export class EditController {
 
         albums.set(albumList);
         songs.set(songList);
+        queue.set(songQueue);
+        history.set(songHistory);
         
         const successPromise = RustInterop.deleteSongs(filePaths);
 
@@ -250,10 +296,15 @@ export class EditController {
     DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numPlaylistMessage}?`, "Yes", "No").then((shouldContinue) => {
       if (shouldContinue) {
         const playlistList = get(playlists);
+        const nowPlayingName = get(nowPlayingList);
         
         for (const id of playlistIds) {
           const index = playlistList.findIndex((playlist) => playlist.id === id);
           playlistList.splice(index, 1);
+
+          if (id === nowPlayingName) {
+            nowPlayingList.set("");
+          }
         }
 
         playlists.set(playlistList);

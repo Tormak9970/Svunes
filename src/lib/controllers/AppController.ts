@@ -1,6 +1,6 @@
 import { showEditMusicFolders } from "../../stores/Modals";
 import { RustInterop } from "./utils/RustInterop";
-import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingListName, nowPlayingType, queue, showMiniPlayer, songName, songProgress, songs } from "../../stores/State";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, nowPlayingList, queue, showMiniPlayer, playingSongId, songProgress, songs, history } from "../../stores/State";
 import { get, type Unsubscriber } from "svelte/store";
 import { Song } from "../models/Song";
 import { Album } from "../models/Album";
@@ -11,6 +11,7 @@ import { Artist } from "../models/Artist";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { getAllArtistNames } from "../utils/Utils";
 import type { Playlist } from "../models/Playlist";
+import { showNowPlaying } from "../../stores/Overlays";
 
 /**
  * The core app controller.
@@ -50,11 +51,12 @@ export class AppController {
    */
   static resetNowPlaying() {
     showMiniPlayer.set(false);
+    showNowPlaying.set(false);
     songProgress.set(0);
-    songName.set("");
+    playingSongId.set("");
+    history.set([]);
     queue.set([]);
-    nowPlayingListName.set("");
-    nowPlayingType.set("Songs");
+    nowPlayingList.set("");
   }
 
   /**

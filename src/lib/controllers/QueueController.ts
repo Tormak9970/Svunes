@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { albumsMap, artistsMap, playlists, playlistsMap, queue, showInfoSnackbar, songsMap } from "../../stores/State";
+import { albumsMap, artistsMap, history, isPaused, playlists, playlistsMap, queue, showInfoSnackbar, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 import { pluralize } from "../utils/Utils";
@@ -10,20 +10,22 @@ import { pluralize } from "../utils/Utils";
  * Controls the current queue.
  */
 export class QueueController {
-  private static history: string[];
-
   /**
    * Skips the current song.
    */
   static skip() {
+    isPaused.set(false);
+    let playbackHistory = get(history);
     let songQueue = get(queue);
     let songMap = get(songsMap);
     
     if (songQueue.length) {
       const skippedId = songQueue.shift();
-      this.history.push(skippedId!);
+      playbackHistory.push(skippedId!);
 
       PlaybackController.playSong(songMap[skippedId!]);
+      
+      history.set(playbackHistory);
       queue.set(songQueue);
     }
   }
@@ -32,18 +34,19 @@ export class QueueController {
    * Skips back to the last song.
    */
   static skipBack() {
+    isPaused.set(false);
+    let playbackHistory = get(history);
     let songQueue = get(queue);
     let songMap = get(songsMap);
 
-    if (this.history.length > 0) {
-      let lastPlayedSongId = this.history.pop();
+    if (playbackHistory.length) {
+      let lastPlayedSongId = playbackHistory.pop();
 
       songQueue.unshift(lastPlayedSongId!);
       PlaybackController.playSong(songMap[lastPlayedSongId!]);
       
+      history.set(playbackHistory);
       queue.set(songQueue);
-    } else {
-      // TODO: disable back button if history is length 0
     }
   }
 

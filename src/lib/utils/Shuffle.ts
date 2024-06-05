@@ -24,7 +24,7 @@ export function shuffle<T>(array: T[]): T[] {
  * Shuffles the songs in a manner that will appear random.
  * @param songIds The ids of the songs to shuffle.
  */
-export function shuffleSongs(songIds: string[]): Song[] {
+export function shuffleSongs(songIds: string[]): string[] {
   const length = songIds.length;
   const songMap = get(songsMap);
 
@@ -32,16 +32,14 @@ export function shuffleSongs(songIds: string[]): Song[] {
     "Unkown": [],
   };
 
-  const songs = songIds.map((id) => {
+  for (const id of songIds) {
     const song = songMap[id];
     const artist = song.artist ? getAllArtistNames(song.artist)[0] : "Unkown";
 
     if (!artistsToSongs[artist]) artistsToSongs[artist] = [];
 
     artistsToSongs[artist].push(song);
-
-    return song;
-  });
+  }
 
   const songIndices: Record<string, number> = {};
 
@@ -66,5 +64,5 @@ export function shuffleSongs(songIds: string[]): Song[] {
     }
   }
 
-  return songs.sort((a, b) => songIndices[b.id] - songIndices[a.id]);
+  return songIds.sort((a, b) => songIndices[b] - songIndices[a]);
 }
