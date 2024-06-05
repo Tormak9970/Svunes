@@ -3,13 +3,13 @@
   import ViewNav from "./navigation/ViewNav.svelte";
   import MiniPlayer from "./overlays/MiniPlayer.svelte";
   import Titlebar from "./Titlebar.svelte";
-  import { isLoading, selectedView, showErrorSnackbar, showInfoSnackbar, showMiniPlayer } from "../stores/State";
+  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showMiniPlayer, songProgress, songsMap } from "../stores/State";
   import Overlays from "./overlays/Overlays.svelte";
   import { AppController } from "../lib/controllers/AppController";
   import { SettingsController } from "../lib/controllers/SettingsController";
   import SelectHeader from "./views/SelectHeader.svelte";
   import { inSelectMode } from "../stores/Select";
-  import { window } from "@tauri-apps/api";
+  import { tauri, window } from "@tauri-apps/api";
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./modals/Modals.svelte";
   import { exit } from "@tauri-apps/api/process";
@@ -19,13 +19,37 @@
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
   import { showSavingSettings } from "../stores/Modals";
+  import { QueueController } from "../lib/controllers/QueueController";
 
   let loadingUnsub: Unsubscriber;
+  let isPausedUnsub: Unsubscriber;
+  let playingSongIdUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;
+
+  let audioPlayer: HTMLAudioElement;
 
   let isDesktop = false;
 
   onMount(async () => {
+    playingSongIdUnsub = playingSongId.subscribe((id) => {
+      if (id !== "") {
+        const song = $songsMap[id];
+        audioPlayer.src = tauri.convertFileSrc(song.filePath);
+        audioPlayer.load();
+        if (!$isPaused) {
+          audioPlayer.play();
+        }
+      }
+    });
+
+    isPausedUnsub = isPaused.subscribe((paused) => {
+      if (paused) {
+        audioPlayer.pause();
+      } else {
+        audioPlayer.play();
+      }
+    })
+
     loadingUnsub = isLoading.subscribe((newStatus) => {
       if (!newStatus) push(viewRoutesLUT[$selectedView]);
     });
@@ -50,10 +74,13 @@
     SettingsController.destroy();
 
     if (loadingUnsub) loadingUnsub();
+    if (isPausedUnsub) isPausedUnsub();
+    if (playingSongIdUnsub) playingSongIdUnsub();
     if (closeRequestListener) closeRequestListener();
   });
 </script>
 
+<audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
 {#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}

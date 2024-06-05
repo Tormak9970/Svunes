@@ -351,7 +351,6 @@ export class SettingsController {
 
     const cache = this.settings.cache;
     songProgress.set(cache.songProgress);
-    playingSongId.set(cache.playingSongId);
     shuffle.set(cache.shuffle);
     nowPlayingList.set(cache.nowPlayingList);
     nowPlayingType.set(cache.nowPlayingType);
@@ -456,7 +455,10 @@ export class SettingsController {
       })));
     });
 
-    this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
+    this.songProgressUnsub = songProgress.subscribe((progress) => {
+      this.settings.cache.songProgress = progress;
+      this.settingsHaveChanged = true;
+    });
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
     this.nowPlayingListUnsub = nowPlayingList.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingList"));

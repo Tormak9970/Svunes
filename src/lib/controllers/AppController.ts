@@ -211,8 +211,12 @@ export class AppController {
       }
       
       if (SettingsController.getSetting<number>("cache.numSongs") !== loadedSongs.length) PlaybackController.resetNowPlaying();
+
       songs.set(loadedSongs);
       LogController.log(`Loaded ${loadedSongs.length} songs.`);
+      
+      const songId = SettingsController.getSetting<string>("cache.playingSongId");
+      if (songId !== "") playingSongId.set(songId);
 
       this.loadAlbumsFromSongs(loadedSongs);
       this.loadGenresFromSongs(loadedSongs);

@@ -144,21 +144,11 @@ export class PlaybackController {
     this.resume();
   }
 
-  private static stopPlayback() {
-
-  }
-
   /**
    * Pauses the playback.
    */
   static pause() {
     isPaused.set(true);
-
-    // TODO: pause audio playback
-  }
-  
-  private static startPlayback() {
-
   }
 
   /**
@@ -166,7 +156,5 @@ export class PlaybackController {
    */
   static resume() {
     isPaused.set(false);
-    
-    // TODO: start audio playback
   }
 }
