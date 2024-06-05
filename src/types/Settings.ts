@@ -71,6 +71,8 @@ export type ArtistSortOrder = "Alphabetical" | "Album Count" | "Track Count";
 export type AlbumEntriesSortOrder = "Alphabetical" | "Track Number" | "Song Duration";
 export type ArtistEntriesSortOrder = "Alphabetical" | "Album" | "Year" | "Song Duration";
 
+export type NowPlayingType = "Playlist" | "Album" | "Artist" | "Song" | "Genre";
+
 export type SongMetadata = {
   lastPlayedOn: string | undefined,
   numTimesPlayed: number | undefined
@@ -139,8 +141,8 @@ export type Settings = {
     songProgress: number,
     playingSongId: string,
     shuffle: boolean,
-    isPaused: boolean,
-    nowPlayingListName: string
+    nowPlayingList: string,
+    nowPlayingType: NowPlayingType
   },
 
   playlistsView: {
@@ -220,8 +222,8 @@ export const DEFAULT_SETTINGS: Settings = {
     "songProgress": 0,
     "playingSongId": "",
     "shuffle": true,
-    "isPaused": false,
-    "nowPlayingListName": ""
+    "nowPlayingList": "",
+    "nowPlayingType": "Song"
   },
 
   "playlistsView": {

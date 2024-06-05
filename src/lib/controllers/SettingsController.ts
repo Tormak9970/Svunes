@@ -15,9 +15,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type ArtistMetadata, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
+import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "./utils/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingMiniUseAlbumColors, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, isPaused, showInfoSnackbar, showErrorSnackbar } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
@@ -106,8 +106,8 @@ export class SettingsController {
   private static songProgressUnsub: Unsubscriber;
   private static playingSongIdUnsub: Unsubscriber;
   private static shuffleUnsub: Unsubscriber;
-  private static isPausedUnsub: Unsubscriber;
-  private static nowPlayingListNameUnsub: Unsubscriber;
+  private static nowPlayingListUnsub: Unsubscriber;
+  private static nowPlayingTypeUnsub: Unsubscriber;
 
   private static playlistGridSizeUnsub: Unsubscriber;
   private static playlistSortOrderUnsub: Unsubscriber;
@@ -353,8 +353,8 @@ export class SettingsController {
     songProgress.set(cache.songProgress);
     playingSongId.set(cache.playingSongId);
     shuffle.set(cache.shuffle);
-    isPaused.set(cache.isPaused);
-    nowPlayingList.set(cache.nowPlayingListName);
+    nowPlayingList.set(cache.nowPlayingList);
+    nowPlayingType.set(cache.nowPlayingType);
 
 
     const playlistsView = this.settings.playlistsView;
@@ -459,8 +459,8 @@ export class SettingsController {
     this.songProgressUnsub = songProgress.subscribe(this.updateStoreIfChanged<number>("cache.songProgress"));
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
-    this.isPausedUnsub = isPaused.subscribe(this.updateStoreIfChanged<boolean>("cache.isPaused"));
-    this.nowPlayingListNameUnsub = nowPlayingList.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingListName"));
+    this.nowPlayingListUnsub = nowPlayingList.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingList"));
+    this.nowPlayingTypeUnsub = nowPlayingType.subscribe(this.updateStoreIfChanged<NowPlayingType>("cache.nowPlayingType"));
 
 
     this.playlistGridSizeUnsub = playlistGridSize.subscribe(this.updateStoreIfChanged<GridSize>("playlistsView.gridSize"));
@@ -600,8 +600,8 @@ export class SettingsController {
     if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.playingSongIdUnsub) this.playingSongIdUnsub();
     if (this.shuffleUnsub) this.shuffleUnsub();
-    if (this.isPausedUnsub) this.isPausedUnsub();
-    if (this.nowPlayingListNameUnsub) this.nowPlayingListNameUnsub();
+    if (this.nowPlayingListUnsub) this.nowPlayingListUnsub();
+    if (this.nowPlayingTypeUnsub) this.nowPlayingTypeUnsub();
 
     if (this.playlistGridSizeUnsub) this.playlistGridSizeUnsub();
     if (this.playlistSortOrderUnsub) this.playlistSortOrderUnsub();
