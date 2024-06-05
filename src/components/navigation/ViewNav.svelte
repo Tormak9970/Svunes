@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isLoading, isSwitchingView, lastView, selectedView, showMiniPlayer, viewsToRender } from "../../stores/State";
+  import { isLoading, isSwitchingView, lastView, selectedView, viewsToRender } from "../../stores/State";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import Album from "@ktibow/iconset-material-symbols/album";
   import MusicNote from "@ktibow/iconset-material-symbols/music-note";
@@ -15,6 +15,7 @@
   import { fly } from "svelte/transition";
   import NavList from "./NavList.svelte";
   import NavListButton from "./NavListButton.svelte";
+  import { showMiniPlayer } from "../../stores/Overlays";
   
   const icons = {
     0: QueueMusic,

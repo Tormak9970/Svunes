@@ -51,14 +51,14 @@
    * Plays this genre next.
    */
   function playNext() {
-    QueueController.playSongsNext(genre!.songIds);
+    QueueController.playGenresNext([genre!.name]);
   }
 
   /**
    * Queues this genre.
    */
   function queueGenre() {
-    QueueController.queueSongs(genre!.songIds);
+    QueueController.queueGenres([genre!.name]);
   }
 
   /**

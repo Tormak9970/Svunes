@@ -23,8 +23,6 @@ export const songsIsAtTop = writable(true);
 export const albumsIsAtTop = writable(true);
 export const artistsIsAtTop = writable(true);
 
-export const showMiniPlayer = writable(true);
-
 export const playlists: Writable<Playlist[]> = writable([]);
 export const playlistsMap: Readable<Record<string, Playlist>> = derived(playlists, (playlists: Playlist[]) => {
   const entries: [string, Playlist][] = playlists.map((playlist) => [playlist.id, playlist]);

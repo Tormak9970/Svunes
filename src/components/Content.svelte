@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
-  import MiniPlayer from "./overlays/MiniPlayer.svelte";
+  import MiniPlayer from "./overlays/now-playing/MiniPlayer.svelte";
   import Titlebar from "./Titlebar.svelte";
-  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showMiniPlayer, songProgress, songsMap } from "../stores/State";
+  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, songProgress, songsMap } from "../stores/State";
   import Overlays from "./overlays/Overlays.svelte";
   import { AppController } from "../lib/controllers/AppController";
   import { SettingsController } from "../lib/controllers/SettingsController";
@@ -20,6 +20,7 @@
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
   import { showSavingSettings } from "../stores/Modals";
   import { QueueController } from "../lib/controllers/QueueController";
+    import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
 
   let loadingUnsub: Unsubscriber;
   let isPausedUnsub: Unsubscriber;
@@ -36,6 +37,7 @@
         const song = $songsMap[id];
         audioPlayer.src = tauri.convertFileSrc(song.filePath);
         audioPlayer.load();
+
         if (!$isPaused) {
           audioPlayer.play();
         }
@@ -86,9 +88,7 @@
 {#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}
   <ViewNav />
 {/if}
-{#if $showMiniPlayer}
-  <MiniPlayer />
-{/if}
+<NowPlayingContainer />
 <div class="content">
   <ErrorSnackbar bind:show={$showErrorSnackbar} />
   <InfoSnackbar bind:show={$showInfoSnackbar} />

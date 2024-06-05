@@ -77,10 +77,83 @@ export class QueueController {
   }
 
   /**
+   * Checks the queue, and if its empty, plays the first playlist.
+   * @param playlistIds The playlist ids to queue.
+   */
+  private static playPlaylistIfQueueEmpty(playlistIds: string[]) {
+    let playlistMap = get(playlistsMap);
+
+    if (get(queue).length === 0) {
+      const firstPlaylistId = playlistIds.shift()!;
+      const playlist = playlistMap[firstPlaylistId];
+      PlaybackController.playPlaylist(playlist, true);
+    }
+  }
+
+  /**
+   * Checks the queue, and if its empty, plays the first song.
+   * @param songIds The song ids to queue.
+   */
+  private static playSongIfQueueEmpty(songIds: string[]) {
+    let songMap = get(songsMap);
+
+    if (get(queue).length === 0) {
+      const firstSongId = songIds.shift()!;
+      const song = songMap[firstSongId];
+      PlaybackController.playSong(song);
+    }
+  }
+
+  /**
+   * Checks the queue, and if its empty, plays the first album.
+   * @param albumNames The album names to queue.
+   */
+  private static playAlbumIfQueueEmpty(albumNames: string[]) {
+    let albumMap = get(albumsMap);
+
+    if (get(queue).length === 0) {
+      const firstName = albumNames.shift()!;
+      const album = albumMap[firstName];
+      PlaybackController.playAlbum(album, true);
+    }
+  }
+
+  /**
+   * Checks the queue, and if its empty, plays the first artist.
+   * @param artistNames The artist names to queue.
+   */
+  private static playArtistIfQueueEmpty(artistNames: string[]) {
+    let artistMap = get(artistsMap);
+
+    if (get(queue).length === 0) {
+      const firstName = artistNames.shift()!;
+      const artist = artistMap[firstName];
+      PlaybackController.playArtist(artist, true);
+    }
+  }
+
+  /**
+   * Checks the queue, and if its empty, plays the first genre.
+   * @param genreNames The genre names to queue.
+   */
+  private static playGenreIfQueueEmpty(genreNames: string[]) {
+    let genreMap = get(genresMap);
+
+    if (get(queue).length === 0) {
+      const firstName = genreNames.shift()!;
+      const genre = genreMap[firstName];
+      PlaybackController.playGenre(genre, true);
+    }
+  }
+
+  /**
    * Queues the provided playlists.
    * @param playlistIds The playlist ids to queue.
    */
   static queuePlaylists(playlistIds: string[]) {
+    const initialLength = playlistIds.length;
+    this.playPlaylistIfQueueEmpty(playlistIds);
+    
     let playlistMap = get(playlistsMap);
     let songQueue = get(queue);
 
@@ -96,7 +169,7 @@ export class QueueController {
 
     playlists.set([ ...get(playlists) ]);
 
-    get(showInfoSnackbar)({ message: `Queued ${playlistIds.length} ${pluralize("playlist", playlistIds.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("playlist", initialLength)}`});
     
     queue.set(songQueue);
   }
@@ -106,13 +179,16 @@ export class QueueController {
    * @param songIds The song names to queue.
    */
   static queueSongs(songIds: string[]) {
+    const initialLength = songIds.length;
+    this.playSongIfQueueEmpty(songIds);
+    
     let songQueue = get(queue);
 
     for (const id of songIds) {
       songQueue.push(id);
     }
 
-    get(showInfoSnackbar)({ message: `Queued ${songIds.length} ${pluralize("song", songIds.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("song", initialLength)}`});
     
     queue.set(songQueue);
   }
@@ -122,6 +198,9 @@ export class QueueController {
    * @param albumNames The album names to queue.
    */
   static queueAlbums(albumNames: string[]) {
+    const initialLength = albumNames.length;
+    this.playAlbumIfQueueEmpty(albumNames);
+    
     let albumMap = get(albumsMap);
     let songQueue = get(queue);
 
@@ -135,7 +214,7 @@ export class QueueController {
       }
     }
 
-    get(showInfoSnackbar)({ message: `Queued ${albumNames.length} ${pluralize("album", albumNames.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("album", initialLength)}`});
     
     SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
@@ -147,6 +226,9 @@ export class QueueController {
    * @param artistNames The artists names to queue.
    */
   static queueArtists(artistNames: string[]) {
+    const initialLength = artistNames.length;
+    this.playArtistIfQueueEmpty(artistNames);
+    
     let artistMap = get(artistsMap);
     let songQueue = get(queue);
 
@@ -156,7 +238,29 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${artistNames.length} ${pluralize("artist", artistNames.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("artist", initialLength)}`});
+    
+    queue.set(songQueue);
+  }
+
+  /**
+   * Queues the provided genres.
+   * @param genreNames The genre names to queue.
+   */
+  static queueGenres(genreNames: string[]) {
+    const initialLength = genreNames.length;
+    this.playGenreIfQueueEmpty(genreNames);
+    
+    let genreMap = get(genresMap);
+    let songQueue = get(queue);
+
+    for (const genreName of genreNames) {
+      for (const id of genreMap[genreName].songIds) {
+        songQueue.push(id);
+      }
+    }
+    
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("genre", initialLength)}`});
     
     queue.set(songQueue);
   }
@@ -179,6 +283,9 @@ export class QueueController {
    * @param playlistIds The playlist ids to queue.
    */
   static playPlaylistsNext(playlistIds: string[]) {
+    const initialLength = playlistIds.length;
+    this.playPlaylistIfQueueEmpty(playlistIds);
+    
     let playlistMap = get(playlistsMap);
     let songQueue = get(queue);
 
@@ -194,7 +301,7 @@ export class QueueController {
 
     playlists.set([ ...get(playlists) ]);
     
-    get(showInfoSnackbar)({ message: `Queued ${playlistIds.length} ${pluralize("playlist", playlistIds.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("playlist", initialLength)}`});
     
     queue.set(songQueue);
   }
@@ -204,13 +311,16 @@ export class QueueController {
    * @param songIds The song ids to queue.
    */
   static playSongsNext(songIds: string[]) {
+    const initialLength = songIds.length;
+    this.playSongIfQueueEmpty(songIds);
+    
     let songQueue = get(queue);
 
     for (const songId of songIds.reverse()) {
       songQueue.unshift(songId);
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${songIds.length} ${pluralize("song", songIds.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("song", initialLength)}`});
     
     queue.set(songQueue);
   }
@@ -220,6 +330,9 @@ export class QueueController {
    * @param albumNames The album names to queue.
    */
   static playAlbumsNext(albumNames: string[]) {
+    const initialLength = albumNames.length;
+    this.playAlbumIfQueueEmpty(albumNames);
+    
     let albumMap = get(albumsMap);
     let songQueue = get(queue);
 
@@ -233,7 +346,7 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${albumNames.length} ${pluralize("album", albumNames.length)}`})
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("album", initialLength)}`})
 
     SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
@@ -245,6 +358,9 @@ export class QueueController {
    * @param artistNames The artists names to queue.
    */
   static playArtistsNext(artistNames: string[]) {
+    const initialLength = artistNames.length;
+    this.playArtistIfQueueEmpty(artistNames);
+    
     let artistMap = get(artistsMap);
     let songQueue = get(queue);
 
@@ -254,7 +370,29 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${artistNames.length} ${pluralize("artist", artistNames.length)}`});
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("artist", initialLength)}`});
+    
+    queue.set(songQueue);
+  }
+
+  /**
+   * Queues the provided genres right after the current song.
+   * @param genreNames The genre names to queue.
+   */
+  static playGenresNext(genreNames: string[]) {
+    const initialLength = genreNames.length;
+    this.playGenreIfQueueEmpty(genreNames);
+    
+    let genreMap = get(genresMap);
+    let songQueue = get(queue);
+
+    for (const genreName of genreNames) {
+      for (const id of genreMap[genreName].songIds) {
+        songQueue.unshift(id);
+      }
+    }
+    
+    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("genre", initialLength)}`});
     
     queue.set(songQueue);
   }

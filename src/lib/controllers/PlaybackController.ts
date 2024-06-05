@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, showMiniPlayer, shuffle, songProgress } from "../../stores/State";
+import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shuffle, songProgress } from "../../stores/State";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
 import type { Playlist } from "../models/Playlist";
@@ -7,9 +7,7 @@ import type { Song } from "../models/Song";
 import { SettingsController } from "./SettingsController";
 import type { Genre } from "../models/Genre";
 import { shuffleSongs } from "../utils/Shuffle";
-import { showNowPlaying } from "../../stores/Overlays";
-
-// ! Add logging to this file
+import { showMiniPlayer, showNowPlaying } from "../../stores/Overlays";
 
 /**
  * Controller that handles playback.
@@ -31,8 +29,9 @@ export class PlaybackController {
   /**
    * Plays the provided playlist.
    * @param playlist The playlist to play.
+   * @param ignoreShuffle Whether to ignore the shuffle setting or not.
    */
-  static playPlaylist(playlist: Playlist) {
+  static playPlaylist(playlist: Playlist, ignoreShuffle = false) {
     if (playlist.songIds.length) {
       const shouldShuffle = get(shuffle);
 
@@ -45,12 +44,15 @@ export class PlaybackController {
       playlists.set([ ...get(playlists) ]);
 
       const cloned = structuredClone(playlist.songIds);
-      const newQueue: string[] = shouldShuffle ? shuffleSongs(cloned) : cloned;
+      const newQueue: string[] = (shouldShuffle && !ignoreShuffle) ? shuffleSongs(cloned) : cloned;
       const firstSongId = newQueue.shift()!;
 
       playingSongId.set(firstSongId);
 
       queue.set(newQueue);
+
+      showNowPlaying.set(true);
+      showMiniPlayer.set(true);
 
       this.resume();
     }
@@ -71,14 +73,18 @@ export class PlaybackController {
 
     playingSongId.set(song.id);
 
+    showNowPlaying.set(true);
+    showMiniPlayer.set(true);
+
     this.resume();
   }
   
   /**
    * Plays the provided album.
    * @param album The album to play.
+   * @param ignoreShuffle Whether to ignore the shuffle setting or not.
    */
-  static playAlbum(album: Album) {
+  static playAlbum(album: Album, ignoreShuffle = false) {
     const shouldShuffle = get(shuffle);
 
     songProgress.set(0);
@@ -90,12 +96,15 @@ export class PlaybackController {
     SettingsController.updateAlbumsMetadata([album]);
     
     const cloned = structuredClone(album.songIds);
-    const newQueue: string[] = shouldShuffle ? shuffleSongs(cloned) : cloned;
+    const newQueue: string[] = (shouldShuffle && !ignoreShuffle) ? shuffleSongs(cloned) : cloned;
     const firstSongId = newQueue.shift()!;
 
     playingSongId.set(firstSongId);
 
     queue.set(newQueue);
+    
+    showNowPlaying.set(true);
+    showMiniPlayer.set(true);
 
     this.resume();
   }
@@ -103,8 +112,9 @@ export class PlaybackController {
   /**
    * Plays the provided artist.
    * @param artist The artist to play.
+   * @param ignoreShuffle Whether to ignore the shuffle setting or not.
    */
-  static playArtist(artist: Artist) {
+  static playArtist(artist: Artist, ignoreShuffle = false) {
     const shouldShuffle = get(shuffle);
 
     songProgress.set(0);
@@ -112,12 +122,15 @@ export class PlaybackController {
     nowPlayingType.set("Artist");
     
     const cloned = structuredClone(artist.songIds);
-    const newQueue: string[] = shouldShuffle ? shuffleSongs(cloned) : cloned;
+    const newQueue: string[] = (shouldShuffle && !ignoreShuffle) ? shuffleSongs(cloned) : cloned;
     const firstSongId = newQueue.shift()!;
 
     playingSongId.set(firstSongId);
 
     queue.set(newQueue);
+    
+    showNowPlaying.set(true);
+    showMiniPlayer.set(true);
     
     this.resume();
   }
@@ -125,8 +138,9 @@ export class PlaybackController {
   /**
    * Plays the provided genre.
    * @param genre The genre to play.
+   * @param ignoreShuffle Whether to ignore the shuffle setting or not.
    */
-  static playGenre(genre: Genre) {
+  static playGenre(genre: Genre, ignoreShuffle = false) {
     const shouldShuffle = get(shuffle);
 
     songProgress.set(0);
@@ -134,12 +148,15 @@ export class PlaybackController {
     nowPlayingType.set("Genre");
     
     const cloned = structuredClone(genre.songIds);
-    const newQueue: string[] = shouldShuffle ? shuffleSongs(cloned) : cloned;
+    const newQueue: string[] = (shouldShuffle && !ignoreShuffle) ? shuffleSongs(cloned) : cloned;
     const firstSongId = newQueue.shift()!;
 
     playingSongId.set(firstSongId);
 
     queue.set(newQueue);
+    
+    showNowPlaying.set(true);
+    showMiniPlayer.set(true);
 
     this.resume();
   }
