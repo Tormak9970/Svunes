@@ -85,11 +85,11 @@
 <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
-{#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}
+{#if $location.lastIndexOf("/") === 0 && $location !== "/settings" && $location !== "/search"}
   <ViewNav />
 {/if}
+<NowPlayingContainer />
 <div class="content">
-  <NowPlayingContainer />
   <ErrorSnackbar bind:show={$showErrorSnackbar} />
   <InfoSnackbar bind:show={$showInfoSnackbar} />
   {#if $inSelectMode}

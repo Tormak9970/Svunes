@@ -26,17 +26,17 @@
    * Gets the song ids from the current selection.
    */
   function getSongsFromSelected(): string[] {
-    let songNames: string[] = [];
+    let songIds: string[] = [];
 
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
           for (const playlistId of $selected) {
             const playlist = $playlistsMap[playlistId];
-            songNames.push(...playlist.songIds);
+            songIds.push(...playlist.songIds);
           }
         } else {
-          songNames = $selected;
+          songIds = $selected;
         }
         break;
       }
@@ -44,10 +44,10 @@
         if ($location === "/albums") {
           for (const albumName of $selected) {
             const album = $albumsMap[albumName];
-            songNames.push(...album.songIds);
+            songIds.push(...album.songIds);
           }
         } else {
-          songNames = $selected;
+          songIds = $selected;
         }
         break;
       }
@@ -55,16 +55,16 @@
         if ($location === "/artists") {
           for (const artistName of $selected) {
             const artist = $artistsMap[artistName];
-            songNames.push(...artist.songIds);
+            songIds.push(...artist.songIds);
           }
         } else {
-          songNames = $selected;
+          songIds = $selected;
         }
         break;
       }
       case View.SONGS:
       case View.GENRES: {
-        songNames = $selected;
+        songIds = $selected;
         break;
       }
       case View.HOME:
@@ -75,7 +75,7 @@
       }
     }
 
-    return songNames;
+    return songIds;
   }
 
   /**

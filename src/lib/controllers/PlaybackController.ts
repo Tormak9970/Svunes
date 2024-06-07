@@ -61,11 +61,15 @@ export class PlaybackController {
   /**
    * Plays the provided song.
    * @param song The song to play.
+   * @param isFromSkip Whether this is from skipping or a song ending.
    */
-  static playSong(song: Song) {
+  static playSong(song: Song, isFromSkip = false) {
     songProgress.set(0);
-    nowPlayingList.set("");
-    nowPlayingType.set("Song");
+    
+    if (!isFromSkip) {
+      nowPlayingList.set("");
+      nowPlayingType.set("Song");
+    }
 
     song.numTimesPlayed++;
     song.setLastPlayed();

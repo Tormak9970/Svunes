@@ -7,6 +7,9 @@
 
   export let name: string | undefined;
   export let type: "filled" | "text" = "filled";
+
+  $: console.log(name);
+  $: console.log($nowPlayingList);
 </script>
 
 <div class="play-container">

@@ -21,7 +21,7 @@ export class QueueController {
       const skippedId = songQueue.shift();
       playbackHistory.push(skippedId!);
 
-      PlaybackController.playSong(songMap[skippedId!]);
+      PlaybackController.playSong(songMap[skippedId!], true);
       
       history.set(playbackHistory);
       queue.set(songQueue);
@@ -69,7 +69,7 @@ export class QueueController {
       let lastPlayedSongId = playbackHistory.pop();
 
       songQueue.unshift(lastPlayedSongId!);
-      PlaybackController.playSong(songMap[lastPlayedSongId!]);
+      PlaybackController.playSong(songMap[lastPlayedSongId!], true);
       
       history.set(playbackHistory);
       queue.set(songQueue);

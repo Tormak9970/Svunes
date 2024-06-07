@@ -3,17 +3,16 @@
   import type { Song } from "../../../lib/models/Song";
   import { inSelectMode, selected } from "../../../stores/Select";
   import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import Lazy from "../../layout/Lazy.svelte";
+  import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
   import { songGridSize, songSortOrder } from "../../../stores/State";
   import { GridSize } from "../../../types/Settings";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import { fade } from "svelte/transition";
   import { renderDate } from "../../../lib/utils/Utils";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import CardClickable from "../../layout/CardClickable.svelte";
   import MenuButton from "../../interactables/MenuButton.svelte";
   import SongOptions from "./SongOptions.svelte";
+  import ViewImage from "../../utils/ViewImage.svelte";
 
   export let song: Song;
 
@@ -54,19 +53,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content" class:highlight={highlighted}>
-    <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;">
-      {#if convertedPath !== ""}
-        <Lazy height={GRID_IMAGE_DIMENSIONS[$songGridSize].height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$songGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$songGridSize].height}px;" draggable="false" on:error={onError} />
-          <span slot="placeholder">
-            <MusicNotePlaceholder width={size} height={size} />
-          </span>
-        </Lazy>
-      {:else}
-        <MusicNotePlaceholder width={size} height={size} />
-      {/if}
-    </div>
+    <ViewImage src={convertedPath} width={GRID_IMAGE_DIMENSIONS[$songGridSize].width} height={GRID_IMAGE_DIMENSIONS[$songGridSize].height} iconSize={size} />
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight}px;" class:expand={$songGridSize !== GridSize.LARGE}>
       <div class="info">
         <div class="name">
@@ -138,11 +125,6 @@
     color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-  .album {
-    border-radius: 10px;
     overflow: hidden;
   }
 </style>

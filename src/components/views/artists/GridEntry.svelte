@@ -2,13 +2,12 @@
   import { tauri } from "@tauri-apps/api";
   import type { Artist } from "../../../lib/models/Artist";
   import { inSelectMode, selected } from "../../../stores/Select";
-  import { GRID_IMAGE_DIMENSIONS, IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import Lazy from "../../layout/Lazy.svelte";
+  import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
   import { artistGridSize } from "../../../stores/State";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
   import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
-    import { GridSize } from "../../../types/Settings";
+  import { GridSize } from "../../../types/Settings";
+  import ViewImage from "../../utils/ViewImage.svelte";
 
   export let artist: Artist;
 
@@ -47,19 +46,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content" class:highlight={highlighted}>
-    <div class="album" style="width: {GRID_IMAGE_DIMENSIONS[$artistGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$artistGridSize].height}px;">
-      {#if convertedPath !== ""}
-        <Lazy height={GRID_IMAGE_DIMENSIONS[$artistGridSize].height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {GRID_IMAGE_DIMENSIONS[$artistGridSize].width}px; height: {GRID_IMAGE_DIMENSIONS[$artistGridSize].height}px;" draggable="false" on:error={onError} />
-          <span slot="placeholder">
-            <MusicNotePlaceholder width={size} height={size} />
-          </span>
-        </Lazy>
-      {:else}
-        <MusicNotePlaceholder width={size} height={size} />
-      {/if}
-    </div>
+    <ViewImage src={convertedPath} width={GRID_IMAGE_DIMENSIONS[$artistGridSize].width} height={GRID_IMAGE_DIMENSIONS[$artistGridSize].height} iconSize={size} borderRadius="50%" />
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$artistGridSize].infoHeight}px;">
       <div class="info">{artist.name}</div>
     </div>
@@ -93,10 +80,5 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-  }
-
-  .album {
-    border-radius: 50%;
-    overflow: hidden;
   }
 </style>

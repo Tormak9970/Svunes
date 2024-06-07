@@ -2,11 +2,10 @@
   import { tauri } from "@tauri-apps/api";
   import type { Artist } from "../../../lib/models/Artist";
   import { inSelectMode, selected } from "../../../stores/Select";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import Lazy from "../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import { LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
   import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
+  import ViewImage from "../../utils/ViewImage.svelte";
 
   export let artist: Artist;
 
@@ -45,19 +44,7 @@
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content">
     <div class="left">
-      <div class="album">
-        {#if convertedPath !== ""}
-          <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
-            <span slot="placeholder">
-              <MusicNotePlaceholder />
-            </span>
-          </Lazy>
-        {:else}
-          <MusicNotePlaceholder />
-        {/if}
-      </div>
+      <ViewImage src={convertedPath} width={LIST_IMAGE_DIMENSIONS.width} height={LIST_IMAGE_DIMENSIONS.height} borderRadius="4px" marginLeft="10px" />
       <div class="info">{artist.name}</div>
     </div>
   </div>
@@ -78,15 +65,6 @@
 
   .info {
     max-width: calc(100% - 75px);
-  }
-
-  .album {
-    border-radius: 4px;
-    overflow: hidden;
-    height: 40px;
-    width: 40px;
-
-    margin-left: 10px;
-    margin-right: 15px;
+    margin-left: 15px;
   }
 </style>
