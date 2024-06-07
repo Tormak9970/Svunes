@@ -29,7 +29,7 @@
     padding: 0 1.5rem;
     border-radius: var(--m3-button-shape);
     color: rgb(var(--text-color));
-    transition: all 200ms;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out, box-shadow 0.2s ease-out;
 
     align-items: center;
     justify-content: center;
@@ -40,7 +40,7 @@
   .layer {
     position: absolute;
     inset: 0;
-    transition: all 200ms;
+    transition: background-color 0.2s ease-out;
   }
 
   .m3-container > :global(*) {

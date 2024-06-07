@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isLoading, isSwitchingView, lastView, selectedView, viewsToRender } from "../../stores/State";
+  import { isLoading, isSwitchingView, lastView, selectedView, viewIndices, viewsToRender } from "../../stores/State";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import Album from "@ktibow/iconset-material-symbols/album";
   import MusicNote from "@ktibow/iconset-material-symbols/music-note";
@@ -47,7 +47,7 @@
 <div class="view-nav" class:rounded={!$showMiniPlayer} transition:fly={{ duration: 200, y: 60 }}>
   <NavList type="bar">
     <div class="items">
-      {#each $viewsToRender as view}
+      {#each $viewsToRender.sort((a, b) => $viewIndices[a] - $viewIndices[b]) as view}
         <NavListButton type="auto" on:click={() => setSelectedView(view)} selected={view === $selectedView} icon={icons[view]} />
       {/each}
     </div>

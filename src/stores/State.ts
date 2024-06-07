@@ -74,7 +74,17 @@ export const autoPlayOnConnect = writable(false);
 export const autoPlayOnBluetooth = writable(false);
 
 // # Personalization Settings
-export const viewsToRender: Writable<View[]> = writable([])
+export const viewsToRender: Writable<View[]> = writable([]);
+export const viewIndices: Writable<Record<View, number>> = writable({
+  0: 0,
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  6: 6,
+  7: 7
+});
 export const showSuggestions = writable(true);
 export const trackHistory = writable(true);
 export const showAlbumOnLockScreen = writable(true);

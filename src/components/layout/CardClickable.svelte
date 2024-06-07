@@ -40,13 +40,13 @@
     border-radius: var(--m3-card-shape);
     background-color: rgb(var(--m3-scheme-surface));
     color: rgb(var(--m3-scheme-on-surface));
-    transition: all 200ms;
+    transition: background-color 0.2s, box-shadow 0.2s;
   }
   .layer {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    transition: all 200ms;
+    transition: background-color 0.2s;
     pointer-events: none;
   }
   

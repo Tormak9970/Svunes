@@ -88,8 +88,8 @@
 {#if $location.lastIndexOf("/") === 0 && $location !== "/settings"}
   <ViewNav />
 {/if}
-<NowPlayingContainer />
 <div class="content">
+  <NowPlayingContainer />
   <ErrorSnackbar bind:show={$showErrorSnackbar} />
   <InfoSnackbar bind:show={$showInfoSnackbar} />
   {#if $inSelectMode}

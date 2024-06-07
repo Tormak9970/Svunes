@@ -2,9 +2,9 @@
   import { onMount, onDestroy } from "svelte";
   import { flip } from "svelte/animate";
   import type { Unsubscriber } from "svelte/store";
-	import {dragHandleZone, dragHandle} from "svelte-dnd-action";
+	import {dragHandleZone, dragHandle, DRAGGED_ELEMENT_ID} from "svelte-dnd-action";
   
-  import { showErrorSnackbar, viewsToRender } from "../../stores/State";
+  import { showErrorSnackbar, viewIndices, viewsToRender } from "../../stores/State";
   import { showEditViewOrder } from "../../stores/Modals";
   import { View, Views, getViewName } from "../../types/View";
 
@@ -27,9 +27,8 @@
   let items: ListEntry[] = [];
 
   let reset = false;
-  let transition = true;
 
-  const flipDurationMs = 100;
+  const flipDurationMs = 200;
 
   /**
    * Handles checking if a checkbox can be checked/unchecked.
@@ -66,21 +65,18 @@
    * Saves the user's changes
    */
   function done() {
+    $viewIndices = Object.fromEntries(items.map((item, i) => [item.view, i])) as Record<View, number>;
     $viewsToRender = items.filter((item) => item.checked).map((item) => item.view);
     $showEditViewOrder = false;
   }
 
-  function handleMouseDown() {
-    transition = false;
-  }
-
-  function handleMouseUp() {
-    transition = true;
+  function styleDraggedElement(elem: HTMLElement | undefined) {
+    elem!.style.backgroundColor = "rgb(var(--m3-scheme-surface-container-highest))";
   }
 
   onMount(() => {
     viewsToRenderUnsub = viewsToRender.subscribe((newViews) => {
-      items = Views.map((view) => {
+      items = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]).map((view) => {
         return {
           id: view,
           name: getViewName(view),
@@ -96,13 +92,11 @@
   });
 </script>
 
-<svelte:window on:mouseup={handleMouseUp} />
-
 <ModalBody show={$showEditViewOrder} headline={"Library Order"} onClose={() => $showEditViewOrder = false }>
   <div slot="content">
     {#key reset}
       <div class="drag-container"
-        use:dragHandleZone="{{ items, flipDurationMs, dropTargetStyle: {} }}"
+        use:dragHandleZone="{{ items, flipDurationMs, dropTargetStyle: {}, morphDisabled: true, transformDraggedElement: styleDraggedElement }}"
         on:consider="{handleSort}"
         on:finalize="{handleSort}"
       >
@@ -110,12 +104,12 @@
           <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
             <div class="left">
               <div class="checkbox-container">
-                <Checkbox checked={item.checked} transition={transition} on:input={checkboxHandler(item.view)} />
+                <Checkbox checked={item.checked} on:input={checkboxHandler(item.view)} />
               </div>
               <div>{item.name}</div>
             </div>
             <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div class="handle" use:dragHandle on:mousedown={handleMouseDown}>
+            <div class="handle" use:dragHandle>
               <Icon icon={DragIndicator} height="30px" width="24px" />
             </div>
           </div>
@@ -141,7 +135,9 @@
   }
 
   .entry {
-		width: 100%;
+    margin-left: -10px;
+    padding-left: 10px;
+		width: calc(100% + 10px);
     height: 40px;
 
     display: flex;
@@ -149,6 +145,11 @@
     justify-content: space-between;
 
     user-select: none;
+
+    background-color: rgb(var(--m3-scheme-surface-container-high));
+
+    transition: background-color 0.2 ease-out;
+    border-radius: 4px;
 	}
 
   .left {

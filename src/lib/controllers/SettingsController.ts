@@ -17,7 +17,7 @@
 import { fs, path } from "@tauri-apps/api";
 import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "./utils/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
@@ -82,6 +82,7 @@ export class SettingsController {
   private static nowPlayingMiniUseAlbumColorsUnsub: Unsubscriber;
 
   private static viewsToRenderUnsub: Unsubscriber;
+  private static viewIndicesUnsub: Unsubscriber;
 
   private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
   private static showExtraControlsUnsub: Unsubscriber;
@@ -320,6 +321,7 @@ export class SettingsController {
 
     const personalization = this.settings.personalization;
     viewsToRender.set(personalization.viewsToRender);
+    viewIndices.set(personalization.viewIndices);
 
     const playlistList = this.settings.playlists.map((playlist) => Playlist.fromJSON(playlist));
     const songMetadata: Record<string, SongMetadata> = this.settings.cache.songsMetadata;
@@ -406,6 +408,7 @@ export class SettingsController {
     this.showVolumeControlsUnsub = showVolumeControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.volumeControls"));
 
     this.viewsToRenderUnsub = viewsToRender.subscribe(this.updateStoreIfChanged<View[]>("personalization.viewsToRender"));
+    this.viewIndicesUnsub = viewIndices.subscribe(this.updateStoreIfChanged<Record<View, number>>("personalization.viewIndices"));
 
     this.fadeAudioOnPauseUnsub = fadeAudioOnPause.subscribe(this.updateStoreIfChanged<boolean>("audio.fade"));
     this.autoPlayOnConnectUnsub = autoPlayOnConnect.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlay"));
@@ -582,6 +585,7 @@ export class SettingsController {
     if (this.showVolumeControlsUnsub) this.showVolumeControlsUnsub();
     
     if (this.viewsToRenderUnsub) this.viewsToRenderUnsub();
+    if (this.viewIndicesUnsub) this.viewIndicesUnsub();
 
     if (this.fadeAudioOnPauseUnsub) this.fadeAudioOnPauseUnsub();
     if (this.autoPlayOnConnectUnsub) this.autoPlayOnConnectUnsub();

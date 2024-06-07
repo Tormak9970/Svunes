@@ -119,6 +119,7 @@ export type Settings = {
 
   personalization: {
     viewsToRender: View[],
+    viewIndices: Record<View, number>;
     showSuggestions: boolean,
     trackHistory: boolean,
     showAlbumOnLockScreen: boolean
@@ -198,6 +199,16 @@ export const DEFAULT_SETTINGS: Settings = {
 
   "personalization": {
     "viewsToRender": [0, 1, 2, 3, 5],
+    "viewIndices": {
+      0: 0,
+      1: 1,
+      2: 2,
+      3: 3,
+      4: 4,
+      5: 5,
+      6: 6,
+      7: 7
+    },
     "showSuggestions": true,
     "trackHistory": true,
     "showAlbumOnLockScreen": true
