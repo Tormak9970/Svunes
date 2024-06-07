@@ -12,7 +12,6 @@
   import { holdEvent } from "../../lib/directives/HoldEvent";
 
   export let song: Song;
-  export let transition: boolean;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
@@ -50,7 +49,6 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <button
   on:click|stopPropagation={onClick}
-  style:--transition={transition ? "all" : "none"}
   class="m3-container"
 >
   <div class="layer" class:highlight />
@@ -83,7 +81,7 @@
         </div>
       </div>
       <div class="options">
-        <MenuButton icon={MoreVert} bind:open={menuIsOpen} extraOptions={{ style: transition ? "display: flex;" : "display: flex; transition: none !important" }}>
+        <MenuButton icon={MoreVert} bind:open={menuIsOpen} extraOptions={{ style: "display: flex;" }}>
           <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
         </MenuButton>
       </div>
@@ -111,7 +109,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    transition: var(--transition) 200ms;
+    transition: background-color 0.2s;
     pointer-events: none;
   }
 

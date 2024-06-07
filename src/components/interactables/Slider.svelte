@@ -136,7 +136,6 @@
     background-color: rgb(var(--m3-scheme-inverse-surface));
     color: rgb(var(--m3-scheme-inverse-on-surface));
     width: 3rem;
-    /* padding: 0.75rem 1rem; */
     padding: 0.75rem 1rem;
     border-radius: var(--m3-slider-thumb-shape);
 

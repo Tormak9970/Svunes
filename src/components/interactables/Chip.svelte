@@ -58,13 +58,17 @@
     position: relative;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: all 200ms;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s;
   }
   .layer {
     position: absolute;
     inset: -0.0625rem;
     border-radius: var(--m3-chip-shape);
-    transition: all 200ms;
+    transition: opacity 0.2s;
   }
 
   .m3-container > :global(svg) {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dragHandle, dragHandleZone } from "svelte-dnd-action";
+  import { DRAGGED_ELEMENT_ID, dragHandle, dragHandleZone } from "svelte-dnd-action";
   import PlaylistSong from "./PlaylistSong.svelte";
   import type { Playlist } from "../../lib/models/Playlist";
   import { playlists, songsMap } from "../../stores/State";
@@ -7,7 +7,7 @@
   import { afterUpdate } from "svelte";
   import type { Song } from "../../lib/models/Song";
   
-  import DragHandle from "@ktibow/iconset-material-symbols/drag-handle";
+  import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
   import Icon from "../../components/utils/Icon.svelte";
 
   export let playlist: Playlist;
@@ -17,15 +17,6 @@
   let items: { id: string, song: Song }[] = [];
 
   const flipDurationMs = 100;
-  let transition = true;
-  
-  function handleMouseDown() {
-    transition = false;
-  }
-
-  function handleMouseUp() {
-    transition = true;
-  }
 
   /**
    * Handles sorting on drag and drop events.
@@ -47,6 +38,10 @@
     }
   }
 
+  function styleDraggedElement(elem: HTMLElement | undefined) {
+    (elem!.children[0] as HTMLElement).style.backgroundColor = "rgb(var(--m3-scheme-surface-container-highest))";
+  }
+
   afterUpdate(() => {
     if (songs.length !== oldLength) {
       oldLength = songs.length;
@@ -60,19 +55,17 @@
   });
 </script>
 
-<svelte:window on:mouseup={handleMouseUp} />
-
 <div
   class="song-entries"
-  use:dragHandleZone="{{ items, flipDurationMs, dropTargetStyle: {} }}"
+  use:dragHandleZone="{{ items, flipDurationMs, dropTargetStyle: {}, transformDraggedElement: styleDraggedElement }}"
   on:consider="{handleSort}"
   on:finalize="{finalize}"
 >
-  {#each items as item(item.id)}
+  {#each items as item (item.id)}
     <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
-      <PlaylistSong song={item.song} transition={transition}>
+      <PlaylistSong song={item.song}>
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="handle" use:dragHandle on:mousedown={handleMouseDown}>
+        <div class="handle" use:dragHandle>
           <Icon icon={DragHandle} height="30px" width="24px" />
         </div>
       </PlaylistSong>
