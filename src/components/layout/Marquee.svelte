@@ -3,13 +3,9 @@
 
 	export let style = "";
 
-	export let pauseOnHover = false;
-	export let pauseOnClick = false;
 	export let direction = "left";
 
 	export let speed = 100;
-
-	export let play = true;
 
 	let className = "";
 	export { className as class };
@@ -38,11 +34,9 @@
 	bind:clientWidth={containerWidth}
   bind:this={container}
 	style:--gap={gap + "px"}
-	style:--play={(play && isGreater) ? "running" : "paused"}
+	style:--play={(isGreater) ? "running" : "paused"}
 	style:--direction={direction === "left" ? "normal" : "reverse"}
 	style:--duration={duration + "s"}
-	style:--pause-on-hover={pauseOnHover ? "paused" : "running"}
-	style:--pause-on-click={pauseOnClick ? "paused" : "running"}
 >
   {#if isGreater}
     <div class="gradient" data-testid="marquee-gradient" />
@@ -65,11 +59,7 @@
 	}
 
 	.marquee-container:hover .marquee {
-		animation-play-state: var(--pause-on-hover);
-	}
-
-	.marquee-container:active .marquee {
-		animation-play-state: var(--pause-on-click);
+		animation-play-state: paused;
 	}
 
 	.marquee {

@@ -48,13 +48,12 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <button
-  on:click|stopPropagation={onClick}
   class="m3-container"
 >
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
-    <div class="content" use:holdEvent={{ onHold: select, duration: 300 }}>
+    <div class="content" use:holdEvent={{ onHold: select, duration: 300 }} on:click|stopPropagation={onClick}>
       <div class="left">
         <div class="album">
           {#if convertedPath !== ""}
