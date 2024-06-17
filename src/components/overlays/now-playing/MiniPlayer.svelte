@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fly } from "svelte/transition";
   import { PlaybackController } from "../../../lib/controllers/PlaybackController";
   import { albumsMap, isPaused, playingSongId, showViewNav, songProgress, songsMap } from "../../../stores/State";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
@@ -8,6 +7,26 @@
   import Button from "../../interactables/Button.svelte";
   import ViewImage from "../../utils/ViewImage.svelte";
   import { tauri } from "@tauri-apps/api";
+  import { cubicOut } from "svelte/easing";
+
+  $: bottom = $showViewNav ? 65 : 10;
+
+  /**
+   * Creates Fly transition using the element's bottom property.
+   */
+  function fly(node: HTMLElement, { duration = 400, y = 0 } = {}) {
+    const style = getComputedStyle(node);
+    const target_opacity = +style.opacity;
+
+    return {
+      delay: 0,
+      duration,
+      easing: cubicOut,
+      css: (t: number, u: number) => `
+        bottom: ${(1 - t) * y}px;
+        opacity: ${target_opacity - target_opacity * u}`
+    };
+  }
 
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
@@ -34,7 +53,7 @@
   }
 </script>
 
-<div class="holder" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }} style:--progress-color={progressColor} style:--text-color={"var(--m3-scheme-primary)"} style:bottom={$showViewNav ? "65px" : "10px"}>
+<div class="holder" in:fly={{ y: bottom, duration: 300 }} out:fly={{ y: bottom, duration: 400 }} style:--progress-color={progressColor} style:--text-color={"var(--m3-scheme-primary)"} style:bottom="{bottom}px">
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
     <p class="m3-font-body-medium">{song?.title}</p>
