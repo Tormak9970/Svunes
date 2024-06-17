@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DRAGGED_ELEMENT_ID, dragHandle, dragHandleZone } from "svelte-dnd-action";
+  import { dragHandle, dragHandleZone } from "svelte-dnd-action";
   import PlaylistSong from "./PlaylistSong.svelte";
   import type { Playlist } from "../../lib/models/Playlist";
   import { playlists, songsMap } from "../../stores/State";
@@ -9,6 +9,7 @@
   
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
   import Icon from "../../components/utils/Icon.svelte";
+    import { inSelectMode } from "../../stores/Select";
 
   export let playlist: Playlist;
 
@@ -65,7 +66,7 @@
     <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
       <PlaylistSong song={item.song}>
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="handle" use:dragHandle>
+        <div class="handle" use:dragHandle style:visibility={$inSelectMode ? "hidden" : "visible"}>
           <Icon icon={DragHandle} height="30px" width="24px" />
         </div>
       </PlaylistSong>

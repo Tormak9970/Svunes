@@ -116,7 +116,7 @@
       <PlaylistImage playlist={playlist} height={imageSize} width={imageSize} />
       <div class="details">
         <div class="info">
-          <Marquee pauseOnHover speed={50} gap={100}>
+          <Marquee speed={50} gap={100}>
             <h3 class="name">{playlist?.name}</h3>
           </Marquee>
           <div class="other">

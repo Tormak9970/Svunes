@@ -158,7 +158,7 @@
     {/key}
     <div class="details">
       <div class="info">
-        <Marquee pauseOnHover speed={50} gap={100}>
+        <Marquee speed={50} gap={100}>
           <h3 class="name">{artist?.name}</h3>
         </Marquee>
         <div class="other">{`${artist?.albumNames.size} ${pluralize("Album", artist?.albumNames.size)} • `}{`${artist?.songIds.length} ${pluralize("Song", artist?.songIds.length)} • `}{artist?.displayArtistSongLength()}</div>

@@ -34,7 +34,6 @@
   }
 </script>
 
-<!-- TODO: try basing on snackbars, should be slightly taller with less gap -->
 <div class="holder" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }} style:--background-color={backgroundColor} style:--text-color={textColor}>
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />

@@ -158,7 +158,7 @@
     <DetailsArtPicture artPath={album?.artPath} />
     <div class="details">
       <div class="info">
-        <Marquee pauseOnHover speed={50} gap={100}>
+        <Marquee speed={50} gap={100}>
           <h3 class="name">{album?.name}</h3>
         </Marquee>
         <div class="other"><div class="album-artist">{album?.albumArtist ?? ""}</div>{album?.albumArtist ? " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear : ""}{album?.releaseYear !== -1 ? " • " : ""}{album?.displayAlbumLength()}</div>
