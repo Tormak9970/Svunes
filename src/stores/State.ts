@@ -6,6 +6,7 @@ import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
 import type { Artist } from "../lib/models/Artist";
 import type { Genre } from "../lib/models/Genre";
+import { location } from "svelte-spa-router";
 
 export const isLoading = writable(true);
 export const shuffle = writable(true);
@@ -17,6 +18,7 @@ export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = wri
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);
+export const showViewNav: Readable<boolean> = derived(location, (loc) => loc.lastIndexOf("/") === 0 && loc !== "/settings" && loc !== "/search");
 
 export const playlistsIsAtTop = writable(true);
 export const songsIsAtTop = writable(true);

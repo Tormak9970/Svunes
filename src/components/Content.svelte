@@ -1,9 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
-  import MiniPlayer from "./overlays/now-playing/MiniPlayer.svelte";
   import Titlebar from "./Titlebar.svelte";
-  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, songProgress, songsMap } from "../stores/State";
+  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap } from "../stores/State";
   import Overlays from "./overlays/Overlays.svelte";
   import { AppController } from "../lib/controllers/AppController";
   import { SettingsController } from "../lib/controllers/SettingsController";
@@ -13,14 +12,14 @@
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./modals/Modals.svelte";
   import { exit } from "@tauri-apps/api/process";
-  import Router, { location, push } from 'svelte-spa-router'
+  import Router, { push } from 'svelte-spa-router'
   import { routes, viewRoutesLUT } from "../routes";
   import type { Unsubscriber } from "svelte/store";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
   import { showSavingSettings } from "../stores/Modals";
   import { QueueController } from "../lib/controllers/QueueController";
-    import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
+  import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
 
   let loadingUnsub: Unsubscriber;
   let isPausedUnsub: Unsubscriber;
@@ -85,7 +84,7 @@
 <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
-{#if $location.lastIndexOf("/") === 0 && $location !== "/settings" && $location !== "/search"}
+{#if $showViewNav}
   <ViewNav />
 {/if}
 <NowPlayingContainer />

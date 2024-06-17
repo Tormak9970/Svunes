@@ -103,6 +103,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 40px;
+    padding-bottom: 70px;
   }
 </style>
