@@ -24,6 +24,7 @@ export class PlaybackController {
     queue.set([]);
     nowPlayingList.set("");
     nowPlayingType.set("Song");
+    PlaybackController.pause();
   }
 
   /**

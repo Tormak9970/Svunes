@@ -12,6 +12,8 @@
 
 	export let gap = 0;
 
+  export let gradientColor = "var(--m3-scheme-background)";
+
   let container: HTMLDivElement;
 	let containerWidth: number;
 	let marqueeWidth: number;
@@ -37,6 +39,7 @@
 	style:--play={(isGreater) ? "running" : "paused"}
 	style:--direction={direction === "left" ? "normal" : "reverse"}
 	style:--duration={duration + "s"}
+  style:--gradient-color={gradientColor}
 >
   {#if isGreater}
     <div class="gradient" data-testid="marquee-gradient" />
@@ -96,7 +99,7 @@
 	.gradient::before {
 		background: linear-gradient(
 			to right,
-			rgb(var(--m3-scheme-background) / 0.6),
+			rgb(var(--gradient-color) / 0.6),
 			transparent
 		);
 		content: "";

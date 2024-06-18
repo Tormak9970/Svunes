@@ -88,7 +88,7 @@
   <ViewNav />
 {/if}
 <NowPlayingContainer />
-<div class="content">
+<div class="content" style="height: {$showViewNav ? "calc(100% - 56px)" : "100%"};">
   <ErrorSnackbar bind:show={$showErrorSnackbar} />
   <InfoSnackbar bind:show={$showInfoSnackbar} />
   {#if $inSelectMode}
@@ -103,7 +103,6 @@
 <style>
   .content {
     width: 100%;
-    height: 100%;
     
     position: relative;
   }

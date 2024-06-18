@@ -45,7 +45,7 @@
 </script>
 
 <div class="view-nav" class:rounded={!$showMiniPlayer} transition:fly={{ duration: 200, y: 60 }}>
-  <NavList type="bar" extraOptions={{ style: "padding: 0.75rem 0.5rem;" }}>
+  <NavList type="bar" extraOptions={{ style: "padding: 0.75rem 0.5rem; height: 56px;" }}>
     <div class="items">
       {#each $viewsToRender.sort((a, b) => $viewIndices[a] - $viewIndices[b]) as view}
         <NavListButton type="auto" on:click={() => setSelectedView(view)} selected={view === $selectedView} icon={icons[view]} />
@@ -57,7 +57,7 @@
 <style>
   .view-nav {
     width: 100%;
-    height: 60px;
+    height: 56px;
 
     overflow: hidden;
   }

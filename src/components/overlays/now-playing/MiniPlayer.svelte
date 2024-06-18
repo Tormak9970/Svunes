@@ -7,26 +7,15 @@
   import Button from "../../interactables/Button.svelte";
   import ViewImage from "../../utils/ViewImage.svelte";
   import { tauri } from "@tauri-apps/api";
-  import { cubicOut } from "svelte/easing";
+  import { drag } from "svelte-gesture";
+  import { spring, tweened, type Unsubscriber } from "svelte/motion";
+  import { showNowPlaying } from "../../../stores/Overlays";
+  import { onDestroy, onMount } from "svelte";
+  import { fly } from "svelte/transition";
 
-  $: bottom = $showViewNav ? 65 : 10;
+  let showViewNavUnsub: Unsubscriber;
 
-  /**
-   * Creates Fly transition using the element's bottom property.
-   */
-  function fly(node: HTMLElement, { duration = 400, y = 0 } = {}) {
-    const style = getComputedStyle(node);
-    const target_opacity = +style.opacity;
-
-    return {
-      delay: 0,
-      duration,
-      easing: cubicOut,
-      css: (t: number, u: number) => `
-        bottom: ${(1 - t) * y}px;
-        opacity: ${target_opacity - target_opacity * u}`
-    };
-  }
+  const bottom = tweened($showViewNav ? 65 : 10, { duration: 200 });
 
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
@@ -34,15 +23,35 @@
   $: covertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : ""; 
 
   $: progressWidth = song ? $songProgress / song.length * 100 : 0;
-  
   $: progressColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-primary)";
 
   // ? swipe up to show now-playing (will need transition)
   // ? tap to view show now-playing (will need transition)
-  // ? swipe down to clear nowPlaying stores
 
   // ? swipe left to skip back
   // ? swipe right to skip
+
+  const dragHeight = spring(0);
+
+  function handleDrag({ detail }: any) {
+		const { active, movement: [_, my] } = detail;
+
+    const shouldShowFull = my < -20;
+    if (shouldShowFull && !active) {
+      // TODO:
+      dragHeight.set(my);
+      return;
+    }
+
+    const shouldClear = my > 20;
+    if (shouldClear && !active) {
+      $showNowPlaying = false;
+      dragHeight.set(my);
+      return;
+    }
+
+		dragHeight.set(active ? my : 0);
+	}
 
   function handlePlay() {
     if ($isPaused) {
@@ -51,19 +60,35 @@
       PlaybackController.pause();
     }
   }
+
+  onMount(() => {
+    showViewNavUnsub = showViewNav.subscribe((show) => {
+      bottom.set(show ? 65 : 10);
+    });
+  });
+
+  onDestroy(() => {
+    if (showViewNavUnsub) showViewNavUnsub();
+    if (!$showNowPlaying) PlaybackController.resetNowPlaying();
+  });
 </script>
 
-<div class="holder" in:fly={{ y: bottom, duration: 300 }} out:fly={{ y: bottom, duration: 400 }} style:--progress-color={progressColor} style:--text-color={"var(--m3-scheme-primary)"} style:bottom="{bottom}px">
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="holder" use:drag on:drag={handleDrag} transition:fly={{ y: 200, duration: 400 }} style:bottom="{$bottom - $dragHeight}px" style:--progress-color={progressColor}>
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
-    <p class="m3-font-body-medium">{song?.title}</p>
-    <Button type="text" iconType="full" on:click={handlePlay}>
-      {#if !$isPaused}
-        <Icon icon={Pause} />
-      {:else}
-        <Icon icon={Play} />
-      {/if}
-    </Button>
+    <div class="text-container">
+      <p class="m3-font-body-medium">{song?.title}</p>
+    </div>
+    <div style="touch-action: auto;">
+      <Button type="text" iconType="full" on:click={handlePlay}>
+        {#if !$isPaused}
+          <Icon icon={Pause} />
+        {:else}
+          <Icon icon={Play} />
+        {/if}
+      </Button>
+    </div>
   </div>
   <div class="progress-container">
     <div class="progress" style:width="{progressWidth}%" />
@@ -75,6 +100,7 @@
     border: 0;
     padding: 0;
 
+    margin: 0px 8px;
     width: calc(100% - 16px);
     height: fit-content;
 
@@ -90,7 +116,7 @@
     0px 4px 5px 0px rgb(var(--m3-scheme-shadow) / 0.14),
     0px 1px 10px 0px rgb(var(--m3-scheme-shadow) / 0.12);
 
-    transition: bottom 0.2s ease-out;
+    touch-action: none;
   }
   p {
     margin-left: 0.5rem;
@@ -101,6 +127,19 @@
     display: none;
   }
 
+  .text-container {
+    width: 70%;
+    margin-right: 10%;
+  }
+
+  .text-container p {
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+    margin-left: 8px;
+  }
+
   .m3-container {
     display: flex;
     align-items: center;
@@ -109,7 +148,7 @@
     max-width: 60rem;
     min-height: 3rem;
     background-color: rgb(var(--m3-scheme-surface-container-low));
-    color: rgb(var(--text-color));
+    color: rgb(var(--m3-scheme-primary));
 
     height: 50px;
 
