@@ -9,7 +9,7 @@
   import { tauri } from "@tauri-apps/api";
   import { drag } from "svelte-gesture";
   import { spring, tweened, type Unsubscriber } from "svelte/motion";
-  import { showNowPlaying } from "../../../stores/Overlays";
+  import { showMiniPlayer, showNowPlaying } from "../../../stores/Overlays";
   import { onDestroy, onMount } from "svelte";
   import { fly } from "svelte/transition";
 
@@ -25,20 +25,14 @@
   $: progressWidth = song ? $songProgress / song.length * 100 : 0;
   $: progressColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-primary)";
 
-  // ? swipe up to show now-playing (will need transition)
-  // ? tap to view show now-playing (will need transition)
-
-  // ? swipe left to skip back
-  // ? swipe right to skip
-
   const dragHeight = spring(0);
 
   function handleDrag({ detail }: any) {
 		const { active, movement: [_, my] } = detail;
 
     const shouldShowFull = my < -20;
-    if (shouldShowFull && !active) {
-      // TODO:
+    if (shouldShowFull) {
+      $showMiniPlayer = false;
       dragHeight.set(my);
       return;
     }
@@ -74,7 +68,8 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="holder" use:drag on:drag={handleDrag} transition:fly={{ y: 200, duration: 400 }} style:bottom="{$bottom - $dragHeight}px" style:--progress-color={progressColor}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="holder" use:drag on:drag={handleDrag} on:click={() => $showMiniPlayer = false} transition:fly={{ y: 200, duration: 400 }} style:bottom="{$bottom - $dragHeight}px" style:--progress-color={progressColor}>
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
     <div class="text-container">
@@ -117,6 +112,8 @@
     0px 1px 10px 0px rgb(var(--m3-scheme-shadow) / 0.12);
 
     touch-action: none;
+
+    cursor: pointer;
   }
   p {
     margin-left: 0.5rem;
