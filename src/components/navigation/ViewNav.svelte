@@ -60,6 +60,9 @@
     height: 56px;
 
     overflow: hidden;
+
+    position: relative;
+    z-index: 4;
   }
 
   .rounded {

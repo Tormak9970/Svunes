@@ -12,7 +12,7 @@
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import Modals from "./modals/Modals.svelte";
   import { exit } from "@tauri-apps/api/process";
-  import Router, { push } from 'svelte-spa-router'
+  import Router, { location, push } from 'svelte-spa-router'
   import { routes, viewRoutesLUT } from "../routes";
   import type { Unsubscriber } from "svelte/store";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
@@ -20,6 +20,8 @@
   import { showSavingSettings } from "../stores/Modals";
   import { QueueController } from "../lib/controllers/QueueController";
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
+  import { View } from "../types/View";
+  import { showMiniPlayer, showNowPlaying } from "../stores/Overlays";
 
   let loadingUnsub: Unsubscriber;
   let isPausedUnsub: Unsubscriber;
@@ -84,10 +86,13 @@
 <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
-{#if $showViewNav}
+{#if $showViewNav && !($showNowPlaying && !$showMiniPlayer)}
   <ViewNav />
 {/if}
-<NowPlayingContainer />
+{#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $selectedView !== View.SEARCH && $showNowPlaying}
+  <NowPlayingContainer />
+{/if}
+
 <div class="content" style="height: {$showViewNav ? "calc(100% - 56px)" : "100%"};">
   <ErrorSnackbar bind:show={$showErrorSnackbar} />
   <InfoSnackbar bind:show={$showInfoSnackbar} />
@@ -104,6 +109,7 @@
   .content {
     width: 100%;
     
-    position: relative;
+    position: absolute;
+    top: 0;
   }
 </style>

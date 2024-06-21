@@ -1,21 +1,17 @@
 <script lang="ts">
   import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { albumsMap, isPaused, playingSongId, showViewNav, songProgress, songsMap } from "../../../stores/State";
+  import { albumsMap, isPaused, playingSongId, songProgress, songsMap } from "../../../stores/State";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
   import Icon from "../../utils/Icon.svelte";
   import Button from "../../interactables/Button.svelte";
   import ViewImage from "../../utils/ViewImage.svelte";
   import { tauri } from "@tauri-apps/api";
-  import { drag } from "svelte-gesture";
-  import { spring, tweened, type Unsubscriber } from "svelte/motion";
   import { showMiniPlayer, showNowPlaying } from "../../../stores/Overlays";
-  import { onDestroy, onMount } from "svelte";
-  import { fly } from "svelte/transition";
+  import { onDestroy } from "svelte";
 
-  let showViewNavUnsub: Unsubscriber;
-
-  const bottom = tweened($showViewNav ? 65 : 10, { duration: 200 });
+  export let clampedHeight: number;
+  export let hasDragged: boolean;
 
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
@@ -25,28 +21,6 @@
   $: progressWidth = song ? $songProgress / song.length * 100 : 0;
   $: progressColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-primary)";
 
-  const dragHeight = spring(0);
-
-  function handleDrag({ detail }: any) {
-		const { active, movement: [_, my] } = detail;
-
-    const shouldShowFull = my < -20;
-    if (shouldShowFull) {
-      $showMiniPlayer = false;
-      dragHeight.set(my);
-      return;
-    }
-
-    const shouldClear = my > 20;
-    if (shouldClear && !active) {
-      $showNowPlaying = false;
-      dragHeight.set(my);
-      return;
-    }
-
-		dragHeight.set(active ? my : 0);
-	}
-
   function handlePlay() {
     if ($isPaused) {
       PlaybackController.resume();
@@ -55,21 +29,22 @@
     }
   }
 
-  onMount(() => {
-    showViewNavUnsub = showViewNav.subscribe((show) => {
-      bottom.set(show ? 65 : 10);
-    });
-  });
+  function handleClick() {
+    if (!hasDragged) {
+      $showMiniPlayer = false;
+    } else {
+      hasDragged = false;
+    }
+  }
 
   onDestroy(() => {
-    if (showViewNavUnsub) showViewNavUnsub();
     if (!$showNowPlaying) PlaybackController.resetNowPlaying();
   });
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="holder" use:drag on:drag={handleDrag} on:click={() => $showMiniPlayer = false} transition:fly={{ y: 200, duration: 400 }} style:bottom="{$bottom - $dragHeight}px" style:--progress-color={progressColor}>
+<div class="holder" style:opacity={(clampedHeight + 20) / 20} on:click={handleClick} style:--progress-color={progressColor}>
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
     <div class="text-container">
@@ -95,15 +70,16 @@
     border: 0;
     padding: 0;
 
+    position: absolute;
+    top: 0;
+
     margin: 0px 8px;
     width: calc(100% - 16px);
     height: fit-content;
 
-    position: absolute;
     overflow: hidden;
 
     background-color: transparent;
-    z-index: 3;
     
     border-radius: 10px;
     
@@ -111,7 +87,7 @@
     0px 4px 5px 0px rgb(var(--m3-scheme-shadow) / 0.14),
     0px 1px 10px 0px rgb(var(--m3-scheme-shadow) / 0.12);
 
-    touch-action: none;
+    z-index: 2;
 
     cursor: pointer;
   }
