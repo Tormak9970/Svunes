@@ -113,7 +113,7 @@ export class Song {
    * Displays the song's bitrate and sample rate
    */
   displayFrequency(): string {
-    return this.bitRate / 1000 + " kbit/s at " + this.sampleRate / 1000 + " Hz";
+    return this.bitRate / 1000 + " kb/s • " + this.sampleRate / 1000 + " Hz";
   }
 
   /**

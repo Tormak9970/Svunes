@@ -1,0 +1,1 @@
+<!-- TODO: use layout from simple with name/album layout from plain -->

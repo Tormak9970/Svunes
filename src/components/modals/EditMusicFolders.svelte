@@ -56,7 +56,7 @@
   });
 </script>
 
-<ModalBody show={$showEditMusicFolders} headline={"Music Folders"} canClose={$location.startsWith("/settings")} onClose={() => $showEditMusicFolders = false }>
+<ModalBody show={$showEditMusicFolders} headline="Music Folders" canClose={$location.startsWith("/settings")} onClose={() => $showEditMusicFolders = false }>
   <div slot="content">
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />

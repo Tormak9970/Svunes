@@ -1,6 +1,6 @@
 <script lang="ts">
   import { showMiniPlayer, showNowPlaying } from "../../../stores/Overlays";
-  import { showViewNav } from "../../../stores/State";
+  import { dismissMiniPlayerWithSwipe, showViewNav } from "../../../stores/State";
   import MiniPlayer from "./MiniPlayer.svelte";
   import NowPlaying from "./NowPlaying.svelte";
   import { spring, tweened } from "svelte/motion";
@@ -34,14 +34,14 @@
     }
 
     const shouldClear = my > closeThreshold;
-    if (shouldClear && $showMiniPlayer && !active) {
+    if (shouldClear && $showMiniPlayer && $dismissMiniPlayerWithSwipe && !active) {
       $showNowPlaying = false;
       dragHeight.set(my);
       return;
     }
 
     const shouldMinimize = my > minimizeThreshold;
-    if (shouldMinimize && !active) {
+    if (shouldMinimize && !$showMiniPlayer && !active) {
       $showMiniPlayer = true;
       bottom = tweened(my, { duration: 200 })
       dragHeight.set(0, { hard: true });

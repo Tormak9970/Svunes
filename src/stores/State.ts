@@ -1,6 +1,6 @@
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { AppLanguage, GridSize, GridStyle, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -60,15 +60,15 @@ export const themePrimaryColor = writable("");
 
 // # Now Playing Settings
 export const showExtraSongInfo = writable(false);
-export const circularPlayButton = writable(false);
+export const circularPlayButton = writable(true);
 export const nowPlayingTheme = writable(NowPlayingTheme.NORMAL);
 
 export const dismissMiniPlayerWithSwipe = writable(true);
 export const showExtraControls = writable(true);
-export const showVolumeControls = writable(false);
+export const showVolumeControls = writable(true);
 
 export const nowPlayingUseAlbumColors = writable(true);
-export const nowPlayingMiniUseAlbumColors = writable(false);
+export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIENT);
 
 // # Audio Settings
 export const fadeAudioOnPause = writable(false);

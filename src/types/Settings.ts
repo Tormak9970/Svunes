@@ -4,10 +4,9 @@ import type { View } from "./View";
 export enum NowPlayingTheme {
   NORMAL,
   CARD,
-  CIRCLE,
+  SIMPLE,
   FULL,
-  BLURRED,
-  SIMPLE
+  CIRCLE,
 }
 
 /**
@@ -18,16 +17,35 @@ export function getNowPlayingTheme(theme: NowPlayingTheme): string {
   switch (theme) {
     case NowPlayingTheme.NORMAL:
       return "Normal";
-    case NowPlayingTheme.FULL:
-      return "Full";
     case NowPlayingTheme.CARD:
       return "Card";
-    case NowPlayingTheme.CIRCLE:
-      return "Circle";
-    case NowPlayingTheme.BLURRED:
-      return "Blurred";
     case NowPlayingTheme.SIMPLE:
       return "Simple";
+    case NowPlayingTheme.FULL:
+      return "Full";
+    case NowPlayingTheme.CIRCLE:
+      return "Circle";
+  }
+}
+
+export enum NowPlayingBackgroundType {
+  SOLID,
+  GRADIENT,
+  BLUR
+}
+
+/**
+ * Gets a string to render for the given now playing background type.
+ * @param type The type to get.
+ */
+export function getNowPlayingBackgroundType(type: NowPlayingBackgroundType): string {
+  switch (type) {
+    case NowPlayingBackgroundType.SOLID:
+      return "Solid";
+    case NowPlayingBackgroundType.GRADIENT:
+      return "Gradient";
+    case NowPlayingBackgroundType.BLUR:
+      return "Blur";
   }
 }
 
@@ -101,11 +119,11 @@ export type Settings = {
   selectedView: View,
 
   nowPlaying: {
-    songInfo: boolean,
-    circularPlayButton: boolean,
     layout: NowPlayingTheme,
+    backgroundType: NowPlayingBackgroundType,
     useAlbumColors: boolean,
-    useAlbumColorsForMini: boolean,
+    circularPlayButton: boolean,
+    songInfo: boolean,
     controls: {
       dismissMiniWithSwipe: boolean,
       extraControls: boolean,
@@ -181,15 +199,15 @@ export const DEFAULT_SETTINGS: Settings = {
   "selectedView": 0,
 
   "nowPlaying": {
-    "songInfo": false,
-    "circularPlayButton": true,
     "layout": NowPlayingTheme.NORMAL,
+    "backgroundType": NowPlayingBackgroundType.GRADIENT,
     "useAlbumColors": true,
-    "useAlbumColorsForMini": false,
+    "circularPlayButton": true,
+    "songInfo": false,
     "controls": {
       "dismissMiniWithSwipe": true,
       "extraControls": true,
-      "volumeControls": false,
+      "volumeControls": true,
     }
   },
 

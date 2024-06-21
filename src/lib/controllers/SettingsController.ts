@@ -15,9 +15,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingTheme } from "../../types/Settings";
+import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "./utils/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingMiniUseAlbumColors, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingType, nowPlayingUseAlbumColors, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices, nowPlayingBackgroundType } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
@@ -25,7 +25,6 @@ import type { Album } from "../models/Album";
 import { get, type Unsubscriber } from "svelte/store";
 import { debounce } from "../utils/Utils";
 import type { Artist } from "../models/Artist";
-import { showMiniPlayer, showNowPlaying } from "../../stores/Overlays";
 
 /**
  * Sets settings to defaults if they do not exist.
@@ -80,7 +79,7 @@ export class SettingsController {
   private static circularPlayButtonUnsub: Unsubscriber;
   private static nowPlayingThemeUnsub: Unsubscriber;
   private static nowPlayingUseAlbumColorsUnsub: Unsubscriber;
-  private static nowPlayingMiniUseAlbumColorsUnsub: Unsubscriber;
+  private static nowPlayingBackgroundTypeUnsub: Unsubscriber;
 
   private static viewsToRenderUnsub: Unsubscriber;
   private static viewIndicesUnsub: Unsubscriber;
@@ -311,7 +310,7 @@ export class SettingsController {
     circularPlayButton.set(nowPlaying.circularPlayButton);
     nowPlayingTheme.set(nowPlaying.layout);
     nowPlayingUseAlbumColors.set(nowPlaying.useAlbumColors);
-    nowPlayingMiniUseAlbumColors.set(nowPlaying.useAlbumColorsForMini);
+    nowPlayingBackgroundType.set(nowPlaying.backgroundType);
 
     const controls = nowPlaying.controls;
     dismissMiniPlayerWithSwipe.set(controls.dismissMiniWithSwipe);
@@ -401,7 +400,7 @@ export class SettingsController {
     this.circularPlayButtonUnsub = circularPlayButton.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.circularPlayButton"));
     this.nowPlayingThemeUnsub = nowPlayingTheme.subscribe(this.updateStoreIfChanged<NowPlayingTheme>("nowPlaying.layout"));
     this.nowPlayingUseAlbumColorsUnsub = nowPlayingUseAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.useAlbumColors"));
-    this.nowPlayingMiniUseAlbumColorsUnsub = nowPlayingMiniUseAlbumColors.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.useAlbumColorsForMini"));
+    this.nowPlayingBackgroundTypeUnsub = nowPlayingBackgroundType.subscribe(this.updateStoreIfChanged<NowPlayingBackgroundType>("nowPlaying.backgroundType"));
 
     this.dismissMiniPlayerWithSwipeUnsub = dismissMiniPlayerWithSwipe.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.dismissMiniWithSwipe"));
     this.showExtraControlsUnsub = showExtraControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.extraControls"));
@@ -578,7 +577,7 @@ export class SettingsController {
     if (this.circularPlayButtonUnsub) this.circularPlayButtonUnsub();
     if (this.nowPlayingThemeUnsub) this.nowPlayingThemeUnsub();
     if (this.nowPlayingUseAlbumColorsUnsub) this.nowPlayingUseAlbumColorsUnsub();
-    if (this.nowPlayingMiniUseAlbumColorsUnsub) this.nowPlayingMiniUseAlbumColorsUnsub();
+    if (this.nowPlayingBackgroundTypeUnsub) this.nowPlayingBackgroundTypeUnsub();
 
     if (this.dismissMiniPlayerWithSwipeUnsub) this.dismissMiniPlayerWithSwipeUnsub();
     if (this.showExtraControlsUnsub) this.showExtraControlsUnsub();

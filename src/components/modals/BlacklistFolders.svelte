@@ -62,7 +62,7 @@
   });
 </script>
 
-<ModalBody show={$showBlacklistFolders} headline={"Blacklisted Folders"} onClose={() => $showBlacklistFolders = false }>
+<ModalBody show={$showBlacklistFolders} headline="Blacklisted Folders" onClose={() => $showBlacklistFolders = false }>
   <div slot="content">
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />

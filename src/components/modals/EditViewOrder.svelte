@@ -92,7 +92,7 @@
   });
 </script>
 
-<ModalBody show={$showEditViewOrder} headline={"Library Order"} onClose={() => $showEditViewOrder = false }>
+<ModalBody show={$showEditViewOrder} headline="Library Order" onClose={() => $showEditViewOrder = false }>
   <div slot="content">
     {#key reset}
       <div class="drag-container"

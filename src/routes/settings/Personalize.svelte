@@ -19,10 +19,10 @@
   </span>
   <span class="content" slot="content">
     <SettingSection label="Home" />
-    <ToggleSetting label="Show Suggestions" description={"Show suggested albums and artists on the home screen"} bind:checked={$showSuggestions} />
-    <ToggleSetting label="Track History" description={"Track when songs and albums are played. Used for recents on the home page"} icon={History} bind:checked={$trackHistory} />
+    <ToggleSetting label="Show Suggestions" description="Show suggested albums and artists on the home screen" bind:checked={$showSuggestions} />
+    <ToggleSetting label="Track History" description="Track when songs and albums are played. Used for recents on the home page" icon={History} bind:checked={$trackHistory} />
     <SettingSection label="Library" />
-    <ButtonSetting label="Library Categories" description={"Customize the categories displayed and their order"} icon={LibraryMusic} on:click={() => $showEditViewOrder = true} />
+    <ButtonSetting label="Library Categories" description="Customize the categories displayed and their order" icon={LibraryMusic} on:click={() => $showEditViewOrder = true} />
   </span>
 </SettingsBody>
 

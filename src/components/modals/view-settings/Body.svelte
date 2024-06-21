@@ -76,7 +76,7 @@
     background-color: rgb(var(--m3-scheme-surface-container-high));
     border: none;
     border-radius: var(--m3-dialog-shape);
-    min-width: 10.5rem;
+    min-width: 12.5rem;
     max-width: 35rem;
     padding: 0;
     overflow: auto;

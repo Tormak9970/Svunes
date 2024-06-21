@@ -80,7 +80,7 @@
         <div style="font-size: 20px;">{genre?.name}</div>
       </span>
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
-        <PlayButton type={"text"} name={genre?.name} on:click={playGenre} />
+        <PlayButton type="text" name={genre?.name} on:click={playGenre} />
         <MenuButton icon={MoreVert}>
           <MenuItem on:click={playNext}>Play Next</MenuItem>
           <MenuItem on:click={queueGenre}>Add to Queue</MenuItem>

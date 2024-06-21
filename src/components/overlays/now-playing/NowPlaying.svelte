@@ -1,14 +1,18 @@
 <script lang="ts">
+  import { nowPlayingTheme } from "../../../stores/State";
+  import Card from "./themes/Card.svelte";
+  import Circle from "./themes/Circle.svelte";
+  import Full from "./themes/Full.svelte";
+  import Normal from "./themes/Normal.svelte";
+  import Simple from "./themes/Simple.svelte";
+
   export let clampedHeight: number;
+
+  const layouts = [ Normal, Card, Simple, Full, Circle ];
 </script>
 
 <div class="full-screen-overlay" style:opacity={(-1 * clampedHeight) / 20}>
-  <div class="headline">
-    temp
-  </div>
-  <div class="content">
-    temp
-  </div>
+  <svelte:component this={layouts[$nowPlayingTheme]} />
 </div>
 
 <style>
@@ -17,42 +21,5 @@
     height: 100%;
 
     background-color: rgb(var(--m3-scheme-background));
-  }
-
-  .content {
-    margin-top: 50px;
-    height: calc(100vh - 50px);
-
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 70px;
-
-    overflow-y: scroll;
-    
-    scrollbar-color: transparent transparent;
-
-    transition: scrollbar-color 0.2s ease-in-out;
-  }
-
-  .content::before {
-		background: linear-gradient(
-			to top,
-			rgb(var(--m3-scheme-background) / 0.8),
-			transparent
-		);
-		content: "";
-		width: 100%;
-		position: absolute;
-		height: 40px;
-		z-index: 2;
-    bottom: 0;
-
-    pointer-events: none;
-	}
-
-  .content:hover {
-    scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
   }
 </style>

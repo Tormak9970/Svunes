@@ -12,6 +12,7 @@
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
   import Controlled from "./Controlled.svelte";
   import SavingSettings from "./SavingSettings.svelte";
+  import NowPlayingBackground from "./NowPlayingBackground.svelte";
 
 </script>
 
@@ -32,4 +33,5 @@
 <LanguageSelect />
 <EditViewOrder />
 <NowPlayingTheme />
+<NowPlayingBackground />
 <SavingSettings />

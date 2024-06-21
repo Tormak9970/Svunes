@@ -75,7 +75,7 @@ export function renderDate(formattedDate: string): string {
 }
 
 function prefixIfNeeded(time: number): string {
-  return time < 10 ? "0" + time.toString() : time.toString()
+  return time < 10 ? "0" + time.toFixed(0) : time.toFixed(0)
 }
 
 /**
