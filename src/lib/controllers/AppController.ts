@@ -12,6 +12,7 @@ import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Se
 import { getAllArtistNames } from "../utils/Utils";
 import type { Playlist } from "../models/Playlist";
 import { PlaybackController } from "./PlaybackController";
+import { showMiniPlayer, showNowPlaying } from "../../stores/Overlays";
 
 /**
  * The core app controller.
@@ -87,6 +88,7 @@ export class AppController {
    */
   static loadArtistsFromSongs(songs: Song[]) {
     const artistsMetadataMap = SettingsController.getSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata");
+    const cachedSongId = SettingsController.getSetting<string>("cache.playingSongId");
     const artistMap = new Map<string, Artist>();
 
     for (const song of songs) {
@@ -119,6 +121,15 @@ export class AppController {
     LogController.log(`Loaded ${artistList.length} artists.`).then(() => {
       // * This is kinda dumb but it works.
       isLoading.set(false);
+
+      console.log("cachedSongId:", cachedSongId);
+      playingSongId.set(cachedSongId);
+      if (cachedSongId !== "") {
+        showNowPlaying.set(true);
+        showMiniPlayer.set(true);
+      }
+
+      SettingsController.registerSubs();
     });
   }
 

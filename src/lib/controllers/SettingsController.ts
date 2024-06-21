@@ -25,6 +25,7 @@ import type { Album } from "../models/Album";
 import { get, type Unsubscriber } from "svelte/store";
 import { debounce } from "../utils/Utils";
 import type { Artist } from "../models/Artist";
+import { showMiniPlayer, showNowPlaying } from "../../stores/Overlays";
 
 /**
  * Sets settings to defaults if they do not exist.
@@ -141,7 +142,6 @@ export class SettingsController {
     
     this.settings = await this.loadSettingsFromDevice();
     this.setStores();
-    this.registerSubs();
 
     LogController.log("Initialized Settings.");
   }
@@ -384,7 +384,7 @@ export class SettingsController {
   /**
    * Registers the subscriptions to stores.
    */
-  private static registerSubs() {
+  static registerSubs() {
     this.paletteUnsub = palette.subscribe(this.updateStoreIfChanged<Palette>("palette"));
     this.useOledPaletteUnsub = useOledPalette.subscribe(this.updateStoreIfChanged<boolean>("useOledPalette"));
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));

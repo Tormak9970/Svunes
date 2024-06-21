@@ -1,5 +1,4 @@
 import { Playlist } from "../lib/models/Playlist";
-import type { Song } from "../lib/models/Song";
 import type { View } from "./View";
 
 export enum NowPlayingTheme {
@@ -7,6 +6,7 @@ export enum NowPlayingTheme {
   CARD,
   CIRCLE,
   FULL,
+  BLURRED,
   SIMPLE
 }
 
@@ -24,6 +24,8 @@ export function getNowPlayingTheme(theme: NowPlayingTheme): string {
       return "Card";
     case NowPlayingTheme.CIRCLE:
       return "Circle";
+    case NowPlayingTheme.BLURRED:
+      return "Blurred";
     case NowPlayingTheme.SIMPLE:
       return "Simple";
   }
