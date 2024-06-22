@@ -61,10 +61,6 @@
 		position: relative;
 	}
 
-	.marquee-container:hover .marquee {
-		animation-play-state: paused;
-	}
-
 	.marquee {
 		flex: 0 0 auto;
 		min-width: 100%;

@@ -70,6 +70,7 @@ export class PlaybackController {
     if (!isFromSkip) {
       nowPlayingList.set("");
       nowPlayingType.set("Song");
+      showMiniPlayer.set(true);
     }
 
     song.numTimesPlayed++;
@@ -79,7 +80,6 @@ export class PlaybackController {
     playingSongId.set(song.id);
 
     showNowPlaying.set(true);
-    showMiniPlayer.set(true);
 
     this.resume();
   }

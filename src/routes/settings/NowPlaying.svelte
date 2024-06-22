@@ -1,7 +1,7 @@
 <script lang="ts">
   import { pop } from "svelte-spa-router";
   import { showNowPlayingBackground, showNowPlayingTheme } from "../../stores/Modals";
-  import { circularPlayButton, dismissMiniPlayerWithSwipe, nowPlayingBackgroundType, nowPlayingTheme, nowPlayingUseAlbumColors, showExtraControls, showExtraSongInfo, showVolumeControls } from "../../stores/State";
+  import { circularPlayButton, dismissMiniPlayerWithSwipe, nowPlayingBackgroundType, nowPlayingTheme, showExtraControls, showExtraSongInfo, showVolumeControls } from "../../stores/State";
   import { getNowPlayingBackgroundType, getNowPlayingTheme } from "../../types/Settings";
 
   import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
@@ -24,7 +24,6 @@
   <span class="content" slot="content">
     <ButtonSetting label="Now Playing Theme" description={getNowPlayingTheme($nowPlayingTheme)} icon={NowPlaying} on:click={() => $showNowPlayingTheme = true} />
     <ButtonSetting label="Background Type" description={getNowPlayingBackgroundType($nowPlayingBackgroundType)} icon={LayoutBackground} on:click={() => $showNowPlayingBackground = true} />
-    <ToggleSetting label="Use Album Color" description="Themes the now playing page based on the album's cover" bind:checked={$nowPlayingUseAlbumColors} />
     <ToggleSetting label="Circular Play Button" description="Makes the pause/play button circular" bind:checked={$circularPlayButton} />
     <ToggleSetting label="Extra Song Info" description="Show extra song info, such as the file format, bitrate, and frequency" bind:checked={$showExtraSongInfo} />
     <SettingSection label="Controls" />

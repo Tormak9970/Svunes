@@ -10,6 +10,7 @@ import { location } from "svelte-spa-router";
 
 export const isLoading = writable(true);
 export const shuffle = writable(true);
+export const repeatPlayed = writable(false);
 export const isPaused = writable(true);
 
 export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable(() => {});
@@ -67,7 +68,6 @@ export const dismissMiniPlayerWithSwipe = writable(true);
 export const showExtraControls = writable(true);
 export const showVolumeControls = writable(true);
 
-export const nowPlayingUseAlbumColors = writable(true);
 export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIENT);
 
 // # Audio Settings

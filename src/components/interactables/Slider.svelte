@@ -11,6 +11,9 @@
   export let step: number | "any" = "any";
   export let disabled = false;
   export let showValue = true;
+  export let trackHeight = "0.5rem";
+  export let thumbSize = "1rem";
+  export let trackGap = "0.75rem";
   export let format = (n: number) => {
     return n.toFixed(0);
   };
@@ -23,6 +26,9 @@
   const debouncedSet = debounce(setValue.bind(this), 500);
 
   export const valueDisplayed = spring(value, { stiffness: 0.3, damping: 1 });
+
+  $: value && valueDisplayed.set(value, { hard: true });
+
   function updateValue(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
     const newValue = Number(e.currentTarget.value);
     e.preventDefault();
@@ -37,7 +43,7 @@
   }
 </script>
 
-<div class="m3-container" style="--percent: {percent * 100}%;" {...extraWrapperOptions}>
+<div class="m3-container" style="--percent: {percent * 100}%;" style:--track-height={trackHeight} style:--thumb-size={thumbSize} style:--track-gap={trackGap} {...extraWrapperOptions}>
   <input
     type="range"
     on:input={updateValue}
@@ -86,8 +92,8 @@
     left: 0;
     top: 50%;
     translate: 0 -50%;
-    width: calc(var(--percent) - 0.75rem);
-    height: 0.5rem;
+    width: calc(var(--percent) - var(--track-gap));
+    height: var(--track-height);
     pointer-events: none;
 
     background-color: rgb(var(--m3-scheme-primary));
@@ -102,8 +108,8 @@
     right: 0;
     top: 50%;
     translate: 0 -50%;
-    width: calc(100% - var(--percent) - 0.75rem);
-    height: 0.5rem;
+    width: calc(100% - var(--percent) - var(--track-gap));
+    height: var(--track-height);
     pointer-events: none;
 
     background-color: rgb(var(--m3-scheme-primary-container));
@@ -118,8 +124,8 @@
     left: var(--percent);
     top: 50%;
     translate: -50% -50%;
-    width: 1rem;
-    height: 1rem;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     border-radius: 50%;
     background-color: rgb(var(--m3-scheme-primary));
 

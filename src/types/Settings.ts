@@ -121,7 +121,6 @@ export type Settings = {
   nowPlaying: {
     layout: NowPlayingTheme,
     backgroundType: NowPlayingBackgroundType,
-    useAlbumColors: boolean,
     circularPlayButton: boolean,
     songInfo: boolean,
     controls: {
@@ -162,6 +161,7 @@ export type Settings = {
     songProgress: number,
     playingSongId: string,
     shuffle: boolean,
+    repeat: boolean,
     nowPlayingList: string,
     nowPlayingType: NowPlayingType
   },
@@ -201,7 +201,6 @@ export const DEFAULT_SETTINGS: Settings = {
   "nowPlaying": {
     "layout": NowPlayingTheme.NORMAL,
     "backgroundType": NowPlayingBackgroundType.GRADIENT,
-    "useAlbumColors": true,
     "circularPlayButton": true,
     "songInfo": false,
     "controls": {
@@ -253,6 +252,7 @@ export const DEFAULT_SETTINGS: Settings = {
     "songProgress": 0,
     "playingSongId": "",
     "shuffle": true,
+    "repeat": true,
     "nowPlayingList": "",
     "nowPlayingType": "Song"
   },

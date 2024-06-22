@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { albumsMap, artistsMap, genresMap, history, isPaused, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, showInfoSnackbar, songsMap } from "../../stores/State";
+import { albumsMap, artistsMap, genresMap, history, isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "../../stores/State";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 import { pluralize } from "../utils/Utils";
@@ -16,7 +16,8 @@ export class QueueController {
     let playbackHistory = get(history);
     let songQueue = get(queue);
     let songMap = get(songsMap);
-    
+    const shouldRepeat = get(repeatPlayed);
+
     if (songQueue.length) {
       const skippedId = songQueue.shift();
       playbackHistory.push(skippedId!);
@@ -34,24 +35,26 @@ export class QueueController {
         return;
       }
 
-      if (playingType === "Playlist") {
-        PlaybackController.playPlaylist(get(playlistsMap)[playingName]);
-        return;
-      }
-
-      if (playingType === "Album") {
-        PlaybackController.playAlbum(get(albumsMap)[playingName]);
-        return;
-      }
-
-      if (playingType === "Artist") {
-        PlaybackController.playArtist(get(artistsMap)[playingName]);
-        return;
-      }
-
-      if (playingType === "Genre") {
-        PlaybackController.playGenre(get(genresMap)[playingName]);
-        return;
+      if (shouldRepeat) {
+        if (playingType === "Playlist") {
+          PlaybackController.playPlaylist(get(playlistsMap)[playingName]);
+          return;
+        }
+  
+        if (playingType === "Album") {
+          PlaybackController.playAlbum(get(albumsMap)[playingName]);
+          return;
+        }
+  
+        if (playingType === "Artist") {
+          PlaybackController.playArtist(get(artistsMap)[playingName]);
+          return;
+        }
+  
+        if (playingType === "Genre") {
+          PlaybackController.playGenre(get(genresMap)[playingName]);
+          return;
+        }
       }
     }
   }
