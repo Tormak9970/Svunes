@@ -17,7 +17,7 @@
 import { fs, path } from "@tauri-apps/api";
 import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "./utils/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, fadeAudioOnPause, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices, nowPlayingBackgroundType, repeatPlayed } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices, nowPlayingBackgroundType, repeatPlayed, volumeLevel } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
@@ -87,7 +87,6 @@ export class SettingsController {
   private static showExtraControlsUnsub: Unsubscriber;
   private static showVolumeControlsUnsub: Unsubscriber;
 
-  private static fadeAudioOnPauseUnsub: Unsubscriber;
   private static autoPlayOnConnectUnsub: Unsubscriber;
   private static autoPlayOnBluetoothUnsub: Unsubscriber;
 
@@ -106,6 +105,7 @@ export class SettingsController {
   private static songProgressUnsub: Unsubscriber;
   private static playingSongIdUnsub: Unsubscriber;
   private static shuffleUnsub: Unsubscriber;
+  private static volumeLevelUnsub: Unsubscriber;
   private static repeatPlayedUnsub: Unsubscriber;
   private static nowPlayingListUnsub: Unsubscriber;
   private static nowPlayingTypeUnsub: Unsubscriber;
@@ -339,7 +339,6 @@ export class SettingsController {
 
 
     const audio = this.settings.audio;
-    fadeAudioOnPause.set(audio.fade);
     autoPlayOnConnect.set(audio.autoPlay);
     autoPlayOnBluetooth.set(audio.autoPlayBluetooth);
 
@@ -353,6 +352,8 @@ export class SettingsController {
     songProgress.set(cache.songProgress);
     shuffle.set(cache.shuffle);
     repeatPlayed.set(cache.repeat);
+    if (cache.volume > 1) cache.volume = 1;
+    volumeLevel.set(cache.volume);
     nowPlayingList.set(cache.nowPlayingList);
     nowPlayingType.set(cache.nowPlayingType);
 
@@ -408,7 +409,6 @@ export class SettingsController {
     this.viewsToRenderUnsub = viewsToRender.subscribe(this.updateStoreIfChanged<View[]>("personalization.viewsToRender"));
     this.viewIndicesUnsub = viewIndices.subscribe(this.updateStoreIfChanged<Record<View, number>>("personalization.viewIndices"));
 
-    this.fadeAudioOnPauseUnsub = fadeAudioOnPause.subscribe(this.updateStoreIfChanged<boolean>("audio.fade"));
     this.autoPlayOnConnectUnsub = autoPlayOnConnect.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlay"));
     this.autoPlayOnBluetoothUnsub = autoPlayOnBluetooth.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlayBluetooth"));
 
@@ -463,6 +463,7 @@ export class SettingsController {
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
     this.repeatPlayedUnsub = repeatPlayed.subscribe(this.updateStoreIfChanged<boolean>("cache.repeat"));
+    this.volumeLevelUnsub = volumeLevel.subscribe(this.updateStoreIfChanged<number>("cache.volume"));
     this.nowPlayingListUnsub = nowPlayingList.subscribe(this.updateStoreIfChanged<string>("cache.nowPlayingList"));
     this.nowPlayingTypeUnsub = nowPlayingType.subscribe(this.updateStoreIfChanged<NowPlayingType>("cache.nowPlayingType"));
 
@@ -585,7 +586,6 @@ export class SettingsController {
     if (this.viewsToRenderUnsub) this.viewsToRenderUnsub();
     if (this.viewIndicesUnsub) this.viewIndicesUnsub();
 
-    if (this.fadeAudioOnPauseUnsub) this.fadeAudioOnPauseUnsub();
     if (this.autoPlayOnConnectUnsub) this.autoPlayOnConnectUnsub();
     if (this.autoPlayOnBluetoothUnsub) this.autoPlayOnBluetoothUnsub();
 
@@ -604,6 +604,7 @@ export class SettingsController {
     if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.playingSongIdUnsub) this.playingSongIdUnsub();
     if (this.shuffleUnsub) this.shuffleUnsub();
+    if (this.volumeLevelUnsub) this.volumeLevelUnsub();
     if (this.repeatPlayedUnsub) this.repeatPlayedUnsub();
     if (this.nowPlayingListUnsub) this.nowPlayingListUnsub();
     if (this.nowPlayingTypeUnsub) this.nowPlayingTypeUnsub();

@@ -26,6 +26,8 @@
 
     if (Math.abs(my) > 5) hasDragged = true;
 
+    if (my < 0 && !$showMiniPlayer) return;
+
     const shouldShowFull = my < openThreshold;
     if (shouldShowFull && !active) {
       $showMiniPlayer = false;

@@ -2,7 +2,7 @@
   import { onDestroy, onMount } from "svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
   import Titlebar from "./Titlebar.svelte";
-  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap } from "../stores/State";
+  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "../stores/State";
   import Overlays from "./overlays/Overlays.svelte";
   import { AppController } from "../lib/controllers/AppController";
   import { SettingsController } from "../lib/controllers/SettingsController";
@@ -83,7 +83,7 @@
   });
 </script>
 
-<audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} on:ended={QueueController.skip} />
+<audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} bind:volume={$volumeLevel} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
 {#if $showViewNav && !($showNowPlaying && !$showMiniPlayer)}

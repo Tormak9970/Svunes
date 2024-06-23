@@ -4,6 +4,8 @@
   export let extraOptions: HTMLButtonAttributes = {};
   export let iconType: "none" | "left" | "full" = "none";
   export let type: "elevated" | "filled" | "tonal" | "outlined" | "text";
+  export let size = "2.5rem";
+  export let iconSize = "1.5rem";
   export let disabled = false;
 </script>
 
@@ -11,6 +13,8 @@
   on:click|stopPropagation
   {disabled}
   class="m3-container m3-font-label-large {type} icon-{iconType}"
+  style:--size={size}
+  style:--icon-size={iconSize}
   style="display: {display};"
   {...extraOptions}
 >
@@ -25,7 +29,7 @@
 
   .m3-container {
     border: none;
-    height: 2.5rem;
+    height: var(--size);
     padding: 0 1.5rem;
     border-radius: var(--m3-button-shape);
     color: rgb(var(--text-color));
@@ -55,12 +59,12 @@
     height: 1.125rem;
   }
   .icon-full {
-    width: 2.5rem;
+    width: var(--size);
     padding: 0;
   }
   .icon-full :global(svg) {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--icon-size);
+    height: var(--icon-size);
   }
 
   .m3-container:disabled {

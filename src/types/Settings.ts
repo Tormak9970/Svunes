@@ -131,7 +131,6 @@ export type Settings = {
   },
 
   audio: {
-    fade: boolean,
     autoPlay: boolean,
     autoPlayBluetooth: boolean
   },
@@ -162,6 +161,7 @@ export type Settings = {
     playingSongId: string,
     shuffle: boolean,
     repeat: boolean,
+    volume: number,
     nowPlayingList: string,
     nowPlayingType: NowPlayingType
   },
@@ -211,7 +211,6 @@ export const DEFAULT_SETTINGS: Settings = {
   },
 
   "audio": {
-    "fade": false,
     "autoPlay": false,
     "autoPlayBluetooth": false
   },
@@ -253,6 +252,7 @@ export const DEFAULT_SETTINGS: Settings = {
     "playingSongId": "",
     "shuffle": true,
     "repeat": true,
+    "volume": 1,
     "nowPlayingList": "",
     "nowPlayingType": "Song"
   },

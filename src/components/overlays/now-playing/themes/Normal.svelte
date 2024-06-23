@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { albumsMap, isPaused, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, shuffle, repeatPlayed, songProgress, songsMap } from "../../../../stores/State";
+  import { albumsMap, isPaused, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, shuffle, repeatPlayed, songProgress, volumeLevel, songsMap, showVolumeControls } from "../../../../stores/State";
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
   import { QueueController } from "../../../../lib/controllers/QueueController";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
@@ -17,6 +17,13 @@
   import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
   import SkipNext from "@ktibow/iconset-material-symbols/skip-next-rounded";
   import Repeat from "@ktibow/iconset-material-symbols/repeat-rounded";
+  import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
+  import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
+  import Collapse from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
+  import CarMode from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
+  import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
+  import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
+  import Queue from "@ktibow/iconset-material-symbols/queue-music-rounded";
   
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
@@ -62,12 +69,12 @@
     <DetailsArtPicture artPath={song?.artPath} />
   </div>
   <div class="content">
-    <div class="progress-container">
-      <div class="time">{formatTime($songProgress)}</div>
+    <div class="slider-container">
+      <div class="side">{formatTime($songProgress)}</div>
       <div style="flex-grow: 1; margin: 0px 5px;">
         <Slider min={0} max={songLength} showValue={false} trackHeight="0.25rem" bind:value={$songProgress} />
       </div>
-      <div class="time" style="justify-content: flex-end;">{formatTime(songLength)}</div>
+      <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
     </div>
     <div class="song-info">
       <div class="title">
@@ -83,36 +90,66 @@
       {/if}
     </div>
     <div class="controls">
-      <Button type="text" iconType="full" on:click={() => $repeatPlayed = !$repeatPlayed }>
-        <div class="wrapper" style:color={$repeatPlayed ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
+      <Button type="text" iconType="full" size="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
+        <div class="button-icon-wrapper" style:color={$repeatPlayed ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
           <Icon icon={Repeat} />
         </div>
       </Button>
-      <Button type="text" iconType="full" on:click={QueueController.skipBack}>
+      <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skipBack}>
         <Icon icon={SkipPrevious} />
       </Button>
-      <Button type="filled" iconType="full" on:click={handlePlay}>
+      <Button type="filled" iconType="full" size="4rem" iconSize="2.5rem" on:click={handlePlay}>
         {#if !$isPaused}
           <Icon icon={Pause} />
         {:else}
           <Icon icon={Play} />
         {/if}
       </Button>
-      <Button type="text" iconType="full" on:click={QueueController.skip}>
+      <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skip}>
         <Icon icon={SkipNext} />
       </Button>
-      <Button type="text" iconType="full" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
-        <div class="wrapper" style:color={$shuffle ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
+      <Button type="text" iconType="full" size="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
+        <div class="button-icon-wrapper" style:color={$shuffle ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
           <Icon icon={Shuffle} />
         </div>
       </Button>
     </div>
-    <div class="volume">
-
+    <div class="volume slider-container">
+      {#if $showVolumeControls}
+        <div class="side" style="justify-content: center;">
+          <Icon icon={VolumeDown} height="30px" width="30px" />
+        </div>
+        <div style="flex-grow: 1; margin: 0px 5px;">
+          <Slider min={0} max={1} showValue={false} trackHeight="0.25rem" bind:value={$volumeLevel} />
+        </div>
+        <div class="side" style="justify-content: center;">
+          <Icon icon={VolumeUp} height="30px" width="30px" />
+        </div>
+      {/if}
     </div>
   </div>
   <div class="options">
-    
+    <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+      <Icon icon={Collapse} />
+    </Button>
+    <div class="right">
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+        <Icon icon={CarMode} />
+      </Button>
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+        {#if !$isPaused}
+          <Icon icon={FavoriteOff} />
+        {:else}
+          <Icon icon={FavoriteOn} />
+        {/if}
+      </Button>
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+        <Icon icon={Queue} />
+      </Button>
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+        <Icon icon={SkipPrevious} />
+      </Button>
+    </div>
   </div>
 </div>
 
@@ -142,7 +179,7 @@
     z-index: 2;
   }
 
-  .progress-container {
+  .slider-container {
     width: 100%;
     margin-top: 20px;
 
@@ -150,7 +187,7 @@
     align-items: center;
   }
 
-  .progress-container .time {
+  .slider-container .side {
     width: 45px;
     display: flex;
   }
@@ -167,7 +204,7 @@
 
     font-size: 24px;
 
-    height: 150px;
+    min-height: 110px;
   }
 
   .title { font-weight: bold; max-width: 100%; }
@@ -176,18 +213,40 @@
 
   .controls {
     width: 100%;
+    margin-top: 10px;
+
     display: flex;
     align-items: center;
     justify-content: space-around;
   }
 
-  .wrapper {
+  .button-icon-wrapper {
     width: 40px;
     height: 40px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .volume { height: 44px; }
+
+  .options {
+    width: calc(100% - 30px);
+    padding: 0px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: absolute;
+    bottom: 15px;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .background {
