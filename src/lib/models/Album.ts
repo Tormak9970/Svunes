@@ -60,7 +60,7 @@ export class Album {
   }
 
   get albumArtist(): string | undefined {
-    return this._albumArtist ?? (this.artists.size === 1 ? Array.from(this.artists)[0] : undefined)
+    return this._albumArtist ?? (this.artists.size === 1 ? Array.from(this.artists)[0] : undefined);
   }
 
   set albumArtist(artist: string | undefined) {

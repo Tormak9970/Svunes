@@ -12,6 +12,7 @@
   let showViewNavUnsub: Unsubscriber;
   let showMiniPlayerUnsub: Unsubscriber;
 
+  let hasMounted = false;
   let hasDragged = false;
   let bottom = tweened(window.innerHeight - ($showViewNav ? 115 : 60), { duration: 200 });
   const dragHeight = spring(0, {});
@@ -45,9 +46,6 @@
     const shouldMinimize = my > minimizeThreshold;
     if (shouldMinimize && !$showMiniPlayer && !active) {
       $showMiniPlayer = true;
-      bottom = tweened(my, { duration: 200 })
-      dragHeight.set(0, { hard: true });
-      $bottom = window.innerHeight - ($showViewNav ? 115 : 60);
       hasDragged = false;
       return;
     }
@@ -64,8 +62,13 @@
         bottom = tweened($bottom + $dragHeight, { duration: 200 });
         dragHeight.set(0, { hard: true });
         $bottom = 0;
+      } else if (show && hasMounted) {
+        bottom = tweened(window.innerHeight - ($showViewNav ? 115 : 60) - 30, { duration: 200 });
+        dragHeight.set(0, { hard: true });
+        $bottom = window.innerHeight - ($showViewNav ? 115 : 60);
       }
     });
+    hasMounted = true;
   });
 
   onDestroy(() => {

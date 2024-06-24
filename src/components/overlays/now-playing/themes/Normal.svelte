@@ -1,15 +1,19 @@
 <script lang="ts">
-  import { albumsMap, isPaused, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, shuffle, repeatPlayed, songProgress, volumeLevel, songsMap, showVolumeControls } from "../../../../stores/State";
+  import { onMount } from "svelte";
+  import { tauri } from "@tauri-apps/api";
+  import { albumsMap, isPaused, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, shuffle, repeatPlayed, songProgress, volumeLevel, songsMap, showVolumeControls, playlists } from "../../../../stores/State";
+  import { showCarMode, showMiniPlayer, showQueue } from "../../../../stores/Overlays";
   import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
   import { QueueController } from "../../../../lib/controllers/QueueController";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
-  import { tauri } from "@tauri-apps/api";
   import Slider from "../../../interactables/Slider.svelte";
   import { formatTime } from "../../../../lib/utils/Utils";
   import Marquee from "../../../layout/Marquee.svelte";
   import Button from "../../../interactables/Button.svelte";
   import Icon from "../../../utils/Icon.svelte";
+  import MenuButton from "../../../interactables/MenuButton.svelte";
+  import NowPlayingOptions from "../NowPlayingOptions.svelte";
   
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
@@ -24,9 +28,15 @@
   import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
   import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
   import Queue from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  
+  let menuIsOpen = false;
   
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
+
+  $: favoritesPlaylist = $playlists.find((playlist) => playlist.name === "Favorites");
+  $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
   
   $: convertedPath = song?.artPath ? tauri.convertFileSrc(song?.artPath) : "";
 
@@ -43,6 +53,17 @@
       "none" :
       "var(--m3-scheme-surface-container)"
     );
+
+  function toggleFavorite() {
+    if (isFavorited) {
+      const index = favoritesPlaylist?.songIds.indexOf(song!.id)!;
+      favoritesPlaylist?.songIds.splice(index, 1);
+    } else {
+      favoritesPlaylist?.songIds.push(song!.id);
+    }
+    
+    $playlists = [ ...$playlists ];
+  }
     
   function handlePlay() {
     if ($isPaused) {
@@ -51,6 +72,13 @@
       PlaybackController.pause();
     }
   }
+
+  onMount(async () => {
+    if (album && topBackgroundColor === "var(--m3-scheme-surface-container-low)") {
+      await album.setBackgroundFromImage();
+      topBackgroundColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
+    }
+  });
 </script>
 
 <div
@@ -129,26 +157,26 @@
     </div>
   </div>
   <div class="options">
-    <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+    <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showMiniPlayer = true}>
       <Icon icon={Collapse} />
     </Button>
     <div class="right">
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showCarMode = true}>
         <Icon icon={CarMode} />
       </Button>
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
-        {#if !$isPaused}
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={toggleFavorite}>
+        {#if !isFavorited}
           <Icon icon={FavoriteOff} />
         {:else}
           <Icon icon={FavoriteOn} />
         {/if}
       </Button>
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showQueue = true}>
         <Icon icon={Queue} />
       </Button>
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => {}}>
-        <Icon icon={SkipPrevious} />
-      </Button>
+      <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
+        <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} />
+      </MenuButton>
     </div>
   </div>
 </div>

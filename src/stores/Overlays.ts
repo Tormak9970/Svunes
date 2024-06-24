@@ -1,7 +1,9 @@
 import { writable, type Writable } from "svelte/store";
 
 export const showMiniPlayer = writable(false);
-export const showNowPlaying = writable(false); // ! will be false after tested.
+export const showNowPlaying = writable(false);
+export const showCarMode = writable(false);
+export const showQueue = writable(false);
 
 export const showCreatePlaylist = writable(false);
 export const songsForNewPlaylist: Writable<string[]> = writable([]);

@@ -14,12 +14,10 @@
   export let hasDragged: boolean;
 
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
-  $: album = song?.album ? $albumsMap[song?.album] : undefined;
 
   $: covertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : ""; 
 
   $: progressWidth = song ? $songProgress / song.length * 100 : 0;
-  $: progressColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-primary)";
 
   function handlePlay() {
     if ($isPaused) {
@@ -44,7 +42,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="holder" style:opacity={(clampedHeight + 20) / 20} on:click={handleClick} style:--progress-color={progressColor}>
+<div class="holder" style:opacity={(clampedHeight + 20) / 20} on:click={handleClick}>
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
     <div class="text-container">
@@ -144,7 +142,7 @@
 
     height: 100%;
     
-    background-color: rgb(var(--progress-color));
+    background-color: rgb(var(--m3-scheme-primary));
     transition: width 0.2s;
   }
 </style>

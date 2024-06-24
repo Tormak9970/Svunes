@@ -5,6 +5,8 @@
   import type { HTMLAttributes } from "svelte/elements";
 
   export let extraOptions: HTMLAttributes<HTMLButtonElement> = {};
+  export let size = "2.5rem";
+  export let iconSize = "1.5rem";
   export let width = "36px";
   export let height = "36px";
   export let icon: IconifyIcon;
@@ -32,7 +34,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="container" on:click|stopPropagation on:mousedown|stopPropagation style="--md-menu-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-selected-container-color: rgb(var(--m3-scheme-secondary-container));">
-  <Button type="text" iconType="full" on:click={onClick} extraOptions={extraOptions}>
+  <Button type="text" iconType="full" size={size} iconSize={iconSize} on:click={onClick} extraOptions={extraOptions}>
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
   <md-menu bind:this={menuElement} positioning="popover">
