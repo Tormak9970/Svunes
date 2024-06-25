@@ -3,7 +3,7 @@
   
   let showError: (data: ShowSnackbarOptions) => void;
   
-  export const show: (data: ShowErrorOptions) => void = (data) => {
+  export const show = (data) => {
     showError({ message: data.message, timeout: data.faster ? 2000 : 300 });
   }
 

@@ -14,8 +14,8 @@ export const repeatPlayed = writable(false);
 export const volumeLevel = writable(1);
 export const isPaused = writable(true);
 
-export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable(() => {});
-export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = writable(() => {});
+export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable();
+export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = writable();
 
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
