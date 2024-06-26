@@ -1,18 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-	export let style = "";
-
-	export let direction = "left";
-
 	export let speed = 100;
-
-	let className = "";
-	export { className as class };
-
 	export let gap = 0;
-
-  export let gradientColor = "var(--m3-scheme-background)";
+  
+	let direction = "left";
+  let isGreater = false;
 
   let container: HTMLDivElement;
 	let containerWidth: number;
@@ -23,27 +16,21 @@
 			? containerWidth / speed
 			: marqueeWidth / speed;
 
-  let isGreater = false;
-
   onMount(() => {
     isGreater = (container.scrollWidth / 2 - gap) > containerWidth;
   });
 </script>
 
 <div
-	style={style}
-	class="marquee-container {className}"
+	class="marquee-container"
 	bind:clientWidth={containerWidth}
   bind:this={container}
 	style:--gap={gap + "px"}
 	style:--play={(isGreater) ? "running" : "paused"}
 	style:--direction={direction === "left" ? "normal" : "reverse"}
 	style:--duration={duration + "s"}
-  style:--gradient-color={gradientColor}
+  style:mask-image={isGreater ? "linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1.0) 10%, rgba(0, 0, 0, 1.0) 90%, transparent 100%)" : "none"}
 >
-  {#if isGreater}
-    <div class="gradient" data-testid="marquee-gradient" />
-  {/if}
 	<div class="marquee" bind:clientWidth={marqueeWidth} data-testid="marquee-slot">
 		<slot />
 	</div>
@@ -79,40 +66,11 @@
 		0% {
 			transform: translateX(0%);
 		}
-		100% {
-			transform: translateX(-100%);
-		}
-	}
-
-	.initial-child-container {
-		flex: 0 0 auto;
-		display: flex;
-		min-width: auto;
-		flex-direction: row;
-	}
-
-	.gradient::after,
-	.gradient::before {
-		background: linear-gradient(
-			to right,
-			rgb(var(--gradient-color) / 0.6),
-			transparent
-		);
-		content: "";
-		height: 100%;
-		position: absolute;
-		width: var(--gradientWidth, 10%);
-		z-index: 2;
-	}
-
-	.gradient::before {
-		left: 0;
-		top: 0;
-	}
-
-	.gradient::after {
-		right: 0;
-		top: 0;
-		transform: rotateZ(180deg);
+		80% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
 	}
 </style>

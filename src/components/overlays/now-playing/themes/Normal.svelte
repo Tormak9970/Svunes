@@ -1,10 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { tauri } from "@tauri-apps/api";
-  import { albumsMap, isPaused, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, shuffle, repeatPlayed, songProgress, volumeLevel, songsMap, showVolumeControls, playlists } from "../../../../stores/State";
+  import { albumsMap, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, songProgress, songsMap, playlists } from "../../../../stores/State";
   import { showCarMode, showMiniPlayer, showQueue } from "../../../../stores/Overlays";
-  import { PlaybackController } from "../../../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../../../lib/controllers/QueueController";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
   import Slider from "../../../interactables/Slider.svelte";
@@ -14,15 +12,9 @@
   import Icon from "../../../utils/Icon.svelte";
   import MenuButton from "../../../interactables/MenuButton.svelte";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
+  import PlayerControls from "../PlayerControls.svelte";
+  import VolumeControls from "../VolumeControls.svelte";
   
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
-  import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
-  import SkipNext from "@ktibow/iconset-material-symbols/skip-next-rounded";
-  import Repeat from "@ktibow/iconset-material-symbols/repeat-rounded";
-  import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
-  import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
   import Collapse from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import CarMode from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
   import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
@@ -46,14 +38,6 @@
   $: topBackgroundColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
   const bottomBackgroundColor = "var(--m3-scheme-background)";
 
-  $: marqueeColor =
-    $nowPlayingBackgroundType === NowPlayingBackgroundType.SOLID ?
-    "var(--m3-scheme-background)" : (
-      $nowPlayingBackgroundType === NowPlayingBackgroundType.GRADIENT ?
-      "none" :
-      "var(--m3-scheme-surface-container)"
-    );
-
   function toggleFavorite() {
     if (isFavorited) {
       const index = favoritesPlaylist?.songIds.indexOf(song!.id)!;
@@ -63,14 +47,6 @@
     }
     
     $playlists = [ ...$playlists ];
-  }
-    
-  function handlePlay() {
-    if ($isPaused) {
-      PlaybackController.resume();
-    } else {
-      PlaybackController.pause();
-    }
   }
 
   onMount(async () => {
@@ -107,7 +83,7 @@
     <div class="song-info">
       <div class="title">
         {#if song?.title.length && song?.title.length > 28}
-          <Marquee speed={40} gap={100} gradientColor={marqueeColor}>{song?.title}</Marquee>
+          <Marquee speed={40} gap={100}>{song?.title}</Marquee>
         {:else}
           {song?.title}
         {/if}
@@ -117,44 +93,8 @@
         <div class="extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
       {/if}
     </div>
-    <div class="controls">
-      <Button type="text" iconType="full" size="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
-        <div class="button-icon-wrapper" style:color={$repeatPlayed ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
-          <Icon icon={Repeat} />
-        </div>
-      </Button>
-      <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skipBack}>
-        <Icon icon={SkipPrevious} />
-      </Button>
-      <Button type="filled" iconType="full" size="4rem" iconSize="2.5rem" on:click={handlePlay}>
-        {#if !$isPaused}
-          <Icon icon={Pause} />
-        {:else}
-          <Icon icon={Play} />
-        {/if}
-      </Button>
-      <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skip}>
-        <Icon icon={SkipNext} />
-      </Button>
-      <Button type="text" iconType="full" size="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
-        <div class="button-icon-wrapper" style:color={$shuffle ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
-          <Icon icon={Shuffle} />
-        </div>
-      </Button>
-    </div>
-    <div class="volume slider-container">
-      {#if $showVolumeControls}
-        <div class="side" style="justify-content: center;">
-          <Icon icon={VolumeDown} height="30px" width="30px" />
-        </div>
-        <div style="flex-grow: 1; margin: 0px 5px;">
-          <Slider min={0} max={1} showValue={false} trackHeight="0.25rem" bind:value={$volumeLevel} />
-        </div>
-        <div class="side" style="justify-content: center;">
-          <Icon icon={VolumeUp} height="30px" width="30px" />
-        </div>
-      {/if}
-    </div>
+    <PlayerControls />
+    <VolumeControls />
   </div>
   <div class="options">
     <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showMiniPlayer = true}>
@@ -238,26 +178,6 @@
   .title { font-weight: bold; max-width: 100%; }
   .artist { font-size: 18px; }
   .extra-info { font-size: 14px; opacity: 0.8; }
-
-  .controls {
-    width: 100%;
-    margin-top: 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-
-  .button-icon-wrapper {
-    width: 40px;
-    height: 40px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .volume { height: 44px; }
 
   .options {
     width: calc(100% - 30px);
