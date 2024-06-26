@@ -64,6 +64,8 @@
   onMount(() => {
     nowPlayingUnsub = nowPlayingTheme.subscribe((theme) => {
       selectedTheme = theme;
+      xOffset = -1 * (imageGap + imageWidth) * selectedTheme;
+      dragOffset.set(xOffset);
     });
   });
 

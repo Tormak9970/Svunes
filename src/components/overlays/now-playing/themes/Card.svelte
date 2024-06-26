@@ -76,8 +76,8 @@
       </Button>
       <div class="song-info">
         <div class="title">
-          {#if song?.title.length && song?.title.length > 28}
-            <Marquee speed={40} gap={100}>{song?.title}</Marquee>
+          {#if song?.title.length && song?.title.length > 16}
+            <Marquee speed={35} gap={100}>{song?.title}</Marquee>
           {:else}
             {song?.title}
           {/if}
@@ -85,35 +85,35 @@
         <div class="artist">{song?.artist ?? "Unkown"}</div>
       </div>
     </div>
-    <div class="options-side">
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showCarMode = true}>
+    <div class="options-side" style="justify-content: flex-end; margin-right: 5px;">
+      <Button type="text" iconType="full" on:click={() => $showCarMode = true}>
         <Icon icon={CarMode} />
       </Button>
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={toggleFavorite}>
+      <Button type="text" iconType="full" on:click={toggleFavorite}>
         {#if !isFavorited}
           <Icon icon={FavoriteOff} />
         {:else}
           <Icon icon={FavoriteOn} />
         {/if}
       </Button>
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showQueue = true}>
+      <Button type="text" iconType="full" on:click={() => $showQueue = true}>
         <Icon icon={Queue} />
       </Button>
-      <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
+      <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
         <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} />
       </MenuButton>
     </div>
   </div>
-  <div style="margin-top: 15px;">
-    <DetailsArtPicture artPath={song?.artPath} />
+  <div class="card-container">
+    <div class="card" />
   </div>
   <div class="content">
-    <VolumeControls />
+    <VolumeControls useTextColor />
     <PlayerControls />
     <div class="slider-container">
       <div class="side">{formatTime($songProgress)}</div>
       <div style="flex-grow: 1; margin: 0px 5px;">
-        <Slider min={0} max={songLength} showValue={false} trackHeight="0.25rem" bind:value={$songProgress} />
+        <Slider min={0} max={songLength} showValue={false} trackColor={"var(--m3-scheme-on-background)"} trackContainerColor={"var(--m3-scheme-on-background) / 0.2"} trackHeight="0.25rem" bind:value={$songProgress} />
       </div>
       <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
     </div>
@@ -137,16 +137,51 @@
     color: rgb(var(--m3-scheme-on-background));
   }
 
-  .content {
+  .card-container {
     width: calc(100% - 30px);
-    padding: 0px 15px;
+    height: calc(100% - 88px);
+    margin: 15px 0px;
+
+    position: absolute;
+    bottom: 0;
+
+    border-radius: 20px;
+    overflow: hidden;
+    
+    box-shadow: 0px 2px 4px -1px rgb(var(--m3-scheme-shadow) / 0.2),
+    0px 4px 5px 0px rgb(var(--m3-scheme-shadow) / 0.14),
+    0px 1px 10px 0px rgb(var(--m3-scheme-shadow) / 0.12);
+    
+    z-index: 2;
+  }
+
+  .card {
+    width: 100%;
+    height: 100%;
+    
+    background-image: var(--converted-background-path);
+
+    mask-image: linear-gradient(black 40%, transparent);
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .content {
+    width: calc(100% - 60px);
+    height: 219px;
+    padding: 0px 30px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    position: relative;
-    z-index: 2;
+    position: absolute;
+
+    bottom: 30px;
+
+    z-index: 3;
   }
 
   .slider-container {
@@ -162,19 +197,7 @@
     display: flex;
   }
 
-  .song-info {
-    display: flex;
-    flex-direction: column;
-    
-    width: calc(100% - 53px);
-
-    font-size: 18px;
-  }
-
-  .title { font-weight: bold; max-width: 100%; }
-  .artist { font-size: 14px; }
-
-  .extra-info { font-size: 14px; opacity: 0.8; }
+  .extra-info { font-size: 14px; }
 
   .options {
     width: 100%;
@@ -189,8 +212,34 @@
   .options-side {
     display: flex;
     align-items: center;
-    gap: 5px;
-    max-width: 50%;
+    width: 50%;
+  }
+
+  .options-side :global(svg) { color: rgb(var(--m3-scheme-on-background)); }
+
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    
+    width: calc(100% - 53px);
+
+    font-size: 18px;
+
+    margin-left: 5px;
+
+    overflow: hidden;
+  }
+
+  .title {
+    font-weight: bold;
+    max-width: 100%;
+    text-wrap: nowrap;
+  }
+  .artist {
+    font-size: 14px;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .background {
@@ -211,8 +260,7 @@
   .background.blur {
     background-image: var(--converted-background-path);
 
-    filter: blur(20px);
-    -webkit-filter: blur(20px) brightness(0.8);
+    filter: blur(20px) brightness(0.8);
 
     height: 100%;
 

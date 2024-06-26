@@ -184,9 +184,4 @@
   input:disabled ~ :global(svg) {
     color: rgb(var(--m3-scheme-on-surface) / 0.38);
   }
-
-  .m3-container {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
 </style>

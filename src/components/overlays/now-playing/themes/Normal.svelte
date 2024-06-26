@@ -76,7 +76,7 @@
     <div class="slider-container">
       <div class="side">{formatTime($songProgress)}</div>
       <div style="flex-grow: 1; margin: 0px 5px;">
-        <Slider min={0} max={songLength} showValue={false} trackHeight="0.25rem" bind:value={$songProgress} />
+        <Slider min={0} max={songLength} showValue={false} trackColor={topBackgroundColor === "var(--m3-scheme-surface-container-low)" ? undefined : "var(--m3-scheme-on-background)"} trackContainerColor={topBackgroundColor === "var(--m3-scheme-surface-container-low)" ? undefined : "var(--m3-scheme-on-background) / 0.2"} trackHeight="0.25rem" bind:value={$songProgress} />
       </div>
       <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
     </div>
@@ -215,8 +215,7 @@
   .background.blur {
     background-image: var(--converted-background-path);
 
-    filter: blur(20px);
-    -webkit-filter: blur(20px) brightness(0.8);
+    filter: blur(20px) brightness(0.8);
 
     height: 100%;
 

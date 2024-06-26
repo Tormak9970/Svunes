@@ -128,9 +128,4 @@
   .m3-container:enabled:active > .layer {
     background-color: rgb(var(--text-color) / 0.12);
   }
-
-  .m3-container {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
 </style>

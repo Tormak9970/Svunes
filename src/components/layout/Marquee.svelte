@@ -29,7 +29,7 @@
 	style:--play={(isGreater) ? "running" : "paused"}
 	style:--direction={direction === "left" ? "normal" : "reverse"}
 	style:--duration={duration + "s"}
-  style:mask-image={isGreater ? "linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1.0) 10%, rgba(0, 0, 0, 1.0) 90%, transparent 100%)" : "none"}
+  style:mask-image={isGreater ? "linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1.0) 5%, rgba(0, 0, 0, 1.0) 95%, transparent 100%)" : "none"}
 >
 	<div class="marquee" bind:clientWidth={marqueeWidth} data-testid="marquee-slot">
 		<slot />

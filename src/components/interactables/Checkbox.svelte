@@ -92,9 +92,4 @@
   input:disabled:checked + .layer::before {
     border-color: transparent;
   }
-
-  .m3-container {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
 </style>

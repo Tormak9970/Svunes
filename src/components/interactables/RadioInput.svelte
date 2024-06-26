@@ -95,9 +95,4 @@
     --color: var(--m3-scheme-on-surface) / 0.38;
     pointer-events: none;
   }
-
-  .m3-container {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
 </style>

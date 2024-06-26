@@ -120,11 +120,6 @@
     background-color: rgb(var(--text-color) / 0.12);
   }
 
-  .selected {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-
   @keyframes icon-select {
     0% {
       scale: 1

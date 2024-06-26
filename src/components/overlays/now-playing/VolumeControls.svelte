@@ -5,6 +5,8 @@
 
   import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
   import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
+
+  export let useTextColor = false;
 </script>
 
 <div class="volume-controls">
@@ -13,7 +15,7 @@
       <Icon icon={VolumeDown} height="30px" width="30px" />
     </div>
     <div style="flex-grow: 1; margin: 0px 10px;">
-      <Slider min={0} max={1} showValue={false} trackHeight="0.25rem" bind:value={$volumeLevel} />
+      <Slider min={0} max={1} showValue={false} trackColor={useTextColor ? "var(--m3-scheme-on-background)" : undefined} trackContainerColor={useTextColor ? "var(--m3-scheme-on-background) / 0.2" : undefined} trackHeight="0.25rem" bind:value={$volumeLevel} />
     </div>
     <div class="volume-icon">
       <Icon icon={VolumeUp} height="30px" width="30px" />

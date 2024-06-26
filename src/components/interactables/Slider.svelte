@@ -14,6 +14,8 @@
   export let trackHeight = "0.5rem";
   export let thumbSize = "1rem";
   export let trackGap = "0.75rem";
+  export let trackContainerColor = "var(--m3-scheme-primary-container)";
+  export let trackColor = "var(--m3-scheme-primary)";
   export let format = (n: number) => {
     return n.toFixed(0);
   };
@@ -43,7 +45,7 @@
   }
 </script>
 
-<div class="m3-container" style="--percent: {percent * 100}%;" style:--track-height={trackHeight} style:--thumb-size={thumbSize} style:--track-gap={trackGap} {...extraWrapperOptions}>
+<div class="m3-container" style:--percent="{percent * 100}%" style:--track-height={trackHeight} style:--thumb-size={thumbSize} style:--track-gap={trackGap} style:--track-container-color={trackContainerColor} style:--track-color={trackColor} {...extraWrapperOptions}>
   <input
     type="range"
     on:input={updateValue}
@@ -96,7 +98,7 @@
     height: var(--track-height);
     pointer-events: none;
 
-    background-color: rgb(var(--m3-scheme-primary));
+    background-color: rgb(var(--track-color));
     border-start-start-radius: var(--m3-slider-track-out-shape);
     border-end-start-radius: var(--m3-slider-track-out-shape);
     border-start-end-radius: var(--m3-slider-track-in-shape);
@@ -112,7 +114,7 @@
     height: var(--track-height);
     pointer-events: none;
 
-    background-color: rgb(var(--m3-scheme-primary-container));
+    background-color: rgb(var(--track-container-color));
     border-start-start-radius: var(--m3-slider-track-in-shape);
     border-end-start-radius: var(--m3-slider-track-in-shape);
     border-start-end-radius: var(--m3-slider-track-out-shape);
@@ -127,7 +129,7 @@
     width: var(--thumb-size);
     height: var(--thumb-size);
     border-radius: 50%;
-    background-color: rgb(var(--m3-scheme-primary));
+    background-color: rgb(var(--track-color));
 
     pointer-events: none;
     transition: width 200ms;
@@ -175,10 +177,5 @@
   }
   input:disabled ~ .thumb {
     background-color: rgb(var(--m3-scheme-on-surface) / 0.38);
-  }
-
-  .m3-container {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
   }
 </style>
