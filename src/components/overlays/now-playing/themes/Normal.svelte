@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { tauri } from "@tauri-apps/api";
-  import { albumsMap, nowPlayingBackgroundType, playingSongId, showExtraSongInfo, songProgress, songsMap, playlists } from "../../../../stores/State";
+  import { nowPlayingBackgroundType, showExtraSongInfo } from "../../../../stores/State";
   import { showCarMode, showMiniPlayer, showQueue } from "../../../../stores/Overlays";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
+  import type { Song } from "../../../../lib/models/Song";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
-  import Slider from "../../../interactables/Slider.svelte";
-  import { formatTime } from "../../../../lib/utils/Utils";
   import Marquee from "../../../layout/Marquee.svelte";
   import Button from "../../../interactables/Button.svelte";
   import Icon from "../../../utils/Icon.svelte";
@@ -14,6 +11,7 @@
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
+  import ProgressControls from "../ProgressControls.svelte";
   
   import Collapse from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import CarMode from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
@@ -24,37 +22,14 @@
   
   let menuIsOpen = false;
   
-  $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
-  $: album = song?.album ? $albumsMap[song?.album] : undefined;
-
-  $: favoritesPlaylist = $playlists.find((playlist) => playlist.name === "Favorites");
-  $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
-  
-  $: convertedPath = song?.artPath ? tauri.convertFileSrc(song?.artPath) : "";
-
-  $: isMp3 = song?.fileName.toLocaleLowerCase().endsWith("mp3");
+  export let song: Song | undefined;
   $: songLength = song?.length ?? 0;
-
-  $: topBackgroundColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
-  const bottomBackgroundColor = "var(--m3-scheme-background)";
-
-  function toggleFavorite() {
-    if (isFavorited) {
-      const index = favoritesPlaylist?.songIds.indexOf(song!.id)!;
-      favoritesPlaylist?.songIds.splice(index, 1);
-    } else {
-      favoritesPlaylist?.songIds.push(song!.id);
-    }
-    
-    $playlists = [ ...$playlists ];
-  }
-
-  onMount(async () => {
-    if (album && topBackgroundColor === "var(--m3-scheme-surface-container-low)") {
-      await album.setBackgroundFromImage();
-      topBackgroundColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
-    }
-  });
+  export let isMp3: boolean | undefined;
+  export let isFavorited: boolean | undefined;
+  export let toggleFavorite: () => void;
+  export let convertedPath: string;
+  export let topBackgroundColor: string;
+  export let bottomBackgroundColor: string;
 </script>
 
 <div
@@ -73,17 +48,13 @@
     <DetailsArtPicture artPath={song?.artPath} />
   </div>
   <div class="content">
-    <div class="slider-container">
-      <div class="side">{formatTime($songProgress)}</div>
-      <div style="flex-grow: 1; margin: 0px 5px;">
-        <Slider min={0} max={songLength} showValue={false} trackColor={topBackgroundColor === "var(--m3-scheme-surface-container-low)" ? undefined : "var(--m3-scheme-on-background)"} trackContainerColor={topBackgroundColor === "var(--m3-scheme-surface-container-low)" ? undefined : "var(--m3-scheme-on-background) / 0.2"} trackHeight="0.25rem" bind:value={$songProgress} />
-      </div>
-      <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
-    </div>
+    <ProgressControls songLength={songLength} />
     <div class="song-info">
       <div class="title">
         {#if song?.title.length && song?.title.length > 28}
-          <Marquee speed={40} gap={100}>{song?.title}</Marquee>
+          <div style="margin-left: 4%;">
+            <Marquee speed={50} gap={100}>{song?.title}</Marquee>
+          </div>
         {:else}
           {song?.title}
         {/if}
@@ -147,19 +118,6 @@
     z-index: 2;
   }
 
-  .slider-container {
-    width: 100%;
-    margin-top: 20px;
-
-    display: flex;
-    align-items: center;
-  }
-
-  .slider-container .side {
-    width: 45px;
-    display: flex;
-  }
-
   .song-info {
     display: flex;
     flex-direction: column;
@@ -194,7 +152,6 @@
   .right {
     display: flex;
     align-items: center;
-    gap: 10px;
   }
 
   .background {

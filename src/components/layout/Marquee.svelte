@@ -17,7 +17,7 @@
 			: marqueeWidth / speed;
 
   onMount(() => {
-    isGreater = (container.scrollWidth / 2 - gap) > containerWidth;
+    isGreater = (marqueeWidth - gap) > containerWidth;
   });
 </script>
 
@@ -30,8 +30,9 @@
 	style:--direction={direction === "left" ? "normal" : "reverse"}
 	style:--duration={duration + "s"}
   style:mask-image={isGreater ? "linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1.0) 5%, rgba(0, 0, 0, 1.0) 95%, transparent 100%)" : "none"}
+  style:margin-left={isGreater ? "-4%" : "0"}
 >
-	<div class="marquee" bind:clientWidth={marqueeWidth} data-testid="marquee-slot">
+	<div class="marquee" style:margin-left={isGreater ? "4%" : "0"} bind:clientWidth={marqueeWidth} data-testid="marquee-slot">
 		<slot />
 	</div>
 	<div class="marquee" data-testid="marquee-slot">

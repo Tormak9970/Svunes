@@ -32,8 +32,6 @@
   
   function handleDrag({ detail }: any) {
 		const { active, movement: [mx], swipe: [swipeX] } = detail;
-    
-    console.log("mx:", mx);
 
     if (mx > 0 && selectedTheme === NowPlayingTheme.NORMAL) return;
     if (mx < 0 && selectedTheme === NowPlayingTheme.CIRCLE) return;
