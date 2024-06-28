@@ -10,12 +10,13 @@
   
   export let imageSize = 370;
   export let clickable = false;
+  export let marginTop = true;
 
   const dispatch = createEventDispatcher();
 
 </script>
 
-<div class="album-picture" style="max-width: {imageSize}px; max-height: {imageSize}px;">
+<div class="album-picture" style:margin-top={marginTop ? "2px" : "0"} style="max-width: {imageSize}px; max-height: {imageSize}px;">
   {#key artPath ?? ""}
     <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} {clickable} on:click={() => dispatch("click")} let:onError>
       <!-- svelte-ignore missing-declaration -->
@@ -30,7 +31,6 @@
 
 <style>
   .album-picture {
-    margin-top: 2px;
     border-radius: 10px;
     overflow: hidden;
   }

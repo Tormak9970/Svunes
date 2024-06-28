@@ -62,11 +62,9 @@ export const themePrimaryColor = writable("");
 
 // # Now Playing Settings
 export const showExtraSongInfo = writable(false);
-export const circularPlayButton = writable(true);
 export const nowPlayingTheme = writable(NowPlayingTheme.NORMAL);
 
 export const dismissMiniPlayerWithSwipe = writable(true);
-export const showExtraControls = writable(true);
 export const showVolumeControls = writable(true);
 
 export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIENT);

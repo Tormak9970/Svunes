@@ -6,7 +6,6 @@ export enum NowPlayingTheme {
   CARD,
   SIMPLE,
   FULL,
-  CIRCLE,
 }
 
 /**
@@ -23,8 +22,6 @@ export function getNowPlayingTheme(theme: NowPlayingTheme): string {
       return "Simple";
     case NowPlayingTheme.FULL:
       return "Full";
-    case NowPlayingTheme.CIRCLE:
-      return "Circle";
   }
 }
 
@@ -121,11 +118,9 @@ export type Settings = {
   nowPlaying: {
     layout: NowPlayingTheme,
     backgroundType: NowPlayingBackgroundType,
-    circularPlayButton: boolean,
     songInfo: boolean,
     controls: {
       dismissMiniWithSwipe: boolean,
-      extraControls: boolean,
       volumeControls: boolean,
     }
   },
@@ -201,11 +196,9 @@ export const DEFAULT_SETTINGS: Settings = {
   "nowPlaying": {
     "layout": NowPlayingTheme.NORMAL,
     "backgroundType": NowPlayingBackgroundType.GRADIENT,
-    "circularPlayButton": true,
     "songInfo": false,
     "controls": {
       "dismissMiniWithSwipe": true,
-      "extraControls": true,
       "volumeControls": true,
     }
   },

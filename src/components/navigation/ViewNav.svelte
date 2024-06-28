@@ -75,8 +75,4 @@
     align-items: center;
     justify-content: space-around;
   }
-
-  .items :global(.m3-container) {
-    height: auto !important;
-  }
 </style>

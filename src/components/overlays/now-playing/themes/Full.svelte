@@ -126,7 +126,7 @@
 
   .content {
     width: calc(100% - 60px);
-    height: 269px;
+    height: 285px;
     padding: 0px 30px;
 
     display: flex;
@@ -170,12 +170,13 @@
   .song-info {
     display: flex;
     flex-direction: column;
+    align-items: center;
     
     /* width: 50%; */
 
     font-size: 18px;
 
-    margin-left: 5px;
+    gap: 10px;
 
     overflow: hidden;
   }
@@ -184,7 +185,7 @@
     font-weight: bold;
     max-width: 100%;
     text-wrap: nowrap;
-    font-weight: 24px;
+    font-size: 20px;
   }
   .artist {
     font-size: 14px;

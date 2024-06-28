@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import { albumsMap, nowPlayingTheme, playingSongId, playlists, songsMap } from "../../../stores/State";
   import Card from "./themes/Card.svelte";
-  import Circle from "./themes/Circle.svelte";
   import Full from "./themes/Full.svelte";
   import Normal from "./themes/Normal.svelte";
   import Simple from "./themes/Simple.svelte";
@@ -10,7 +9,7 @@
 
   export let clampedHeight: number;
 
-  const layouts = [ Normal, Card, Simple, Full, Circle ];
+  const layouts = [ Normal, Card, Simple, Full ];
 
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;

@@ -17,7 +17,7 @@
 import { fs, path } from "@tauri-apps/api";
 import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme } from "../../types/Settings";
 import { LogController } from "./utils/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, circularPlayButton, dismissMiniPlayerWithSwipe, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraControls, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices, nowPlayingBackgroundType, repeatPlayed, volumeLevel } from "../../stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnBluetooth, autoPlayOnConnect, dismissMiniPlayerWithSwipe, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, pauseOnVolumeZero, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices, nowPlayingBackgroundType, repeatPlayed, volumeLevel } from "../../stores/State";
 import { View } from "../../types/View";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
@@ -76,7 +76,6 @@ export class SettingsController {
   private static selectedViewUnsub: Unsubscriber;
 
   private static showExtraSongInfoUnsub: Unsubscriber;
-  private static circularPlayButtonUnsub: Unsubscriber;
   private static nowPlayingThemeUnsub: Unsubscriber;
   private static nowPlayingBackgroundTypeUnsub: Unsubscriber;
 
@@ -84,7 +83,6 @@ export class SettingsController {
   private static viewIndicesUnsub: Unsubscriber;
 
   private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
-  private static showExtraControlsUnsub: Unsubscriber;
   private static showVolumeControlsUnsub: Unsubscriber;
 
   private static autoPlayOnConnectUnsub: Unsubscriber;
@@ -307,13 +305,11 @@ export class SettingsController {
 
     const nowPlaying = this.settings.nowPlaying;
     showExtraSongInfo.set(nowPlaying.songInfo);
-    circularPlayButton.set(nowPlaying.circularPlayButton);
     nowPlayingTheme.set(nowPlaying.layout);
     nowPlayingBackgroundType.set(nowPlaying.backgroundType);
 
     const controls = nowPlaying.controls;
     dismissMiniPlayerWithSwipe.set(controls.dismissMiniWithSwipe);
-    showExtraControls.set(controls.extraControls);
     showVolumeControls.set(controls.volumeControls);
 
 
@@ -398,12 +394,10 @@ export class SettingsController {
 
 
     this.showExtraSongInfoUnsub = showExtraSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
-    this.circularPlayButtonUnsub = circularPlayButton.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.circularPlayButton"));
     this.nowPlayingThemeUnsub = nowPlayingTheme.subscribe(this.updateStoreIfChanged<NowPlayingTheme>("nowPlaying.layout"));
     this.nowPlayingBackgroundTypeUnsub = nowPlayingBackgroundType.subscribe(this.updateStoreIfChanged<NowPlayingBackgroundType>("nowPlaying.backgroundType"));
 
     this.dismissMiniPlayerWithSwipeUnsub = dismissMiniPlayerWithSwipe.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.dismissMiniWithSwipe"));
-    this.showExtraControlsUnsub = showExtraControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.extraControls"));
     this.showVolumeControlsUnsub = showVolumeControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.volumeControls"));
 
     this.viewsToRenderUnsub = viewsToRender.subscribe(this.updateStoreIfChanged<View[]>("personalization.viewsToRender"));
@@ -575,12 +569,10 @@ export class SettingsController {
     if (this.selectedViewUnsub) this.selectedViewUnsub();
 
     if (this.showExtraSongInfoUnsub) this.showExtraSongInfoUnsub();
-    if (this.circularPlayButtonUnsub) this.circularPlayButtonUnsub();
     if (this.nowPlayingThemeUnsub) this.nowPlayingThemeUnsub();
     if (this.nowPlayingBackgroundTypeUnsub) this.nowPlayingBackgroundTypeUnsub();
 
     if (this.dismissMiniPlayerWithSwipeUnsub) this.dismissMiniPlayerWithSwipeUnsub();
-    if (this.showExtraControlsUnsub) this.showExtraControlsUnsub();
     if (this.showVolumeControlsUnsub) this.showVolumeControlsUnsub();
     
     if (this.viewsToRenderUnsub) this.viewsToRenderUnsub();

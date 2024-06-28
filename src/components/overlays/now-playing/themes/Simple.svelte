@@ -26,7 +26,7 @@
   export let song: Song | undefined;
   $: songLength = song?.length ?? 0;
   export let isMp3: boolean | undefined;
-  export let isFavorited: boolean;
+  export let isFavorited: boolean | undefined;
   export let toggleFavorite: () => void;
   export let convertedPath: string | undefined;
   export let topBackgroundColor: string;

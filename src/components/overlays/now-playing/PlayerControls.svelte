@@ -13,6 +13,7 @@
   import Repeat from "@ktibow/iconset-material-symbols/repeat-rounded";
 
   export let useTextColor = false;
+  export let showExtraControls = true;
 
   $: disabledColor = useTextColor ? "rgb(var(--m3-scheme-on-background) / 0.2)" : "rgb(var(--m3-scheme-outline-variant))";
   $: enabledColor = useTextColor ? "rgb(var(--m3-scheme-on-background))" : "rgb(var(--m3-scheme-primary))";
@@ -27,11 +28,15 @@
 </script>
 
 <div class="player-controls" class:use-text-color={useTextColor}>
-  <Button type="text" iconType="full" size="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
-    <div class="button-icon-wrapper" style:color={$repeatPlayed ? enabledColor : disabledColor}>
-      <Icon icon={Repeat} />
-    </div>
-  </Button>
+  {#if showExtraControls}
+    <Button type="text" iconType="full" size="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
+      <div class="button-icon-wrapper" style:color={$repeatPlayed ? enabledColor : disabledColor}>
+        <Icon icon={Repeat} />
+      </div>
+    </Button>
+  {:else}
+    <div style="width: 3rem; height: 3rem;" />
+  {/if}
   <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skipBack}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipPrevious} />
@@ -51,11 +56,15 @@
       <Icon icon={SkipNext} />
     </div>
   </Button>
-  <Button type="text" iconType="full" size="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
-    <div class="button-icon-wrapper" style:color={$shuffle ? enabledColor : disabledColor}>
-      <Icon icon={Shuffle} />
-    </div>
-  </Button>
+  {#if showExtraControls}
+    <Button type="text" iconType="full" size="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
+      <div class="button-icon-wrapper" style:color={$shuffle ? enabledColor : disabledColor}>
+        <Icon icon={Shuffle} />
+      </div>
+    </Button>
+  {:else}
+    <div style="width: 3rem; height: 3rem;" />
+  {/if}
 </div>
 
 <style>

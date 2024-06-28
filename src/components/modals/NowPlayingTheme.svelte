@@ -34,7 +34,7 @@
 		const { active, movement: [mx], swipe: [swipeX] } = detail;
 
     if (mx > 0 && selectedTheme === NowPlayingTheme.NORMAL) return;
-    if (mx < 0 && selectedTheme === NowPlayingTheme.CIRCLE) return;
+    if (mx < 0 && selectedTheme === NowPlayingTheme.FULL) return;
 
     const shouldMoveLeft = mx > dragThreshold;
     if ((swipeX === -1 || shouldMoveLeft) && !active) {
@@ -136,5 +136,11 @@
   .label {
     font-size: 20px;
     margin-bottom: 10px;
+  }
+
+  .preview {
+    height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
   }
 </style>

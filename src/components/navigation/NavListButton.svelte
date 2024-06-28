@@ -27,7 +27,6 @@
 <style>
   .m3-container {
     flex-direction: column;
-    height: 3.25rem;
     gap: 0.25rem;
     padding: 0;
     border: none;
