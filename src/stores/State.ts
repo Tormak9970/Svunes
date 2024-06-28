@@ -37,7 +37,6 @@ export const history: Writable<string[]> = writable([]);
 export const queue: Writable<string[]> = writable([]);
 
 export const blacklistedFolders: Writable<string[]> = writable([]);
-export const pauseOnVolumeZero = writable(false);
 export const filterSongDuration = writable(30);
 export const selectedLanguage = writable(AppLanguage.SYSTEM);
 
@@ -71,7 +70,6 @@ export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIE
 
 // # Audio Settings
 export const autoPlayOnConnect = writable(false);
-export const autoPlayOnBluetooth = writable(false);
 
 // # Personalization Settings
 export const viewsToRender: Writable<View[]> = writable([]);

@@ -9,6 +9,7 @@
   import { tauri } from "@tauri-apps/api";
   import { showMiniPlayer, showNowPlaying } from "../../../stores/Overlays";
   import { onDestroy } from "svelte";
+    import Marquee from "../../layout/Marquee.svelte";
 
   export let clampedHeight: number;
   export let hasDragged: boolean;
@@ -46,7 +47,11 @@
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
     <div class="text-container">
-      <p class="m3-font-body-medium">{song?.title}</p>
+      {#key song?.title}
+        <Marquee speed={40} gap={100}>
+          <p class="m3-font-body-medium">{song?.title}</p>
+        </Marquee>
+      {/key}
     </div>
     <div style="touch-action: auto;">
       <Button type="text" iconType="full" on:click={handlePlay}>
@@ -99,8 +104,9 @@
   }
 
   .text-container {
-    width: 70%;
+    width: 66%;
     margin-right: 10%;
+    margin-left: 2%;
   }
 
   .text-container p {

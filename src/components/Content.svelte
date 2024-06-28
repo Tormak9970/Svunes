@@ -2,7 +2,7 @@
   import { onDestroy, onMount } from "svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
   import Titlebar from "./Titlebar.svelte";
-  import { isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "../stores/State";
+  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "../stores/State";
   import Overlays from "./overlays/Overlays.svelte";
   import { AppController } from "../lib/controllers/AppController";
   import { SettingsController } from "../lib/controllers/SettingsController";
@@ -22,6 +22,7 @@
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
   import { View } from "../types/View";
   import { showMiniPlayer, showNowPlaying } from "../stores/Overlays";
+    import { PlaybackController } from "../lib/controllers/PlaybackController";
 
   let loadingUnsub: Unsubscriber;
   let isPausedUnsub: Unsubscriber;
@@ -32,7 +33,28 @@
 
   let isDesktop = false;
 
+  let oldNumAudioDevices: number;
+
+  function handleMediaDeviceChange() {
+    navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) => {
+      const numAudioDevices = devices.filter((device) => device.kind.includes("audio")).length;
+
+      if (oldNumAudioDevices && $autoPlayOnConnect) {
+        if (numAudioDevices > oldNumAudioDevices && $isPaused) {
+          PlaybackController.resume();
+        } else if (numAudioDevices < oldNumAudioDevices && !$isPaused) {
+          PlaybackController.pause();
+        }
+      }
+
+      oldNumAudioDevices = numAudioDevices;
+    });
+  }
+
   onMount(async () => {
+    handleMediaDeviceChange();
+    navigator.mediaDevices.ondevicechange = handleMediaDeviceChange;
+
     playingSongIdUnsub = playingSongId.subscribe((id) => {
       if (id !== "") {
         const song = $songsMap[id];

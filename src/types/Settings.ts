@@ -126,8 +126,7 @@ export type Settings = {
   },
 
   audio: {
-    autoPlay: boolean,
-    autoPlayBluetooth: boolean
+    autoPlay: boolean
   },
 
   personalization: {
@@ -143,7 +142,6 @@ export type Settings = {
   queue: string[],
 
   blacklistedFolders: string[],
-  pauseOnVolumeZero: boolean,
   filterSongDuration: number,
   selectedLanguage: AppLanguage,
 
@@ -204,8 +202,7 @@ export const DEFAULT_SETTINGS: Settings = {
   },
 
   "audio": {
-    "autoPlay": false,
-    "autoPlayBluetooth": false
+    "autoPlay": false
   },
 
   "personalization": {
@@ -232,7 +229,6 @@ export const DEFAULT_SETTINGS: Settings = {
   "queue": [],
 
   "blacklistedFolders": [],
-  "pauseOnVolumeZero": false,
   "filterSongDuration": 30,
   "selectedLanguage": AppLanguage.SYSTEM,
 
