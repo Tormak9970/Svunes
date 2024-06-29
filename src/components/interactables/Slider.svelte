@@ -10,16 +10,11 @@
   export let max = 100;
   export let step: number | "any" = "any";
   export let disabled = false;
-  export let showValue = true;
   export let trackHeight = "0.5rem";
   export let thumbSize = "1rem";
   export let trackGap = "0.75rem";
   export let trackContainerColor = "var(--m3-scheme-primary-container)";
   export let trackColor = "var(--m3-scheme-primary)";
-  export let format = (n: number) => {
-    return n.toFixed(0);
-  };
-
   function setValue(newValue: number) {
     value = newValue;
   }
@@ -58,9 +53,6 @@
   />
   <div class="track" />
   <div class="thumb" />
-  {#if showValue}
-    <div class="value m3-font-label-large"><span>{format(value)}</span></div>
-  {/if}
 </div>
 
 <style>
@@ -135,35 +127,9 @@
     transition: width 200ms;
   }
 
-  .value {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-
-    background-color: rgb(var(--m3-scheme-inverse-surface));
-    color: rgb(var(--m3-scheme-inverse-on-surface));
-    width: 3rem;
-    padding: 0.75rem 1rem;
-    border-radius: var(--m3-slider-thumb-shape);
-
-    left: var(--percent);
-    top: -3rem;
-    translate: -50% 0;
-
-    opacity: 1;
-    pointer-events: none;
-    transition: opacity 200ms;
-  }
-
   input:focus-visible ~ .thumb {
     outline: auto;
     outline-offset: 0.5rem;
-  }
-  input:enabled:hover ~ .value,
-  input:enabled:focus-visible ~ .value,
-  input:enabled:active ~ .value {
-    opacity: 1;
   }
 
   input:disabled {

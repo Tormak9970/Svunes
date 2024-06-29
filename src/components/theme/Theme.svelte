@@ -2,8 +2,8 @@
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import { argbFromHex, SchemeTonalSpot, Hct } from "@material/material-color-utilities";
-  import { palette, themePrimaryColor } from "../../stores/State";
-  import { genCSS, serializeScheme, type SerializedScheme } from "./utils";
+  import { palette, themePrimaryColor, useOledPalette } from "../../stores/State";
+  import { genCSS, serializeScheme, type SerializedScheme } from "./themeUtils";
 
   let primaryColorUnsub: Unsubscriber;
   let paletteUnsub: Unsubscriber;
@@ -26,7 +26,11 @@
     });
 
     paletteUnsub = palette.subscribe((newPalette) => {
-      document.body.setAttribute("data-theme", newPalette);
+      document.body.setAttribute("data-theme", $useOledPalette ? "oled-dark" : newPalette);
+    });
+
+    oledPaletteUnsub = useOledPalette.subscribe((shouldUse) => {
+      document.body.setAttribute("data-theme", shouldUse ? "oled-dark" : $palette);
     });
   });
 

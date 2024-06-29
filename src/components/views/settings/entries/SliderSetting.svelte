@@ -30,7 +30,7 @@
       </div>
       <div class="slider-container">
         <div style="width: 90%;">
-          <Slider min={min} max={max} step={step} showValue={false} bind:value={value} bind:valueDisplayed={valueDisplayed} />
+          <Slider min={min} max={max} step={step} bind:value={value} bind:valueDisplayed={valueDisplayed} />
         </div>
         <div style="width: 10%;">{$valueDisplayed?.toFixed(0)}</div>
       </div>
