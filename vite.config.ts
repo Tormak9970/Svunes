@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import sveltePreprocess from "svelte-preprocess";
-import { resolve } from "path";
 import { rmdirSync } from "fs";
+import { resolve } from "path";
+import sveltePreprocess from "svelte-preprocess";
+import { defineConfig } from "vite";
 
 type ExcludeOptions = {
   directories: string[]
@@ -47,6 +47,19 @@ export default defineConfig({
       directories: ["readme-images"]
     })
   ],
+
+  resolve: {
+    alias: {
+      "@interactables": resolve(__dirname, "./src/components/interactables"),
+      "@layout": resolve(__dirname, "./src/components/layout"),
+      "@views": resolve(__dirname, "./src/components/views"),
+      "@overlays": resolve(__dirname, "./src/components/overlays"),
+      "@component-utils": resolve(__dirname, "./src/components/utils"),
+      "@lib": resolve(__dirname, "./src/lib"),
+      "@stores": resolve(__dirname, "./src/stores"),
+      "@routes": resolve(__dirname, "./src/routes"),
+    }
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
