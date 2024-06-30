@@ -1,21 +1,21 @@
 <script lang="ts">
-  import Button from "../../components/interactables/Button.svelte";
-  import Icon from "../../components/utils/Icon.svelte";
+  import DetailsBody from "@component-utils/DetailsBody.svelte";
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { genresMap, songsMap, isPaused, nowPlayingList } from "../../stores/State";
-  import { genreToAdd, showAddToPlaylist } from "../../stores/Overlays";
-  import { PlaybackController } from "../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../lib/controllers/QueueController";
-  import DetailsBody from "../../components/utils/DetailsBody.svelte";
-  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
-  import MenuButton from "../../components/interactables/MenuButton.svelte";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import VirtualList from "@layout/VirtualList.svelte";
+  import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import { QueueController } from "@lib/controllers/QueueController";
+  import type { Song } from "@lib/models/Song";
+  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";
+  import { genresMap, isPaused, nowPlayingList, songsMap } from "@stores/State";
+  import ListEntry from "@views/songs/ListEntry.svelte";
+  import PlayButton from "@views/utils/PlayButton.svelte";
   import { pop } from "svelte-spa-router";
-  import MenuItem from "../../components/layout/MenuItem.svelte";
-  import VirtualList from "../../components/layout/VirtualList.svelte";
-  import ListEntry from "../../components/views/songs/ListEntry.svelte";
-  import type { Song } from "../../lib/models/Song";
-  import PlayButton from "../../components/views/utils/PlayButton.svelte";
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
 

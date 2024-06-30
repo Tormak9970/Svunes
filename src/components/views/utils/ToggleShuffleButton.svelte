@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { shuffle } from "../../../stores/State";
-  import Icon from "../../utils/Icon.svelte";
-  import Button from "../../interactables/Button.svelte";
+  import Button from "@interactables/Button.svelte";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
+  import { shuffle } from "@stores/State";
   import { fade } from "svelte/transition";
+  import Icon from "../../utils/Icon.svelte";
 </script>
 
 <div class="shuffle-container">

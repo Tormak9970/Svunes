@@ -1,24 +1,24 @@
 <script lang="ts">
-  import { View } from "../../types/View";
-  import { fly } from "svelte/transition";
-  import MenuButton from "../interactables/MenuButton.svelte";
-  import { selected } from "../../stores/Select";
-  import { showAddToPlaylist } from "../../stores/Overlays";
-  import { artistsMap, albumsMap, selectedView, playlistsMap, playlists, albums, songs, artists, genresMap, showInfoSnackbar } from "../../stores/State";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import { QueueController } from "../../lib/controllers/QueueController";
-  import { AppController } from "../../lib/controllers/AppController";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
+  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
   import PlaylistRemove from "@ktibow/iconset-material-symbols/indeterminate-check-box-rounded";
-  import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import { AppController } from "@lib/controllers/AppController";
+  import { EditController } from "@lib/controllers/EditController";
+  import { QueueController } from "@lib/controllers/QueueController";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import { pluralize } from "@lib/utils/Utils";
+  import { showAddToPlaylist } from "@stores/Overlays";
+  import { selected } from "@stores/Select";
+  import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar, songs } from "@stores/State";
   import { location } from "svelte-spa-router";
-  import Button from "../interactables/Button.svelte";
+  import { fly } from "svelte/transition";
+  import { View } from "../../types/View";
   import Icon from "../utils/Icon.svelte";
-  import MenuItem from "../layout/MenuItem.svelte";
-  import { EditController } from "../../lib/controllers/EditController";
-  import { pluralize } from "../../lib/utils/Utils";
 
   /**
    * Gets the names of the songs from the selected items.

@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { albumsMap, nowPlayingTheme, playingSongId, playlists, songsMap } from "@stores/State";
+  import { tauri } from "@tauri-apps/api";
   import { onMount } from "svelte";
-  import { albumsMap, nowPlayingTheme, playingSongId, playlists, songsMap } from "../../../stores/State";
   import Card from "./themes/Card.svelte";
   import Full from "./themes/Full.svelte";
   import Normal from "./themes/Normal.svelte";
   import Simple from "./themes/Simple.svelte";
-  import { tauri } from "@tauri-apps/api";
 
   export let clampedHeight: number;
 

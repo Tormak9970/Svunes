@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import { exit } from "@tauri-apps/api/process";
   import { appWindow } from "@tauri-apps/api/window";
   import { onDestroy, onMount } from "svelte";
-  import { exit } from "@tauri-apps/api/process";
-  import { LogController } from "../lib/controllers/utils/LogController";
 
   let windowCloseUnsub: () => void;
 

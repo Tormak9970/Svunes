@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "../../stores/State";
-  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
-  import ListEntry from "../../components/views/artists/ListEntry.svelte";
-  import GridEntry from "../../components/views/artists/GridEntry.svelte";
-  import ArtistsHeader from "../../components/views/artists/ArtistsHeader.svelte";
-  import VirtualList from "../../components/layout/VirtualList.svelte";
-  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
-  import { GridSize, type ArtistSortOrder } from "../../types/Settings";
-  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import { stringSort } from "../../lib/utils/Sorters";
+  import Icon from "@component-utils/Icon.svelte";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import Icon from "../../components/utils/Icon.svelte";
-  import type { Artist } from "../../lib/models/Artist";
+  import VirtualGrid from "@layout/VirtualGrid.svelte";
+  import VirtualList from "@layout/VirtualList.svelte";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import type { Artist } from "@lib/models/Artist";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { stringSort } from "@lib/utils/Sorters";
+  import { artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "@stores/State";
+  import ArtistsHeader from "@views/artists/ArtistsHeader.svelte";
+  import GridEntry from "@views/artists/GridEntry.svelte";
+  import ListEntry from "@views/artists/ListEntry.svelte";
+  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
+  import { GridSize, type ArtistSortOrder } from "../../types/Settings";
 
   const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songIds.length}`;
 

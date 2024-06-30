@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { autoPlayOnConnect } from "@stores/State";
   import { pop } from "svelte-spa-router";
-  import { autoPlayOnConnect } from "../../stores/State";
 
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
-  import SettingSection from "../../components/views/settings/SettingSection.svelte";
-  import ToggleSetting from "../../components/views/settings/entries/ToggleSetting.svelte";
+  import SettingSection from "@views/settings/SettingSection.svelte";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
   import WiredAuto from "@ktibow/iconset-material-symbols/cable-rounded";
 </script>

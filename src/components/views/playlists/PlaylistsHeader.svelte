@@ -1,20 +1,20 @@
 <script lang="ts">
-  import ViewHeader from "../utils/ViewHeader.svelte";
-  import MenuButton from "../../interactables/MenuButton.svelte";
-  import { selectedChip } from "../../../stores/Search";
-  import Search from "@ktibow/iconset-material-symbols/search";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import Add from "@ktibow/iconset-material-symbols/add-rounded";
-  import Button from "../../interactables/Button.svelte";
-  import Icon from "../../utils/Icon.svelte";
-  import { showGridSize, showPlaylistSortOrder } from "../../../stores/Modals";
-  import { push } from "svelte-spa-router";
-  import { lastView, selectedView } from "../../../stores/State";
-  import { View } from "../../../types/View";
-  import MenuItem from "../../layout/MenuItem.svelte";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Search from "@ktibow/iconset-material-symbols/search";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import { AppController } from "@lib/controllers/AppController";
+  import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";
+  import { showCreatePlaylist } from "@stores/Overlays";
+  import { selectedChip } from "@stores/Search";
+  import { lastView, selectedView } from "@stores/State";
   import { dialog } from "@tauri-apps/api";
-  import { AppController } from "../../../lib/controllers/AppController";
-  import { showCreatePlaylist } from "../../../stores/Overlays";
+  import { push } from "svelte-spa-router";
+  import { View } from "../../../types/View";
+  import Icon from "../../utils/Icon.svelte";
+  import ViewHeader from "../utils/ViewHeader.svelte";
 
   export let highlight: boolean;
 

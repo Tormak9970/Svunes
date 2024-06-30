@@ -1,15 +1,15 @@
 <script lang="ts">
+  import { tauri } from "@tauri-apps/api";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
-  import { tauri } from "@tauri-apps/api";
 
-  import type { Genre } from "../../../lib/models/Genre";
-  import { IMAGE_FADE_OPTIONS, TILTED_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { RustInterop } from "../../../lib/controllers/utils/RustInterop";
+  import { RustInterop } from "@lib/controllers/utils/RustInterop";
+  import type { Genre } from "@lib/models/Genre";
+  import { IMAGE_FADE_OPTIONS, TILTED_DIMENSIONS } from "@lib/utils/ImageConstants";
 
-  import CardClickable from "../../layout/CardClickable.svelte";
-  import Lazy from "../../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
+  import CardClickable from "@layout/CardClickable.svelte";
+  import Lazy from "@layout/Lazy.svelte";
+  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   
 
   export let genre: Genre;

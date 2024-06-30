@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { isLoading, isSwitchingView, lastView, selectedView, viewIndices, viewsToRender } from "../../stores/State";
-  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import Album from "@ktibow/iconset-material-symbols/album";
-  import MusicNote from "@ktibow/iconset-material-symbols/music-note";
-  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
   import Artist from "@ktibow/iconset-material-symbols/artist-rounded";
-  import Settings from "@ktibow/iconset-material-symbols/settings";
-  import Search from "@ktibow/iconset-material-symbols/search-rounded";
   import Home from "@ktibow/iconset-material-symbols/home-rounded";
-  import { selected } from "../../stores/Select";
-  import { View } from "../../types/View";
+  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
+  import MusicNote from "@ktibow/iconset-material-symbols/music-note";
+  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import Search from "@ktibow/iconset-material-symbols/search-rounded";
+  import Settings from "@ktibow/iconset-material-symbols/settings";
+  import { showMiniPlayer } from "@stores/Overlays";
+  import { selected } from "@stores/Select";
+  import { isLoading, isSwitchingView, lastView, selectedView, viewIndices, viewsToRender } from "@stores/State";
   import { push } from "svelte-spa-router";
-  import { viewRoutesLUT } from "../../routes";
   import { fly } from "svelte/transition";
+  import { viewRoutesLUT } from "../../routes";
+  import { View } from "../../types/View";
   import NavList from "./NavList.svelte";
   import NavListButton from "./NavListButton.svelte";
-  import { showMiniPlayer } from "../../stores/Overlays";
   
   const icons = {
     0: QueueMusic,
@@ -24,8 +24,8 @@
     3: Artist,
     4: LibraryMusic,
     5: Settings,
-    6: Search,
-    7: Home
+    6: Home,
+    7: Search
   }
 
   /**

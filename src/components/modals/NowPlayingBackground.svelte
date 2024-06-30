@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Body from "./view-settings/Body.svelte";
-  import { nowPlayingBackgroundType } from "../../stores/State";
-  import { showNowPlayingBackground } from "../../stores/Modals";
-  import RadioInput from "../interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/RadioInput.svelte";
+  import { showNowPlayingBackground } from "@stores/Modals";
+  import { nowPlayingBackgroundType } from "@stores/State";
   import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "../../types/Settings";
+  import Body from "./view-settings/Body.svelte";
 
   /**
    * Sets the now playing background type.

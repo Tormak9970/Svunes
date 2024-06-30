@@ -1,7 +1,7 @@
 <script lang="ts">
-  import iconCheck from "@ktibow/iconset-material-symbols/check";
+  import IconCheck from "@ktibow/iconset-material-symbols/check";
   import type { HTMLAttributes } from "svelte/elements";
-    import Icon from "../utils/Icon.svelte";
+  import Icon from "../utils/Icon.svelte";
 
   export let display = "inline-flex";
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
@@ -45,7 +45,7 @@
     }}
   />
   <div class="layer">
-    <Icon icon={iconCheck} />
+    <Icon icon={IconCheck} />
   </div>
 </div>
 

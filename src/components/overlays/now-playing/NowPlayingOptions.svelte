@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { AppController } from "../../../lib/controllers/AppController";
-  import { QueueController } from "../../../lib/controllers/QueueController";
-  import { showAddToPlaylist, showMiniPlayer, songToAdd } from "../../../stores/Overlays";
-  import { location, push, replace } from "svelte-spa-router";
-  import MenuItem from "../../layout/MenuItem.svelte";
-  import type { Song } from "../../../lib/models/Song";
-  import { playlists, playlistsMap } from "../../../stores/State";
-  import { EditController } from "../../../lib/controllers/EditController";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import { AppController } from "@lib/controllers/AppController";
+  import type { Song } from "@lib/models/Song";
+  import { showAddToPlaylist, showMiniPlayer, songToAdd } from "@stores/Overlays";
+  import { push } from "svelte-spa-router";
 
   export let menuIsOpen: boolean;
   export let song: Song | undefined;

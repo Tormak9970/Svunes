@@ -1,12 +1,12 @@
 <script lang="ts">
+  import Button from "@interactables/Button.svelte";
+  import { showBlacklistFolders } from "@stores/Modals";
+  import { blacklistedFolders } from "@stores/State";
   import { dialog } from "@tauri-apps/api";
-  import { showBlacklistFolders } from "../../stores/Modals";
-  import { blacklistedFolders } from "../../stores/State";
-  import ModalBody from "./utils/ModalBody.svelte";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./utils/FolderEntry.svelte";
-  import Button from "../interactables/Button.svelte";
+  import ModalBody from "./utils/ModalBody.svelte";
 
   let blacklistedDirectoriesUnsub: Unsubscriber;
 

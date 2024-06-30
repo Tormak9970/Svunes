@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Card from "../../../layout/Card.svelte";
+  import ColorPicker from "@interactables/color-picker/ColorPicker.svelte";
+  import Card from "@layout/Card.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import ColorPicker from "../../../interactables/color-picker/ColorPicker.svelte";
 
   export let label: string;
   export let description: string;

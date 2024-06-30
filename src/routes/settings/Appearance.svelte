@@ -1,21 +1,21 @@
 <script lang="ts">
+  import { palette, themePrimaryColor, useOledPalette } from "@stores/State";
   import { pop } from "svelte-spa-router";
-  import { palette, themePrimaryColor, useOledPalette } from "../../stores/State";
   import type { Palette } from "../../types/Settings";
 
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
-  import SettingSection from "../../components/views/settings/SettingSection.svelte";
-  import ColorSetting from "../../components/views/settings/entries/ColorSetting.svelte";
-  import ToggleSetting from "../../components/views/settings/entries/ToggleSetting.svelte";
-  import MultiButtonSetting from "../../components/views/settings/entries/MultiButtonSetting.svelte";
-  import MultiButton from "../../components/interactables/multi-button/MultiButton.svelte";
-  import ColorPreset from "../../components/views/settings/ColorPreset.svelte";
+  import MultiButton from "@interactables/multi-button/MultiButton.svelte";
+  import ColorPreset from "@views/settings/ColorPreset.svelte";
+  import SettingSection from "@views/settings/SettingSection.svelte";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import ColorSetting from "@views/settings/entries/ColorSetting.svelte";
+  import MultiButtonSetting from "@views/settings/entries/MultiButtonSetting.svelte";
+  import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import Theme from "@ktibow/iconset-material-symbols/palette";
   import Auto from "@ktibow/iconset-material-symbols/brightness-medium-rounded";
   import Dark from "@ktibow/iconset-material-symbols/dark-mode-rounded";
   import Light from "@ktibow/iconset-material-symbols/light-mode-rounded";
+  import Theme from "@ktibow/iconset-material-symbols/palette";
   
   /**
    * Sets the theme's palette.

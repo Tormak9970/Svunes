@@ -1,16 +1,16 @@
 <script lang="ts">
-  import ViewHeader from "../utils/ViewHeader.svelte";
-  import MenuButton from "../../interactables/MenuButton.svelte";
-  import { selectedChip } from "../../../stores/Search";
-  import Search from "@ktibow/iconset-material-symbols/search";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Button from "../../interactables/Button.svelte";
-  import Icon from "../../utils/Icon.svelte";
-  import { showArtistSortOrder, showGridSize } from "../../../stores/Modals";
+  import Search from "@ktibow/iconset-material-symbols/search";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import { showArtistSortOrder, showGridSize } from "@stores/Modals";
+  import { selectedChip } from "@stores/Search";
+  import { lastView, selectedView } from "@stores/State";
   import { push } from "svelte-spa-router";
-  import { lastView, selectedView } from "../../../stores/State";
   import { View } from "../../../types/View";
-  import MenuItem from "../../layout/MenuItem.svelte";
+  import Icon from "../../utils/Icon.svelte";
+  import ViewHeader from "../utils/ViewHeader.svelte";
 
   export let highlight: boolean;
 

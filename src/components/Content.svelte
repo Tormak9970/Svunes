@@ -1,28 +1,28 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
-  import ViewNav from "./navigation/ViewNav.svelte";
-  import Titlebar from "./Titlebar.svelte";
-  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "../stores/State";
-  import Overlays from "./overlays/Overlays.svelte";
-  import { AppController } from "../lib/controllers/AppController";
-  import { SettingsController } from "../lib/controllers/SettingsController";
-  import SelectHeader from "./views/SelectHeader.svelte";
-  import { inSelectMode } from "../stores/Select";
+  import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import { QueueController } from "@lib/controllers/QueueController";
+  import { SettingsController } from "@lib/controllers/SettingsController";
+  import { showSavingSettings } from "@stores/Modals";
+  import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+  import { inSelectMode } from "@stores/Select";
+  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { tauri, window } from "@tauri-apps/api";
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
-  import Modals from "./modals/Modals.svelte";
   import { exit } from "@tauri-apps/api/process";
-  import Router, { location, push } from 'svelte-spa-router'
-  import { routes, viewRoutesLUT } from "../routes";
+  import { onDestroy, onMount } from "svelte";
+  import Router, { location, push } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
+  import { AppController } from "../lib/controllers/AppController";
+  import { routes, viewRoutesLUT } from "../routes";
+  import { View } from "../types/View";
+  import Modals from "./modals/Modals.svelte";
+  import ViewNav from "./navigation/ViewNav.svelte";
+  import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
+  import Overlays from "./overlays/Overlays.svelte";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
-  import { showSavingSettings } from "../stores/Modals";
-  import { QueueController } from "../lib/controllers/QueueController";
-  import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
-  import { View } from "../types/View";
-  import { showMiniPlayer, showNowPlaying } from "../stores/Overlays";
-    import { PlaybackController } from "../lib/controllers/PlaybackController";
+  import Titlebar from "./Titlebar.svelte";
+  import SelectHeader from "./views/SelectHeader.svelte";
 
   let loadingUnsub: Unsubscriber;
   let isPausedUnsub: Unsubscriber;

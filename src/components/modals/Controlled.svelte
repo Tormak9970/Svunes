@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { dialogModalCancel, dialogModalCancelText, dialogModalConfirm, dialogModalConfirmText, dialogModalMessage, dialogModalTitle, showDialogModal } from "../../stores/Modals";
-  import Button from "../interactables/Button.svelte";
+  import Button from "@interactables/Button.svelte";
+  import { dialogModalCancel, dialogModalCancelText, dialogModalConfirm, dialogModalConfirmText, dialogModalMessage, dialogModalTitle, showDialogModal } from "@stores/Modals";
   import ModalBody from "./utils/ModalBody.svelte";
 
   /**

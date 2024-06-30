@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { showBlacklistFolders, showSelectLanguage } from "@stores/Modals";
+  import { filterSongDuration, selectedLanguage } from "@stores/State";
   import { pop } from "svelte-spa-router";
-  import { filterSongDuration, selectedLanguage } from "../../stores/State";
-  import { showBlacklistFolders, showSelectLanguage } from "../../stores/Modals";
   import { getLanguage } from "../../types/Settings";
 
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
-  import SettingSection from "../../components/views/settings/SettingSection.svelte";
-  import SliderSetting from "../../components/views/settings/entries/SliderSetting.svelte";
-  import ButtonSetting from "../../components/views/settings/entries/ButtonSetting.svelte";
+  import SettingSection from "@views/settings/SettingSection.svelte";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
+  import SliderSetting from "@views/settings/entries/SliderSetting.svelte";
   
   import Language from "@ktibow/iconset-material-symbols/translate-rounded";
   import VisibilityOff from "@ktibow/iconset-material-symbols/visibility-off-rounded";

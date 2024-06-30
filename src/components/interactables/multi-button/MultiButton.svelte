@@ -2,7 +2,7 @@
   import type { HTMLLabelAttributes } from "svelte/elements";
   import type { IconifyIcon } from "@iconify/types";
   import Icon from "../../utils/Icon.svelte";
-  import iconCheck from "@ktibow/iconset-material-symbols/check";
+  import IconCheck from "@ktibow/iconset-material-symbols/check";
 
   export let display = "flex";
   export let extraOptions: HTMLLabelAttributes = {};
@@ -26,7 +26,7 @@
     </div>
   {/if}
   <div class="check icon">
-    <Icon icon={iconCheck} />
+    <Icon icon={IconCheck} />
   </div>
   <div class="start-pad pad" />
   <slot />

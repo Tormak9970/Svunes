@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import { Playlist } from "../../lib/models/Playlist";
-  import { hash64 } from "../../lib/utils/Utils";
-  import { showCreatePlaylist, songsForNewPlaylist } from "../../stores/Overlays";
-  import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "../../stores/State";
-  import Button from "../interactables/Button.svelte";
-  import TextField from "../interactables/TextField.svelte";
-  import BottomSheet from "../layout/BottomSheet.svelte";
+  import Button from "@interactables/Button.svelte";
+  import TextField from "@interactables/TextField.svelte";
+  import BottomSheet from "@layout/BottomSheet.svelte";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import { Playlist } from "@lib/models/Playlist";
+  import { hash64 } from "@lib/utils/Utils";
+  import { showCreatePlaylist, songsForNewPlaylist } from "@stores/Overlays";
+  import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
   let newPlaylistName = "";
 
   /**

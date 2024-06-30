@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { pop } from "svelte-spa-router";
-  import Button from "../../components/interactables/Button.svelte";
-  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
-  import DetailsBody from "../../components/utils/DetailsBody.svelte";
-  import { artistsMap, albumsMap } from "../../stores/State";
-  import Icon from "../../components/utils/Icon.svelte";
+  import DetailsBody from "@component-utils/DetailsBody.svelte";
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
-  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
+  import VirtualGrid from "@layout/VirtualGrid.svelte";
+  import type { Album } from "@lib/models/Album";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { albumsMap, artistsMap } from "@stores/State";
+  import GridEntry from "@views/albums/GridEntry.svelte";
+  import { pop } from "svelte-spa-router";
   import { GridSize } from "../../types/Settings";
-  import GridEntry from "../../components/views/albums/GridEntry.svelte";
-  import type { Album } from "../../lib/models/Album";
   
   const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 

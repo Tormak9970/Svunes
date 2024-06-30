@@ -1,17 +1,17 @@
 <script lang="ts">
-  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
-  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
-  import VirtualList from "../../components/layout/VirtualList.svelte";
-  import PlaylistsHeader from "../../components/views/playlists/PlaylistsHeader.svelte";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import type { Playlist } from "../../lib/models/Playlist";
-  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { stringSort, dateSort } from "../../lib/utils/Sorters";
-  import { playlists, playlistSortOrder, playlistGridSize, playlistsIsAtTop } from "../../stores/State";
-  import { type PlaylistSortOrder, GridSize } from "../../types/Settings";
-  import ListEntry from "../../components/views/playlists/ListEntry.svelte";
-  import GridEntry from "../../components/views/playlists/GridEntry.svelte";
+  import VirtualGrid from "@layout/VirtualGrid.svelte";
+  import VirtualList from "@layout/VirtualList.svelte";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import type { Playlist } from "@lib/models/Playlist";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { dateSort, stringSort } from "@lib/utils/Sorters";
+  import { playlistGridSize, playlists, playlistsIsAtTop, playlistSortOrder } from "@stores/State";
+  import GridEntry from "@views/playlists/GridEntry.svelte";
+  import ListEntry from "@views/playlists/ListEntry.svelte";
+  import PlaylistsHeader from "@views/playlists/PlaylistsHeader.svelte";
+  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
+  import { type PlaylistSortOrder, GridSize } from "../../types/Settings";
 
   const keyFunction = (entry: { data: Playlist }) => `${entry.data.name}${entry.data.songIds.length}${entry.data.numTimesPlayed}${entry.data.lastPlayedOn}`;
 

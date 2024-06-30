@@ -1,13 +1,13 @@
+import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shuffle, songProgress } from "@stores/State";
 import { get } from "svelte/store";
-import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shuffle, songProgress } from "../../stores/State";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
+import type { Genre } from "../models/Genre";
 import type { Playlist } from "../models/Playlist";
 import type { Song } from "../models/Song";
-import { SettingsController } from "./SettingsController";
-import type { Genre } from "../models/Genre";
 import { shuffleSongs } from "../utils/Shuffle";
-import { showMiniPlayer, showNowPlaying } from "../../stores/Overlays";
+import { SettingsController } from "./SettingsController";
 
 /**
  * Controller that handles playback.

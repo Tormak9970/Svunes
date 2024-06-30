@@ -1,18 +1,18 @@
-import { showEditMusicFolders } from "../../stores/Modals";
-import { RustInterop } from "./utils/RustInterop";
-import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, songs } from "../../stores/State";
+import { showEditMusicFolders } from "@stores/Modals";
+import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, songs } from "@stores/State";
 import { get, type Unsubscriber } from "svelte/store";
-import { Song } from "../models/Song";
+import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { Album } from "../models/Album";
+import { Artist } from "../models/Artist";
+import { Genre } from "../models/Genre";
+import type { Playlist } from "../models/Playlist";
+import { Song } from "../models/Song";
+import { getAllArtistNames } from "../utils/Utils";
+import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 import { LogController } from "./utils/LogController";
-import { Genre } from "../models/Genre";
-import { Artist } from "../models/Artist";
-import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
-import { getAllArtistNames } from "../utils/Utils";
-import type { Playlist } from "../models/Playlist";
-import { PlaybackController } from "./PlaybackController";
-import { showMiniPlayer, showNowPlaying } from "../../stores/Overlays";
+import { RustInterop } from "./utils/RustInterop";
 
 /**
  * The core app controller.

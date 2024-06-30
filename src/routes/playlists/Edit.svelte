@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import Button from "../../components/interactables/Button.svelte";
-  import Icon from "../../components/utils/Icon.svelte";
-  import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
-  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
+  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import { playlists, playlistsMap, showErrorSnackbar } from "../../stores/State";
-  import TextField from "../../components/interactables/TextField.svelte";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
-  import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
+  import { EditController } from "@lib/controllers/EditController";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import OverlayBody from "@overlays/utils/OverlayBody.svelte";
+  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
+  import { playlists, playlistsMap, showErrorSnackbar } from "@stores/State";
+  import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
-  import { EditController } from "../../lib/controllers/EditController";
 
   export let params: { id?: string } = {};
   $: playlist = params.id ? $playlistsMap[params.id] : null;

@@ -1,5 +1,5 @@
 <script>
-  import { showWritingChanges } from "../../stores/Overlays";
+  import { showWritingChanges } from "@stores/Overlays";
   import LoadingSpinner from "../layout/loading-animations/LoadingSpinner.svelte";
 
 </script>

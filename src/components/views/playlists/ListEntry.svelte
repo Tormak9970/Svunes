@@ -1,18 +1,18 @@
 <script lang="ts">
-  import type { Playlist } from "../../../lib/models/Playlist";
-  import { inSelectMode, selected } from "../../../stores/Select";
-  import { LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { playlistGridSize, playlistSortOrder } from "../../../stores/State";
-  import { fade } from "svelte/transition";
-  import { renderDate } from "../../../lib/utils/Utils";
-  import CardClickable from "../../layout/CardClickable.svelte";
-  import { push } from "svelte-spa-router";
-  import PlaylistImage from "./PlaylistImage.svelte";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
-  import MenuButton from "../../interactables/MenuButton.svelte";
-  import PlaylistOptions from "./PlaylistOptions.svelte";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import CardClickable from "@layout/CardClickable.svelte";
+  import type { Playlist } from "@lib/models/Playlist";
+  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { renderDate } from "@lib/utils/Utils";
+  import { inSelectMode, selected } from "@stores/Select";
+  import { playlistSortOrder } from "@stores/State";
+  import { push } from "svelte-spa-router";
+  import { fade } from "svelte/transition";
   import Icon from "../../utils/Icon.svelte";
+  import PlaylistImage from "./PlaylistImage.svelte";
+  import PlaylistOptions from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
 

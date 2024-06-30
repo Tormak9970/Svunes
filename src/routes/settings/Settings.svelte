@@ -1,18 +1,18 @@
 <script lang="ts">
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import { pop } from "svelte-spa-router";
+  import { isSwitchingView, lastView, selectedView } from "@stores/State";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import SettingsNavButton from "@views/settings/SettingsNavButton.svelte";
   import { onMount } from "svelte";
-  import { isSwitchingView, lastView, selectedView } from "../../stores/State";
-  import SettingsNavButton from "../../components/views/settings/SettingsNavButton.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
+  import { pop } from "svelte-spa-router";
   
-  import Palette from "@ktibow/iconset-material-symbols/palette";
-  import NowPlaying from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
   import Personalize from "@ktibow/iconset-material-symbols/hdr-weak";
-  import Audio from "@ktibow/iconset-material-symbols/volume-up-rounded";
-  import Other from "@ktibow/iconset-material-symbols/tune-rounded";
   import Backup from "@ktibow/iconset-material-symbols/history-rounded";
   import About from "@ktibow/iconset-material-symbols/info-outline-rounded";
+  import Palette from "@ktibow/iconset-material-symbols/palette";
+  import NowPlaying from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
+  import Other from "@ktibow/iconset-material-symbols/tune-rounded";
+  import Audio from "@ktibow/iconset-material-symbols/volume-up-rounded";
 
   function goBack() {
     $selectedView = $lastView!;

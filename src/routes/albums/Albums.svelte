@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { albumSortOrder, albums, albumGridSize, albumsIsAtTop } from "../../stores/State";
-  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
-  import ListEntry from "../../components/views/albums/ListEntry.svelte";
-  import GridEntry from "../../components/views/albums/GridEntry.svelte";
-  import AlbumsHeader from "../../components/views/albums/AlbumsHeader.svelte";
-  import VirtualList from "../../components/layout/VirtualList.svelte";
-  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
-  import { GridSize, type AlbumSortOrder } from "../../types/Settings";
-  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import { dateSort, stringSort } from "../../lib/utils/Sorters";
+  import Icon from "@component-utils/Icon.svelte";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import Icon from "../../components/utils/Icon.svelte";
-  import type { Album } from "../../lib/models/Album";
+  import VirtualGrid from "@layout/VirtualGrid.svelte";
+  import VirtualList from "@layout/VirtualList.svelte";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import type { Album } from "@lib/models/Album";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { dateSort, stringSort } from "@lib/utils/Sorters";
+  import { albumGridSize, albumSortOrder, albums, albumsIsAtTop } from "@stores/State";
+  import AlbumsHeader from "@views/albums/AlbumsHeader.svelte";
+  import GridEntry from "@views/albums/GridEntry.svelte";
+  import ListEntry from "@views/albums/ListEntry.svelte";
+  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
+  import { GridSize, type AlbumSortOrder } from "../../types/Settings";
 
   const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 

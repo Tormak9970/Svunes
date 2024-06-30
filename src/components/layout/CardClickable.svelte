@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
-  import { holdEvent } from "../../lib/directives/HoldEvent";
+  import { holdEvent } from "@lib/directives/HoldEvent";
   import { createEventDispatcher } from "svelte";
+  import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
 
   const dispatch = createEventDispatcher();
 

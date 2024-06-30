@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { albumsMap, isPaused, playingSongId, songProgress, songsMap } from "../../../stores/State";
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
+  import Button from "@interactables/Button.svelte";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
-  import Icon from "../../utils/Icon.svelte";
-  import Button from "../../interactables/Button.svelte";
-  import ViewImage from "../../utils/ViewImage.svelte";
+  import PlayArrow from "@ktibow/iconset-material-symbols/play-arrow-rounded";
+  import Marquee from "@layout/Marquee.svelte";
+  import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+  import { isPaused, playingSongId, songProgress, songsMap } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
-  import { showMiniPlayer, showNowPlaying } from "../../../stores/Overlays";
   import { onDestroy } from "svelte";
-    import Marquee from "../../layout/Marquee.svelte";
+  import Icon from "../../utils/Icon.svelte";
+  import ViewImage from "../../utils/ViewImage.svelte";
 
   export let clampedHeight: number;
   export let hasDragged: boolean;
@@ -58,7 +58,7 @@
         {#if !$isPaused}
           <Icon icon={Pause} />
         {:else}
-          <Icon icon={Play} />
+          <Icon icon={PlayArrow} />
         {/if}
       </Button>
     </div>

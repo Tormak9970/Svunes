@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { dragHandle, dragHandleZone } from "svelte-dnd-action";
-  import PlaylistSong from "./PlaylistSong.svelte";
-  import type { Playlist } from "../../lib/models/Playlist";
-  import { playlists, songsMap } from "../../stores/State";
-  import { flip } from "svelte/animate";
+  import type { Playlist } from "@lib/models/Playlist";
+  import type { Song } from "@lib/models/Song";
+  import { playlists, songsMap } from "@stores/State";
   import { afterUpdate } from "svelte";
-  import type { Song } from "../../lib/models/Song";
+  import { dragHandle, dragHandleZone } from "svelte-dnd-action";
+  import { flip } from "svelte/animate";
+  import PlaylistSong from "./PlaylistSong.svelte";
   
+  import Icon from "@component-utils/Icon.svelte";
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
-  import Icon from "../../components/utils/Icon.svelte";
-    import { inSelectMode } from "../../stores/Select";
+  import { inSelectMode } from "@stores/Select";
 
   export let playlist: Playlist;
 

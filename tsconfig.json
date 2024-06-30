@@ -14,7 +14,18 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "types": ["svelte-gesture/globals"]
+    "types": ["svelte-gesture/globals"],
+    "baseUrl": "src",
+    "paths": {
+      "@interactables/*": ["components/interactables/*"],
+      "@layout/*": ["components/layout/*"],
+      "@views/*": ["components/views/*"],
+      "@overlays/*": ["components/overlays/*"],
+      "@component-utils/*": ["components/utils/*"],
+      "@lib/*": ["lib/*"],
+      "@stores/*": ["stores/*"],
+      "@routes/*": ["routes/*"]
+    }
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
   "references": [{ "path": "./tsconfig.node.json" }]

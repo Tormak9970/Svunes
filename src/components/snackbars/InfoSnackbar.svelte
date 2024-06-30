@@ -3,7 +3,7 @@
   
   let showInfo: (data: ShowSnackbarOptions) => void;
   
-  export const show = (data) => {
+  export const show = (data: { message: any; }) => {
     showInfo({ message: data.message, timeout: 2500 });
   }
 

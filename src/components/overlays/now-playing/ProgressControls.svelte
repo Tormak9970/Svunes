@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { formatTime } from "../../../lib/utils/Utils";
-  import { songProgress } from "../../../stores/State";
-  import Slider from "../../interactables/Slider.svelte";
+  import Slider from "@interactables/Slider.svelte";
+  import { formatTime } from "@lib/utils/Utils";
+  import { songProgress } from "@stores/State";
 
   export let songLength: number;
   export let useTextColor = false;

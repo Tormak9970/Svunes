@@ -1,9 +1,9 @@
 <script lang="ts">
+  import CardClickable from "@layout/CardClickable.svelte";
+  import type { Artist } from "@lib/models/Artist";
+  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { inSelectMode, selected } from "@stores/Select";
   import { tauri } from "@tauri-apps/api";
-  import type { Artist } from "../../../lib/models/Artist";
-  import { inSelectMode, selected } from "../../../stores/Select";
-  import { LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
   import ViewImage from "../../utils/ViewImage.svelte";
 

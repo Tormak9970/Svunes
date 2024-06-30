@@ -78,6 +78,8 @@ export function getLanguage(lang: AppLanguage): string {
   }
 }
 
+export type NowPlayingExtraControl = "Car Mode" | "Sleep Timer" | "None";
+
 export type Palette = "Auto" | "Dark" | "Light";
 
 export type PlaylistSortOrder = "Alphabetical" | "Song Count" | "Most Played" | "Last Played";
@@ -122,11 +124,13 @@ export type Settings = {
     controls: {
       dismissMiniWithSwipe: boolean,
       volumeControls: boolean,
-    }
+      extralControl: NowPlayingExtraControl,
+    },
+    autoDetectCarMode: boolean,
   },
 
   audio: {
-    autoPlay: boolean
+    autoPlay: boolean,
   },
 
   personalization: {
@@ -134,7 +138,7 @@ export type Settings = {
     viewIndices: Record<View, number>;
     showSuggestions: boolean,
     trackHistory: boolean,
-    showAlbumOnLockScreen: boolean
+    showAlbumOnLockScreen: boolean,
   },
 
   playlists: Playlist[],
@@ -156,27 +160,27 @@ export type Settings = {
     repeat: boolean,
     volume: number,
     nowPlayingList: string,
-    nowPlayingType: NowPlayingType
+    nowPlayingType: NowPlayingType,
   },
 
   playlistsView: {
     gridSize: GridSize,
-    sortOrder: PlaylistSortOrder
+    sortOrder: PlaylistSortOrder,
   },
   albumsView: {
     gridSize: GridSize,
     sortOrder: AlbumSortOrder,
-    useAlbumColors: boolean
+    useAlbumColors: boolean,
   },
   songsView: {
     gridSize: GridSize,
-    sortOrder: SongSortOrder
+    sortOrder: SongSortOrder,
   },
   artistsView: {
     gridSize: GridSize,
     gridStyle: GridStyle,
     sortOrder: ArtistSortOrder,
-    useArtistColors: boolean
+    useArtistColors: boolean,
   }
 }
 
@@ -198,7 +202,9 @@ export const DEFAULT_SETTINGS: Settings = {
     "controls": {
       "dismissMiniWithSwipe": true,
       "volumeControls": true,
-    }
+      "extralControl": "Car Mode",
+    },
+    "autoDetectCarMode": true,
   },
 
   "audio": {

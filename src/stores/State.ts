@@ -1,6 +1,6 @@
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { View } from "../types/View";
-import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
@@ -65,6 +65,8 @@ export const nowPlayingTheme = writable(NowPlayingTheme.NORMAL);
 
 export const dismissMiniPlayerWithSwipe = writable(true);
 export const showVolumeControls = writable(true);
+export const extraControl: Writable<NowPlayingExtraControl> = writable("Car Mode");
+export const autoDetectCarMode = writable(true);
 
 export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIENT);
 

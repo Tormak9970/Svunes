@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Lazy from "../layout/Lazy.svelte";
-  import MusicNotePlaceholder from "../layout/placeholders/MusicNotePlaceholder.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../lib/utils/ImageConstants";
+  import Lazy from "@layout/Lazy.svelte";
+  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
+  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
 
   export let src: string;
   export let width: number;

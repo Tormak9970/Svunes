@@ -1,16 +1,16 @@
 <script lang="ts">
+  import { showEditViewOrder } from "@stores/Modals";
+  import { showSuggestions, trackHistory } from "@stores/State";
   import { pop } from "svelte-spa-router";
-  import { showEditViewOrder } from "../../stores/Modals";
-  import { showSuggestions, trackHistory } from "../../stores/State";
 
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
-  import SettingSection from "../../components/views/settings/SettingSection.svelte";
-  import ButtonSetting from "../../components/views/settings/entries/ButtonSetting.svelte";
-  import ToggleSetting from "../../components/views/settings/entries/ToggleSetting.svelte";
+  import SettingSection from "@views/settings/SettingSection.svelte";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
+  import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
   import History from "@ktibow/iconset-material-symbols/history-rounded";
+  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
 </script>
 
 <SettingsBody>

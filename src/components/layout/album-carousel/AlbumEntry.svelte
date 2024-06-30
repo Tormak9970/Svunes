@@ -1,11 +1,11 @@
 <script lang="ts">
+  import CardClickable from "@layout/CardClickable.svelte";
+  import Lazy from "@layout/Lazy.svelte";
+  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
+  import type { Album } from "@lib/models/Album";
+  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { tauri } from "@tauri-apps/api";
   import { location, push } from "svelte-spa-router";
-  import CardClickable from "../CardClickable.svelte";
-  import Lazy from "../Lazy.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import MusicNotePlaceholder from "../placeholders/MusicNotePlaceholder.svelte";
-  import type { Album } from "../../../lib/models/Album";
 
   export let album: Album;
 

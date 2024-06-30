@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Button from "../../interactables/Button.svelte";
-  import Icon from "../../utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
   import Close from "@ktibow/iconset-material-symbols/close-rounded";
+  import Icon from "../../utils/Icon.svelte";
   
   export let folderPath: string;
   export let index: number;

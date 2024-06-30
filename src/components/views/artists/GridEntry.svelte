@@ -1,10 +1,10 @@
 <script lang="ts">
+  import CardClickable from "@layout/CardClickable.svelte";
+  import type { Artist } from "@lib/models/Artist";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { inSelectMode, selected } from "@stores/Select";
+  import { artistGridSize } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
-  import type { Artist } from "../../../lib/models/Artist";
-  import { inSelectMode, selected } from "../../../stores/Select";
-  import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { artistGridSize } from "../../../stores/State";
-  import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
   import { GridSize } from "../../../types/Settings";
   import ViewImage from "../../utils/ViewImage.svelte";

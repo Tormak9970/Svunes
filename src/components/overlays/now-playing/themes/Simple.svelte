@@ -1,25 +1,24 @@
 <script lang="ts">
-  import { nowPlayingBackgroundType, songProgress } from "../../../../stores/State";
-  import { showCarMode, showMiniPlayer, showQueue } from "../../../../stores/Overlays";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
+  import Marquee from "@layout/Marquee.svelte";
+  import type { Song } from "@lib/models/Song";
+  import { formatTime } from "@lib/utils/Utils";
+  import { showCarMode, showMiniPlayer, showQueue } from "@stores/Overlays";
+  import { nowPlayingBackgroundType, songProgress } from "@stores/State";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
-  import { formatTime } from "../../../../lib/utils/Utils";
-  import type { Song } from "../../../../lib/models/Song";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
-  import Marquee from "../../../layout/Marquee.svelte";
-  import Button from "../../../interactables/Button.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import MenuButton from "../../../interactables/MenuButton.svelte";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
-  import ProgressControls from "../ProgressControls.svelte";
   
-  import Collapse from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
-  import CarMode from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
+  import DirectionsCar from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
   import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
   import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
-  import Queue from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   
   let menuIsOpen = false;
   
@@ -64,11 +63,11 @@
     <VolumeControls />
     <div class="options">
       <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showMiniPlayer = true}>
-        <Icon icon={Collapse} />
+        <Icon icon={KeyboardArrowDown} />
       </Button>
       <div class="right">
         <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showCarMode = true}>
-          <Icon icon={CarMode} />
+          <Icon icon={DirectionsCar} />
         </Button>
         <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={toggleFavorite}>
           {#if !isFavorited}
@@ -78,7 +77,7 @@
           {/if}
         </Button>
         <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showQueue = true}>
-          <Icon icon={Queue} />
+          <Icon icon={QueueMusic} />
         </Button>
         <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
           <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} />

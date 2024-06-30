@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { isPaused, shuffle, repeatPlayed } from "../../../stores/State";
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../../lib/controllers/QueueController";
-  import Button from "../../interactables/Button.svelte";
+  import Button from "@interactables/Button.svelte";
+  import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import { QueueController } from "@lib/controllers/QueueController";
+  import { isPaused, repeatPlayed, shuffle } from "@stores/State";
   import Icon from "../../utils/Icon.svelte";
 
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
-  import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
-  import SkipNext from "@ktibow/iconset-material-symbols/skip-next-rounded";
+  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Repeat from "@ktibow/iconset-material-symbols/repeat-rounded";
+  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
+  import SkipNext from "@ktibow/iconset-material-symbols/skip-next-rounded";
+  import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
 
   export let useTextColor = false;
   export let showExtraControls = true;

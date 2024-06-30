@@ -1,8 +1,8 @@
+import { albumsMap, artistsMap, genresMap, history, isPaused, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import { albumsMap, artistsMap, genresMap, history, isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "../../stores/State";
+import { pluralize } from "../utils/Utils";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
-import { pluralize } from "../utils/Utils";
 
 /**
  * Controls the current queue.

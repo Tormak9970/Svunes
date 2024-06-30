@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Lazy from "@layout/Lazy.svelte";
+  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
+  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { tauri } from "@tauri-apps/api";
-  import Lazy from "../../layout/Lazy.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import MusicNotePlaceholder from "../../layout/placeholders/MusicNotePlaceholder.svelte";
 
   export let images: (string | undefined)[];
   export let size: number;

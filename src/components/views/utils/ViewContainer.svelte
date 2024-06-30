@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { isSwitchingView, lastView, selectedView, viewsToRender } from "@stores/State";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-  import { isSwitchingView, lastView, selectedView, viewsToRender } from "../../../stores/State";
   import { sharedAxisTransition } from "../../utils/animations/animations";
 
   function determineViewTransitionIn(node: Element) {

@@ -43,7 +43,6 @@
     "@iconify/types": "^2.0.0",
     "@ktibow/iconset-material-symbols": "^0.0.1715672497",
     "@material/material-color-utilities": "^0.2.7",
-    "@material/web": "^1.4.1",
     "@tauri-apps/cli": "^1.5.10",
     "svelte-gesture": "^0.1.4",
     "svelte-preprocess": "^5.1.4",

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { argbFromHex, Hct, SchemeTonalSpot } from "@material/material-color-utilities";
+  import { palette, themePrimaryColor, useOledPalette } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
-  import { argbFromHex, SchemeTonalSpot, Hct } from "@material/material-color-utilities";
-  import { palette, themePrimaryColor, useOledPalette } from "../../stores/State";
   import { genCSS, serializeScheme, type SerializedScheme } from "./themeUtils";
 
   let primaryColorUnsub: Unsubscriber;

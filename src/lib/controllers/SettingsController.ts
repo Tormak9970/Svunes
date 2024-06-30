@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedLanguage, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { fs, path } from "@tauri-apps/api";
-import { type AlbumMetadata, type ArtistMetadata, type NowPlayingType, type Palette, type Settings, type SongMetadata, AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme } from "../../types/Settings";
-import { LogController } from "./utils/LogController";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artistSortOrder, autoPlayOnConnect, dismissMiniPlayerWithSwipe, palette, blacklistedFolders, musicDirectories, nowPlayingTheme, nowPlayingList, nowPlayingType, playlistGridSize, playlists, playlistSortOrder, queue, selectedView, showExtraSongInfo, showVolumeControls, songGridSize, playingSongId, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useOledPalette, viewsToRender, filterSongDuration, selectedLanguage, useArtistColors, artists, shuffle, showInfoSnackbar, showErrorSnackbar, viewIndices, nowPlayingBackgroundType, repeatPlayed, volumeLevel } from "../../stores/State";
+import { get, type Unsubscriber } from "svelte/store";
+import { AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
 import { View } from "../../types/View";
+import type { Album } from "../models/Album";
+import type { Artist } from "../models/Artist";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
-import type { Album } from "../models/Album";
-import { get, type Unsubscriber } from "svelte/store";
 import { debounce } from "../utils/Utils";
-import type { Artist } from "../models/Artist";
+import { LogController } from "./utils/LogController";
 
 /**
  * Sets settings to defaults if they do not exist.
@@ -40,21 +40,15 @@ function setIfNotExist(object: any, defaults: any): any {
   const defaultKeys = Object.keys(object);
 
   for (const key in object) {
-    if (!defaultKeys.includes(key)) {
-      // @ts-ignore
-      delete object[key];
-    }
+    // @ts-ignore
+    if (!defaultKeys.includes(key)) delete object[key];
   }
 
   for (const [ key, val ] of defaultEntries) {
-    if (!currentKeys.includes(key)) {
-      // @ts-ignore
-      object[key] = val;
-    }
+    // @ts-ignore
+    if (!currentKeys.includes(key)) object[key] = val;
 
-    if (typeof defaults[key] === "object") {
-      object[key] = setIfNotExist(object[key], defaults[key])
-    }
+    if (typeof defaults[key] === "object") object[key] = setIfNotExist(object[key], defaults[key]);
   }
 
   return object;
@@ -84,6 +78,8 @@ export class SettingsController {
 
   private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
   private static showVolumeControlsUnsub: Unsubscriber;
+  private static extraControlUnsub: Unsubscriber;
+  private static autoDetectCarModeUnsub: Unsubscriber;
 
   private static autoPlayOnConnectUnsub: Unsubscriber;
 
@@ -305,10 +301,12 @@ export class SettingsController {
     showExtraSongInfo.set(nowPlaying.songInfo);
     nowPlayingTheme.set(nowPlaying.layout);
     nowPlayingBackgroundType.set(nowPlaying.backgroundType);
+    autoDetectCarMode.set(nowPlaying.autoDetectCarMode);
 
     const controls = nowPlaying.controls;
     dismissMiniPlayerWithSwipe.set(controls.dismissMiniWithSwipe);
     showVolumeControls.set(controls.volumeControls);
+    extraControl.set(controls.extralControl);
 
 
     const personalization = this.settings.personalization;
@@ -392,9 +390,11 @@ export class SettingsController {
     this.showExtraSongInfoUnsub = showExtraSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
     this.nowPlayingThemeUnsub = nowPlayingTheme.subscribe(this.updateStoreIfChanged<NowPlayingTheme>("nowPlaying.layout"));
     this.nowPlayingBackgroundTypeUnsub = nowPlayingBackgroundType.subscribe(this.updateStoreIfChanged<NowPlayingBackgroundType>("nowPlaying.backgroundType"));
+    this.autoDetectCarModeUnsub = autoDetectCarMode.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.autoDetectCarMode"));
 
     this.dismissMiniPlayerWithSwipeUnsub = dismissMiniPlayerWithSwipe.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.dismissMiniWithSwipe"));
     this.showVolumeControlsUnsub = showVolumeControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.volumeControls"));
+    this.extraControlUnsub = extraControl.subscribe(this.updateStoreIfChanged<NowPlayingExtraControl>("nowPlaying.controls.extraControl"));
 
     this.viewsToRenderUnsub = viewsToRender.subscribe(this.updateStoreIfChanged<View[]>("personalization.viewsToRender"));
     this.viewIndicesUnsub = viewIndices.subscribe(this.updateStoreIfChanged<Record<View, number>>("personalization.viewIndices"));
@@ -565,9 +565,11 @@ export class SettingsController {
     if (this.showExtraSongInfoUnsub) this.showExtraSongInfoUnsub();
     if (this.nowPlayingThemeUnsub) this.nowPlayingThemeUnsub();
     if (this.nowPlayingBackgroundTypeUnsub) this.nowPlayingBackgroundTypeUnsub();
+    if (this.autoDetectCarModeUnsub) this.autoDetectCarModeUnsub();
 
     if (this.dismissMiniPlayerWithSwipeUnsub) this.dismissMiniPlayerWithSwipeUnsub();
     if (this.showVolumeControlsUnsub) this.showVolumeControlsUnsub();
+    if (this.extraControlUnsub) this.extraControlUnsub();
     
     if (this.viewsToRenderUnsub) this.viewsToRenderUnsub();
     if (this.viewIndicesUnsub) this.viewIndicesUnsub();

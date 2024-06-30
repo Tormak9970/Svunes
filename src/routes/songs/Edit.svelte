@@ -1,20 +1,19 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import Button from "../../components/interactables/Button.svelte";
-  import Icon from "../../components/utils/Icon.svelte";
-  import OverlayBody from "../../components/overlays/utils/OverlayBody.svelte";
-  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
+  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import NumberField from "@interactables/NumberField.svelte";
+  import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import { showErrorSnackbar, showInfoSnackbar, songsMap } from "../../stores/State";
-  import TextField from "../../components/interactables/TextField.svelte";
-  import NumberField from "../../components/interactables/NumberField.svelte";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import { Song } from "../../lib/models/Song";
-  import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
-  import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
+  import { EditController } from "@lib/controllers/EditController";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import OverlayBody from "@overlays/utils/OverlayBody.svelte";
+  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
+  import { showWritingChanges } from "@stores/Overlays";
+  import { showErrorSnackbar, showInfoSnackbar, songsMap } from "@stores/State";
+  import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
-  import { EditController } from "../../lib/controllers/EditController";
-  import { showWritingChanges } from "../../stores/Overlays";
 
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;

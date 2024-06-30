@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Body from "./Body.svelte";
-  import { artistSortOrder } from "../../../stores/State";
-  import { showArtistSortOrder } from "../../../stores/Modals";
-  import RadioInput from "../../interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/RadioInput.svelte";
+  import { showArtistSortOrder } from "@stores/Modals";
+  import { artistSortOrder } from "@stores/State";
   import type { ArtistSortOrder } from "../../../types/Settings";
+  import Body from "./Body.svelte";
 
   /**
    * Sets the artist sort order.

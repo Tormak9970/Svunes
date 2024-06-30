@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Button from "@interactables/Button.svelte";
 	import { createEventDispatcher } from 'svelte';
-  import Button from "../Button.svelte";
 
 	const dispatch = createEventDispatcher<{
 		input: { hsv?: any; rgb?: any; hex?: string };

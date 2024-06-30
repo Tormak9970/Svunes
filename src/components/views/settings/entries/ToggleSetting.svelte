@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Card from "../../../layout/Card.svelte";
+  import Toggle from "@interactables/Toggle.svelte";
+  import Card from "@layout/Card.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import Toggle from "../../../interactables/Toggle.svelte";
 
   export let label: string;
   export let description: string;

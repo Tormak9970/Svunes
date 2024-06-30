@@ -2,19 +2,19 @@
   import { open } from "@tauri-apps/api/shell";
   import { pop } from "svelte-spa-router";
 
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
-  import TextSetting from "../../components/views/settings/entries/TextSetting.svelte";
-  import ButtonSetting from "../../components/views/settings/entries/ButtonSetting.svelte";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
+  import TextSetting from "@views/settings/entries/TextSetting.svelte";
   
-  import Version from "@ktibow/iconset-material-symbols/info-outline-rounded";
-  import Person from "@ktibow/iconset-material-symbols/person-rounded";
+  import BugReport from "@ktibow/iconset-material-symbols/bug-report-outline-rounded";
   import EditDocument from "@ktibow/iconset-material-symbols/edit-document-rounded";
+  import Help from "@ktibow/iconset-material-symbols/help-rounded";
+  import Version from "@ktibow/iconset-material-symbols/info-outline-rounded";
+  import License from "@ktibow/iconset-material-symbols/license-outline-rounded";
+  import Person from "@ktibow/iconset-material-symbols/person-rounded";
   import Star from "@ktibow/iconset-material-symbols/star-rounded";
   import Translate from "@ktibow/iconset-material-symbols/translate-rounded";
-  import BugReport from "@ktibow/iconset-material-symbols/bug-report-outline-rounded";
-  import Help from "@ktibow/iconset-material-symbols/help-rounded";
-  import License from "@ktibow/iconset-material-symbols/license-outline-rounded";
 </script>
 
 <SettingsBody>

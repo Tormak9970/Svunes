@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Song } from "../../../lib/models/Song";
+  import type { Song } from "@lib/models/Song";
   import SongEntry from "./SongEntry.svelte";
 
   export let songs: Song[];

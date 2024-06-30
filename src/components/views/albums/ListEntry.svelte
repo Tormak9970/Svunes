@@ -1,13 +1,13 @@
 <script lang="ts">
+  import CardClickable from "@layout/CardClickable.svelte";
+  import type { Album } from "@lib/models/Album";
+  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { renderDate } from "@lib/utils/Utils";
+  import { inSelectMode, selected } from "@stores/Select";
+  import { albumSortOrder } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
-  import type { Album } from "../../../lib/models/Album";
-  import { inSelectMode, selected } from "../../../stores/Select";
-  import { LIST_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { albumSortOrder } from "../../../stores/State";
-  import { fade } from "svelte/transition";
-  import { renderDate } from "../../../lib/utils/Utils";
-  import CardClickable from "../../layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";
+  import { fade } from "svelte/transition";
   import ViewImage from "../../utils/ViewImage.svelte";
 
   export let album: Album;

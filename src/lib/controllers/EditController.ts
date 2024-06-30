@@ -1,13 +1,13 @@
-import { RustInterop } from "./utils/RustInterop";
-import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "../../stores/State";
+import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import { Song } from "../models/Song";
 import { Album } from "../models/Album";
-import { LogController } from "./utils/LogController";
-import { DialogController } from "./utils/DialogController";
-import { AppController } from "./AppController";
+import { Song } from "../models/Song";
 import { pluralize } from "../utils/Utils";
+import { AppController } from "./AppController";
 import { QueueController } from "./QueueController";
+import { DialogController } from "./utils/DialogController";
+import { LogController } from "./utils/LogController";
+import { RustInterop } from "./utils/RustInterop";
 
 /**
  * The controller for editing music, albums and artists.

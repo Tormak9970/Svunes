@@ -1,5 +1,5 @@
+import { albumsMap } from "@stores/State";
 import { path } from "@tauri-apps/api";
-import { albumsMap } from "../../stores/State";
 import { get } from "svelte/store";
 import { artistIsSingular, formatTime, getGenre, hash64, normalizeString } from "../utils/Utils";
 

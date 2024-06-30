@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { location } from "svelte-spa-router";
-  import { LogController } from "../../../lib/controllers/utils/LogController";
-  import { albumToAdd, artistToAdd, genreToAdd, playlistToAdd, showAddToPlaylist, showCreatePlaylist, songToAdd, songsForNewPlaylist } from "../../../stores/Overlays";
-  import { selected } from "../../../stores/Select";
-  import { albumsMap, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar } from "../../../stores/State";
-  import { View } from "../../../types/View";
-  import Button from "../../interactables/Button.svelte";
-  import BottomSheet from "../../layout/BottomSheet.svelte";
-  import PlaylistEntry from "./PlaylistEntry.svelte";
-  import { fade } from "svelte/transition";
+  import Button from "@interactables/Button.svelte";
+  import BottomSheet from "@layout/BottomSheet.svelte";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import { pluralize } from "@lib/utils/Utils";
+  import { albumToAdd, artistToAdd, genreToAdd, playlistToAdd, showAddToPlaylist, showCreatePlaylist, songToAdd, songsForNewPlaylist } from "@stores/Overlays";
+  import { selected } from "@stores/Select";
+  import { albumsMap, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar } from "@stores/State";
   import { afterUpdate } from "svelte";
-  import { pluralize } from "../../../lib/utils/Utils";
+  import { location } from "svelte-spa-router";
+  import { fade } from "svelte/transition";
+  import { View } from "../../../types/View";
+  import PlaylistEntry from "./PlaylistEntry.svelte";
   
   let scrollContainer: HTMLDivElement;
   let selectedPlaylists: string[] = [];

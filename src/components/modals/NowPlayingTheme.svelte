@@ -1,15 +1,15 @@
 <script lang="ts">
+  import Button from "@interactables/Button.svelte";
+  import Lazy from "@layout/Lazy.svelte";
+  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
+  import { showNowPlayingTheme } from "@stores/Modals";
+  import { nowPlayingTheme } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
-  import type { Unsubscriber } from "svelte/store";
   import { drag } from "svelte-gesture";
   import { spring } from "svelte/motion";
-  import { showNowPlayingTheme } from "../../stores/Modals";
-  import ModalBody from "./utils/ModalBody.svelte";
-  import Button from "../interactables/Button.svelte";
-  import { nowPlayingTheme } from "../../stores/State";
+  import type { Unsubscriber } from "svelte/store";
   import { getNowPlayingTheme, NowPlayingTheme } from "../../types/Settings";
-  import Lazy from "../layout/Lazy.svelte";
-  import { IMAGE_FADE_OPTIONS } from "../../lib/utils/ImageConstants";
+  import ModalBody from "./utils/ModalBody.svelte";
 
   let nowPlayingUnsub: Unsubscriber;
   let selectedTheme = $nowPlayingTheme;

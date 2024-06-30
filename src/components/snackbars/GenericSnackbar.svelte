@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
-  import iconX from "@ktibow/iconset-material-symbols/close";
+  import Close from "@ktibow/iconset-material-symbols/close";
   import Icon from "../utils/Icon.svelte";
 
   type SnackbarData = {
@@ -38,7 +38,7 @@
       <p class="m3-font-body-medium">{snackbar.message}</p>
       {#if snackbar.closable}
         <button class="close" on:click={() => { snackbar = undefined; }}>
-          <Icon icon={iconX} />
+          <Icon icon={Close} />
         </button>
       {/if}
     </div>

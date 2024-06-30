@@ -1,19 +1,19 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import Icon from "../../components/utils/Icon.svelte";
-  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
-  import VirtualGrid from "../../components/layout/VirtualGrid.svelte";
-  import VirtualList from "../../components/layout/VirtualList.svelte";
-  import GridEntry from "../../components/views/songs/GridEntry.svelte";
-  import ListEntry from "../../components/views/songs/ListEntry.svelte";
-  import SongsHeader from "../../components/views/songs/SongsHeader.svelte";
-  import { LogController } from "../../lib/controllers/utils/LogController";
-  import type { Song } from "../../lib/models/Song";
-  import { GRID_IMAGE_DIMENSIONS } from "../../lib/utils/ImageConstants";
-  import { stringSort, dateSort } from "../../lib/utils/Sorters";
-  import { songs, songSortOrder, songGridSize, songsIsAtTop } from "../../stores/State";
-  import { type SongSortOrder, GridSize } from "../../types/Settings";
+  import VirtualGrid from "@layout/VirtualGrid.svelte";
+  import VirtualList from "@layout/VirtualList.svelte";
+  import { LogController } from "@lib/controllers/utils/LogController";
+  import type { Song } from "@lib/models/Song";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { dateSort, stringSort } from "@lib/utils/Sorters";
+  import { songGridSize, songs, songsIsAtTop, songSortOrder } from "@stores/State";
+  import GridEntry from "@views/songs/GridEntry.svelte";
+  import ListEntry from "@views/songs/ListEntry.svelte";
+  import SongsHeader from "@views/songs/SongsHeader.svelte";
+  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
+  import { type SongSortOrder, GridSize } from "../../types/Settings";
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
 

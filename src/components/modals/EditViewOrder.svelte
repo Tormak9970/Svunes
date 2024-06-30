@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
+  import { dragHandle, dragHandleZone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { Unsubscriber } from "svelte/store";
-	import {dragHandleZone, dragHandle, DRAGGED_ELEMENT_ID} from "svelte-dnd-action";
   
-  import { showErrorSnackbar, viewIndices, viewsToRender } from "../../stores/State";
-  import { showEditViewOrder } from "../../stores/Modals";
+  import { showEditViewOrder } from "@stores/Modals";
+  import { showErrorSnackbar, viewIndices, viewsToRender } from "@stores/State";
   import { View, Views, getViewName } from "../../types/View";
 
-  import ModalBody from "./utils/ModalBody.svelte";
-  import Button from "../interactables/Button.svelte";
-  import Checkbox from "../interactables/Checkbox.svelte";
+  import Button from "@interactables/Button.svelte";
+  import Checkbox from "@interactables/Checkbox.svelte";
   import Icon from "../utils/Icon.svelte";
+  import ModalBody from "./utils/ModalBody.svelte";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
 

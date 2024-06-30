@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Card from "../../../layout/Card.svelte";
-  import Icon from "../../../utils/Icon.svelte";
-  import Slider from "../../../interactables/Slider.svelte";
+  import Slider from "@interactables/Slider.svelte";
+  import Card from "@layout/Card.svelte";
   import type { Spring } from "svelte/motion";
+  import Icon from "../../../utils/Icon.svelte";
 
   export let label: string;
   export let description: string;

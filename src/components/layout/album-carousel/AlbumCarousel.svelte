@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Album } from "../../../lib/models/Album";
+  import type { Album } from "@lib/models/Album";
   import AlbumEntry from "./AlbumEntry.svelte";
 
   export let albums: Album[];

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { View } from "../../../types/View";
 
-  import Body from "./Body.svelte";
-  import { albumGridSize, artistGridSize, playlistGridSize, selectedView, songGridSize } from "../../../stores/State";
-  import { showGridSize } from "../../../stores/Modals";
+  import RadioInput from "@interactables/RadioInput.svelte";
+  import { showGridSize } from "@stores/Modals";
+  import { albumGridSize, artistGridSize, playlistGridSize, selectedView, songGridSize } from "@stores/State";
   import { GridSize } from "../../../types/Settings";
-  import RadioInput from "../../interactables/RadioInput.svelte";
+  import Body from "./Body.svelte";
 
   $: gridSize = $selectedView === View.PLAYLISTS ? $playlistGridSize : ($selectedView === View.ALBUMS ? $albumGridSize : ($selectedView === View.SONGS ? $songGridSize : $artistGridSize));
 

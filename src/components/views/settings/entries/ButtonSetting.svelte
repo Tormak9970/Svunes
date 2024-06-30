@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
+  import CardClickable from "@layout/CardClickable.svelte";
   import Icon from "../../../utils/Icon.svelte";
-  import CardClickable from "../../../layout/CardClickable.svelte";
 
   export let label: string;
   export let description: string;

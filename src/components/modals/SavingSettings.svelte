@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { showSavingSettings } from "../../stores/Modals";
+  import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
+  import { showSavingSettings } from "@stores/Modals";
   import ModalBody from "./utils/ModalBody.svelte";
-  import LoadingSpinner from "../layout/loading-animations/LoadingSpinner.svelte";
 </script>
 
 <ModalBody show={$showSavingSettings} headline="" onClose={() => {}}>

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Body from "./view-settings/Body.svelte";
-  import { selectedLanguage } from "../../stores/State";
-  import { showSelectLanguage } from "../../stores/Modals";
-  import RadioInput from "../interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/RadioInput.svelte";
+  import { showSelectLanguage } from "@stores/Modals";
+  import { selectedLanguage } from "@stores/State";
   import { AppLanguage, getLanguage } from "../../types/Settings";
+  import Body from "./view-settings/Body.svelte";
 
   /**
    * Sets the app language.

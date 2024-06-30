@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { genres } from "../../stores/State";
-  import ViewContainer from "../../components/views/utils/ViewContainer.svelte";
-  import GenresHeader from "../../components/views/genres/GenresHeader.svelte";
+  import Icon from "@component-utils/Icon.svelte";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import Icon from "../../components/utils/Icon.svelte";
-  import GenreEntry from "../../components/views/genres/GenreEntry.svelte";
+  import { genres } from "@stores/State";
+  import GenreEntry from "@views/genres/GenreEntry.svelte";
+  import GenresHeader from "@views/genres/GenresHeader.svelte";
+  import ViewContainer from "@views/utils/ViewContainer.svelte";
 </script>
 
 <ViewContainer>

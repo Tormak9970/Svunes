@@ -1,9 +1,9 @@
 <script lang="ts">
+  import Button from "@interactables/Button.svelte";
+  import ListItemButton from "@layout/ListItemButton.svelte";
+  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { dialog } from "@tauri-apps/api";
-  import { onArtOptionsDone, showArtOptions } from "../../stores/Modals";
-  import Button from "../interactables/Button.svelte";
   import ListModalBody from "./utils/ListModalBody.svelte";
-  import ListItemButton from "../layout/ListItemButton.svelte";
 
   /**
    * Prompts the user to select an image.

@@ -1,33 +1,33 @@
 <script lang="ts">
-  import { showAddToPlaylist, songToAdd } from "../../stores/Overlays";
-  import { songsMap } from "../../stores/State";
-  import OverlayHeader from "../../components/overlays/utils/OverlayHeader.svelte";
-  import Button from "../../components/interactables/Button.svelte";
-  import Icon from "../../components/utils/Icon.svelte";
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import MenuButton from "../../components/interactables/MenuButton.svelte";
+  import { AppController } from "@lib/controllers/AppController";
+  import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import { QueueController } from "@lib/controllers/QueueController";
+  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
+  import { songsMap } from "@stores/State";
   import DetailsField from "./DetailsField.svelte";
-  import { PlaybackController } from "../../lib/controllers/PlaybackController";
-  import { QueueController } from "../../lib/controllers/QueueController";
-  import { AppController } from "../../lib/controllers/AppController";
   
-  import Sell from "@ktibow/iconset-material-symbols/sell";
+  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
+  import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Album from "@ktibow/iconset-material-symbols/album";
   import Artist from "@ktibow/iconset-material-symbols/artist";
-  import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
-  import Genre from "@ktibow/iconset-material-symbols/library-music-rounded";
-  import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
-  import Duration from "@ktibow/iconset-material-symbols/schedule-rounded"
-  import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded"
   import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
+  import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded";
   import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
-  import DetailsBody from "../../components/utils/DetailsBody.svelte";
-  import DetailsArtPicture from "../../components/utils/DetailsArtPicture.svelte";
+  import Genre from "@ktibow/iconset-material-symbols/library-music-rounded";
+  import Duration from "@ktibow/iconset-material-symbols/schedule-rounded";
+  import Sell from "@ktibow/iconset-material-symbols/sell";
+  import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
+  import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import { EditController } from "@lib/controllers/EditController";
   import { pop, push, replace } from "svelte-spa-router";
-  import MenuItem from "../../components/layout/MenuItem.svelte";
-  import { EditController } from "../../lib/controllers/EditController";
   
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;

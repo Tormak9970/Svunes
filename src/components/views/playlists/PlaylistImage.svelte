@@ -1,11 +1,11 @@
 <script lang="ts">
+  import Lazy from "@layout/Lazy.svelte";
+  import AlbumPlaceholder from "@layout/placeholders/AlbumPlaceholder.svelte";
+  import Favorites from "@layout/placeholders/Favorites.svelte";
+  import type { Playlist } from "@lib/models/Playlist";
+  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
+  import { albumsMap, songsMap } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
-  import type { Playlist } from "../../../lib/models/Playlist";
-  import { IMAGE_FADE_OPTIONS } from "../../../lib/utils/ImageConstants";
-  import Lazy from "../../layout/Lazy.svelte";
-  import AlbumPlaceholder from "../../layout/placeholders/AlbumPlaceholder.svelte";
-  import Favorites from "../../layout/placeholders/Favorites.svelte";
-  import { albumsMap, songsMap } from "../../../stores/State";
   import PlaylistGrid from "./PlaylistGrid.svelte";
 
   export let playlist: Playlist;

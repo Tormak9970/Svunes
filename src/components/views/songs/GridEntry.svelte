@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { tauri } from "@tauri-apps/api";
-  import type { Song } from "../../../lib/models/Song";
-  import { inSelectMode, selected } from "../../../stores/Select";
-  import { PlaybackController } from "../../../lib/controllers/PlaybackController";
-  import { GRID_IMAGE_DIMENSIONS } from "../../../lib/utils/ImageConstants";
-  import { songGridSize, songSortOrder } from "../../../stores/State";
-  import { GridSize } from "../../../types/Settings";
-  import { fade } from "svelte/transition";
-  import { renderDate } from "../../../lib/utils/Utils";
+  import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import CardClickable from "../../layout/CardClickable.svelte";
-  import MenuButton from "../../interactables/MenuButton.svelte";
-  import SongOptions from "./SongOptions.svelte";
+  import CardClickable from "@layout/CardClickable.svelte";
+  import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import type { Song } from "@lib/models/Song";
+  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { renderDate } from "@lib/utils/Utils";
+  import { inSelectMode, selected } from "@stores/Select";
+  import { songGridSize, songSortOrder } from "@stores/State";
+  import { tauri } from "@tauri-apps/api";
+  import { fade } from "svelte/transition";
+  import { GridSize } from "../../../types/Settings";
   import ViewImage from "../../utils/ViewImage.svelte";
+  import SongOptions from "./SongOptions.svelte";
 
   export let song: Song;
 

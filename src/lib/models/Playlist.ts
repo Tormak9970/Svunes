@@ -1,5 +1,5 @@
+import { songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import { songsMap } from "../../stores/State";
 import { formatTime, hash64 } from "../utils/Utils";
 import type { Song } from "./Song";
 

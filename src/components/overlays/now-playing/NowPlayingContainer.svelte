@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { showMiniPlayer, showNowPlaying } from "../../../stores/Overlays";
-  import { dismissMiniPlayerWithSwipe, showViewNav } from "../../../stores/State";
+  import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+  import { dismissMiniPlayerWithSwipe, showViewNav } from "@stores/State";
+  import { onDestroy, onMount } from "svelte";
+  import { drag } from "svelte-gesture";
+  import { spring, tweened } from "svelte/motion";
+  import type { Unsubscriber } from "svelte/store";
+  import { fly } from "svelte/transition";
   import MiniPlayer from "./MiniPlayer.svelte";
   import NowPlaying from "./NowPlaying.svelte";
-  import { spring, tweened } from "svelte/motion";
-  import { onDestroy, onMount } from "svelte";
-  import type { Unsubscriber } from "svelte/store";
-  import { drag } from "svelte-gesture";
-  import { fly } from "svelte/transition";
   
   let showViewNavUnsub: Unsubscriber;
   let showMiniPlayerUnsub: Unsubscriber;

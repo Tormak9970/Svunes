@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { SettingsController } from "@lib/controllers/SettingsController";
+  import { DialogController } from "@lib/controllers/utils/DialogController";
   import { dialog, process } from "@tauri-apps/api";
   import { pop } from "svelte-spa-router";
-  import { SettingsController } from "../../lib/controllers/SettingsController";
-  import { DialogController } from "../../lib/controllers/utils/DialogController";
 
-  import SettingsBody from "../../components/views/settings/SettingsBody.svelte";
-  import SettingsHeader from "../../components/views/settings/SettingsHeader.svelte";
-  import ButtonSetting from "../../components/views/settings/entries/ButtonSetting.svelte";
+  import SettingsBody from "@views/settings/SettingsBody.svelte";
+  import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   
   import AppShortcut from "@ktibow/iconset-material-symbols/app-shortcut-rounded";
   import Download from "@ktibow/iconset-material-symbols/download-rounded";
