@@ -47,13 +47,15 @@
   </div>
   <div class="content">
     <div class="content-options">
-      <Button type="text" iconType="full" on:click={toggleFavorite}>
-        {#if !isFavorited}
-          <Icon icon={FavoriteOff} />
-        {:else}
-          <Icon icon={FavoriteOn} />
-        {/if}
-      </Button>
+      <div style="width: 40px;">
+        <Button type="text" iconType="full" on:click={toggleFavorite}>
+          {#if !isFavorited}
+            <Icon icon={FavoriteOff} />
+          {:else}
+            <Icon icon={FavoriteOn} />
+          {/if}
+        </Button>
+      </div>
       <div class="song-info">
         <div class="title">
           {#if song?.title.length && song?.title.length > 28}

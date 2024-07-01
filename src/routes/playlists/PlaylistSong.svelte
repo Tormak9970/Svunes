@@ -12,6 +12,7 @@
   import SongOptions from "@views/songs/SongOptions.svelte";
 
   export let song: Song;
+  export let isDragging: boolean;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
@@ -49,6 +50,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <button
   class="m3-container"
+  class:is-dragging={isDragging}
 >
   <div class="layer" class:highlight />
   <div class="content-wrapper">
@@ -110,6 +112,8 @@
     border-radius: inherit;
     transition: background-color 0.2s;
     pointer-events: none;
+
+    z-index: 1;
   }
 
   button {
@@ -127,8 +131,9 @@
       background-color: rgb(var(--m3-scheme-on-surface) / 0.08);
     }
   }
-  button:is(:focus-visible, :active) > .layer {
-    background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
+  button:is(:focus-visible, :active) > .layer,
+  .is-dragging > .layer {
+    background-color: rgb(var(--m3-scheme-surface-container));
   }
   
   .highlight.layer,
@@ -140,6 +145,9 @@
     width: 100%; 
     display: flex;
     align-items: center;
+
+    position: relative;
+    z-index: 2;
   }
 
   .content {
