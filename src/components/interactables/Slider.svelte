@@ -24,7 +24,7 @@
 
   export const valueDisplayed = spring(value, { stiffness: 0.3, damping: 1 });
 
-  $: value && valueDisplayed.set(value, { hard: true });
+  $: valueDisplayed.set(value, { hard: true });
 
   function updateValue(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
     const newValue = Number(e.currentTarget.value);
@@ -36,7 +36,7 @@
   let range: number, percent: number;
   $: {
     range = max - min;
-    percent = ($valueDisplayed - min) / range;
+    percent = (value - min) / range;
   }
 </script>
 

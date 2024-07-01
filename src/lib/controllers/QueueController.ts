@@ -1,4 +1,4 @@
-import { albumsMap, artistsMap, genresMap, history, isPaused, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "@stores/State";
+import { albumsMap, artistsMap, genresMap, history, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "@stores/State";
 import { get } from "svelte/store";
 import { pluralize } from "../utils/Utils";
 import { PlaybackController } from "./PlaybackController";
@@ -12,7 +12,6 @@ export class QueueController {
    * Skips the current song.
    */
   static skip() {
-    isPaused.set(false);
     let playbackHistory = get(history);
     let songQueue = get(queue);
     let songMap = get(songsMap);
@@ -63,7 +62,6 @@ export class QueueController {
    * Skips back to the last song.
    */
   static skipBack() {
-    isPaused.set(false);
     let playbackHistory = get(history);
     let songQueue = get(queue);
     let songMap = get(songsMap);

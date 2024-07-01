@@ -1,5 +1,5 @@
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
-import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shuffle, songProgress } from "@stores/State";
+import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress } from "@stores/State";
 import { get } from "svelte/store";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
@@ -25,6 +25,14 @@ export class PlaybackController {
     nowPlayingList.set("");
     nowPlayingType.set("Song");
     PlaybackController.pause();
+  }
+
+  private static afterPlay() {
+    if (!get(shouldPauseOnEnd)) {
+      this.resume();
+    } else {
+      shouldPauseOnEnd.set(false);
+    }
   }
 
   /**
@@ -53,9 +61,8 @@ export class PlaybackController {
       queue.set(newQueue);
 
       showNowPlaying.set(true);
-      showMiniPlayer.set(true);
 
-      this.resume();
+      this.afterPlay();
     }
   }
 
@@ -81,7 +88,7 @@ export class PlaybackController {
 
     showNowPlaying.set(true);
 
-    this.resume();
+    this.afterPlay();
   }
   
   /**
@@ -111,7 +118,7 @@ export class PlaybackController {
     showNowPlaying.set(true);
     showMiniPlayer.set(true);
 
-    this.resume();
+    this.afterPlay();
   }
   
   /**
@@ -137,7 +144,7 @@ export class PlaybackController {
     showNowPlaying.set(true);
     showMiniPlayer.set(true);
     
-    this.resume();
+    this.afterPlay();
   }
   
   /**
@@ -163,7 +170,7 @@ export class PlaybackController {
     showNowPlaying.set(true);
     showMiniPlayer.set(true);
 
-    this.resume();
+    this.afterPlay();
   }
 
   /**

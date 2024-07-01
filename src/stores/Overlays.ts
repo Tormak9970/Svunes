@@ -16,3 +16,5 @@ export const artistToAdd: Writable<string | null> = writable(null);
 export const genreToAdd: Writable<string | null> = writable(null);
 
 export const showWritingChanges = writable(false);
+
+export const showSleepTimerSelection = writable(false);

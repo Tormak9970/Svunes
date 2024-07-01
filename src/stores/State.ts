@@ -1,18 +1,19 @@
+import { location } from "svelte-spa-router";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
-import { View } from "../types/View";
-import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
-import type { Playlist } from "../lib/models/Playlist";
-import type { Song } from "../lib/models/Song";
 import type { Album } from "../lib/models/Album";
 import type { Artist } from "../lib/models/Artist";
 import type { Genre } from "../lib/models/Genre";
-import { location } from "svelte-spa-router";
+import type { Playlist } from "../lib/models/Playlist";
+import type { Song } from "../lib/models/Song";
+import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { View } from "../types/View";
 
 export const isLoading = writable(true);
 export const shuffle = writable(true);
 export const repeatPlayed = writable(false);
 export const volumeLevel = writable(1);
 export const isPaused = writable(true);
+export const shouldPauseOnEnd = writable(false);
 
 export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable();
 export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = writable();

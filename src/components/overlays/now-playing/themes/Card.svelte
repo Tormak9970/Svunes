@@ -3,7 +3,7 @@
   import MenuButton from "@interactables/MenuButton.svelte";
   import Marquee from "@layout/Marquee.svelte";
   import type { Song } from "@lib/models/Song";
-  import { showCarMode, showMiniPlayer, showQueue } from "@stores/Overlays";
+  import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import Icon from "../../../utils/Icon.svelte";
@@ -12,12 +12,12 @@
   import ProgressControls from "../ProgressControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
 
-  import DirectionsCar from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
   import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
   import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
   import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import ExtraControl from "../ExtraControl.svelte";
   
   let menuIsOpen = false;
   
@@ -58,9 +58,7 @@
       </div>
     </div>
     <div class="options-side" style="justify-content: flex-end; margin-right: 5px;">
-      <Button type="text" iconType="full" on:click={() => $showCarMode = true}>
-        <Icon icon={DirectionsCar} />
-      </Button>
+      <ExtraControl />
       <Button type="text" iconType="full" on:click={toggleFavorite}>
         {#if !isFavorited}
           <Icon icon={FavoriteOff} />

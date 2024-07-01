@@ -5,7 +5,7 @@
   import { showSavingSettings } from "@stores/Modals";
   import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
-  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
+  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { tauri, window } from "@tauri-apps/api";
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import { exit } from "@tauri-apps/api/process";
@@ -61,9 +61,12 @@
         audioPlayer.src = tauri.convertFileSrc(song.filePath);
         audioPlayer.load();
 
-        if (!$isPaused) {
-          audioPlayer.play();
+        if ($shouldPauseOnEnd) {
+          $isPaused = true;
+          return;
         }
+
+        if (!$isPaused) audioPlayer.play();
       }
     });
 

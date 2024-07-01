@@ -3,6 +3,7 @@
   import CarMode from "./CarMode.svelte";
   import CreatePlaylist from "./CreatePlaylist.svelte";
   import Queue from "./Queue.svelte";
+  import SleepTimer from "./SleepTimer.svelte";
   import WritingChanges from "./WritingChanges.svelte";
 </script>
 
@@ -12,3 +13,5 @@
 <Queue />
 <CarMode />
 <WritingChanges />
+
+<SleepTimer />

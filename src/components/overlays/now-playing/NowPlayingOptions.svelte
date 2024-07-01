@@ -2,9 +2,11 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import type { Song } from "@lib/models/Song";
-  import { showAddToPlaylist, showMiniPlayer, songToAdd } from "@stores/Overlays";
+  import { showAddToPlaylist, showCarMode, showMiniPlayer, showQueue, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
+  import { extraControl } from "@stores/State";
   import { push } from "svelte-spa-router";
 
+  export let showQueueOption = false;
   export let menuIsOpen: boolean;
   export let song: Song | undefined;
 
@@ -21,6 +23,30 @@
   function addToPlaylist() {
     $songToAdd = song!.id;
     $showAddToPlaylist = true;
+    closeOptions();
+  }
+
+  /**
+   * Shows the current queue.
+   */
+  function goToQueue() {
+    $showQueue = true;
+    closeOptions();
+  }
+
+  /**
+   * Shows the CarMode.
+   */
+  function goToCarMode() {
+    $showCarMode = true;
+    closeOptions();
+  }
+
+  /**
+   * Shows the sleep selection timer.
+   */
+  function goToSleepTimer() {
+    $showSleepTimerSelection = true;
     closeOptions();
   }
 
@@ -69,6 +95,15 @@
   }
 </script>
 
+{#if showQueueOption}
+  <MenuItem on:click={goToQueue}>Queue</MenuItem>
+{/if}
+{#if $extraControl === "Sleep Timer" ||  $extraControl === "None"}
+  <MenuItem on:click={goToCarMode}>Car Mode</MenuItem>
+{/if}
+{#if $extraControl === "Car Mode" ||  $extraControl === "None"}
+  <MenuItem on:click={goToSleepTimer}>Sleep Timer</MenuItem>
+{/if}
 {#if song?.album}
   <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
 {/if}
