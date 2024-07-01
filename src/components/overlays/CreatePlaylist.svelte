@@ -22,9 +22,10 @@
     $playlists = [ ...$playlists, playlist ];
 
     $songsForNewPlaylist = [];
-    $showCreatePlaylist = false;
     LogController.log(`Created playlist ${newPlaylistName}.`);
     $showInfoSnackbar({ message: "Playlist created" });
+
+    close();
   }
 
   /**
@@ -32,6 +33,7 @@
    */
   function close() {
     $showCreatePlaylist = false;
+    newPlaylistName = ""
   }
 </script>
 

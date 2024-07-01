@@ -117,10 +117,10 @@
 {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $selectedView !== View.SEARCH && $showNowPlaying}
   <NowPlayingContainer />
 {/if}
+<ErrorSnackbar bind:show={$showErrorSnackbar} />
+<InfoSnackbar bind:show={$showInfoSnackbar} />
 
 <div class="content" style="height: {$showViewNav ? "calc(100% - 56px)" : "100%"};">
-  <ErrorSnackbar bind:show={$showErrorSnackbar} />
-  <InfoSnackbar bind:show={$showInfoSnackbar} />
   {#if $inSelectMode}
     <SelectHeader />
   {/if}

@@ -1,7 +1,8 @@
 <script lang="ts">
+  import Close from "@ktibow/iconset-material-symbols/close";
   import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
-  import Close from "@ktibow/iconset-material-symbols/close";
+  import { showViewNav } from "../../stores/State";
   import Icon from "../utils/Icon.svelte";
 
   type SnackbarData = {
@@ -33,7 +34,7 @@
 </script>
 
 {#if snackbar}
-  <dialog class="holder" open in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
+  <dialog class="holder" open style:--m3-util-bottom-offset="{$showViewNav ? 56 : 0}px" style:padding-bottom="{$showViewNav ? 0.7 : 1}rem" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
     <div class="m3-container" style:--background-color={backgroundColor} style:--text-color={textColor}>
       <p class="m3-font-body-medium">{snackbar.message}</p>
       {#if snackbar.closable}
@@ -55,7 +56,6 @@
     padding: 0;
 
     width: calc(100% - 2rem);
-    padding-bottom: 1rem;
 
     position: absolute;
     left: 50%;
