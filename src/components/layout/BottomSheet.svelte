@@ -1,8 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
   import type { TransitionConfig } from "svelte/transition";
-  import { easeEmphasizedAccel, easeEmphasizedDecel } from "../utils/animations/easing";
   import { outroClass } from "../utils/animations/animations";
+  import { easeEmphasizedAccel, easeEmphasizedDecel } from "../utils/animations/easing";
   
   /**
    * The bottom sheet height animation.
@@ -22,7 +22,7 @@
 
   let fullHeight: number;
   export let height = 1000;
-  export let closeThreshold = 2;
+  export let closeThreshold = 1.2;
   export let padding = "0 1rem";
   
   let isDragging = false;
