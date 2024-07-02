@@ -93,6 +93,7 @@ export type ArtistEntriesSortOrder = "Alphabetical" | "Album" | "Year" | "Song D
 export type NowPlayingType = "Playlist" | "Album" | "Artist" | "Song" | "Genre";
 
 export type SongMetadata = {
+  dateAdded: string | undefined,
   lastPlayedOn: string | undefined,
   numTimesPlayed: number | undefined
 }

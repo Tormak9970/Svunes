@@ -6,10 +6,9 @@
   import MenuButton from "@interactables/MenuButton.svelte";
   import RadioMenuItem from "@interactables/RadioMenuItem.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
-  import AlbumCarousel from "@layout/album-carousel/AlbumCarousel.svelte";
+  import AlbumCarouselList from "@layout/album-carousel/AlbumCarouselList.svelte";
   import ArtistCarousel from "@layout/artist-carousel/ArtistCarousel.svelte";
   import Marquee from "@layout/Marquee.svelte";
   import MenuItem from "@layout/MenuItem.svelte";
@@ -176,7 +175,7 @@
           <h3 class="label">Albums</h3>
           <div />
         </div>
-        <AlbumCarousel albums={artistAlbums} />
+        <AlbumCarouselList albums={artistAlbums} />
       </div>
     {/if}
     <div class="songs">
@@ -192,15 +191,7 @@
       <SongsList songs={sortedSongs} />
     </div>
     {#if similarArtists && similarArtists?.length > 0}
-      <div class="similar">
-        <div class="section-header">
-          <h3 class="label">Similar Artists</h3>
-          <Button type="text" iconType="full" on:click={showAllSimilar}>
-            <Icon icon={ForwardArrow} width="20px" height="20px" />
-          </Button>
-        </div>
-        <ArtistCarousel artists={similarArtists} />
-      </div>
+      <ArtistCarousel label="Similar Artists" artists={similarArtists} on:click={showAllSimilar} />
     {/if}
   </span>
 </DetailsBody>
@@ -263,13 +254,11 @@
     gap: 10px;
   }
 
-  .similar,
   .albums,
   .songs {
     width: 100%;
   }
 
-  .similar .section-header,
   .albums .section-header,
   .songs .section-header {
     width: calc(100% - 20px);

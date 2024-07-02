@@ -22,6 +22,7 @@ export class Song {
   fileName: string;
   folderPath: string;
   artPath: string | undefined;
+  dateAdded: string | undefined;
   lastPlayedOn: string;
   numTimesPlayed: number;
   genre?: string;

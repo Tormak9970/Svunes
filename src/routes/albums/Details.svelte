@@ -6,7 +6,6 @@
   import MenuButton from "@interactables/MenuButton.svelte";
   import RadioMenuItem from "@interactables/RadioMenuItem.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
@@ -180,15 +179,7 @@
       <SongsList songs={sortedSongs} />
     </div>
     {#if album && artist && artist.albumNames.size > 1}
-      <div class="similar">
-        <div class="section-header">
-          <h3 class="label">More from {album?.albumArtist}</h3>
-          <Button type="text" iconType="full" on:click={showAllAlbums}>
-            <Icon icon={ForwardArrow} width="20px" height="20px" />
-          </Button>
-        </div>
-        <AlbumCarousel albums={artistOtherAlbums} />
-      </div>
+      <AlbumCarousel label="More from {album?.albumArtist}" albums={artistOtherAlbums} on:click={showAllAlbums} />
     {/if}
   </span>
 </DetailsBody>
@@ -252,12 +243,10 @@
     gap: 10px;
   }
 
-  .similar,
   .songs {
     width: 100%;
   }
 
-  .similar .section-header,
   .songs .section-header {
     width: calc(100% - 20px);
     margin-left: 15px;
@@ -268,11 +257,5 @@
     overflow: hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
-  }
-
-  
-  .similar .section-header {
-    width: calc(100% - 20px);
-    margin-bottom: 5px;
   }
 </style>

@@ -191,6 +191,7 @@ export class AppController {
         const metadata = songsMetadataMap[song.id];
         
         if (metadata) {
+          song.dateAdded = metadata.dateAdded ?? (new Date()).toISOString();
           song.lastPlayedOn = metadata.lastPlayedOn ?? "Never";
           song.numTimesPlayed = metadata.numTimesPlayed ?? 0;
         }

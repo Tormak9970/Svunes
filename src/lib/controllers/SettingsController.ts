@@ -427,6 +427,7 @@ export class SettingsController {
         return [
           song.id,
           {
+            "dateAdded": song.dateAdded,
             "lastPlayedOn": song.lastPlayedOn,
             "numTimesPlayed": song.numTimesPlayed
           }
@@ -544,6 +545,7 @@ export class SettingsController {
    */
   static updateSongMetadata(song: Song) {
     this.settings.cache.songsMetadata[song.id] = {
+      "dateAdded": song.dateAdded,
       "lastPlayedOn": song.lastPlayedOn,
       "numTimesPlayed": song.numTimesPlayed
     }

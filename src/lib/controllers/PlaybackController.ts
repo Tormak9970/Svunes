@@ -1,5 +1,5 @@
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
-import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress } from "@stores/State";
+import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress, trackHistory } from "@stores/State";
 import { get } from "svelte/store";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
@@ -81,7 +81,7 @@ export class PlaybackController {
     }
 
     song.numTimesPlayed++;
-    song.setLastPlayed();
+    if (get(trackHistory)) song.setLastPlayed();
     SettingsController.updateSongMetadata(song);
 
     playingSongId.set(song.id);
