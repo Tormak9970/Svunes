@@ -25,17 +25,22 @@
    * Gets the names of the songs from the selected items.
    */
   function getSongsFromSelected(): string[] {
-    let songNames: string[] = [];
+    let songIds: string[] = [];
+
+    if ($showQueue) {
+      songIds = $selected.map((merged) => merged.split("|")[0]);
+      return songIds;
+    }
 
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
           for (const id of $selected) {
             const playlist = $playlistsMap[id];
-            songNames.push(...playlist.songIds);
+            songIds.push(...playlist.songIds);
           }
         } else {
-          songNames = $selected;
+          songIds = $selected;
         }
         break;
       }
@@ -43,10 +48,10 @@
         if ($location === "/albums") {
           for (const albumName of $selected) {
             const album = $albumsMap[albumName];
-            songNames.push(...album.songIds);
+            songIds.push(...album.songIds);
           }
         } else {
-          songNames = $selected;
+          songIds = $selected;
         }
         break;
       }
@@ -54,16 +59,16 @@
         if ($location === "/artists") {
           for (const artistName of $selected) {
             const artist = $artistsMap[artistName];
-            songNames.push(...artist.songIds);
+            songIds.push(...artist.songIds);
           }
         } else {
-          songNames = $selected;
+          songIds = $selected;
         }
         break;
       }
       case View.SONGS:
       case View.GENRES: {
-        songNames = $selected;
+        songIds = $selected;
         break;
       }
       case View.HOME:
@@ -74,7 +79,7 @@
       }
     }
 
-    return songNames;
+    return songIds;
   }
 
   /**
@@ -186,7 +191,7 @@
     menuIsOpen = false;
 
     if ($showQueue) {
-      $selected = [ ...$queue ];
+      $selected = $queue.map((songId, i) => songId + "|" + i);
       return;
     }
 
@@ -293,10 +298,10 @@
    * Removes the selected items from the queue.
    */
   function removeFromQueue() {
-    for (const songId of $selected) {
-      const index = $queue.indexOf(songId);
+    for (const merged of $selected) {
+      const [_, index] = merged.split("|");
 
-      if (index !== -1) !$queue.splice(index, 1);
+      !$queue.splice(parseInt(index), 1);
     }
 
     $queue = [ ...$queue ];

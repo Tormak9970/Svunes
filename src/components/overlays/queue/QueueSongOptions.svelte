@@ -8,6 +8,7 @@
 
   export let menuIsOpen: boolean;
   export let song: Song;
+  export let index: number;
 
   /**
    * Handles closing the options.
@@ -20,7 +21,6 @@
    * Removes this song from the queue.
    */
   function removeFromQueue() {
-    const index = $queue.indexOf(song.id);
     $queue.splice(index, 1);
 
     $queue = [ ...$queue ];

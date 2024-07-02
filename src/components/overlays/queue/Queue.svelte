@@ -3,6 +3,7 @@
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { formatTime } from "../../../lib/utils/Utils";
   import { showMiniPlayer, showQueue } from "../../../stores/Overlays";
@@ -35,7 +36,11 @@
             <div class="sub-title">Up next • {formatTime(queueLength)}</div>
           </div>
         </span>
-        <span slot="right" />
+        <span slot="right">
+          <Button type="text" iconType="full" on:click={() => $queue = []}>
+            <Icon icon={DeleteSweep} width="20px" height="20px" />
+          </Button>
+        </span>
       </OverlayHeader>
     </span>
     <span class="content" slot="content">

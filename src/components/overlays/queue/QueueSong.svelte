@@ -12,6 +12,7 @@
   import QueueSongOptions from "./QueueSongOptions.svelte";
 
   export let song: Song;
+  export let index: number;
   export let isDragging: boolean;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
@@ -83,7 +84,7 @@
       </div>
       <div class="options">
         <MenuButton icon={MoreVert} bind:open={menuIsOpen} extraOptions={{ style: "display: flex;" }}>
-          <QueueSongOptions bind:menuIsOpen={menuIsOpen} song={song} />
+          <QueueSongOptions bind:menuIsOpen={menuIsOpen} song={song} index={index} />
         </MenuButton>
       </div>
     </div>
