@@ -4,7 +4,7 @@
   import PlayArrow from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Marquee from "@layout/Marquee.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+  import { showMiniPlayer, showNowPlaying, showQueue } from "@stores/Overlays";
   import { isPaused, playingSongId, songProgress, songsMap } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
   import { onDestroy } from "svelte";
@@ -31,6 +31,7 @@
   function handleClick() {
     if (!hasDragged) {
       $showMiniPlayer = false;
+      $showQueue = false;
     } else {
       hasDragged = false;
     }

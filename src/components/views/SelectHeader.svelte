@@ -1,20 +1,21 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
-  import PlaylistAdd from "@ktibow/iconset-material-symbols/add-box-rounded";
+  import QueueAdd from "@ktibow/iconset-material-symbols/add-to-queue-outline-rounded";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
-  import PlaylistRemove from "@ktibow/iconset-material-symbols/indeterminate-check-box-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import QueueAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
+  import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
+  import PlaylistRemove from "@ktibow/iconset-material-symbols/playlist-remove-rounded";
+  import QueueRemove from "@ktibow/iconset-material-symbols/remove-from-queue-outline-rounded";
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import { pluralize } from "@lib/utils/Utils";
-  import { showAddToPlaylist } from "@stores/Overlays";
+  import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { selected } from "@stores/Select";
-  import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar, songs } from "@stores/State";
+  import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songs } from "@stores/State";
   import { location } from "svelte-spa-router";
   import { fly } from "svelte/transition";
   import { View } from "../../types/View";
@@ -182,6 +183,13 @@
    * Selects everything.
    */
   function selectAll() {
+    menuIsOpen = false;
+
+    if ($showQueue) {
+      $selected = [ ...$queue ];
+      return;
+    }
+
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
@@ -226,7 +234,6 @@
         break;
       }
     }
-    menuIsOpen = false;
   }
 
   /**
@@ -240,7 +247,7 @@
   /**
    * Queues the selected items.
    */
-  function queue() {
+  function addToQueue() {
     switch ($selectedView) {
       case View.PLAYLISTS: {
         if ($location === "/playlists") {
@@ -278,6 +285,21 @@
         break;
       }
     }
+    $selected = [];
+    menuIsOpen = false;
+  }
+
+  /**
+   * Removes the selected items from the queue.
+   */
+  function removeFromQueue() {
+    for (const songId of $selected) {
+      const index = $queue.indexOf(songId);
+
+      if (index !== -1) !$queue.splice(index, 1);
+    }
+
+    $queue = [ ...$queue ];
     $selected = [];
     menuIsOpen = false;
   }
@@ -322,9 +344,15 @@
     {$selected.length + " selected"}
   </div>
   <div class="right">
-    <Button type="text" iconType="full" on:click={queue}>
-      <Icon icon={QueueAdd} width="36px" height="36px" />
-    </Button>
+    {#if $showQueue}
+      <Button type="text" iconType="full" on:click={removeFromQueue}>
+        <Icon icon={QueueRemove} width="36px" height="36px" />
+      </Button>
+    {:else}
+      <Button type="text" iconType="full" on:click={addToQueue}>
+        <Icon icon={QueueAdd} width="36px" height="36px" />
+      </Button>
+    {/if}
     {#if $location.startsWith("/playlists/")}
       <Button type="text" iconType="full" on:click={removeFromPlaylist}>
         <Icon icon={PlaylistRemove} width="36px" height="36px" />
@@ -334,9 +362,11 @@
       <Icon icon={PlaylistAdd} width="36px" height="36px" />
     </Button>
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      <MenuItem on:click={playNext}>Play Next</MenuItem>
+      {#if !$showQueue}
+        <MenuItem on:click={playNext}>Play Next</MenuItem>
+      {/if}
       <MenuItem on:click={share}>Share</MenuItem>
-      {#if $location !== "/artists"}
+      {#if $location !== "/artists" && !$showQueue}
         <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
       {/if}
       <MenuItem on:click={selectAll}>Select All</MenuItem>

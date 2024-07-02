@@ -55,7 +55,7 @@
   
   onMount(() => {
     showViewNavUnsub = showViewNav.subscribe((show) => {
-      bottom.set(window.innerHeight - (show ? 115 : 60));
+      if ($showMiniPlayer) $bottom = window.innerHeight - (show ? 115 : 60);
     });
     showMiniPlayerUnsub = showMiniPlayer.subscribe((show) => {
       if (!show) {

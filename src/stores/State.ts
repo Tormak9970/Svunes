@@ -7,6 +7,7 @@ import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
 import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import { View } from "../types/View";
+import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
 
 export const isLoading = writable(true);
 export const shuffle = writable(true);
@@ -21,7 +22,11 @@ export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = wri
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);
-export const showViewNav: Readable<boolean> = derived(location, (loc) => loc.lastIndexOf("/") === 0 && loc !== "/settings" && loc !== "/search");
+export const showViewNav: Readable<boolean> = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([loc, showQueue, showNowPlaying, showMiniPlayer]) => {
+  return loc.lastIndexOf("/") === 0 && loc !== "/settings" && loc !== "/search" &&
+  !showQueue &&
+  !(showNowPlaying && !showMiniPlayer)
+});
 
 export const playlistsIsAtTop = writable(true);
 export const songsIsAtTop = writable(true);

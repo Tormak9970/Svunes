@@ -66,7 +66,7 @@
           <Icon icon={FavoriteOn} />
         {/if}
       </Button>
-      <Button type="text" iconType="full" on:click={() => $showQueue = true}>
+      <Button type="text" iconType="full" on:click={() => { $showQueue = true; $showMiniPlayer = true; }}>
         <Icon icon={QueueMusic} />
       </Button>
       <MenuButton icon={MoreVert} bind:open={menuIsOpen}>

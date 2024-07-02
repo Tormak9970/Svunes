@@ -3,7 +3,7 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
   import { showSavingSettings } from "@stores/Modals";
-  import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
+  import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { tauri, window } from "@tauri-apps/api";
@@ -111,7 +111,7 @@
 <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} bind:volume={$volumeLevel} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
-{#if $showViewNav && !($showNowPlaying && !$showMiniPlayer)}
+{#if $showViewNav}
   <ViewNav />
 {/if}
 {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $selectedView !== View.SEARCH && $showNowPlaying}
