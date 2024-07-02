@@ -4,7 +4,7 @@
   let showError: (data: ShowSnackbarOptions) => void;
   
   export const show = (data: { message: any; faster: any; }) => {
-    showError({ message: data.message, timeout: data.faster ? 2000 : 300 });
+    showError({ message: data.message, timeout: data.faster ? 2000 : 3000 });
   }
 
   const backgroundColor = "var(--m3-scheme-error)";

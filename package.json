@@ -34,7 +34,6 @@
     "svelte": "^4.2.12",
     "svelte-awesome-color-picker": "^3.1.0",
     "svelte-check": "^3.6.7",
-    "svelte-dnd-action": "^0.9.47",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"

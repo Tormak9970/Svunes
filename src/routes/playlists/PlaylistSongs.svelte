@@ -5,6 +5,7 @@
   
   import Icon from "@component-utils/Icon.svelte";
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
+  import { clamp, swap } from "@lib/utils/Utils";
   import { inSelectMode } from "@stores/Select";
   import { drag } from "svelte-gesture";
 
@@ -17,34 +18,6 @@
 
   let draggingIndex = -1;
   let dragHeight = 0;
-
-  function swap<T>(array: T[], moveIndex: number, toIndex: number) {
-    const item = array[moveIndex];
-    const length = array.length;
-    const diff = moveIndex - toIndex;
-
-    if (diff > 0) {
-      return [
-        ...array.slice(0, toIndex),
-        item,
-        ...array.slice(toIndex, moveIndex),
-        ...array.slice(moveIndex + 1, length)
-      ];
-    } else if (diff < 0) {
-      const targetIndex = toIndex + 1;
-      return [
-        ...array.slice(0, moveIndex),
-        ...array.slice(moveIndex + 1, targetIndex),
-        item,
-        ...array.slice(targetIndex, length)
-      ];
-    }
-    return array;
-  }
-
-  function clamp(value: number, lower: number, upper: number): number {
-    return Math.min(upper, Math.max(value, lower));
-  }
 
   function getDragHandler(originalIndex: number) {
     return ({ detail }: any) => {
@@ -67,7 +40,6 @@
       }
     }
   }
-  
 </script>
 
 <div class="song-entries" style:height="{songs.length * entryHeight}px">

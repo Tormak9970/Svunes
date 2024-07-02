@@ -421,3 +421,44 @@ export function hash64(str: string, seed = 0): string {
   const [h2, h1] = cyrb64(str, seed);
   return h2.toString(36).padStart(7, '0') + h1.toString(36).padStart(7, '0');
 }
+
+/**
+ * Moves the element at the provided index to the target index.
+ * @param array The array to swap the elements of.
+ * @param moveIndex The index of the element to move.
+ * @param toIndex The index to move to.
+ * @returns A new array.
+ */
+export function swap<T>(array: T[], moveIndex: number, toIndex: number) {
+  const item = array[moveIndex];
+  const length = array.length;
+  const diff = moveIndex - toIndex;
+
+  if (diff > 0) {
+    return [
+      ...array.slice(0, toIndex),
+      item,
+      ...array.slice(toIndex, moveIndex),
+      ...array.slice(moveIndex + 1, length)
+    ];
+  } else if (diff < 0) {
+    const targetIndex = toIndex + 1;
+    return [
+      ...array.slice(0, moveIndex),
+      ...array.slice(moveIndex + 1, targetIndex),
+      item,
+      ...array.slice(targetIndex, length)
+    ];
+  }
+  return array;
+}
+
+/**
+ * Clamps a value to the provided bounds.
+ * @param value The value to clamp.
+ * @param lower The lower bound.
+ * @param upper The upper bound.
+ */
+export function clamp(value: number, lower: number, upper: number): number {
+  return Math.min(upper, Math.max(value, lower));
+}

@@ -1,7 +1,5 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
-  import { dragHandle, dragHandleZone } from "svelte-dnd-action";
-  import { flip } from "svelte/animate";
   import type { Unsubscriber } from "svelte/store";
   
   import { showEditViewOrder } from "@stores/Modals";
@@ -14,21 +12,40 @@
   import ModalBody from "./utils/ModalBody.svelte";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
-
-  type ListEntry = {
-    id: number,
-    name: string,
-    view: View,
-    checked: boolean
-  }
+  import { clamp, swap } from "@lib/utils/Utils";
+  import { drag } from "svelte-gesture";
 
   let viewsToRenderUnsub: Unsubscriber;
+  const entryHeight = 40;
 
-  let items: ListEntry[] = [];
+  let viewsList: View[] = [];
+  let newOrder: number[] = [];
+  let checkDict: Record<View, boolean>;
 
   let reset = false;
 
-  const flipDurationMs = 200;
+  let draggingIndex = -1;
+  let dragHeight = 0;
+
+  function getDragHandler(originalIndex: number) {
+    return ({ detail }: any) => {
+      const { active, movement: [_, y] } = detail;
+
+      draggingIndex = originalIndex;
+      const curIndex = newOrder.indexOf(originalIndex);
+      const curRow = clamp(Math.round((originalIndex * entryHeight + y) / entryHeight), 0, viewsList.length - 1);
+      newOrder = swap(newOrder, curIndex, curRow);
+      
+      dragHeight = y;
+
+      if (!active) {
+        draggingIndex = -1;
+        viewsList = newOrder.map((index) => viewsList[index]);
+        newOrder = viewsList.map((_, i) => i);
+        dragHeight = 0;
+      }
+    }
+  }
 
   /**
    * Handles checking if a checkbox can be checked/unchecked.
@@ -37,8 +54,7 @@
   function checkboxHandler(view: View) {
     return (e: Event) => {
       const checked = (e.currentTarget as HTMLInputElement).checked;
-      const numChecked = items.filter((item) => item.checked).length;
-      const item = items.find((item) => item.view === view)!;
+      const numChecked = viewsList.filter((view) => checkDict[view]).length;
       
       if (numChecked === 3 && !checked) {
         $showErrorSnackbar({ message: "Min page count is 3" });
@@ -47,43 +63,27 @@
         $showErrorSnackbar({ message: "Max page count is 5" });
         reset = !reset;
       } else {
-        item.checked = checked;
+        checkDict[view] = checked;
       }
       
-      items = structuredClone(items);
+      checkDict = { ...checkDict };
     }
   }
-	
-  /**
-   * Handles sorting on drag and drop events.
-   */
-	function handleSort(e: any) {
-		items = e.detail.items;
-	}
 
   /**
    * Saves the user's changes
    */
   function done() {
-    $viewIndices = Object.fromEntries(items.map((item, i) => [item.view, i])) as Record<View, number>;
-    $viewsToRender = items.filter((item) => item.checked).map((item) => item.view);
+    $viewIndices = Object.fromEntries(viewsList.map((item, i) => [item, i])) as Record<View, number>;
+    $viewsToRender = viewsList.filter((view) => checkDict[view]);
     $showEditViewOrder = false;
-  }
-
-  function styleDraggedElement(elem: HTMLElement | undefined) {
-    elem!.style.backgroundColor = "rgb(var(--m3-scheme-surface-container-highest))";
   }
 
   onMount(() => {
     viewsToRenderUnsub = viewsToRender.subscribe((newViews) => {
-      items = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]).map((view) => {
-        return {
-          id: view,
-          name: getViewName(view),
-          view: view,
-          checked: newViews.includes(view)
-        }
-      });
+      viewsList = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]);
+      newOrder = viewsList.map((_, i) => i);
+      checkDict = Object.fromEntries(viewsList.map((view) => [view, $viewsToRender.includes(view)])) as Record<View, boolean>;
     });
   });
 
@@ -95,21 +95,21 @@
 <ModalBody show={$showEditViewOrder} headline="Library Order" onClose={() => $showEditViewOrder = false }>
   <div slot="content">
     {#key reset}
-      <div class="drag-container"
-        use:dragHandleZone="{{ items, flipDurationMs, dropTargetStyle: {}, morphDisabled: true, transformDraggedElement: styleDraggedElement }}"
-        on:consider="{handleSort}"
-        on:finalize="{handleSort}"
-      >
-        {#each items as item (item.id)}
-          <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
+      <div class="drag-container" style:height="{viewsList.length * entryHeight}px">
+        {#each viewsList as view, i (view)}
+          <div
+            class="entry"
+            class:being-dragged={draggingIndex === i}
+            style:top="{draggingIndex === i ? i * entryHeight + dragHeight : newOrder.indexOf(i) * entryHeight}px"
+          >
             <div class="left">
               <div class="checkbox-container">
-                <Checkbox checked={item.checked} on:input={checkboxHandler(item.view)} />
+                <Checkbox checked={checkDict[view]} on:input={checkboxHandler(view)} />
               </div>
-              <div>{item.name}</div>
+              <div>{getViewName(view)}</div>
             </div>
             <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div class="handle" use:dragHandle>
+            <div class="handle" use:drag on:drag={getDragHandler(i)}>
               <Icon icon={DragIndicator} height="30px" width="24px" />
             </div>
           </div>
@@ -134,11 +134,19 @@
     justify-content: space-between;
   }
 
+  .drag-container {
+    margin-left: -1rem;
+		width: calc(100% + 2rem);
+
+    position: relative;
+  }
+
   .entry {
-    margin-left: -10px;
-    padding-left: 10px;
-		width: calc(100% + 10px);
+    position: absolute;
+    width: 100%;
     height: 40px;
+
+    padding-left: 1rem;
 
     display: flex;
     align-items: center;
@@ -150,7 +158,25 @@
 
     transition: background-color 0.2 ease-out;
     border-radius: 4px;
+    
+    transition: top 0.3s ease-out, scale 0.3s ease-out;
+
+    z-index: 1;
+    scale: 1;
 	}
+
+  .being-dragged {
+    z-index: 2;
+    box-shadow:
+      0px 2px 4px -1px rgb(var(--m3-scheme-shadow) / 0.2),
+      0px 4px 5px 0px rgb(var(--m3-scheme-shadow) / 0.14),
+      0px 1px 10px 0px rgb(var(--m3-scheme-shadow) / 0.12);
+
+    background-color: rgb(var(--m3-scheme-surface-container-highest));
+
+    transition: top 0.2s ease-out, scale 0.3s ease-out;
+    scale: 1.05
+  }
 
   .left {
     height: 100%;
@@ -166,4 +192,7 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  .handle { padding-right: 0.75rem; touch-action: none; cursor: grab; }
+  .handle:active { cursor: grabbing; }
 </style>

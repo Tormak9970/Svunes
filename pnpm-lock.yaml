@@ -58,9 +58,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.7
     version: 3.6.7(svelte@4.2.12)
-  svelte-dnd-action:
-    specifier: ^0.9.47
-    version: 0.9.47(svelte@4.2.12)
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
@@ -2460,14 +2457,6 @@ packages:
       - sass
       - stylus
       - sugarss
-    dev: true
-
-  /svelte-dnd-action@0.9.47(svelte@4.2.12):
-    resolution: {integrity: sha512-Z343HCJfrGHgK98LCrp0ziGUwwWOd8UrpXk7b7A61OQErrB8nUS2tLVRZlaGzhMfE1UCivuqTGFLqxJ14KehfQ==}
-    peerDependencies:
-      svelte: '>=3.23.0 || ^5.0.0-next.0'
-    dependencies:
-      svelte: 4.2.12
     dev: true
 
   /svelte-gesture@0.1.4(svelte@4.2.12):
