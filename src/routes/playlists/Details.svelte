@@ -129,9 +129,7 @@
         </div>
       </div>
       <div class="songs" style="margin-top: 5px;">
-        {#if playlist}
-          <PlaylistSongs playlist={playlist} />
-        {/if}
+        <PlaylistSongs playlistId={playlist.id} />
       </div>
     {/if}
   </span>

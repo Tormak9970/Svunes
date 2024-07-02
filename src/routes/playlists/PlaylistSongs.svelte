@@ -1,19 +1,22 @@
 <script lang="ts">
-  import type { Playlist } from "@lib/models/Playlist";
-  import { playlists, songsMap } from "@stores/State";
+  import { playlists, playlistsMap, songsMap } from "@stores/State";
   import PlaylistSong from "./PlaylistSong.svelte";
   
   import Icon from "@component-utils/Icon.svelte";
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
   import { clamp, swap } from "@lib/utils/Utils";
   import { inSelectMode } from "@stores/Select";
+  import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
+  import type { Unsubscriber } from "svelte/store";
 
-  export let playlist: Playlist;
+  let playlistsMapUnsub: Unsubscriber;
+
+  export let playlistId: string;
 
   const entryHeight = 60;
 
-  let songs = playlist.songIds.map((id) => $songsMap[id]);
+  let songs = $playlistsMap[playlistId].songIds.map((id) => $songsMap[id]);
   let newOrder = songs.map((_, i) => i);
 
   let draggingIndex = -1;
@@ -34,12 +37,23 @@
         draggingIndex = -1;
         songs = newOrder.map((index) => songs[index]);
         newOrder = songs.map((_, i) => i);
-        playlist.songIds = songs.map((song) => song.id);
+        $playlistsMap[playlistId].songIds = songs.map((song) => song.id);
         $playlists = [ ...$playlists ];
         dragHeight = 0;
       }
     }
   }
+
+  onMount(() => {
+    playlistsMapUnsub = playlistsMap.subscribe((map) => {
+      songs = map[playlistId].songIds.map((id) => $songsMap[id]);
+      newOrder = songs.map((_, i) => i);
+    });
+  });
+
+  onDestroy(() => {
+    if (playlistsMapUnsub) playlistsMapUnsub();
+  })
 </script>
 
 <div class="song-entries" style:height="{songs.length * entryHeight}px">

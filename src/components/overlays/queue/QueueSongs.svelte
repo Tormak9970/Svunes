@@ -6,7 +6,11 @@
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
   import { clamp, swap } from "@lib/utils/Utils";
   import { inSelectMode } from "@stores/Select";
+  import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
+  import type { Unsubscriber } from "svelte/store";
+
+  let queueUnsub: Unsubscriber;
 
   const entryHeight = 60;
 
@@ -36,6 +40,17 @@
       }
     }
   }
+
+  onMount(() => {
+    queueUnsub = queue.subscribe((songIds) => {
+      songs = songIds.map((id) => $songsMap[id]);
+      newOrder = songs.map((_, i) => i);
+    });
+  });
+
+  onDestroy(() => {
+    if (queueUnsub) queueUnsub();
+  });
 </script>
 
 <div class="song-entries" style:height="{songs.length * entryHeight}px">
