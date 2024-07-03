@@ -9,11 +9,12 @@ import { getAllArtistNames } from "./Utils";
  * @returns The shuffled array.
  */
 export function shuffle<T>(array: T[]): T[] {
+  const copied = [ ...array ];
   const shuffled = [];
 
-  while (array.length) {
-    const randomIndex = Math.floor(Math.random() * array.length);
-    const element = array.splice(randomIndex, 1);
+  while (copied.length) {
+    const randomIndex = Math.floor(Math.random() * copied.length);
+    const element = copied.splice(randomIndex, 1);
     shuffled.push(element[0]);
   }
 

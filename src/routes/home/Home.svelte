@@ -23,8 +23,15 @@
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
 
+  let isAtTop = true;
+
   let artists: Artist[] = [];
   let albums: Album[] = [];
+
+  function scrollHandler(e: Event) {
+    const element = e.currentTarget as HTMLDivElement;
+    isAtTop = element.scrollTop === 0;
+  }
 
   function shuffleAllSongs() {
     const shuffled = shuffleSongs(Object.keys($songsMap));
@@ -57,32 +64,34 @@
 
 <ViewContainer>
   <div slot="header">
-    <HomeHeader highlight={false} />
+    <HomeHeader highlight={!isAtTop} />
   </div>
-  <div slot="content" class="content">
-    <div class="buttons-container" style:--m3-button-shape="10px" style:--m3-scheme-secondary-container="var(--m3-scheme-surface-container)">
-      <Button type="tonal" iconType="left" on:click={() => push("/home/history")}>
-        <Icon icon={History} />
-        History
-      </Button>
-      <Button type="tonal" iconType="left" on:click={() => push("/home/recently-added")}>
-        <Icon icon={CalendarAddOn} />
-        Recently Added
-      </Button>
-      <Button type="tonal" iconType="left" on:click={() => push("/home/most-played")}>
-        <Icon icon={TrendingUp} />
-        Most Played
-      </Button>
-      <Button type="tonal" iconType="left" on:click={shuffleAllSongs}>
-        <Icon icon={Shuffle} />
-        Shuffle
-      </Button>
+  <div slot="content" class="content" style="overflow: scroll;" on:scroll={scrollHandler}>
+    <div class="inner-content">
+      <div class="buttons-container" style:--m3-button-shape="10px" style:--m3-scheme-secondary-container="var(--m3-scheme-surface-container)">
+        <Button type="tonal" iconType="left" on:click={() => push("/home/history")}>
+          <Icon icon={History} />
+          History
+        </Button>
+        <Button type="tonal" iconType="left" on:click={() => push("/home/recently-added")}>
+          <Icon icon={CalendarAddOn} />
+          Recently Added
+        </Button>
+        <Button type="tonal" iconType="left" on:click={() => push("/home/most-played")}>
+          <Icon icon={TrendingUp} />
+          Most Played
+        </Button>
+        <Button type="tonal" iconType="left" on:click={shuffleAllSongs}>
+          <Icon icon={Shuffle} />
+          Shuffle
+        </Button>
+      </div>
+      {#if $showSuggestions}
+        <Suggestions />
+      {/if}
+      <ArtistCarousel label="Top Artists" artists={artists} on:click={() => push("/home/top-artists")} />
+      <AlbumCarousel label="Top Albums" albums={albums} on:click={() => push("/home/top-albums")} />
     </div>
-    {#if $showSuggestions}
-      <Suggestions />
-    {/if}
-    <ArtistCarousel label="Top Artists" artists={artists} on:click={() => push("/home/top-artists")} />
-    <AlbumCarousel label="Top Albums" albums={albums} on:click={() => push("/home/top-albums")} />
   </div>
 </ViewContainer>
 
@@ -90,10 +99,15 @@
   .content {
     width: 100%;
     height: 100%;
+  }
+  .inner-content {
+    width: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding-bottom: 70px;
   }
   .buttons-container {
     width: calc(100% - 2rem);
