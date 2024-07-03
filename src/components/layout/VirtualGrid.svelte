@@ -31,7 +31,7 @@
 
 <script lang="ts">
 	import { onMount, tick } from "svelte";
-  import { debounce } from "../../lib/utils/Utils";
+	import { debounce } from "../../lib/utils/Utils";
 
 	// * Component Props.
   export let name: string;
@@ -76,6 +76,8 @@
    * @param itemHeight The height of the elements being rendered.
    */
   async function refresh(items: any[], viewportHeight: number, itemHeight: number) {
+    if (!viewport) return;
+    
     const { scrollTop } = viewport;
     const numEntriesPerRow = Math.floor((viewport.clientWidth + columnGap) / (itemWidth + columnGap));
 

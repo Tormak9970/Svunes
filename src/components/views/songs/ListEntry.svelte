@@ -14,6 +14,7 @@
   import SongOptions from "./SongOptions.svelte";
 
   export let song: Song;
+  export let isSelectable = true;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
@@ -39,7 +40,7 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
+    if (!$inSelectMode && isSelectable) {
       $selected = [ ...$selected, song.id ];
     }
   }

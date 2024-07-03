@@ -11,6 +11,7 @@
   import ViewImage from "../../utils/ViewImage.svelte";
 
   export let album: Album;
+  export let isSelectable = true;
 
   $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
@@ -36,7 +37,7 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
+    if (!$inSelectMode && isSelectable) {
       $selected = [ ...$selected, album.name ];
     }
   }

@@ -8,7 +8,7 @@
   import { AppController } from "@lib/controllers/AppController";
   import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";
   import { showCreatePlaylist } from "@stores/Overlays";
-  import { selectedChip } from "@stores/Search";
+  import { selectedChips } from "@stores/Search";
   import { lastView, selectedView } from "@stores/State";
   import { dialog } from "@tauri-apps/api";
   import { push } from "svelte-spa-router";
@@ -33,7 +33,7 @@
   function openSearch() {
     $lastView = $selectedView;
     $selectedView = View.SEARCH;
-    $selectedChip = "all";
+    $selectedChips = [ "playlist" ];
     push("/search");
   }
 

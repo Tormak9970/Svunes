@@ -15,6 +15,7 @@
   import PlaylistOptions from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
+  export let isSelectable = true;
 
   $: highlighted = $selected.includes(playlist.id);
 
@@ -39,7 +40,7 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
+    if (!$inSelectMode && isSelectable) {
       $selected = [ ...$selected, playlist.id ];
     }
   }

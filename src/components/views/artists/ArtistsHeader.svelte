@@ -5,7 +5,7 @@
   import Search from "@ktibow/iconset-material-symbols/search";
   import MenuItem from "@layout/MenuItem.svelte";
   import { showArtistSortOrder, showGridSize } from "@stores/Modals";
-  import { selectedChip } from "@stores/Search";
+  import { selectedChips } from "@stores/Search";
   import { lastView, selectedView } from "@stores/State";
   import { push } from "svelte-spa-router";
   import { View } from "../../../types/View";
@@ -29,7 +29,7 @@
   function openSearch() {
     $lastView = $selectedView;
     $selectedView = View.SEARCH;
-    $selectedChip = "artist";
+    $selectedChips = [ "artist" ];
     push("/search");
   }
 

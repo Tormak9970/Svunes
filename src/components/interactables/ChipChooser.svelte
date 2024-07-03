@@ -3,13 +3,13 @@
   import Chip from "./Chip.svelte";
   export let options: { label: string; value: string; icon?: IconifyIcon }[];
   export let chosenOptions: string[] = [];
+  export let type: "input" | "assist" | "general";
 </script>
 
 <div class="m3-container">
   {#each options as option}
     <Chip
-      {...option}
-      type="input"
+      type={type}
       selected={chosenOptions.includes(option.value)}
       on:click={() =>
         chosenOptions.includes(option.value)
@@ -24,7 +24,7 @@
 <style>
   .m3-container {
     display: flex;
-    flex-wrap: wrap;
+    width: fit-content;
     gap: 0.5rem;
   }
 </style>

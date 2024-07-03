@@ -2,7 +2,7 @@
   import Button from "@interactables/Button.svelte";
   import Search from "@ktibow/iconset-material-symbols/search";
   import Settings from "@ktibow/iconset-material-symbols/settings";
-  import { selectedChip } from "@stores/Search";
+  import { selectedChips } from "@stores/Search";
   import { lastView, selectedView } from "@stores/State";
   import { push } from "svelte-spa-router";
   import { View } from "../../../types/View";
@@ -26,7 +26,7 @@
   function openSearch() {
     $lastView = $selectedView;
     $selectedView = View.SEARCH;
-    $selectedChip = "album";
+    $selectedChips = [];
     push("/search");
   }
 
