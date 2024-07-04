@@ -15,8 +15,33 @@
   import SearchSection from "./SearchSection.svelte";
   import VirtualizedResults from "./VirtualizedResults.svelte";
 
-  const songResults = derived([
+  // const hasSearchResults = derived([
+  //   searchQuery,
+  //   showOnlyMissingTitle,
+  //   showOnlyMissingCover,
+  //   showOnlyMissingAlbum,
+  //   showOnlyMissingArtist,
+  //   showOnlyMissingAlbumArtist,
+  //   showOnlyMissingGenre,
+  //   showOnlyMissingYear,
+  //   songResults,
+  //   albumResults,
+  //   artistResults,
+  //   playlistResults,
+  //   genreResults
+  // ],
+  // ([$query, $title, $cover, $album, $artist, $albumArtist, $genre, $year, $songs, $albums, $artists, $playlists, $genres]) => {
+  //   return ($query.length > 0 || $title || $cover || $album || $artist || $albumArtist || $genre || $year) &&
+  //     ($songs.length > 0 || $albums.length > 0 || $artists.length > 0 || $playlists.length > 0 || $genres.length > 0);
+  // });
+
+  const searchResults = derived([
+    selectedChips,
     songs,
+    albums,
+    artists,
+    playlists,
+    genres,
     searchQuery,
     showOnlyMissingTitle,
     showOnlyMissingCover,
@@ -25,88 +50,65 @@
     showOnlyMissingAlbumArtist,
     showOnlyMissingGenre,
     showOnlyMissingYear
-  ], ([songs, query, title, cover, album, artist, albumArtist, genre, year]) => {
-    return songs.filter((song) => {
-      return song.title.includes(query) &&
-        (!title || (title && song.title === song.fileName)) &&
-        (!cover || (cover && !song.artPath)) &&
-        (!album || (album && !song.album)) &&
-        (!artist || (artist && !song.artist)) &&
-        (!albumArtist || (albumArtist && song.albumArtist)) &&
-        (!genre || (genre && !song.genre)) &&
-        (!year || (year && song.releaseYear === -1));
-    });
-  });
+  ], ([$chips, $songs, $albums, $artists, $playlists, $genres, $query, $title, $cover, $album, $artist, $albumArtist, $genre, $year]) => {
+    const results: (string | Song | Album | Artist | Playlist | Genre)[] = [];
 
-  const albumResults = derived(
-    [ albums, searchQuery, showOnlyMissingCover, showOnlyMissingAlbumArtist, showOnlyMissingGenre, showOnlyMissingYear ],
-    ([albums, query, cover, albumArtist, genre, year]) => {
-      return albums.filter((album) => {
-        return album.name.includes(query) &&
-          (!cover || (cover && !album.artPath)) &&
-          (!albumArtist || (albumArtist && album.albumArtist)) &&
-          (!genre || (genre && !album.genre)) &&
-          (!year || (year && album.releaseYear === -1));
+    if ($query.length === 0 && !($title || $cover || $album || $artist || $albumArtist || $genre || $year)) return results;
+
+    if (($chips.length === 0 || $chips.includes("song"))) {
+      const songResults = $songs.filter((song) => {
+        return song.title.includes($query) &&
+          (!$title || ($title && song.title === song.fileName)) &&
+          (!$cover || ($cover && !song.artPath)) &&
+          (!$album || ($album && !song.album)) &&
+          (!$artist || ($artist && !song.artist)) &&
+          (!$albumArtist || ($albumArtist && song.albumArtist)) &&
+          (!$genre || ($genre && !song.genre)) &&
+          (!$year || ($year && song.releaseYear === -1));
       });
+      if (songResults.length > 0) results.push("Songs", ...songResults);
     }
-  );
 
-  const artistResults = derived([artists, searchQuery], ([artists, query]) => {
-    return artists.filter((artist) => artist.name.includes(query));
-  });
-
-  const playlistResults = derived([playlists, searchQuery], ([playlists, query]) => {
-    return playlists.filter((playlist) => playlist.name.includes(query));
-  });
-
-  const genreResults = derived([genres, searchQuery], ([genres, query]) => {
-    return genres.filter((genre) => genre.name.includes(query));
-  });
-
-  const hasSearchResults = derived([
-    searchQuery,
-    showOnlyMissingTitle,
-    showOnlyMissingCover,
-    showOnlyMissingAlbum,
-    showOnlyMissingArtist,
-    showOnlyMissingAlbumArtist,
-    showOnlyMissingGenre,
-    showOnlyMissingYear,
-    songResults,
-    albumResults,
-    artistResults,
-    playlistResults,
-    genreResults
-  ],
-  ([query, title, cover, album, artist, albumArtist, genre, year, songs, albums, artists, playlists, genres]) => {
-    return (query.length > 0 || title || cover || album || artist || albumArtist || genre || year) &&
-      (songs.length > 0 || albums.length > 0 || artists.length > 0 || playlists.length > 0 || genres.length > 0);
-  });
-
-  const searchResults = derived(
-    [selectedChips, songResults, albumResults, artistResults, playlistResults, genreResults],
-    ([chips, songs, albums, artists, playlists, genres]) => {
-      const results: (string | Song | Album | Artist | Playlist | Genre)[] = [];
-
-      if ((chips.length === 0 || chips.includes("song")) && songs.length > 0) results.push("Songs", ...songs);
-      if ((chips.length === 0 || chips.includes("album")) && albums.length > 0) results.push("Albums", ...albums);
-      if ((chips.length === 0 || chips.includes("artist")) && artists.length > 0) results.push("Artists", ...artists);
-      if ((chips.length === 0 || chips.includes("playlist")) && playlists.length > 0) results.push("Playlists", ...playlists);
-      if ((chips.length === 0 || chips.includes("genre")) && genres.length > 0) results.push("Genres", ...genres);
-
-      return results;
+    if (($chips.length === 0 || $chips.includes("album")) && !($title || $album || $artist)) {
+      const albumResults = $albums.filter((album) => {
+        return album.name.includes($query) &&
+          (!$cover || ($cover && !album.artPath)) &&
+          (!$albumArtist || ($albumArtist && album.albumArtist)) &&
+          (!$genre || ($genre && !album.genre)) &&
+          (!$year || ($year && album.releaseYear === -1));
+      });
+      if (albumResults.length > 0) results.push("Albums", ...albumResults);
     }
-  );
+
+    const onlyShowIsDisabled = !($title || $cover || $album || $artist || $albumArtist || $genre || $year);
+
+    if (($chips.length === 0 || $chips.includes("artist")) && onlyShowIsDisabled) {
+      const artistsResults = $artists.filter((artist) => artist.name.includes($query));
+      if (artistsResults.length > 0) results.push("Artists", ...artistsResults);
+    }
+
+    if (($chips.length === 0 || $chips.includes("playlist")) && onlyShowIsDisabled) {
+      const playlistsResults = $playlists.filter((playlist) => playlist.name.includes($query));
+      if (playlistsResults.length > 0) results.push("Playlists", ...playlistsResults);
+    }
+    
+    if (($chips.length === 0 || $chips.includes("genre")) && onlyShowIsDisabled) {
+      const genreResults = $genres.filter((genre) => genre.name.includes($query));
+      if (genreResults.length > 0) results.push("Genres", ...genreResults);
+    }
+
+    return results;
+  });
 </script>
 
 <div class="inner-content">
-  {#if $hasSearchResults}
+  {#if $searchResults.length > 0}
     {#key $searchResults.length}
       <VirtualizedResults items={$searchResults} keyFunction={(entry) => entry.data.id ?? entry.data.name ?? entry.data} let:entry>
         {#if typeof entry === "string"}
           <SearchSection label={entry} />
         {:else if !!entry.title}
-          <SongListEntry song={entry} isSelectable={false} />
+          <SongListEntry song={entry} />
         {:else if !!entry.artists && !!entry.releaseYear}
           <AlbumListEntry album={entry} isSelectable={false} />
         {:else if !!entry.albumNames}

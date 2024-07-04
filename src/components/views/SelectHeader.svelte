@@ -13,6 +13,7 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import { pluralize } from "@lib/utils/Utils";
+  import { showMetadataParser, songIdsToParse } from "@stores/Modals";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { selected } from "@stores/Select";
   import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songs } from "@stores/State";
@@ -22,7 +23,7 @@
   import Icon from "../utils/Icon.svelte";
 
   /**
-   * Gets the names of the songs from the selected items.
+   * Gets the ids of the songs from the selected items.
    */
   function getSongsFromSelected(): string[] {
     let songIds: string[] = [];
@@ -67,12 +68,12 @@
         break;
       }
       case View.SONGS:
+      case View.SEARCH:
       case View.GENRES: {
         songIds = $selected;
         break;
       }
       case View.HOME:
-      case View.SEARCH:
       case View.SETTINGS: {
         LogController.error("Shouldn't be able to get here!");
         break;
@@ -112,12 +113,12 @@
         break;
       }
       case View.SONGS:
+      case View.SEARCH:
       case View.GENRES: {
         QueueController.playSongsNext($selected);
         break;
       }
       case View.HOME:
-      case View.SEARCH:
       case View.SETTINGS: {
         LogController.error("Shouldn't be able to get here!");
         break;
@@ -168,12 +169,12 @@
         break;
       }
       case View.SONGS:
+      case View.SEARCH:
       case View.GENRES: {
         EditController.deleteSongsFromDevice($selected);
         break;
       }
       case View.HOME:
-      case View.SEARCH:
       case View.SETTINGS: {
         LogController.error("Shouldn't be able to get here!");
         break;
@@ -279,12 +280,12 @@
         break;
       }
       case View.SONGS:
+      case View.SEARCH:
       case View.GENRES: {
         QueueController.queueSongs($selected);
         break;
       }
       case View.HOME:
-      case View.SEARCH:
       case View.SETTINGS: {
         LogController.error("Shouldn't be able to get here!");
         break;
@@ -315,6 +316,16 @@
   function addToPlaylist() {
     $showAddToPlaylist = true;
     menuIsOpen = false;
+  }
+
+  /**
+   * Shows the metadata parser.
+   */
+  function showInfoParser() {
+    $showMetadataParser = true;
+    menuIsOpen = false;
+    $songIdsToParse = getSongsFromSelected();
+    back();
   }
 
   /**
@@ -370,11 +381,14 @@
       {#if !$showQueue}
         <MenuItem on:click={playNext}>Play Next</MenuItem>
       {/if}
+      <MenuItem on:click={showInfoParser}>Info Parser</MenuItem>
       <MenuItem on:click={share}>Share</MenuItem>
       {#if $location !== "/artists" && !$showQueue}
         <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
       {/if}
-      <MenuItem on:click={selectAll}>Select All</MenuItem>
+      {#if $selectedView !== View.SEARCH}
+        <MenuItem on:click={selectAll}>Select All</MenuItem>
+      {/if}
     </MenuButton>
   </div>
 </dialog>

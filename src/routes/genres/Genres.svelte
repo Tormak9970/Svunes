@@ -5,13 +5,20 @@
   import GenreEntry from "@views/genres/GenreEntry.svelte";
   import GenresHeader from "@views/genres/GenresHeader.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
+  
+  let isAtTop = true;
+
+  function scrollHandler(e: Event) {
+    const element = e.currentTarget as HTMLDivElement;
+    isAtTop = element.scrollTop === 0;
+  }
 </script>
 
 <ViewContainer>
   <div slot="header">
-    <GenresHeader highlight={false} />
+    <GenresHeader highlight={!isAtTop} />
   </div>
-  <div slot="content" class="content">
+  <div slot="content" class="content" on:scroll={scrollHandler}>
     {#if $genres.length > 0}
       {#each $genres as genre}
         <GenreEntry genre={genre} />
@@ -30,7 +37,6 @@
   .content {
     height: 100%;
     width: 100%;
-    margin-top: 2px;
 
     display: flex;
     align-content: flex-start;

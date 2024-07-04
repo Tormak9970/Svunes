@@ -15,6 +15,18 @@
     { label: "Only show songs no genre", enabled: $showOnlyMissingGenre },
     { label: "Only show songs no year", enabled: $showOnlyMissingYear },
   ];
+
+  function done() {
+    $showOnlyMissingTitle = options[0].enabled;
+    $showOnlyMissingCover = options[1].enabled;
+    $showOnlyMissingAlbum = options[2].enabled;
+    $showOnlyMissingArtist = options[3].enabled;
+    $showOnlyMissingAlbumArtist = options[4].enabled;
+    $showOnlyMissingGenre = options[5].enabled;
+    $showOnlyMissingYear = options[6].enabled;
+    
+    $showAdvancedFilters = false;
+  }
 </script>
 
 <ModalBody bind:open={$showAdvancedFilters} headline="Advanced Song Filters" on:close={() => $showAdvancedFilters = false }>
@@ -31,7 +43,7 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={() => $showAdvancedFilters = false }>Done</Button>
+      <Button type="text" on:click={done}>Done</Button>
     </div>
   </div>
 </ModalBody>

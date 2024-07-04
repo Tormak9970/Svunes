@@ -4,6 +4,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
+  import { showMetadataParser, songIdsToParse } from "@stores/Modals";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { playlists, playlistsMap } from "@stores/State";
   import { location, push, replace } from "svelte-spa-router";
@@ -97,6 +98,15 @@
   }
 
   /**
+   * Shows the metadata parser.
+   */
+  function showInfoParser() {
+    $showMetadataParser = true;
+    menuIsOpen = false;
+    $songIdsToParse = [ song.id ];
+  }
+
+  /**
    * Prompts the user to confirm if they want to delete this song.
    */
   function deleteSong() {
@@ -120,5 +130,6 @@
 {/if}
 <MenuItem on:click={showDetails}>Details</MenuItem>
 <MenuItem on:click={showSongEdit}>Edit</MenuItem>
+<MenuItem on:click={showInfoParser}>Info Parser</MenuItem>
 <MenuItem on:click={share}>Share</MenuItem>
 <MenuItem on:click={deleteSong}>Delete</MenuItem>
