@@ -342,22 +342,19 @@ export const GENRE_LUT: Record<string, string> = {
  * Gets the correct genre for the value provided.
  * @param value The value to get.
  */
-export function getGenre(value?: string) {
-  let genre = "Other";
-
-  if (!value) return genre;
+export function getGenre(value: string) {
+  if (!!GENRE_LUT[value]) return GENRE_LUT[value];
 
   if (value.startsWith("(")) {
-    const key = value.substring(1, value.length - 1);
+    const closeIndex = value.indexOf(")");
+    const key = value.substring(1, closeIndex);
     
-    if (Object.keys(GENRE_LUT).includes(key)) {
-      genre = GENRE_LUT[key];
-    }
-  } else if (value.toLocaleLowerCase() === value) {
-    return capitalizeEachWord(value);
-  } else {
-    return value;
+    if (Object.keys(GENRE_LUT).includes(key)) return GENRE_LUT[key];
   }
+  
+  if (value.toLocaleLowerCase() === value) return capitalizeEachWord(value);
+  
+  return value;
 }
 
 /**

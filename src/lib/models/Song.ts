@@ -50,7 +50,7 @@ export class Song {
     this.artPath = artPath;
     this.lastPlayedOn = lastPlayedOn;
     this.numTimesPlayed = numTimesPlayed;
-    this.genre = getGenre(genre);
+    this.genre = genre ? getGenre(genre) : undefined;
     this.trackNumber = trackNumber;
     this.totalTracks = totalTracks;
 

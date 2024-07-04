@@ -16,6 +16,7 @@
       {#each $genres as genre}
         <GenreEntry genre={genre} />
       {/each}
+      <div style="width: 100%; padding-bottom: 70px;" />
     {:else}
       <div class="message-container">
         <Icon icon={SadFace} width="60px" height="60px" />
@@ -34,6 +35,7 @@
     display: flex;
     align-content: flex-start;
     flex-wrap: wrap;
+    overflow: scroll;
     gap: 2px;
   }
 
