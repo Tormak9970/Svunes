@@ -113,10 +113,9 @@
 
   function observeNode(node: HTMLElement) {
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        loadNode(node);
-      }
-    })
+      if (entries[0].isIntersecting) loadNode(node);
+    });
+
     observer.observe(node);
     return observer;
   }
@@ -127,15 +126,11 @@
   }
 
   function loadNode(node: HTMLElement) {
-    if (loaded) {
-      return;
-    }
+    if (loaded) return;
 
     loaded = true;
     resetHeight(node);
-    if (onload) {
-      onload(node);
-    }
+    if (onload) onload(node);
   }
 
   function addListeners(handler: any) {
@@ -172,9 +167,7 @@
 
   function checkImgLoadingStatus(node: HTMLElement) {
     const img = node.querySelector('img');
-    if (!img) {
-      return false
-    }
+    if (!img) return false;
 
     if (!img.complete) {
       contentShow = false;
@@ -195,10 +188,8 @@
       failed = true;
     }
 
-    if (img.naturalHeight === 0) {
-      // Use fixed height if img has zero height
-      return true;
-    }
+    // Use fixed height if img has zero height
+    if (img.naturalHeight === 0) return true;
 
     return false;
   }
@@ -216,6 +207,7 @@
     let context: any, args: any, result: any;
     let timeout: any = null;
     let previous: any = 0;
+
     if (!options) options = {};
     const later = function() {
       previous = options.leading === false ? 0 : new Date();

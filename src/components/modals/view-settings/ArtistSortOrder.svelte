@@ -3,7 +3,7 @@
   import { showArtistSortOrder } from "@stores/Modals";
   import { artistSortOrder } from "@stores/State";
   import type { ArtistSortOrder } from "../../../types/Settings";
-  import Body from "./Body.svelte";
+  import SmallModalBody from "../utils/SmallModalBody.svelte";
 
   /**
    * Sets the artist sort order.
@@ -15,7 +15,7 @@
   }
 </script>
 
-<Body headline="Sort Order" bind:open={$showArtistSortOrder}>
+<SmallModalBody headline="Sort Order" bind:open={$showArtistSortOrder}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">
@@ -31,7 +31,7 @@
       <div class="radio">Track Count</div>
     </label>
   </div>
-</Body>
+</SmallModalBody>
 
 <style>
   .content {

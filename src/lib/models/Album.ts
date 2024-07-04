@@ -44,19 +44,20 @@ export class Album {
    * Sets the primary color from the album's image
    */
   async setBackgroundFromImage() {
-    if (this.artPath) {
-      await RustInterop.getColorsFromImage(this.artPath).then((colors) => {
-        if (colors.length) {
-          this.backgroundColor = colors[0];
-
-          if ((checkGreyness(this.backgroundColor, 20) || checkChannels(this.backgroundColor, 123)) && (sumColorString(colors[0]) < sumColorString(colors[1]))) {
-            this.backgroundColor = colors[1];
-          }
-        }
-      });
-    } else {
+    if (!this.artPath) {
       this.backgroundColor = undefined;
+      return;
     }
+
+    await RustInterop.getColorsFromImage(this.artPath).then((colors) => {
+      if (colors.length) {
+        this.backgroundColor = colors[0];
+
+        if ((checkGreyness(this.backgroundColor, 20) || checkChannels(this.backgroundColor, 123)) && (sumColorString(colors[0]) < sumColorString(colors[1]))) {
+          this.backgroundColor = colors[1];
+        }
+      }
+    });
   }
 
   get albumArtist(): string | undefined {

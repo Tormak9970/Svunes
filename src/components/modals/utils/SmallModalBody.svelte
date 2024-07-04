@@ -2,7 +2,7 @@
   import type { IconifyIcon } from "@iconify/types";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
-  import Icon from "./Icon.svelte";
+  import Icon from "../../utils/Icon.svelte";
 
   export let display = "flex";
   export let extraOptions: HTMLDialogAttributes = {};
@@ -23,7 +23,7 @@
       dialog.close();
     }
   }
-
+  
   $: {
     if (!dialog) break $;
 
@@ -33,24 +33,28 @@
       hideDialog = true;
     }
   }
-</script>
-
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<dialog
-  on:cancel={(e) => {
+  
+  function onCancel(e: Event) {
     if (closeOnEsc) {
       dispatch("closedByEsc");
       open = false;
     } else {
       e.preventDefault();
     }
-  }}
-  on:click|self={() => {
+  }
+
+  function onClick() {
     if (closeOnClick) {
       dispatch("closedByClick");
       open = false;
     }
-  }}
+  }
+</script>
+
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<dialog
+  on:cancel={onCancel}
+  on:click|self={onClick}
   on:animationend={onAnimationEnd}
   bind:this={dialog}
   style="display: {display};"
@@ -65,9 +69,6 @@
     <div class="content m3-font-body-medium">
       <slot />
     </div>
-    <div class="buttons">
-      <slot name="buttons" />
-    </div>
   </div>
 </dialog>
 
@@ -79,7 +80,7 @@
     background-color: rgb(var(--m3-scheme-surface-container-high));
     border: none;
     border-radius: var(--m3-dialog-shape);
-    min-width: 17.5rem;
+    min-width: 12.5rem;
     max-width: 35rem;
     padding: 0;
     overflow: auto;
@@ -87,7 +88,7 @@
   .m3-container {
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 0.5rem 1rem;
     width: 100%;
   }
 
@@ -100,14 +101,16 @@
   .headline {
     color: rgb(var(--m3-scheme-on-surface));
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+
+    font-size: 16px;
   }
   .headline.center {
     text-align: center;
   }
   .content {
     color: rgb(var(--m3-scheme-on-surface-variant));
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
   }
   .buttons {
     display: flex;
@@ -125,13 +128,12 @@
       opacity 200ms,
       visibility 200ms;
   }
+
   dialog[open] {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    animation:
-      dialogIn 0.5s cubic-bezier(0.05, 0.7, 0.1, 1),
-      opacity 100ms cubic-bezier(0.05, 0.7, 0.1, 1);
+    animation: dialogIn 0.5s cubic-bezier(0.05, 0.7, 0.1, 1);
   }
 
   dialog.hide {
@@ -146,12 +148,6 @@
   dialog[open] .content {
     animation: opacity 200ms;
   }
-  dialog[open] .buttons {
-    position: relative;
-    animation:
-      buttonsIn 0.5s cubic-bezier(0.05, 0.7, 0.1, 1),
-      opacity 200ms 100ms backwards;
-  }
   dialog::backdrop {
     background-color: rgb(var(--m3-scheme-scrim) / 0.3);
     animation: opacity 400ms;
@@ -164,14 +160,6 @@
     100% {
       transform: translateY(0) scaleY(100%);
       clip-path: inset(0 0 0 0 round var(--m3-dialog-shape));
-    }
-  }
-  @keyframes buttonsIn {
-    0% {
-      bottom: 100%;
-    }
-    100% {
-      bottom: 0;
     }
   }
   @keyframes opacity {

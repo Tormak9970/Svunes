@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Icon from "../../utils/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
+  import Icon from "../../utils/Icon.svelte";
 
   export let display = "flex";
   export let extraOptions: HTMLDialogAttributes = {};
@@ -16,29 +16,48 @@
   let dialog: HTMLDialogElement;
   $: {
     if (!dialog) break $;
-    if (open) dialog.showModal();
-    else dialog.close();
-  }
-</script>
 
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<dialog
-  on:cancel={(e) => {
+    if (open) {
+      dialog.showModal();
+    } else {
+      dialog.close();
+    }
+  }
+
+  let hideDialog = false;
+
+  function onAnimationEnd() {
+    if (hideDialog) {
+      hideDialog = false;
+      dialog.close();
+    }
+  }
+
+  function onCancel(e: Event) {
     if (closeOnEsc) {
       dispatch("closedByEsc");
       open = false;
     } else {
       e.preventDefault();
     }
-  }}
-  on:click|self={() => {
+  }
+
+  function onClick() {
     if (closeOnClick) {
       dispatch("closedByClick");
       open = false;
     }
-  }}
+  }
+</script>
+
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<dialog
+  on:cancel={onCancel}
+  on:click|self={onClick}
+  on:animationend={onAnimationEnd}
   bind:this={dialog}
   style="display: {display};"
+  class:hide={hideDialog}
   {...extraOptions}
 >
   <div class="m3-container">
@@ -119,6 +138,13 @@
       dialogIn 0.5s cubic-bezier(0.05, 0.7, 0.1, 1),
       opacity 100ms cubic-bezier(0.05, 0.7, 0.1, 1);
   }
+
+  dialog.hide {
+    visibility: hidden;
+    opacity: 0;
+    animation: dialogOut 0.4s cubic-bezier(0.05, 0.7, 0.1, 1);
+  }
+
   dialog[open] .headline {
     animation: opacity 150ms;
   }
@@ -161,10 +187,15 @@
       opacity: 1;
     }
   }
-
-  @media print, (forced-colors: active) {
-    dialog {
-      outline: solid 0.125rem canvastext;
+  
+  @keyframes dialogOut {
+    0% {
+      transform: translateY(0) scaleY(100%);
+      clip-path: inset(0 0 0 0 round var(--m3-dialog-shape));
+    }
+    100% {
+      transform: translateY(-3rem) scaleY(90%);
+      clip-path: inset(0 0 100% 0 round var(--m3-dialog-shape));
     }
   }
 </style>

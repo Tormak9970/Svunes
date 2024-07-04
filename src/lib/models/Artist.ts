@@ -32,19 +32,20 @@ export class Artist {
    * Sets the primary color from the artist's image
    */
   async setBackgroundFromImage() {
-    if (this.imagePath) {
-      await RustInterop.getColorsFromImage(this.imagePath).then((colors) => {
-        if (colors.length) {
-          this.backgroundColor = colors[0];
-
-          if ((checkGreyness(this.backgroundColor, 20) || checkChannels(this.backgroundColor, 123)) && (sumColorString(colors[0]) < sumColorString(colors[1]))) {
-            this.backgroundColor = colors[1];
-          }
-        }
-      });
-    } else {
+    if (!this.imagePath) {
       this.backgroundColor = undefined;
+      return;
     }
+
+    await RustInterop.getColorsFromImage(this.imagePath).then((colors) => {
+      if (colors.length) {
+        this.backgroundColor = colors[0];
+
+        if ((checkGreyness(this.backgroundColor, 20) || checkChannels(this.backgroundColor, 123)) && (sumColorString(colors[0]) < sumColorString(colors[1]))) {
+          this.backgroundColor = colors[1];
+        }
+      }
+    });
   }
 
   get artistSongsLength() {

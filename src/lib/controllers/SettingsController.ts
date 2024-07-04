@@ -246,32 +246,31 @@ export class SettingsController {
    */
   static async applyBackup(filePath: string) {
     const contents = await fs.readTextFile(filePath);
-
-    if (contents !== "") {
-      let currentContents: any = JSON.parse(contents);
-
-      if (currentContents.FILE_SIG_DO_NOT_EDIT === "dev.travislane.tunistic") {
-        let settings: Settings = currentContents;
-    
-        const defaultSettings = structuredClone(DEFAULT_SETTINGS);
-
-        settings = setIfNotExist(settings, defaultSettings);
-        settings = this.migrateSettingsStructure(settings);
-
-        settings.version = APP_VERSION;
-        this.settings = settings;
-
-        await this.save();
-
-        get(showInfoSnackbar)({ message: "Success!" });
-        LogController.log("Successfully restored backup.");
-      } else {
-        get(showErrorSnackbar)({ message: "Invalid backup file", faster: true });
-        LogController.error("Backup did not contain the FILE_SIG.");
-      }
-    } else {
+    if (contents === "") {
+      get(showInfoSnackbar)({ message: "Backup file was empty" });
       LogController.error("Backup was empty.");
     }
+
+    let currentContents: any = JSON.parse(contents);
+    if (currentContents.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.tunistic") {
+      get(showErrorSnackbar)({ message: "Invalid backup file", faster: true });
+      LogController.error("Backup did not contain the FILE_SIG.");
+    }
+
+    let settings: Settings = currentContents;
+  
+    const defaultSettings = structuredClone(DEFAULT_SETTINGS);
+
+    settings = setIfNotExist(settings, defaultSettings);
+    settings = this.migrateSettingsStructure(settings);
+
+    settings.version = APP_VERSION;
+    this.settings = settings;
+
+    await this.save();
+
+    get(showInfoSnackbar)({ message: "Success!" });
+    LogController.log("Successfully restored backup.");
   }
 
   /**

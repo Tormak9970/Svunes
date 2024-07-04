@@ -3,7 +3,7 @@
   import { showSelectLanguage } from "@stores/Modals";
   import { selectedLanguage } from "@stores/State";
   import { AppLanguage, getLanguage } from "../../types/Settings";
-  import Body from "./view-settings/Body.svelte";
+  import SmallModalBody from "./utils/SmallModalBody.svelte";
 
   /**
    * Sets the app language.
@@ -17,7 +17,7 @@
   const langs: AppLanguage[] = Object.values(AppLanguage).filter((v) => !isNaN(Number(v))) as AppLanguage[];
 </script>
 
-<Body headline="Select Language" bind:open={$showSelectLanguage}>
+<SmallModalBody headline="Select Language" bind:open={$showSelectLanguage}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each langs as lang}
@@ -27,7 +27,7 @@
       </label>
     {/each}
   </div>
-</Body>
+</SmallModalBody>
 
 <style>
   .content {

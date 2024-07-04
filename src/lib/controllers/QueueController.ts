@@ -25,35 +25,36 @@ export class QueueController {
       
       history.set(playbackHistory);
       queue.set(songQueue);
-    } else {
-      const playingType = get(nowPlayingType);
-      const playingName = get(nowPlayingList);
+      return;
+    }
+    
+    const playingType = get(nowPlayingType);
+    const playingName = get(nowPlayingList);
 
-      if (playingType === "Song") {
-        PlaybackController.resetNowPlaying();
+    if (playingType === "Song") {
+      PlaybackController.resetNowPlaying();
+      return;
+    }
+
+    if (shouldRepeat) {
+      if (playingType === "Playlist") {
+        PlaybackController.playPlaylist(get(playlistsMap)[playingName]);
         return;
       }
 
-      if (shouldRepeat) {
-        if (playingType === "Playlist") {
-          PlaybackController.playPlaylist(get(playlistsMap)[playingName]);
-          return;
-        }
-  
-        if (playingType === "Album") {
-          PlaybackController.playAlbum(get(albumsMap)[playingName]);
-          return;
-        }
-  
-        if (playingType === "Artist") {
-          PlaybackController.playArtist(get(artistsMap)[playingName]);
-          return;
-        }
-  
-        if (playingType === "Genre") {
-          PlaybackController.playGenre(get(genresMap)[playingName]);
-          return;
-        }
+      if (playingType === "Album") {
+        PlaybackController.playAlbum(get(albumsMap)[playingName]);
+        return;
+      }
+
+      if (playingType === "Artist") {
+        PlaybackController.playArtist(get(artistsMap)[playingName]);
+        return;
+      }
+
+      if (playingType === "Genre") {
+        PlaybackController.playGenre(get(genresMap)[playingName]);
+        return;
       }
     }
   }

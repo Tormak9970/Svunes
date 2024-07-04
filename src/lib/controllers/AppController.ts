@@ -1,12 +1,13 @@
 import { showEditMusicFolders } from "@stores/Modals";
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
-import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, songs } from "@stores/State";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, playlists, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
+import { fs } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { Album } from "../models/Album";
 import { Artist } from "../models/Artist";
 import { Genre } from "../models/Genre";
-import type { Playlist } from "../models/Playlist";
+import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
 import { getAllArtistNames } from "../utils/Utils";
 import { PlaybackController } from "./PlaybackController";
@@ -238,18 +239,96 @@ export class AppController {
 
   /**
    * Shares the provided songs.
-   * @param songNames The names of the songs to share.
+   * @param songIds The ids of the songs to share.
    */
-  static async share(songNames: string[]) {
-    // TODO: implement per platform.
-    // ! Add logging
+  static async share(songIds: string[]) {
+    // const songMap = get(songsMap);
+
+    // const files: File[] = [];
+
+    // for (const id of songIds) {
+    //   const song = songMap[id];
+
+    //   const data = await fs.readBinaryFile(song.filePath);
+
+    //   const type = (await path.extname(song.filePath)).toLowerCase();
+    //   const file = new File([data], `${song.fileName}.${type}`, {
+    //     type: type === "mp3" ? "audio/mpeg" : "audio/flac",
+    //   });
+      
+    //   files.push(file);
+    // }
+
+    // const data = {
+    //   files: files,
+    //   title: 'My title',
+    //   text: 'My text',
+    // }
+
+    // if (navigator.canShare(data)) {
+    //   await navigator.share(data);
+    //   get(showInfoSnackbar)({ message: "Shared songs" });
+    //   LogController.log(`Shared ${files.length} files.`);
+    // } else {
+    //   get(showErrorSnackbar)({ message: "Failed to share songs" });
+    //   LogController.error(`Failed to share ${files.length} files.`);
+    // }
   }
 
+  /**
+   * Imports a playlist from the provided path.
+   * @param playlistPath The path of the playlist to import.
+   */
   static async importPlaylist(playlistPath: string) {
+    const contents = await fs.readTextFile(playlistPath);
+    if (contents === "") {
+      get(showInfoSnackbar)({ message: "Playlist was empty" });
+      LogController.error("Playlist JSON was empty.");
+    }
 
+    let playlistJson: any = JSON.parse(contents);
+    if (playlistJson.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.tunistic") {
+      get(showErrorSnackbar)({ message: "Invalid playlist file", faster: true });
+      LogController.error("Playlist did not contain the FILE_SIG.");
+    }
+
+    const playlistList = get(playlists);
+    const songsList = get(songs);
+    const songIds: string[] = [];
+
+    for (const fileName of playlistJson.songFileNames) {
+      const song = songsList.find((song) => song.fileName === fileName);
+      if (song) songIds.push(song.id);
+    }
+
+    const playlist = Playlist.fromJSON(playlistJson);
+    playlist.songIds = songIds;
+
+    playlistList.push(playlist);
+
+    playlists.set([ ...playlistList ]);
+
+    get(showInfoSnackbar)({ message: "Success!" });
+    LogController.log(`Successfully imported playlist ${playlist.name}`);
   }
 
-  static async exportPlaylist(playlist: Playlist) {
+  /**
+   * Exports the provided playlist.
+   * @param playlistPath The path of the playlist to import.
+   * @param playlist The playlist to export.
+   */
+  static async exportPlaylist(playlistPath: string, playlist: Playlist) {
+    const songMap = get(songsMap);
+    const playlistJSON = JSON.parse(JSON.stringify(playlist));
+    playlistJSON.FILE_SIG_DO_NOT_EDIT = "dev.travislane.tunistic";
 
+    playlistJSON.songFileNames = playlist.songIds.map((id) => songMap[id].fileName);
+
+    await fs.writeFile({
+      path: playlistPath,
+      contents: JSON.stringify(playlistJSON),
+    });
+
+    LogController.log(`Exported ${playlist.name}.`);
   }
 }

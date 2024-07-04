@@ -20,11 +20,11 @@
   }
 </script>
 
-<ModalBody headline={$dialogModalTitle} show={$showDialogModal} canClose={false} onClose={() => {}}>
-  <div slot="content" class="content">
+<ModalBody headline={$dialogModalTitle} bind:open={$showDialogModal} canClose={false} on:close={() => {}}>
+  <div class="content">
     {$dialogModalMessage}
   </div>
-  <div slot="actions" class="buttons">
+  <div slot="buttons" class="buttons">
     {#if $dialogModalConfirmText !== ""}
       <Button type="text" on:click={onConfirm}>{$dialogModalConfirmText}</Button>
     {/if}

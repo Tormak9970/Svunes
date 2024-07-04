@@ -85,15 +85,13 @@
     await SettingsController.init();
     AppController.init();
 
-    closeRequestListener = await window.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, (e) => {
-      if (SettingsController.settingsHaveChanged) {
-        SettingsController.save().then(() => {
-          $showSavingSettings = true;
-          exit(0);
-        });
-      } else {
+    closeRequestListener = await window.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, () => {
+      if (!SettingsController.settingsHaveChanged) exit(0);
+
+      SettingsController.save().then(() => {
+        $showSavingSettings = true;
         exit(0);
-      }
+      });
     });
   });
 

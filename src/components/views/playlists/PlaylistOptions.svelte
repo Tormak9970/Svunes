@@ -7,6 +7,7 @@
   import type { Playlist } from "@lib/models/Playlist";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { playlists } from "@stores/State";
+  import { dialog } from "@tauri-apps/api";
   import { location, push, replace } from "svelte-spa-router";
 
   export let menuIsOpen: boolean;
@@ -74,9 +75,22 @@
   /**
    * Exports the playlist to a json file.
    */
-  function exportPlaylist() {
+  async function exportPlaylist() {
     menuIsOpen = false;
-    AppController.exportPlaylist(playlist);
+    const path = await dialog.save({
+      title: `Export ${playlist.name}`,
+      defaultPath: `${playlist.id}.json`,
+      filters: [
+        {
+          "name": "playlist",
+          "extensions": [ "json" ]
+        }
+      ]
+    });
+
+    if (path && path !== "") {
+      AppController.exportPlaylist(path, playlist);
+    }
   }
 </script>
 

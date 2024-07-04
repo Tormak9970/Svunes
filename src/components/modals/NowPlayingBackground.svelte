@@ -3,7 +3,7 @@
   import { showNowPlayingBackground } from "@stores/Modals";
   import { nowPlayingBackgroundType } from "@stores/State";
   import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "../../types/Settings";
-  import Body from "./view-settings/Body.svelte";
+  import SmallModalBody from "./utils/SmallModalBody.svelte";
 
   /**
    * Sets the now playing background type.
@@ -17,7 +17,7 @@
   const backgroundTypes: NowPlayingBackgroundType[] = Object.values(NowPlayingBackgroundType).filter((v) => !isNaN(Number(v))) as NowPlayingBackgroundType[];
 </script>
 
-<Body headline="Background Type" bind:open={$showNowPlayingBackground}>
+<SmallModalBody headline="Background Type" bind:open={$showNowPlayingBackground}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each backgroundTypes as backgroundType}
@@ -27,7 +27,7 @@
       </label>
     {/each}
   </div>
-</Body>
+</SmallModalBody>
 
 <style>
   .content {

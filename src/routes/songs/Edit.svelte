@@ -70,44 +70,46 @@
    * Saves the changes the user has made.
    */
   function saveChanges() {
-    if (title !== "") {
-      const editFields: SongEditFields = {
-        "artPath": artPath,
-        "title": title === song?.fileName ? undefined : title,
-        "album": album !== "" ? album : undefined,
-        "composer": composer !== "" ? composer : undefined,
-        "albumArtist": albumArtist !== "" ? albumArtist : undefined,
-        "artist": artist !== "" ? artist : undefined,
-        "releaseYear":  releaseYear && releaseYear !== "" ? parseInt(releaseYear) : undefined,
-        "genre": genre !== "" ? genre : undefined,
-        "trackNumber": trackNumber && trackNumber !== "" ? parseInt(trackNumber) : undefined
-      }
-      $showWritingChanges = true;
-      EditController.editSong($songsMap[params!.id!], editFields).then(() => {
-        canSave = false;
-        $showWritingChanges = false;
-        back();
-      });
-    } else {
+    if (title === "") {
       $showErrorSnackbar({ message: "Title is required!", faster: true });
       LogController.error("Failed to save changes! A title is required!");
+      return;
     }
+
+    const editFields: SongEditFields = {
+      "artPath": artPath,
+      "title": title === song?.fileName ? undefined : title,
+      "album": album !== "" ? album : undefined,
+      "composer": composer !== "" ? composer : undefined,
+      "albumArtist": albumArtist !== "" ? albumArtist : undefined,
+      "artist": artist !== "" ? artist : undefined,
+      "releaseYear":  releaseYear && releaseYear !== "" ? parseInt(releaseYear) : undefined,
+      "genre": genre !== "" ? genre : undefined,
+      "trackNumber": trackNumber && trackNumber !== "" ? parseInt(trackNumber) : undefined
+    }
+    $showWritingChanges = true;
+    EditController.editSong($songsMap[params!.id!], editFields).then(() => {
+      canSave = false;
+      $showWritingChanges = false;
+      back();
+    });
   }
 
   /**
    * Handles prompting the user to change the song's art.
    */
   function onAlbumArtClick() {
-    if (!album) {
-      $onArtOptionsDone = async (path: string | undefined) => {
-        // const copiedPath = await EditController.copyAlbumImage(path, title);
-        // artPath = copiedPath;
-        $showInfoSnackbar({ message: "Need to implement this" });
-      }
-      $showArtOptions = true;
-    } else {
+    if (!!album) {
       $showInfoSnackbar({ message: "Can't edit because this song is in an album" });
+      return;
     }
+    
+    $onArtOptionsDone = async (path: string | undefined) => {
+      // const copiedPath = await EditController.copyAlbumImage(path, title);
+      // artPath = copiedPath;
+      $showInfoSnackbar({ message: "Need to implement this" });
+    }
+    $showArtOptions = true;
   }
 
   onMount(() => {

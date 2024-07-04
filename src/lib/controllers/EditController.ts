@@ -156,18 +156,12 @@ export class EditController {
           const [song] = songList.splice(index, 1);
 
           const queueIndex = songQueue.indexOf(id);
-          if (queueIndex !== -1) {
-            songQueue.splice(queueIndex, 1);
-          }
+          if (queueIndex !== -1) songQueue.splice(queueIndex, 1);
 
           const historyIndex = songHistory.indexOf(id);
-          if (historyIndex !== -1) {
-            songHistory.splice(historyIndex, 1);
-          }
+          if (historyIndex !== -1) songHistory.splice(historyIndex, 1);
           
-          if (id === nowPlayingSongId) {
-            QueueController.skip();
-          }
+          if (id === nowPlayingSongId) QueueController.skip();
 
           filePaths.push(song.filePath);
         }
@@ -176,9 +170,7 @@ export class EditController {
           for (const id of songIds) {
             const index = playlist.songIds.indexOf(id);
 
-            if (index > -1) {
-              playlist.songIds.splice(index, 1);
-            }
+            if (index > -1) playlist.songIds.splice(index, 1);
           }
         }
 
@@ -232,35 +224,25 @@ export class EditController {
             const [song] = songList.splice(songIndex, 1);
 
             const queueIndex = songQueue.indexOf(id);
-            if (queueIndex !== -1) {
-              songQueue.splice(queueIndex, 1);
-            }
+            if (queueIndex !== -1) songQueue.splice(queueIndex, 1);
   
             const historyIndex = songHistory.indexOf(id);
-            if (historyIndex !== -1) {
-              songHistory.splice(historyIndex, 1);
-            }
+            if (historyIndex !== -1) songHistory.splice(historyIndex, 1);
 
-            if (id === nowPlayingSongId) {
-              QueueController.skip();
-            }
+            if (id === nowPlayingSongId) QueueController.skip();
 
             filePaths.push(song.filePath);
             deletedSongIds.push(id);
           }
 
-          if (albumName === nowPlayingName) {
-            nowPlayingList.set("");
-          }
+          if (albumName === nowPlayingName) nowPlayingList.set("");
         }
 
         for (const playlist of playlistList) {
           for (const id of deletedSongIds) {
             const index = playlist.songIds.indexOf(id);
 
-            if (index > -1) {
-              playlist.songIds.splice(index, 1);
-            }
+            if (index > -1) playlist.songIds.splice(index, 1);
           }
         }
 

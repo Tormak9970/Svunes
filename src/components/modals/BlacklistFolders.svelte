@@ -62,15 +62,15 @@
   });
 </script>
 
-<ModalBody show={$showBlacklistFolders} headline="Blacklisted Folders" onClose={() => $showBlacklistFolders = false }>
-  <div slot="content">
+<ModalBody bind:open={$showBlacklistFolders} headline="Blacklisted Folders" on:close={() => $showBlacklistFolders = false }>
+  <div>
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
     {:else}
       <div>You haven't blacklisted any folders</div>
     {/each}
   </div>
-  <div class="actions" slot="actions">
+  <div class="actions" slot="buttons">
     <div class="left">
       <Button type="text" on:click={clear}>Clear</Button>
     </div>

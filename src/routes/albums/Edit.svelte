@@ -62,39 +62,41 @@
    * Saves the changes the user has made.
    */
   function saveChanges() {
-    if (albumName !== "") {
-      const editFields: AlbumEditFields = {
-        "artPath": artPath,
-        "name": albumName,
-        "artist": albumArtist,
-        "releaseYear": releaseYear ? parseInt(releaseYear) : undefined,
-        "genre": genre
-      }
-      albumNameChanged = albumName !== album?.name;
-      $showWritingChanges = true;
-      EditController.editAlbum($albumsMap[params.key!], editFields).then(() => {
-        canSave = false;
-        $showWritingChanges = false;
-        back();
-      });
-    } else {
+    if (albumName === "") {
       $showErrorSnackbar({ message: "Album is required!", faster: true });
       LogController.error("Failed to save changes! A album is required!");
+      return;
     }
+
+    const editFields: AlbumEditFields = {
+      "artPath": artPath,
+      "name": albumName,
+      "artist": albumArtist,
+      "releaseYear": releaseYear ? parseInt(releaseYear) : undefined,
+      "genre": genre
+    }
+    albumNameChanged = albumName !== album?.name;
+    $showWritingChanges = true;
+    EditController.editAlbum($albumsMap[params.key!], editFields).then(() => {
+      canSave = false;
+      $showWritingChanges = false;
+      back();
+    });
   }
 
   /**
    * Handles prompting the user to change the album's art.
    */
   function onAlbumArtClick() {
-    if (albumName !== "") {
-      $onArtOptionsDone = async (path: string | undefined) => {
-        artPath = path;
-      }
-      $showArtOptions = true;
-    } else {
+    if (albumName === "") {
       $showErrorSnackbar({ message: "Album name is required!" });
+      return;
     }
+
+    $onArtOptionsDone = async (path: string | undefined) => {
+      artPath = path;
+    }
+    $showArtOptions = true;
   }
 
   onMount(() => {

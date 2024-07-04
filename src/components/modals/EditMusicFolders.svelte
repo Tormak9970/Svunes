@@ -56,18 +56,16 @@
   });
 </script>
 
-<ModalBody show={$showEditMusicFolders} headline="Music Folders" canClose={$location.startsWith("/settings")} onClose={() => $showEditMusicFolders = false }>
-  <div slot="content">
+<ModalBody bind:open={$showEditMusicFolders} headline="Music Folders" canClose={$location.startsWith("/settings")} on:close={() => $showEditMusicFolders = false }>
+  <div>
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
     {:else}
       <div>You haven't chosen any folders</div>
     {/each}
   </div>
-  <div class="actions" slot="actions">
-    <div class="left">
-      
-    </div>
+  <div class="actions" slot="buttons">
+    <div class="left" />
     <div class="right">
       <Button type="text" on:click={pickFolders}>Add</Button>
       <Button type="text" on:click={done}>Done</Button>

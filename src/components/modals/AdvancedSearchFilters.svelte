@@ -17,8 +17,8 @@
   ];
 </script>
 
-<ModalBody show={$showAdvancedFilters} headline="Advanced Song Filters" onClose={() => $showAdvancedFilters = false }>
-  <div slot="content" style="height: fit-content;">
+<ModalBody bind:open={$showAdvancedFilters} headline="Advanced Song Filters" on:close={() => $showAdvancedFilters = false }>
+  <div style="height: fit-content;">
     {#each options as option, i (option.label + "|" + i)}
       <div class="entry">
         <div class="checkbox-container">
@@ -28,7 +28,7 @@
       </div>
     {/each}
   </div>
-  <div class="actions" slot="actions">
+  <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
       <Button type="text" on:click={() => $showAdvancedFilters = false }>Done</Button>

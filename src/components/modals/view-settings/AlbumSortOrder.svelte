@@ -3,7 +3,7 @@
   import { showAlbumSortOrder } from "@stores/Modals";
   import { albumSortOrder } from "@stores/State";
   import type { AlbumSortOrder } from "../../../types/Settings";
-  import Body from "./Body.svelte";
+  import SmallModalBody from "../utils/SmallModalBody.svelte";
 
   /**
    * Sets the album sort order.
@@ -15,7 +15,7 @@
   }
 </script>
 
-<Body headline="Sort Order" bind:open={$showAlbumSortOrder}>
+<SmallModalBody headline="Sort Order" bind:open={$showAlbumSortOrder}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">
@@ -47,7 +47,7 @@
       <div class="radio">Last Played</div>
     </label>
   </div>
-</Body>
+</SmallModalBody>
 
 <style>
   .content {

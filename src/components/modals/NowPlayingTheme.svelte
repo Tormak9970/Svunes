@@ -72,8 +72,8 @@
   });
 </script>
 
-<ModalBody show={$showNowPlayingTheme} headline="Now Playing Theme" onClose={() => { $showNowPlayingTheme = false; selectedTheme = $nowPlayingTheme; }}>
-  <div slot="content" class="content">
+<ModalBody open={$showNowPlayingTheme} headline="Now Playing Theme" on:close={() => { $showNowPlayingTheme = false; selectedTheme = $nowPlayingTheme; }}>
+  <div class="content">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="themes-container" style:left="{20 + $dragOffset}px" use:drag on:drag={handleDrag}>
       {#each themesConfig as config}
@@ -89,7 +89,7 @@
       {/each}
     </div>
   </div>
-  <div class="actions" slot="actions">
+  <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
       <Button type="text" on:click={done}>Save</Button>

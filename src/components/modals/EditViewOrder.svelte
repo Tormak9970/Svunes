@@ -92,8 +92,8 @@
   });
 </script>
 
-<ModalBody show={$showEditViewOrder} headline="Library Order" onClose={() => $showEditViewOrder = false }>
-  <div slot="content">
+<ModalBody bind:open={$showEditViewOrder} headline="Library Order" on:close={() => $showEditViewOrder = false }>
+  <div>
     {#key reset}
       <div class="drag-container" style:height="{viewsList.length * entryHeight}px">
         {#each viewsList as view, i (view)}
@@ -117,7 +117,7 @@
       </div>
     {/key}
   </div>
-  <div class="actions" slot="actions">
+  <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
       <Button type="text" on:click={() => $showEditViewOrder = false }>Cancel</Button>
