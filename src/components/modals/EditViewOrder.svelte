@@ -174,7 +174,7 @@
 
     background-color: rgb(var(--m3-scheme-surface-container-highest));
 
-    transition: top 0.2s ease-out, scale 0.3s ease-out;
+    transition: scale 0.3s ease-out;
     scale: 1.05
   }
 
