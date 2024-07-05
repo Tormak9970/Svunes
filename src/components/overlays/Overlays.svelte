@@ -1,5 +1,5 @@
 <script>
-  import { showQueue } from "@stores/Overlays";
+  import { showCarMode, showQueue } from "@stores/Overlays";
   import AddToPlaylists from "./add-to-playlists/AddToPlaylists.svelte";
   import CarMode from "./CarMode.svelte";
   import CreatePlaylist from "./CreatePlaylist.svelte";
@@ -14,7 +14,9 @@
 {#if $showQueue}
   <Queue />
 {/if}
-<CarMode />
+{#if $showCarMode}
+  <CarMode />
+{/if}
 <WritingChanges />
 
 <SleepTimer />

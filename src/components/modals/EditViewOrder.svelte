@@ -75,8 +75,8 @@
    * Saves the user's changes
    */
   function done() {
-    $viewIndices = Object.fromEntries(viewsList.map((item, i) => [item, i])) as Record<View, number>;
     $viewsToRender = viewsList.filter((view) => checkDict[view]);
+    $viewIndices = Object.fromEntries(viewsList.map((item, i) => [item, i])) as Record<View, number>;
     $showEditViewOrder = false;
   }
 
@@ -89,7 +89,6 @@
     viewIndicesUnsub = viewIndices.subscribe((indices) => {
       viewsList = Views.sort((a, b) => indices[a] - indices[b]);
       newOrder = viewsList.map((_, i) => i);
-      checkDict = Object.fromEntries(viewsList.map((view) => [view, $viewsToRender.includes(view)])) as Record<View, boolean>;
     });
   });
 
