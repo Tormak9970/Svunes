@@ -20,8 +20,7 @@ export const showEditViewOrder = writable(false);
 
 export const showAdvancedFilters = writable(false);
 
-export const showMetadataParser = writable(false);
-export const songIdsToParse: Writable<string[]> = writable([]);
+export const showParserVariables = writable(false);
 
 export const showArtOptions = writable(false);
 export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> = writable(() => {});

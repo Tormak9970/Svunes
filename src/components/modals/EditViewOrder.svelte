@@ -16,6 +16,7 @@
   import { drag } from "svelte-gesture";
 
   let viewsToRenderUnsub: Unsubscriber;
+  let viewIndicesUnsub: Unsubscriber;
   const entryHeight = 40;
 
   let viewsList: View[] = [];
@@ -83,12 +84,18 @@
     viewsToRenderUnsub = viewsToRender.subscribe((newViews) => {
       viewsList = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]);
       newOrder = viewsList.map((_, i) => i);
+      checkDict = Object.fromEntries(viewsList.map((view) => [view, newViews.includes(view)])) as Record<View, boolean>;
+    });
+    viewIndicesUnsub = viewIndices.subscribe((indices) => {
+      viewsList = Views.sort((a, b) => indices[a] - indices[b]);
+      newOrder = viewsList.map((_, i) => i);
       checkDict = Object.fromEntries(viewsList.map((view) => [view, $viewsToRender.includes(view)])) as Record<View, boolean>;
     });
   });
 
   onDestroy(() => {
     if (viewsToRenderUnsub) viewsToRenderUnsub();
+    if (viewIndicesUnsub) viewIndicesUnsub();
   });
 </script>
 

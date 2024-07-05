@@ -73,7 +73,7 @@
   <span class="content" slot="content">
     {#if lastPlayedSongs.length > 0}
       <VirtualList name="lastPlayed" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-        <ListEntry song={entry} />
+        <ListEntry song={entry} detailType="Alphabetical" />
       </VirtualList>
     {:else}
       <div class="message-container">

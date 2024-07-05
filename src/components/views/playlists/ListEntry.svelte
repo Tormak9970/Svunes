@@ -8,13 +8,14 @@
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
-  import { playlistSortOrder } from "@stores/State";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
+  import type { PlaylistSortOrder } from "../../../types/Settings";
   import PlaylistImage from "./PlaylistImage.svelte";
   import PlaylistOptions from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
+  export let detailType: PlaylistSortOrder;
   export let isSelectable = true;
 
   $: highlighted = $selected.includes(playlist.id);
@@ -64,11 +65,11 @@
               <Icon icon={Keep} width="16px" height="16px" />
             </div>
           {/if}
-          {#if $playlistSortOrder === "Alphabetical" || $playlistSortOrder === "Song Count"}
+          {#if detailType === "Alphabetical" || detailType === "Song Count"}
             <div in:fade={{ duration: 200 }}>{playlist.songIds.length === 1 ? `1 Song` : `${playlist.songIds.length} Songs`} • {playlist.displayLength()}</div>
-          {:else if $playlistSortOrder === "Most Played"}
+          {:else if detailType === "Most Played"}
             <div in:fade={{ duration: 200 }}>Played {playlist.numTimesPlayed} Times</div>
-          {:else if $playlistSortOrder === "Last Played"}
+          {:else if detailType === "Last Played"}
             <div in:fade={{ duration: 200 }}>{playlist.lastPlayedOn === "Never" ? "Never" : renderDate(playlist.lastPlayedOn)}</div>
           {/if}
         </div>

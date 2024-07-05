@@ -16,16 +16,18 @@ export const volumeLevel = writable(1);
 export const isPaused = writable(true);
 export const shouldPauseOnEnd = writable(false);
 
+export const songIdsToParse: Writable<string[]> = writable([]);
+
 export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable();
 export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = writable();
 
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);
-export const showViewNav: Readable<boolean> = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([loc, showQueue, showNowPlaying, showMiniPlayer]) => {
-  return loc.lastIndexOf("/") === 0 && loc !== "/settings" && loc !== "/search" &&
-  !showQueue &&
-  !(showNowPlaying && !showMiniPlayer)
+export const showViewNav: Readable<boolean> = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([$location, $showQueue, $showNowPlaying, $showMiniPlayer]) => {
+  return $location.lastIndexOf("/") === 0 && $location !== "/settings" && $location !== "/search" && $location !== "/metadata-parser" &&
+    !$showQueue &&
+    !($showNowPlaying && !$showMiniPlayer);
 });
 
 export const playlistsIsAtTop = writable(true);

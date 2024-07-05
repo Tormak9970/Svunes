@@ -71,7 +71,7 @@
   </span>
   <span class="content" slot="content">
     <VirtualList name="recentlyAdded" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-      <ListEntry song={entry} />
+      <ListEntry song={entry} detailType="Alphabetical" />
     </VirtualList>
   </span>
 </DetailsBody>

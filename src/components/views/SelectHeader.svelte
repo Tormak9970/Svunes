@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import QueueAdd from "@ktibow/iconset-material-symbols/add-to-queue-outline-rounded";
@@ -13,14 +14,12 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import { pluralize } from "@lib/utils/Utils";
-  import { showMetadataParser, songIdsToParse } from "@stores/Modals";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { selected } from "@stores/Select";
-  import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songs } from "@stores/State";
-  import { location } from "svelte-spa-router";
+  import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songIdsToParse, songs } from "@stores/State";
+  import { location, push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
   import { View } from "../../types/View";
-  import Icon from "../utils/Icon.svelte";
 
   /**
    * Gets the ids of the songs from the selected items.
@@ -322,9 +321,9 @@
    * Shows the metadata parser.
    */
   function showInfoParser() {
-    $showMetadataParser = true;
-    menuIsOpen = false;
     $songIdsToParse = getSongsFromSelected();
+    push("/metadata-parser");
+    menuIsOpen = false;
     back();
   }
 

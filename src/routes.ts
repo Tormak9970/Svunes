@@ -14,6 +14,7 @@ import MostPlayed from "./routes/home/MostPlayed.svelte";
 import RecentlyAdded from "./routes/home/RecentlyAdded.svelte";
 import TopAlbums from "./routes/home/TopAlbums.svelte";
 import TopArtists from "./routes/home/TopArtists.svelte";
+import MetadataParser from "./routes/MetadataParser.svelte";
 import PlaylistDetails from "./routes/playlists/Details.svelte";
 import PlaylistEditor from "./routes/playlists/Edit.svelte";
 import Playlists from "./routes/playlists/Playlists.svelte";
@@ -89,4 +90,6 @@ export const routes = {
   "/home/recently-added": RecentlyAdded,
   "/home/top-artists": TopArtists,
   "/home/top-albums": TopAlbums,
+
+  "/metadata-parser": MetadataParser,
 }

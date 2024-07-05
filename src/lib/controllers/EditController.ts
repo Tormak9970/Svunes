@@ -61,6 +61,7 @@ export class EditController {
     
     if (success) {
       this.editSongFields(original, editedFields);
+      if (editedFields.title) original.hasFileName = true;
       const songsList = get(songs);
       songs.set(songsList);
       

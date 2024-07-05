@@ -67,7 +67,7 @@
       {#key $albumGridSize}
         {#if $albumGridSize === GridSize.LIST}
           <VirtualList name="albumsView" itemHeight={60} items={sortedAlbums} keyFunction={keyFunction} bind:isAtTop={$albumsIsAtTop} let:entry>
-            <ListEntry album={entry} />
+            <ListEntry album={entry} detailType={$albumSortOrder} />
           </VirtualList>
         {:else}
           <VirtualGrid name="albumsView" itemHeight={GRID_IMAGE_DIMENSIONS[$albumGridSize].height + GRID_IMAGE_DIMENSIONS[$albumGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$albumGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap} items={sortedAlbums} keyFunction={keyFunction} bind:isAtTop={$albumsIsAtTop} let:entry>

@@ -15,26 +15,6 @@
   import SearchSection from "./SearchSection.svelte";
   import VirtualizedResults from "./VirtualizedResults.svelte";
 
-  // const hasSearchResults = derived([
-  //   searchQuery,
-  //   showOnlyMissingTitle,
-  //   showOnlyMissingCover,
-  //   showOnlyMissingAlbum,
-  //   showOnlyMissingArtist,
-  //   showOnlyMissingAlbumArtist,
-  //   showOnlyMissingGenre,
-  //   showOnlyMissingYear,
-  //   songResults,
-  //   albumResults,
-  //   artistResults,
-  //   playlistResults,
-  //   genreResults
-  // ],
-  // ([$query, $title, $cover, $album, $artist, $albumArtist, $genre, $year, $songs, $albums, $artists, $playlists, $genres]) => {
-  //   return ($query.length > 0 || $title || $cover || $album || $artist || $albumArtist || $genre || $year) &&
-  //     ($songs.length > 0 || $albums.length > 0 || $artists.length > 0 || $playlists.length > 0 || $genres.length > 0);
-  // });
-
   const searchResults = derived([
     selectedChips,
     songs,
@@ -58,7 +38,7 @@
     if (($chips.length === 0 || $chips.includes("song"))) {
       const songResults = $songs.filter((song) => {
         return song.title.includes($query) &&
-          (!$title || ($title && song.title === song.fileName)) &&
+          (!$title || ($title && !song.hasFileName)) &&
           (!$cover || ($cover && !song.artPath)) &&
           (!$album || ($album && !song.album)) &&
           (!$artist || ($artist && !song.artist)) &&
@@ -108,13 +88,13 @@
         {#if typeof entry === "string"}
           <SearchSection label={entry} />
         {:else if !!entry.title}
-          <SongListEntry song={entry} />
+          <SongListEntry song={entry} detailType="Alphabetical" />
         {:else if !!entry.artists && !!entry.releaseYear}
-          <AlbumListEntry album={entry} isSelectable={false} />
+          <AlbumListEntry album={entry} isSelectable={false} detailType="Alphabetical" />
         {:else if !!entry.albumNames}
           <ArtistListEntry artist={entry} isSelectable={false} />
         {:else if !!entry.dateCreated}
-          <PlaylistListEntry playlist={entry} isSelectable={false} />
+          <PlaylistListEntry playlist={entry} isSelectable={false} detailType="Alphabetical" />
         {:else}
           <GenreListEntry genre={entry} />
         {/if}

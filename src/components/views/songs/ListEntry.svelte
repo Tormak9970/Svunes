@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ViewImage from "@component-utils/ViewImage.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import CardClickable from "@layout/CardClickable.svelte";
@@ -7,13 +8,13 @@
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
-  import { songSortOrder } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
   import { fade } from "svelte/transition";
-  import ViewImage from "../../utils/ViewImage.svelte";
+  import type { SongSortOrder } from "../../../types/Settings";
   import SongOptions from "./SongOptions.svelte";
 
   export let song: Song;
+  export let detailType: SongSortOrder;
   export let isSelectable = true;
 
   $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
@@ -59,17 +60,17 @@
           {song.title}
         </div>
         <div class="secondary">
-          {#if $songSortOrder === "Alphabetical"}
+          {#if detailType === "Alphabetical"}
             <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
-          {:else if $songSortOrder === "Album"}
+          {:else if detailType === "Album"}
             <div in:fade={{ duration: 200 }}>{song.album ?? "Unkown"}</div>
-          {:else if $songSortOrder === "Artist"}
+          {:else if detailType === "Artist"}
             <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
-          {:else if $songSortOrder === "Year"}
+          {:else if detailType === "Year"}
             <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? "Unkown" : song.releaseYear}</div>
-          {:else if $songSortOrder === "Most Played"}
+          {:else if detailType === "Most Played"}
             <div in:fade={{ duration: 200 }}>{song.numTimesPlayed}</div>
-          {:else if $songSortOrder === "Last Played"}
+          {:else if detailType === "Last Played"}
             <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
           {/if}
         </div>

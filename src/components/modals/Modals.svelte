@@ -8,6 +8,7 @@
   import LanguageSelect from "./LanguageSelect.svelte";
   import NowPlayingBackground from "./NowPlayingBackground.svelte";
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
+  import ParserVariables from "./ParserVariables.svelte";
   import SavingSettings from "./SavingSettings.svelte";
   import AlbumSortOrder from "./view-settings/AlbumSortOrder.svelte";
   import ArtistSortOrder from "./view-settings/ArtistSortOrder.svelte";
@@ -29,6 +30,7 @@
 <ArtOptions />
 <Controlled />
 <AdvancedSearchFilters />
+<ParserVariables />
 
 <!-- ? Settings -->
 <BlacklistFolders />

@@ -29,6 +29,8 @@ export class Song {
   trackNumber?: number;
   totalTracks?: number;
 
+  hasFileName: boolean = true;
+
   /**
    * Creates a new Song.
    */
@@ -127,6 +129,8 @@ export class Song {
   static fromJSON(json: any, lastPlayedOn = "Never", numTimesPlayed = 0): Song {
     let title, album, artist, composer, albumArtist, releaseYear, length, bitRate, sampleRate, size, filePath, artPath, genre, trackNumber, totalTracks;
     
+    let hasFileName = true;
+
     if (json.title && json.filename.endsWith("flac")) {
       title = json.title;
       album = json.album;
@@ -146,6 +150,7 @@ export class Song {
         const nameStartIdx = json.filename.lastIndexOf(path.sep) + 1;
         const extensionIdx = json.filename.lastIndexOf(".");
         title = json.filename.substring(nameStartIdx, extensionIdx);
+        hasFileName = false;
       }
 
       album = json.talb ?? json.tal;
@@ -171,6 +176,8 @@ export class Song {
     filePath = json.filename;
     artPath = json.albumpath;
 
-    return new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, artPath, lastPlayedOn, numTimesPlayed, genre, trackNumber, totalTracks);
+    const result = new Song(title, album, artist, composer, albumArtist, releaseYear ? parseInt(releaseYear) : -1, length, bitRate, sampleRate, size, filePath, artPath, lastPlayedOn, numTimesPlayed, genre, trackNumber, totalTracks);
+    result.hasFileName = hasFileName;
+    return result;
   }
 }

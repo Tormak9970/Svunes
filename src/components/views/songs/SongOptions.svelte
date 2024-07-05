@@ -4,9 +4,8 @@
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
-  import { showMetadataParser, songIdsToParse } from "@stores/Modals";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
-  import { playlists, playlistsMap } from "@stores/State";
+  import { playlists, playlistsMap, songIdsToParse } from "@stores/State";
   import { location, push, replace } from "svelte-spa-router";
 
   export let menuIsOpen: boolean;
@@ -101,9 +100,9 @@
    * Shows the metadata parser.
    */
   function showInfoParser() {
-    $showMetadataParser = true;
     menuIsOpen = false;
     $songIdsToParse = [ song.id ];
+    push("/metadata-parser");
   }
 
   /**

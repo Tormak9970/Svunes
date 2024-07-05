@@ -1,16 +1,17 @@
 <script lang="ts">
+  import ViewImage from "@component-utils/ViewImage.svelte";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Album } from "@lib/models/Album";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
-  import { albumSortOrder } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import ViewImage from "../../utils/ViewImage.svelte";
+  import type { AlbumSortOrder } from "../../../types/Settings";
 
   export let album: Album;
+  export let detailType: AlbumSortOrder;
   export let isSelectable = true;
 
   $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
@@ -54,19 +55,19 @@
           {album.name}
         </div>
         <div class="secondary">
-          {#if $albumSortOrder === "Alphabetical"}
+          {#if detailType === "Alphabetical"}
             <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
-          {:else if $albumSortOrder === "Artist"}
+          {:else if detailType === "Artist"}
             <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
-          {:else if $albumSortOrder === "Year"}
+          {:else if detailType === "Year"}
             <div in:fade={{ duration: 200 }}>{album.releaseYear === -1 ? "Unkown" : album.releaseYear}</div>
-          {:else if $albumSortOrder === "Length"}
+          {:else if detailType === "Length"}
             <div in:fade={{ duration: 200 }}>{album.displayAlbumLength()}</div>
-          {:else if $albumSortOrder === "Track Count"}
+          {:else if detailType === "Track Count"}
             <div in:fade={{ duration: 200 }}>{album.songIds.length + " tracks"}</div>
-          {:else if $albumSortOrder === "Most Played"}
+          {:else if detailType === "Most Played"}
             <div in:fade={{ duration: 200 }}>{album.numTimesPlayed}</div>
-          {:else if $albumSortOrder === "Last Played"}
+          {:else if detailType === "Last Played"}
             <div in:fade={{ duration: 200 }}>{album.lastPlayedOn === "Never" ? "Never" : renderDate(album.lastPlayedOn)}</div>
           {/if}
         </div>
