@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import Marquee from "@layout/Marquee.svelte";
@@ -7,7 +8,6 @@
   import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
-  import Icon from "../../../utils/Icon.svelte";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";
   import ProgressControls from "../ProgressControls.svelte";

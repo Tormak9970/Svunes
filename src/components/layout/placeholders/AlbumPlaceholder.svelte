@@ -1,6 +1,6 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import Album from "@ktibow/iconset-material-symbols/album";
-  import Icon from "../../utils/Icon.svelte";
 
   export let width = 30;
   export let height = 30;

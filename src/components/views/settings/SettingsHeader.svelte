@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Button from "../../interactables/Button.svelte";
-  import Icon from "../../utils/Icon.svelte";
-  import OverlayHeader from "../../overlays/utils/OverlayHeader.svelte";
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
 
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
 

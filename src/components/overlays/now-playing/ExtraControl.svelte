@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
   import { showCarMode, showSleepTimerSelection } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
-  import Button from "../../interactables/Button.svelte";
-  import Icon from "../../utils/Icon.svelte";
 
   import Bedtime from "@ktibow/iconset-material-symbols/bedtime-outline-rounded";
   import DirectionsCar from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";

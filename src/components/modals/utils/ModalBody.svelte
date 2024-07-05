@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import type { IconifyIcon } from "@iconify/types";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
-  import Icon from "../../utils/Icon.svelte";
 
   export let display = "flex";
   export let extraOptions: HTMLDialogAttributes = {};

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import Checkbox from "@interactables/Checkbox.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import CardClickable from "@layout/CardClickable.svelte";
@@ -6,7 +7,6 @@
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import PlaylistImage from "@views/playlists/PlaylistImage.svelte";
   import { createEventDispatcher } from "svelte";
-  import Icon from "../../utils/Icon.svelte";
 
   const dispatch = createEventDispatcher();
 

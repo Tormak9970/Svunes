@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
+  import ViewImage from "@component-utils/ViewImage.svelte";
   import Button from "@interactables/Button.svelte";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
   import PlayArrow from "@ktibow/iconset-material-symbols/play-arrow-rounded";
@@ -8,8 +10,6 @@
   import { isPaused, playingSongId, songProgress, songsMap } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
   import { onDestroy } from "svelte";
-  import Icon from "../../utils/Icon.svelte";
-  import ViewImage from "../../utils/ViewImage.svelte";
 
   export let clampedHeight: number;
   export let hasDragged: boolean;

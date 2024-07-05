@@ -1,6 +1,6 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import MusicNote from "@ktibow/iconset-material-symbols/music-note-rounded";
-  import Icon from "../../utils/Icon.svelte";
 
   export let width = 30;
   export let height = 30;

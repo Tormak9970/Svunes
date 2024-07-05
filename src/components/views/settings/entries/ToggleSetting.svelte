@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import type { IconifyIcon } from "@iconify/types";
   import Toggle from "@interactables/Toggle.svelte";
   import Card from "@layout/Card.svelte";
-  import Icon from "../../../utils/Icon.svelte";
 
   export let label: string;
   export let description: string;

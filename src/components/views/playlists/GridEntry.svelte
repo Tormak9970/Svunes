@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
@@ -11,7 +12,6 @@
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import { GridSize } from "../../../types/Settings";
-  import Icon from "../../utils/Icon.svelte";
   import PlaylistImage from "./PlaylistImage.svelte";
   import PlaylistOptions from "./PlaylistOptions.svelte";
 

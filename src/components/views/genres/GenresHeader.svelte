@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import Search from "@ktibow/iconset-material-symbols/search";
   import Settings from "@ktibow/iconset-material-symbols/settings";
@@ -6,7 +7,6 @@
   import { lastView, selectedView } from "@stores/State";
   import { push } from "svelte-spa-router";
   import { View } from "../../../types/View";
-  import Icon from "../../utils/Icon.svelte";
   import ViewHeader from "../utils/ViewHeader.svelte";
 
   export let highlight: boolean;
