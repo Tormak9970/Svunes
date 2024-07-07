@@ -29,13 +29,13 @@
   }
   
   const groups = {
-    "%title%": "(?<title>.+)",
-    "%album%": "(?<album>.+)",
-    "%track%": "(?<track>\\d+)",
-    "%artist%": "(?<artist>.+)",
-    "%albumartist%": "(?<albumArtist>.+)",
-    "%genre%": "(?<genre>.+)",
-    "%year%": "(?<year>\\d+)",
+    "%title%": "(?<title>.+?)",
+    "%album%": "(?<album>.+?)",
+    "%track%": "(?<track>\\d+?)",
+    "%artist%": "(?<artist>.+?)",
+    "%albumartist%": "(?<albumArtist>.+?)",
+    "%genre%": "(?<genre>.+?)",
+    "%year%": "(?<year>\\d+?)",
     "%dummy%": "(.+)",
   }
   const groupFieldLUT = {
@@ -67,7 +67,6 @@
   let tabsUsed: TabItem[] = [];
   let tab: string = "";
 
-
   function escapeRegExpElements(value: string) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
@@ -92,6 +91,7 @@
    * Writes the changes to the song files and updates the in-memory data.
    */
   function save() {
+    const songPaths: Record<string, string> = {};
     const changes: Record<string, SongEditFields> = {};
     const filteredResults = results.filter((result) => Object.keys(result).length > 2);
 
@@ -99,7 +99,8 @@
       const result = filteredResults[i];
       const song = $songsMap[result.songId];
       
-      changes[song.id] = {
+      songPaths[song.id] = song.filePath;
+      changes[song.filePath] = {
         "artPath": song.artPath,
         "title": result.title ?? song.title,
         "album": result.album ?? song.album,
@@ -113,7 +114,7 @@
     }
 
     $showWritingChanges = true;
-    EditController.bulkEditSongs(Object.keys(changes), changes).then(() => {
+    EditController.bulkEditSongs(songPaths, changes).then(() => {
       canSave = false;
       $showWritingChanges = false;
       pop();
@@ -138,21 +139,21 @@
     parserWasRun = true;
     const tabs: TabItem[] = [];
 
-    let withoutTemplates = patternString.split(templateSplitter);
-    withoutTemplates = withoutTemplates.slice(1, withoutTemplates.length - 1);
+    let patternParts = patternString.split(templateSplitter);
+    patternParts = patternParts.slice(1, patternParts.length - 1);
 
-    for (let i = 0; i < withoutTemplates.length; i++) {
-      const element = withoutTemplates[i] as (keyof typeof groupNameLUT | "%dummy%");
+    for (let i = 0; i < patternParts.length; i++) {
+      const element = patternParts[i] as (keyof typeof groupNameLUT | "%dummy%");
 
       const group = groups[element];
       if (group) {
-        withoutTemplates[i] = group;
+        patternParts[i] = group;
 
         if (element !== "%dummy%") {
           tabs.push({ label: groupNameLUT[element], value: groupFieldLUT[element] });
         }
       } else {
-        withoutTemplates[i] = escapeRegExpElements(element);
+        patternParts[i] = escapeRegExpElements(element);
       }
     }
 
@@ -161,7 +162,7 @@
 
     tabsUsed = tabs;
 
-    const withGroups = withoutTemplates.join("");
+    const withGroups = patternParts.join("");
     const regex = new RegExp(`^${withGroups}$`);
 
     results = $songIdsToParse.map((id) => {

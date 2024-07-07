@@ -10,7 +10,7 @@
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import { exit } from "@tauri-apps/api/process";
   import { onDestroy, onMount } from "svelte";
-  import Router, { location, push } from 'svelte-spa-router';
+  import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
   import { AppController } from "../lib/controllers/AppController";
   import { routes, viewRoutesLUT } from "../routes";
@@ -34,6 +34,14 @@
   let isDesktop = false;
 
   let oldNumAudioDevices: number;
+
+  function conditionsFailed(event: ConditionsFailedEvent) {
+    console.error('conditionsFailed event', event.detail);
+
+    if ((event.detail.userData as any)?.reason === 'key-dne') {
+      replace('/albums');
+    }
+  }
 
   function handleMediaDeviceChange() {
     navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) => {
@@ -122,7 +130,7 @@
   {#if $inSelectMode}
     <SelectHeader />
   {/if}
-  <Router {routes} restoreScrollState={true} />
+  <Router {routes} restoreScrollState={true} on:conditionsFailed={conditionsFailed} />
 </div>
 {#if isDesktop}
   <Titlebar title="Tunistic" />

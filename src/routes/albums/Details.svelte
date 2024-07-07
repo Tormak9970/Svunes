@@ -31,7 +31,6 @@
 
   export let params: { key?: string } = {};
   $: album = params.key ? $albumsMap[params!.key!] : undefined;
-  $: if (params.key && !album) pop();
 
   $: artist = album?.albumArtist ? $artistsMap[album?.albumArtist] : undefined;
   $: artistOtherAlbums = Array.from(artist?.albumNames ?? []).filter((name) => name !== album?.name).map((name) => $albumsMap[name]);

@@ -1,3 +1,5 @@
+import wrap from "svelte-spa-router/wrap";
+import { get } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
 import Albums from "./routes/albums/Albums.svelte";
 import AlbumsByArtist from "./routes/albums/AlbumsByArtist.svelte";
@@ -30,6 +32,7 @@ import Settings from "./routes/settings/Settings.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import SongEditor from "./routes/songs/Edit.svelte";
 import Songs from "./routes/songs/Songs.svelte";
+import { albumsMap } from "./stores/State";
 
 /**
  * A LUT for mapping Views to their routes.
@@ -56,7 +59,19 @@ export const routes = {
   "/playlists/:id/edit": PlaylistEditor,
 
   "/albums": Albums,
-  "/albums/:key": AblumDetails,
+  "/albums/:key": wrap({
+    component: AblumDetails,
+    userData: {
+      reason: "key-dne"
+    },
+    conditions: [
+      (detail) => {
+        const key = detail.params!.key;
+        const album = get(albumsMap)[key]
+        return !!album;
+      }
+    ]
+  }),
   "/albums/:key/alt": AblumDetails,
   "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,

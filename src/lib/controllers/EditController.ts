@@ -39,6 +39,7 @@ export class EditController {
   private static editAlbumFields(original: Album, editFields: AlbumEditFields): void {
     for (const key of Object.keys(editFields)) {
       const albumKey = key as keyof Album;
+
       // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
       original[albumKey] = editFields[key as keyof AlbumEditFields];
     }
@@ -78,10 +79,12 @@ export class EditController {
 
   /**
    * Applies the changes made to a list of songs, and updates the artist/album (or creates/deletes them) as needed.
-   * @param songIds The list of songIds.
-   * @param changes A dictionary containing the edited fields.
+   * @param songPaths A dictionary mapping filePath -> songId.
+   * @param changes A dictionary mapping filePath -> edited fields.
    */
-  static async bulkEditSongs(songIds: string[], changes: Record<string, SongEditFields>) {
+  static async bulkEditSongs(songPaths: Record<string, string>, changes: Record<string, SongEditFields>) {
+    const songIds = Object.keys(songPaths);
+
     const songMap = get(songsMap);
     const success = await RustInterop.writeMusicFiles(changes);
 
@@ -113,58 +116,81 @@ export class EditController {
    * @param changedAlbumFields The edited album fields.
    */
   static async editAlbum(original: Album, changedAlbumFields: AlbumEditFields) {
-    if (changedAlbumFields.artPath) {
-      const copiedPath = await this.copyAlbumImage(changedAlbumFields.artPath, original.name);
-      changedAlbumFields.artPath = copiedPath;
-    }
+    return new Promise<void>(async (resolve, reject) => {
+      let isRenamedToAnother = false;
 
-    const songMap = get(songsMap);
-    const changes: Record<string, SongEditFields> = {};
-
-    for (const id of original.songIds) {
-      const song = songMap[id];
-      changes[song.filePath] = {
-        "artPath": changedAlbumFields.artPath,
-        "title": song.title,
-        "album": changedAlbumFields.name,
-        "composer": song.composer,
-        "albumArtist": changedAlbumFields.artist,
-        "artist": song.artist,
-        "releaseYear": changedAlbumFields.releaseYear,
-        "genre": changedAlbumFields.genre,
-        "trackNumber": song.trackNumber
-      };
-    }
-    
-    const success = await RustInterop.writeMusicFiles(changes);
-
-    if (success) {
-      this.editAlbumFields(original, changedAlbumFields);
-      await original.setBackgroundFromImage();
-      
+      let albumToEdit = original;
       const albumsList = get(albums);
-      albums.set(albumsList);
+
+      if (changedAlbumFields.artPath) {
+        const copiedPath = await this.copyAlbumImage(changedAlbumFields.artPath, original.name);
+        changedAlbumFields.artPath = copiedPath;
+      }
+
+      const songMap = get(songsMap);
+      const changes: Record<string, SongEditFields> = {};
+
+      const matchingAlbum = albumsList.find((album) => album.name === changedAlbumFields.name);
+      if (matchingAlbum) {
+        albumToEdit = matchingAlbum;
+        changedAlbumFields.artist = albumToEdit.albumArtist;
+        isRenamedToAnother = true;
+      }
 
       for (const id of original.songIds) {
         const song = songMap[id];
-        const change = changes[song.filePath];
-
-        song.artPath = change.artPath;
-        song.albumArtist = change.albumArtist;
-        song.releaseYear = change.releaseYear ?? -1;
-        song.genre = change.genre;
+        changes[song.filePath] = {
+          "artPath": changedAlbumFields.artPath,
+          "title": song.title,
+          "album": changedAlbumFields.name,
+          "composer": song.composer,
+          "albumArtist": changedAlbumFields.artist,
+          "artist": song.artist,
+          "releaseYear": changedAlbumFields.releaseYear,
+          "genre": changedAlbumFields.genre,
+          "trackNumber": song.trackNumber
+        };
       }
+      
+      const success = await RustInterop.writeMusicFiles(changes);
+      if (success) {
+        this.editAlbumFields(albumToEdit, changedAlbumFields);
+        await albumToEdit.setBackgroundFromImage();
 
-      const songsList = get(songs);
-      songs.set(songsList);
-      AppController.loadArtistsFromSongs(songsList);
-      AppController.loadGenresFromSongs(songsList);
+        for (const id of original.songIds) {
+          const song = songMap[id];
+          const change = changes[song.filePath];
 
-      get(showInfoSnackbar)({ message: "Finished writing changes" });
-      LogController.log(`Finished writing edits to ${original.name}`);
-    } else {
-      get(showErrorSnackbar)({ message: "Failed to write all changes" });
-    }
+          song.album = change.album;
+          song.artPath = change.artPath;
+          song.albumArtist = change.albumArtist;
+          song.releaseYear = change.releaseYear ?? -1;
+          song.genre = change.genre;
+        }
+
+        const songsList = get(songs);
+        songs.set(songsList);
+
+        if (isRenamedToAnother) {
+          albumToEdit.songIds.push(...original.songIds);
+
+          const originalIndex = albumsList.indexOf(original);
+          albumsList.splice(originalIndex, 1);
+        }
+        
+        albums.set(albumsList);
+
+        AppController.loadArtistsFromSongs(songsList);
+        AppController.loadGenresFromSongs(songsList);
+
+        get(showInfoSnackbar)({ message: "Finished writing changes" });
+        LogController.log(`Finished writing edits to ${original.name}`);
+        resolve();
+      } else {
+        get(showErrorSnackbar)({ message: "Failed to write all changes" });
+        reject();
+      }
+    });
   }
 
   /**

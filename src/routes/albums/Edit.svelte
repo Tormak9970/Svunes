@@ -52,9 +52,10 @@
    * Closes the edit overlay.
    */
   function back() {
-    pop();
     if (albumNameChanged) {
       replace(`/albums/${albumName}`);
+    } else {
+      pop();
     }
   }
 

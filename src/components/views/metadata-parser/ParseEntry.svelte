@@ -21,7 +21,7 @@
     <Icon icon={SubdirectoryArrowRight} />
     <div class="field">{tab}</div>
     <Icon icon={ArrowForward} />
-    <div class="value">{value}</div>
+    <div class="value" style:color="rgb(var({doesntMatchPattern ? "--m3-scheme-error" : "--m3-scheme-primary"})">{value}</div>
   </div>
 </div>
 
