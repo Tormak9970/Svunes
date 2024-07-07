@@ -13,11 +13,21 @@
 
   const dispatch = createEventDispatcher();
   let dialog: HTMLDialogElement;
+
+  /**
+   * Handles opening the modal.
+   */
+  function openModal(node: HTMLDialogElement) {
+    node.inert = true;
+    node.showModal();
+    node.inert = false;
+  }
+
   $: {
     if (!dialog) break $;
 
     if (open) {
-      dialog.showModal();
+      openModal(dialog);
     } else {
       hideDialog = true;
     }

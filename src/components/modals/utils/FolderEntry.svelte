@@ -10,10 +10,8 @@
 
 <div class="folder-entry">
   <div class="path">{folderPath}</div>
-  <Button type="filled" iconType="full" extraOptions={{ style: "width: 24px; height: 24px" }} on:click={() => onDelete(index)}>
-    <div style="height: 100%; display: flex; justify-content: center; align-items: center;">
-      <Icon icon={Close} width="20px" height="20px" />
-    </div>
+  <Button type="text" iconType="full" size="2rem" on:click={() => onDelete(index)}>
+    <Icon icon={Close} />
   </Button>
 </div>
 
@@ -32,5 +30,9 @@
     max-width: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  .folder-entry :global(svg) {
+    color: rgb(var(--m3-scheme-error));
   }
 </style>

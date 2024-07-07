@@ -132,7 +132,7 @@ export class SettingsController {
     this.settingsPath = setsPath;
     
     this.settings = await this.loadSettingsFromDevice();
-    this.setStores();
+    await this.setStores();
 
     LogController.log("Initialized Settings.");
   }
@@ -287,12 +287,18 @@ export class SettingsController {
   /**
    * Sets the Svelte stores associated with the settings.
    */
-  private static setStores(): void {
+  private static async setStores(): Promise<void> {
     palette.set(this.settings.palette);
     useOledPalette.set(this.settings.useOledPalette);
     themePrimaryColor.set(this.settings.themePrimaryColor);
 
-    musicDirectories.set(this.settings.musicDirectories);
+    const existingMusicDirs = [];
+
+    await Promise.all(this.settings.musicDirectories.map((dir) => fs.exists(dir))).then((exists: boolean[]) => {
+      const filtered = this.settings.musicDirectories.filter((_, i) => exists[i]);
+      musicDirectories.set(filtered);
+    });
+
     selectedView.set(this.settings.selectedView);
 
 
