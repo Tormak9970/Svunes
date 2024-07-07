@@ -72,7 +72,7 @@
         </div>
         <div class="info">
           <div class="name">
-            {song.title}
+            {song.title ?? song.fileName}
           </div>
           <div class="secondary">
             <div class="artist">

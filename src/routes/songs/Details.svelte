@@ -140,7 +140,7 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={song?.artPath} />
     <div class="details">
-      <DetailsField icon={Sell} headline={song?.title} />
+      <DetailsField icon={Sell} headline={song?.title ?? "Unkown"} />
       <DetailsField icon={Album} headline={song?.album ?? "Unkown"} />
       <DetailsField icon={Artist} headline={song?.artist ?? "Unkown"} />
       <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? "Unkown" : song?.releaseYear.toString()} />

@@ -17,7 +17,7 @@
   const langs: AppLanguage[] = Object.values(AppLanguage).filter((v) => !isNaN(Number(v))) as AppLanguage[];
 </script>
 
-<SmallModalBody headline="Select Language" bind:open={$showSelectLanguage}>
+<SmallModalBody open headline="Select Language" on:close={() => $showSelectLanguage = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each langs as lang}

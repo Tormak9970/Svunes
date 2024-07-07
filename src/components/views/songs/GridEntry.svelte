@@ -57,7 +57,7 @@
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight}px;" class:expand={$songGridSize !== GridSize.LARGE}>
       <div class="info">
         <div class="name">
-          {song.title}
+          {song.title ?? song.fileName}
         </div>
         <div class="secondary">
           {#if $songSortOrder === "Alphabetical"}

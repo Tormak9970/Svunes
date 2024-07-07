@@ -28,6 +28,8 @@
   export let toggleFavorite: () => void;
   export let topBackgroundColor: string;
   export let bottomBackgroundColor: string;
+
+  $: label = song?.title ?? song?.fileName;
 </script>
 
 <div
@@ -46,10 +48,10 @@
   <div class="content">
     <div class="song-info">
       <div class="title">
-        {#if song?.title.length && song?.title.length > 28}
-          <Marquee speed={40} gap={100}>{song?.title}</Marquee>
+        {#if label && label.length > 28}
+          <Marquee speed={40} gap={100}>{label}</Marquee>
         {:else}
-          {song?.title}
+          {label}
         {/if}
       </div>
       <div class="artist">{song?.artist ?? "Unkown"}</div>

@@ -26,6 +26,8 @@
   $: favoritesPlaylist = $playlists.find((playlist) => playlist.name === "Favorites");
   $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
 
+  $: label = song?.title ?? song?.fileName;
+
   const disabledColor = "rgb(var(--m3-scheme-outline-variant))";
   const enabledColor = "rgb(var(--m3-scheme-primary))";
 
@@ -61,12 +63,12 @@
   </div>
   <div class="song-info">
     <div class="title">
-      {#if song?.title.length && song?.title.length > 28}
+      {#if label && label.length > 28}
         <div style="margin-left: 4%;">
-          <Marquee speed={50} gap={100}>{song?.title}</Marquee>
+          <Marquee speed={50} gap={100}>{label}</Marquee>
         </div>
       {:else}
-        {song?.title}
+        {label}
       {/if}
     </div>
     <div class="artist">{song?.artist ?? "Unkown"}</div>

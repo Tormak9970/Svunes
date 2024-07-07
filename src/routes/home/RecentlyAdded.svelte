@@ -15,7 +15,7 @@
   import PlayButton from "@views/utils/PlayButton.svelte";
   import { pop } from "svelte-spa-router";
 
-  const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
+  const keyFunction = (entry: { data: Song }) => entry.data.filePath;
 
   $: recentlyAddedSongs = [ ...$songs ].sort((a, b) => Date.parse(b.dateAdded!) - Date.parse(a.dateAdded!));
   $: limited = recentlyAddedSongs.length > 100 ? recentlyAddedSongs.slice(0, 100) : recentlyAddedSongs;

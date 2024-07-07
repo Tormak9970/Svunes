@@ -29,6 +29,8 @@
   export let convertedPath: string;
   export let topBackgroundColor: string;
   export let bottomBackgroundColor: string;
+
+  $: label = song?.title ?? song?.fileName;
 </script>
 
 <div
@@ -50,8 +52,8 @@
       </Button>
       <div class="song-info">
         <div class="title">
-          {#key song?.title}
-            <Marquee speed={35} gap={100}>{song?.title}</Marquee>
+          {#key label}
+            <Marquee speed={35} gap={100}>{label}</Marquee>
           {/key}
         </div>
         <div class="artist">{song?.artist ?? "Unkown"}</div>

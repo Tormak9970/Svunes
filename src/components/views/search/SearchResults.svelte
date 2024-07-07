@@ -37,8 +37,8 @@
 
     if (($chips.length === 0 || $chips.includes("song"))) {
       const songResults = $songs.filter((song) => {
-        return song.title.includes($query) &&
-          (!$title || ($title && !song.hasFileName)) &&
+        return (song.title ?? song.fileName).includes($query) &&
+          (!$title || ($title && !song.title)) &&
           (!$cover || ($cover && !song.artPath)) &&
           (!$album || ($album && !song.album)) &&
           (!$artist || ($artist && !song.artist)) &&
@@ -87,7 +87,7 @@
       <VirtualizedResults items={$searchResults} keyFunction={(entry) => entry.data.id ?? entry.data.name ?? entry.data} let:entry>
         {#if typeof entry === "string"}
           <SearchSection label={entry} />
-        {:else if !!entry.title}
+        {:else if !!entry.fileName}
           <SongListEntry song={entry} detailType="Alphabetical" />
         {:else if !!entry.artists && !!entry.releaseYear}
           <AlbumListEntry album={entry} isSelectable={false} detailType="Alphabetical" />

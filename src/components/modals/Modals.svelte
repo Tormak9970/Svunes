@@ -1,4 +1,5 @@
 <script>
+  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPlaylistSortOrder, showSavingSettings, showSelectLanguage, showSongSortOrder } from "@stores/Modals";
   import AdvancedSearchFilters from "./AdvancedSearchFilters.svelte";
   import ArtOptions from "./ArtOptions.svelte";
   import BlacklistFolders from "./BlacklistFolders.svelte";
@@ -15,27 +16,58 @@
   import GridSize from "./view-settings/GridSize.svelte";
   import PlaylistSortOrder from "./view-settings/PlaylistSortOrder.svelte";
   import SongSortOrder from "./view-settings/SongSortOrder.svelte";
-
 </script>
 
 <!-- ? View option modals -->
-<GridSize />
-<PlaylistSortOrder />
-<SongSortOrder />
-<AlbumSortOrder />
-<ArtistSortOrder />
-
-<!-- ? Misc -->
-<EditMusicFolders />
-<ArtOptions />
-<Controlled />
-<AdvancedSearchFilters />
-<ParserVariables />
+{#if $showGridSize}
+  <GridSize />
+{/if}
+{#if $showPlaylistSortOrder}
+  <PlaylistSortOrder />
+{/if}
+{#if $showSongSortOrder}
+  <SongSortOrder />
+{/if}
+{#if $showAlbumSortOrder}
+  <AlbumSortOrder />
+{/if}
+{#if $showArtistSortOrder}
+  <ArtistSortOrder />
+{/if}
 
 <!-- ? Settings -->
-<BlacklistFolders />
-<LanguageSelect />
-<EditViewOrder />
-<NowPlayingTheme />
-<NowPlayingBackground />
-<SavingSettings />
+{#if $showEditMusicFolders}
+ <EditMusicFolders />
+{/if}
+{#if $showBlacklistFolders}
+  <BlacklistFolders />
+{/if}
+{#if $showSelectLanguage}
+  <LanguageSelect />
+{/if}
+{#if $showEditViewOrder}
+  <EditViewOrder />
+{/if}
+{#if $showNowPlayingTheme}
+  <NowPlayingTheme />
+{/if}
+{#if $showNowPlayingBackground}
+  <NowPlayingBackground />
+{/if}
+{#if $showSavingSettings}
+  <SavingSettings />
+{/if}
+
+<!-- ? Misc -->
+{#if $showArtOptions}
+  <ArtOptions />
+{/if}
+{#if $showControlledModal}
+  <Controlled />
+{/if}
+{#if $showAdvancedFilters}
+  <AdvancedSearchFilters />
+{/if}
+{#if $showParserVariables}
+  <ParserVariables />
+{/if}

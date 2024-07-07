@@ -72,7 +72,7 @@
   });
 </script>
 
-<ModalBody open={$showNowPlayingTheme} headline="Now Playing Theme" on:close={() => { $showNowPlayingTheme = false; selectedTheme = $nowPlayingTheme; }}>
+<ModalBody open headline="Now Playing Theme" on:close={() => { $showNowPlayingTheme = false; selectedTheme = $nowPlayingTheme; }}>
   <div class="content">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="themes-container" style:left="{20 + $dragOffset}px" use:drag on:drag={handleDrag}>

@@ -20,6 +20,8 @@
 
   $: progressWidth = song ? $songProgress / song.length * 100 : 0;
 
+  $: label = song?.title ?? song?.fileName;
+
   function handlePlay() {
     if ($isPaused) {
       PlaybackController.resume();
@@ -48,9 +50,9 @@
   <div class="m3-container">
     <ViewImage src={covertedPath} width={30} height={30} borderRadius="4px" />
     <div class="text-container">
-      {#key song?.title}
+      {#key label}
         <Marquee speed={40} gap={100}>
-          <p class="m3-font-body-medium">{song?.title}</p>
+          <p class="m3-font-body-medium">{label}</p>
         </Marquee>
       {/key}
     </div>

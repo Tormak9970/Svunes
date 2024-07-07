@@ -18,9 +18,11 @@
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
   
+  let titleEdited = false;
+
   let artPath: string | undefined;
 
-  let title: string;
+  let title: string | undefined;
   let album: string | undefined;
   let artist: string | undefined;
   let albumArtist: string | undefined;
@@ -78,7 +80,7 @@
 
     const editFields: SongEditFields = {
       "artPath": artPath,
-      "title": title === song?.fileName ? undefined : title,
+      "title": title,
       "album": album !== "" ? album : undefined,
       "composer": composer !== "" ? composer : undefined,
       "albumArtist": albumArtist !== "" ? albumArtist : undefined,
@@ -135,7 +137,7 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
     <div class="fields">
-      <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Title" bind:value={title} on:input={() => titleEdited = true } extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Artist" bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album Artist" bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />

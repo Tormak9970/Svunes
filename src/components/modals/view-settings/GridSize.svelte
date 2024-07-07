@@ -35,7 +35,7 @@
   }
 </script>
 
-<SmallModalBody headline="Grid Size" bind:open={$showGridSize}>
+<SmallModalBody headline="Grid Size" open on:close={() => $showGridSize = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">

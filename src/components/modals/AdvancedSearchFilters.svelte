@@ -29,7 +29,7 @@
   }
 </script>
 
-<ModalBody bind:open={$showAdvancedFilters} headline="Advanced Song Filters" on:close={() => $showAdvancedFilters = false }>
+<ModalBody open headline="Advanced Song Filters" on:close={() => $showAdvancedFilters = false }>
   <div style="height: fit-content;">
     {#each options as option, i (option.label + "|" + i)}
       <div class="entry">

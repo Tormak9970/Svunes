@@ -1,7 +1,4 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
-  import type { Unsubscriber } from "svelte/store";
-  
   import { showEditViewOrder } from "@stores/Modals";
   import { showErrorSnackbar, viewIndices, viewsToRender } from "@stores/State";
   import { View, Views, getViewName } from "../../types/View";
@@ -15,13 +12,11 @@
   import { clamp, swap } from "@lib/utils/Utils";
   import { drag } from "svelte-gesture";
 
-  let viewsToRenderUnsub: Unsubscriber;
-  let viewIndicesUnsub: Unsubscriber;
   const entryHeight = 40;
 
-  let viewsList: View[] = [];
-  let newOrder: number[] = [];
-  let checkDict: Record<View, boolean>;
+  let viewsList = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]);
+  let newOrder = viewsList.map((_, i) => i);
+  let checkDict = Object.fromEntries(viewsList.map((view) => [view, $viewsToRender.includes(view)])) as Record<View, boolean>;
 
   let reset = false;
 
@@ -79,26 +74,9 @@
     $viewIndices = Object.fromEntries(viewsList.map((item, i) => [item, i])) as Record<View, number>;
     $showEditViewOrder = false;
   }
-
-  onMount(() => {
-    viewsToRenderUnsub = viewsToRender.subscribe((newViews) => {
-      viewsList = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]);
-      newOrder = viewsList.map((_, i) => i);
-      checkDict = Object.fromEntries(viewsList.map((view) => [view, newViews.includes(view)])) as Record<View, boolean>;
-    });
-    viewIndicesUnsub = viewIndices.subscribe((indices) => {
-      viewsList = Views.sort((a, b) => indices[a] - indices[b]);
-      newOrder = viewsList.map((_, i) => i);
-    });
-  });
-
-  onDestroy(() => {
-    if (viewsToRenderUnsub) viewsToRenderUnsub();
-    if (viewIndicesUnsub) viewIndicesUnsub();
-  });
 </script>
 
-<ModalBody bind:open={$showEditViewOrder} headline="Library Order" on:close={() => $showEditViewOrder = false }>
+<ModalBody open headline="Library Order" on:close={() => $showEditViewOrder = false}>
   <div>
     {#key reset}
       <div class="drag-container" style:height="{viewsList.length * entryHeight}px">

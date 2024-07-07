@@ -15,7 +15,7 @@
   }
 </script>
 
-<SmallModalBody headline="Sort Order" bind:open={$showPlaylistSortOrder}>
+<SmallModalBody headline="Sort Order" open on:close={() => $showPlaylistSortOrder = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">

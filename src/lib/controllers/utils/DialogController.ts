@@ -1,4 +1,4 @@
-import { dialogModalCancel, dialogModalCancelText, dialogModalConfirm, dialogModalConfirmText, dialogModalMessage, dialogModalTitle, showDialogModal } from "@stores/Modals";
+import { controlledModalCancel, controlledModalCancelText, controlledModalConfirm, controlledModalConfirmText, controlledModalMessage, controlledModalTitle, showControlledModal } from "@stores/Modals";
 
 /**
  * Controller class for handling dialog modals.
@@ -12,14 +12,14 @@ export class DialogController {
    */
   static async message(title: string, message: string, confirmText: string): Promise<boolean> {
     return new Promise((resolve) => {
-      dialogModalTitle.set(title);
-      dialogModalMessage.set(message);
-      dialogModalConfirmText.set(confirmText);
-      dialogModalConfirm.set(async () => resolve(true));
-      dialogModalCancelText.set("");
-      dialogModalCancel.set(async () => {});
+      controlledModalTitle.set(title);
+      controlledModalMessage.set(message);
+      controlledModalConfirmText.set(confirmText);
+      controlledModalConfirm.set(async () => resolve(true));
+      controlledModalCancelText.set("");
+      controlledModalCancel.set(async () => {});
 
-      showDialogModal.set(true);
+      showControlledModal.set(true);
     });
   }
 
@@ -32,15 +32,15 @@ export class DialogController {
    */
   static async ask(title: string, message: string, confirmText: string, cancelText: string): Promise<boolean> {
     return new Promise((resolve) => {
-      dialogModalTitle.set(title);
+      controlledModalTitle.set(title);
       
-      dialogModalMessage.set(message);
-      dialogModalConfirmText.set(confirmText);
-      dialogModalConfirm.set(async () => resolve(true));
-      dialogModalCancelText.set(cancelText);
-      dialogModalCancel.set(async () => resolve(false));
+      controlledModalMessage.set(message);
+      controlledModalConfirmText.set(confirmText);
+      controlledModalConfirm.set(async () => resolve(true));
+      controlledModalCancelText.set(cancelText);
+      controlledModalCancel.set(async () => resolve(false));
 
-      showDialogModal.set(true);
+      showControlledModal.set(true);
     });
   }
 }

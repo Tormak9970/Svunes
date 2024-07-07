@@ -25,10 +25,10 @@ export const showParserVariables = writable(false);
 export const showArtOptions = writable(false);
 export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> = writable(() => {});
 
-export const showDialogModal = writable(false);
-export const dialogModalTitle = writable("");
-export const dialogModalMessage = writable("");
-export const dialogModalConfirmText = writable("");
-export const dialogModalConfirm = writable(async () => {});
-export const dialogModalCancelText = writable("");
-export const dialogModalCancel = writable(async () => {});
+export const showControlledModal = writable(false);
+export const controlledModalTitle = writable("");
+export const controlledModalMessage = writable("");
+export const controlledModalConfirmText = writable("");
+export const controlledModalConfirm = writable(async () => {});
+export const controlledModalCancelText = writable("");
+export const controlledModalCancel = writable(async () => {});

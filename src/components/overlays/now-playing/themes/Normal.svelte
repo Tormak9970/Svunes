@@ -30,6 +30,8 @@
   export let convertedPath: string;
   export let topBackgroundColor: string;
   export let bottomBackgroundColor: string;
+
+  $: label = song?.title ?? song?.fileName;
 </script>
 
 <div
@@ -51,12 +53,12 @@
     <ProgressControls songLength={songLength} />
     <div class="song-info">
       <div class="title">
-        {#if song?.title.length && song?.title.length > 28}
+        {#if label && label.length > 28}
           <div style="margin-left: 4%;">
-            <Marquee speed={50} gap={100}>{song?.title}</Marquee>
+            <Marquee speed={50} gap={100}>{label}</Marquee>
           </div>
         {:else}
-          {song?.title}
+          {label}
         {/if}
       </div>
       <div class="artist">{song?.artist ?? "Unkown"}</div>

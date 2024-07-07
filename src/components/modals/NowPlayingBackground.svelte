@@ -17,7 +17,7 @@
   const backgroundTypes: NowPlayingBackgroundType[] = Object.values(NowPlayingBackgroundType).filter((v) => !isNaN(Number(v))) as NowPlayingBackgroundType[];
 </script>
 
-<SmallModalBody headline="Background Type" bind:open={$showNowPlayingBackground}>
+<SmallModalBody headline="Background Type" open on:close={() => $showNowPlayingBackground = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each backgroundTypes as backgroundType}

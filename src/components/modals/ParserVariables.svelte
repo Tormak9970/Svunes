@@ -4,8 +4,9 @@
   import ModalBody from "./utils/ModalBody.svelte";
 </script>
 
-<ModalBody bind:open={$showParserVariables} headline="Parser Variables" on:close={() => $showParserVariables = false }>
+<ModalBody open headline="Parser Variables" on:close={() => $showParserVariables = false }>
   <div class="content">
+    <div>You can only use a variable once.<br/>%dummy% can be used many times.</div>
     <div><b>%title%</b> - The track's title</div>
     <div><b>%album%</b> - The track's album</div>
     <div><b>%track%</b> - The track number</div>
@@ -13,6 +14,7 @@
     <div><b>%albumartist%</b> - The track's album artist</div>
     <div><b>%genre%</b> - The track's genre</div>
     <div><b>%year%</b> - The track's release year</div>
+    <div><b>%dummy%</b> - A placeholder variable</div>
   </div>
   <div class="actions" slot="buttons">
     <div class="left" />

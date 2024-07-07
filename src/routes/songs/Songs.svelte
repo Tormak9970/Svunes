@@ -15,7 +15,7 @@
   import { afterUpdate } from "svelte";
   import { type SongSortOrder, GridSize } from "../../types/Settings";
 
-  const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
+  const keyFunction = (entry: { data: Song }) => entry.data.filePath;
 
   let gridSize = $songGridSize;
 

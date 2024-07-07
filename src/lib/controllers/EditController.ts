@@ -38,9 +38,9 @@ export class EditController {
    */
   private static editAlbumFields(original: Album, editFields: AlbumEditFields): void {
     for (const key of Object.keys(editFields)) {
-      const songKey = key as keyof Album;
+      const albumKey = key as keyof Album;
       // @ts-expect-error TS is warning about potentially assigning functions to editField's values, but because its hardcoded, we know that can't happen.
-      original[songKey] = editFields[key as keyof AlbumEditFields];
+      original[albumKey] = editFields[key as keyof AlbumEditFields];
     }
   }
 
@@ -61,7 +61,7 @@ export class EditController {
     
     if (success) {
       this.editSongFields(original, editedFields);
-      if (editedFields.title) original.hasFileName = true;
+      
       const songsList = get(songs);
       songs.set(songsList);
       
@@ -71,6 +71,37 @@ export class EditController {
 
       get(showInfoSnackbar)({ message: "Finished writing changes" });
       LogController.log(`Finished writing edits to ${original.id}`);
+    } else {
+      get(showErrorSnackbar)({ message: "Failed to write all changes" });
+    }
+  }
+
+  /**
+   * Applies the changes made to a list of songs, and updates the artist/album (or creates/deletes them) as needed.
+   * @param songIds The list of songIds.
+   * @param changes A dictionary containing the edited fields.
+   */
+  static async bulkEditSongs(songIds: string[], changes: Record<string, SongEditFields>) {
+    const songMap = get(songsMap);
+    const success = await RustInterop.writeMusicFiles(changes);
+
+    if (success) {
+      for (const id of songIds) {
+        const song = songMap[id];
+        const change = changes[song.filePath];
+
+        this.editSongFields(song, change);
+      }
+
+      const songsList = get(songs);
+      songs.set(songsList);
+      
+      AppController.loadAlbumsFromSongs(songsList);
+      AppController.loadArtistsFromSongs(songsList);
+      AppController.loadGenresFromSongs(songsList);
+
+      get(showInfoSnackbar)({ message: "Finished writing changes" });
+      LogController.log(`Finished writing edits to ${songIds.length} songs`);
     } else {
       get(showErrorSnackbar)({ message: "Failed to write all changes" });
     }

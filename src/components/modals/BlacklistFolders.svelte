@@ -3,12 +3,8 @@
   import { showBlacklistFolders } from "@stores/Modals";
   import { blacklistedFolders } from "@stores/State";
   import { dialog } from "@tauri-apps/api";
-  import { onDestroy, onMount } from "svelte";
-  import type { Unsubscriber } from "svelte/store";
   import FolderEntry from "./utils/FolderEntry.svelte";
   import ModalBody from "./utils/ModalBody.svelte";
-
-  let blacklistedDirectoriesUnsub: Unsubscriber;
 
   let folders = [ ...$blacklistedFolders ];
 
@@ -50,19 +46,9 @@
     folders.splice(index, 1);
     folders = [ ...folders ];
   }
-
-  onMount(() => {
-    blacklistedDirectoriesUnsub = blacklistedFolders.subscribe((dirs) => {
-      folders = dirs;
-    });
-  });
-
-  onDestroy(() => {
-    if (blacklistedDirectoriesUnsub) blacklistedDirectoriesUnsub();
-  });
 </script>
 
-<ModalBody bind:open={$showBlacklistFolders} headline="Blacklisted Folders" on:close={() => $showBlacklistFolders = false }>
+<ModalBody open headline="Blacklisted Folders" on:close={() => $showBlacklistFolders = false }>
   <div>
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
