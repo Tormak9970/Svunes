@@ -34,7 +34,7 @@
 
   function onCancel(e: Event) {
     if (canClose) {
-      dispatch("closedByEsc");
+      dispatch("close");
       open = false;
     } else {
       e.preventDefault();
@@ -43,7 +43,7 @@
 
   function onClick() {
     if (canClose) {
-      dispatch("closedByClick");
+      dispatch("close");
       open = false;
     }
   }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { showBlacklistFolders, showSelectLanguage } from "@stores/Modals";
+  import { showBlacklistFolders, showEditMusicFolders, showSelectLanguage } from "@stores/Modals";
   import { filterSongDuration, selectedLanguage } from "@stores/State";
   import { pop } from "svelte-spa-router";
   import { getLanguage } from "../../types/Settings";
@@ -10,6 +10,7 @@
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   import SliderSetting from "@views/settings/entries/SliderSetting.svelte";
   
+  import FolderOpen from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import Language from "@ktibow/iconset-material-symbols/translate-rounded";
   import VisibilityOff from "@ktibow/iconset-material-symbols/visibility-off-rounded";
 </script>
@@ -19,6 +20,7 @@
     <SettingsHeader label="Other" goBack={pop} />
   </span>
   <span class="content" slot="content">
+    <ButtonSetting label="Music Folders" description="Edit the list of folders music is loaded from" icon={FolderOpen} on:click={() => $showEditMusicFolders = true} />
     <SettingSection label="Blacklist" />
     <ButtonSetting label="Blacklisted Folders" description="Blacklisted folders are excluded from being loaded" icon={VisibilityOff} on:click={() => $showBlacklistFolders = true} />
     <SettingSection label="Advanced" />

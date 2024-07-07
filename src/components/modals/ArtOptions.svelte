@@ -46,7 +46,7 @@
   }
 </script>
 
-<ListModalBody open headline="Update Image" on:closedByClick={cancel} on:closedByEsc={cancel}>
+<ListModalBody open headline="Update Image" on:close={cancel}>
   <div class="list">
     <ListItemButton headline="Pick from device" on:click={pickImage} />
     <ListItemButton headline="Remove image" on:click={removeImage} />
