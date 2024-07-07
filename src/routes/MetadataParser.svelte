@@ -11,7 +11,12 @@
   import CheckCircle from "@ktibow/iconset-material-symbols/check-circle-rounded";
   import Help from "@ktibow/iconset-material-symbols/help-rounded";
   import TextRotationNone from "@ktibow/iconset-material-symbols/text-rotation-none-rounded";
+  import type { TabItem } from "@layout/TabsHeader.svelte";
+  import { EditController } from "@lib/controllers/EditController";
   import { showParserVariables } from "@stores/Modals";
+  import { showWritingChanges } from "@stores/Overlays";
+  import ParsePreview from "@views/metadata-parser/ParsePreview.svelte";
+  import type { ParseResult } from "../types/MetadataParser";
 
   type MatchGroups = {
     title?: string;
@@ -22,10 +27,6 @@
     genre?: string;
     year?: string;
   }
-
-  type Result = MatchGroups & {
-    songId: string,
-  }
   
   const groups = {
     "%title%": "(?<title>.+)",
@@ -35,7 +36,25 @@
     "%albumartist%": "(?<albumArtist>.+)",
     "%genre%": "(?<genre>.+)",
     "%year%": "(?<year>\\d+)",
-    "%dummy%": "(?.+)",
+    "%dummy%": "(.+)",
+  }
+  const groupFieldLUT = {
+    "%title%": "title",
+    "%album%": "album",
+    "%track%": "track",
+    "%artist%": "artist",
+    "%albumartist%": "albumArtist",
+    "%genre%": "genre",
+    "%year%": "year",
+  }
+  const groupNameLUT = {
+    "%title%": "Title",
+    "%album%": "Album",
+    "%track%": "Track",
+    "%artist%": "Artist",
+    "%albumartist%": "Album Artist",
+    "%genre%": "Genre",
+    "%year%": "Year",
   }
   const templateSplitter = /(%title%|%album%|%track%|%artist%|%albumartist%|%genre%|%year%|%dummy%)+/;
 
@@ -43,8 +62,10 @@
   let canSave = false;
   let parserWasRun = false;
   
-  let patternString = "%track% %title% - %album%.%dummy%";
-  let results: Result[] = [];
+  let patternString = "%track% %album% - %title%.%dummy%";
+  let results: ParseResult[] = [];
+  let tabsUsed: TabItem[] = [];
+  let tab: string = "";
 
 
   function escapeRegExpElements(value: string) {
@@ -53,6 +74,7 @@
 
   function checkForDuplicates(pattern: string) {
     for (const variable of Object.keys(groups)) {
+      if (variable === "%dummy%") continue;
       const regExp = new RegExp(variable, "gi");
       if ((pattern.match(regExp) ?? []).length >= 2) return true;
     }
@@ -66,15 +88,17 @@
     $songIdsToParse = [];
   }
   
+  /**
+   * Writes the changes to the song files and updates the in-memory data.
+   */
   function save() {
-    // TODO: save changes
     const changes: Record<string, SongEditFields> = {};
-    const filteredResults = results.filter((result) => Object.keys(result).length > 1);
+    const filteredResults = results.filter((result) => Object.keys(result).length > 2);
 
     for (let i = 0; i < filteredResults.length; i++) {
       const result = filteredResults[i];
       const song = $songsMap[result.songId];
-        
+      
       changes[song.id] = {
         "artPath": song.artPath,
         "title": result.title ?? song.title,
@@ -82,18 +106,24 @@
         "composer": song.composer,
         "albumArtist": result.albumArtist ?? song.albumArtist,
         "artist": result.artist ?? song.artist,
-        "releaseYear":  result.year ? parseInt(result.year) : song.releaseYear,
+        "releaseYear":  result.year ?? song.releaseYear,
         "genre": result.genre ?? song.genre,
-        "trackNumber": result.track ? parseInt(result.track) : song.trackNumber
+        "trackNumber": result.track ?? song.trackNumber
       }
     }
 
-    console.log("changes:", changes);
-
-    // pop();
-    // $songIdsToParse = [];
+    $showWritingChanges = true;
+    EditController.bulkEditSongs(Object.keys(changes), changes).then(() => {
+      canSave = false;
+      $showWritingChanges = false;
+      pop();
+      $songIdsToParse = [];
+    });
   }
 
+  /**
+   * Parses the songs with the user's provided pattern.
+   */
   function parse() {
     if (patternString.includes("%%")) {
       $showErrorSnackbar({ message: "Must have a space/character between variables" });
@@ -105,20 +135,31 @@
       return;
     }
 
+    parserWasRun = true;
+    const tabs: TabItem[] = [];
+
     let withoutTemplates = patternString.split(templateSplitter);
     withoutTemplates = withoutTemplates.slice(1, withoutTemplates.length - 1);
 
     for (let i = 0; i < withoutTemplates.length; i++) {
-      const element = withoutTemplates[i];
+      const element = withoutTemplates[i] as (keyof typeof groupNameLUT | "%dummy%");
 
-      // @ts-expect-error It is expected that element won't always index group.
       const group = groups[element];
       if (group) {
         withoutTemplates[i] = group;
+
+        if (element !== "%dummy%") {
+          tabs.push({ label: groupNameLUT[element], value: groupFieldLUT[element] });
+        }
       } else {
         withoutTemplates[i] = escapeRegExpElements(element);
       }
     }
+
+    const renderedFields = tabs.map((tab) => tab.value);
+    if (!renderedFields.includes(tab)) tab = tabs[0].value;
+
+    tabsUsed = tabs;
 
     const withGroups = withoutTemplates.join("");
     const regex = new RegExp(`^${withGroups}$`);
@@ -133,18 +174,20 @@
 
         return {
           songId: song.id,
+          fileName: song.fileName,
           title: group.title?.trim(),
           album: group.album?.trim(),
           artist: group.artist?.trim(),
-          track: group.track?.trim(),
+          track: group.track ? parseInt(group.track?.trim()) : undefined,
           albumArtist: group.albumArtist?.trim(),
           genre: group.genre?.trim(),
-          year: group.year?.trim(),
+          year: group.year ? parseInt(group.year?.trim()) : undefined,
         }
       }
 
       return {
         songId: song.id,
+        fileName: song.fileName,
       };
     });
   }
@@ -166,7 +209,7 @@
         <Button type="text" iconType="full" on:click={() => $showParserVariables = true }>
           <Icon icon={Help} width="20px" height="20px" />
         </Button>
-        <Button type="text" iconType="full" disabled={!canSave} on:click={save}>
+        <Button type="text" iconType="full" disabled={results.length === 0} on:click={save}>
           <Icon icon={CheckCircle} width="20px" height="20px" />
         </Button>
       </span>
@@ -186,7 +229,7 @@
           <div class="message">Run a parser to see results.</div>
         </div>
       {:else}
-
+        <ParsePreview results={results} tabsUsed={tabsUsed} bind:tab={tab} />
       {/if}
     </div>
   </span>
@@ -199,7 +242,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
   }
   
   .message-container {
@@ -232,5 +274,7 @@
   .preview {
     width: calc(100% - 3rem);
     margin-top: 10px;
+    height: calc(100% - (2.5rem + 10px) - 10px);
+    overflow: hidden;
   }
 </style>
