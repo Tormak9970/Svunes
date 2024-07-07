@@ -36,10 +36,10 @@
   let oldNumAudioDevices: number;
 
   function conditionsFailed(event: ConditionsFailedEvent) {
-    console.error('conditionsFailed event', event.detail);
-
     if ((event.detail.userData as any)?.reason === 'key-dne') {
       replace('/albums');
+    } else {
+      console.error('conditionsFailed event', event.detail);
     }
   }
 
