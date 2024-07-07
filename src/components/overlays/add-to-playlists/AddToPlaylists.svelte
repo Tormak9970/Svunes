@@ -164,26 +164,24 @@
   });
 </script>
 
-{#if $showAddToPlaylist}
-  <BottomSheet on:close={close} padding="0 0.5rem">
-    <div class="content-wrapper" bind:this={scrollContainer} on:scroll={handleScroll}>
-      <div class="content">
-        <Button type="tonal" on:click={setCreateNewPlaylist}>New Playlist</Button>
-        <div class="playlists">
-          {#each playlistToRender as playlist}
-            <PlaylistEntry playlist={playlist} checked={false} on:click={() => togglePlaylistInclude(playlist.id)} />
-          {/each}
-        </div>
+<BottomSheet on:close={close} padding="0 0.5rem">
+  <div class="content-wrapper" bind:this={scrollContainer} on:scroll={handleScroll}>
+    <div class="content">
+      <Button type="tonal" on:click={setCreateNewPlaylist}>New Playlist</Button>
+      <div class="playlists">
+        {#each playlistToRender as playlist}
+          <PlaylistEntry playlist={playlist} checked={false} on:click={() => togglePlaylistInclude(playlist.id)} />
+        {/each}
       </div>
-      <div class="done-container">
-        <Button type="filled" on:click={addToSelected}>Done</Button>
-      </div>
-      {#if showShadow}
-        <div class="shadow" in:fade={{ duration: 200 }} />
-      {/if}
     </div>
-  </BottomSheet>
-{/if}
+    <div class="done-container">
+      <Button type="filled" on:click={addToSelected}>Done</Button>
+    </div>
+    {#if showShadow}
+      <div class="shadow" in:fade={{ duration: 200 }} />
+    {/if}
+  </div>
+</BottomSheet>
 
 <style>
   .content-wrapper {

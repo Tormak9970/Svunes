@@ -1,14 +1,10 @@
 <script>
-  import { showWritingChanges } from "@stores/Overlays";
   import LoadingSpinner from "../layout/loading-animations/LoadingSpinner.svelte";
-
 </script>
 
-{#if $showWritingChanges}
-  <div class="writing-changes-dialog">
-    <LoadingSpinner />
-  </div>
-{/if}
+<div class="writing-changes-dialog">
+  <LoadingSpinner />
+</div>
 
 <style>
   .writing-changes-dialog {

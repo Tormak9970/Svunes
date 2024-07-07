@@ -34,18 +34,16 @@
   const options: SleepTimerOption[] = Object.values(SleepTimerOption);
 </script>
 
-{#if $showSleepTimerSelection}
-  <BottomSheet on:close={close}>
-    <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
-      <div class="header">
-        <div class="header-text">Stop Audio In</div>
-      </div>
-      {#each options as option}
-        <ListItemButton headline={option} extraOptions={{ style: "width: 100%" }} on:click={() => setTimer(option)} />
-      {/each}
+<BottomSheet on:close={close}>
+  <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
+    <div class="header">
+      <div class="header-text">Stop Audio In</div>
     </div>
-  </BottomSheet>
-{/if}
+    {#each options as option}
+      <ListItemButton headline={option} extraOptions={{ style: "width: 100%" }} on:click={() => setTimer(option)} />
+    {/each}
+  </div>
+</BottomSheet>
 
 <style>
   .content {
