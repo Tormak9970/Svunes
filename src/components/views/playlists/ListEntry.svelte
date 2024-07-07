@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    {#if !highlighted}
+    {#if !$inSelectMode}
       <div class="options">
         <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
           <PlaylistOptions bind:menuIsOpen={menuIsOpen} playlist={playlist} />

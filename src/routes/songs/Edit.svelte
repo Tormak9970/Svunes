@@ -17,8 +17,6 @@
 
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
-  
-  let titleEdited = false;
 
   let artPath: string | undefined;
 
@@ -137,13 +135,13 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
     <div class="fields">
-      <TextField name="Title" bind:value={title} on:input={() => titleEdited = true } extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Artist" bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album Artist" bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Composer" bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Genre" bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-        <div class="two-wide">
+      <div class="two-wide">
         <NumberField name="Track #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
         <NumberField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
       </div>
@@ -157,6 +155,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 70px;
   }
 
   .fields {

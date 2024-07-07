@@ -52,7 +52,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
-  <div class="content" class:highlight={highlighted}>
+  <div class="content" class:in-select-mode={$inSelectMode}>
     <div class="left">
       <ViewImage src={convertedPath} width={LIST_IMAGE_DIMENSIONS.width} height={LIST_IMAGE_DIMENSIONS.height} borderRadius="4px" marginLeft="10px" />
       <div class="info">
@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-    {#if !highlighted}
+    {#if !$inSelectMode}
       <div class="options">
         <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
           <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
@@ -104,7 +104,7 @@
     margin-left: 15px;
   }
 
-  .highlight .left {
+  .in-select-mode .left {
     width: 100%;
   }
 

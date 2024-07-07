@@ -29,6 +29,7 @@ import NowPlayingSettings from "./routes/settings/NowPlaying.svelte";
 import OtherSettings from "./routes/settings/Other.svelte";
 import PersonalizeSettings from "./routes/settings/Personalize.svelte";
 import Settings from "./routes/settings/Settings.svelte";
+import BulkEdit from "./routes/songs/BulkEdit.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import SongEditor from "./routes/songs/Edit.svelte";
 import Songs from "./routes/songs/Songs.svelte";
@@ -77,6 +78,7 @@ export const routes = {
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
+  "/songs/bulk-edit": BulkEdit,
   "/songs/:id": SongDetails,
   "/songs/:id/edit": SongEditor,
 

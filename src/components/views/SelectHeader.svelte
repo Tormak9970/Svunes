@@ -15,7 +15,7 @@
   import { LogController } from "@lib/controllers/utils/LogController";
   import { pluralize } from "@lib/utils/Utils";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
-  import { selected } from "@stores/Select";
+  import { bulkEditSongIds, selected } from "@stores/Select";
   import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songIdsToParse, songs } from "@stores/State";
   import { location, push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
@@ -320,9 +320,19 @@
   /**
    * Shows the metadata parser.
    */
-  function showInfoParser() {
+  function goToInfoParser() {
     $songIdsToParse = getSongsFromSelected();
     push("/metadata-parser");
+    menuIsOpen = false;
+    back();
+  }
+
+  /**
+   * Shows the bulk edit page.
+   */
+  function goToBulkEdit() {
+    $bulkEditSongIds = getSongsFromSelected();
+    push("/songs/bulk-edit");
     menuIsOpen = false;
     back();
   }
@@ -380,7 +390,8 @@
       {#if !$showQueue}
         <MenuItem on:click={playNext}>Play Next</MenuItem>
       {/if}
-      <MenuItem on:click={showInfoParser}>Info Parser</MenuItem>
+      <MenuItem on:click={goToBulkEdit}>Bulk Edit</MenuItem>
+      <MenuItem on:click={goToInfoParser}>Info Parser</MenuItem>
       <MenuItem on:click={share}>Share</MenuItem>
       {#if $location !== "/artists" && !$showQueue}
         <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>

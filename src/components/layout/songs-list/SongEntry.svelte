@@ -77,11 +77,13 @@
         </div>
       </div>
     </div>
-    <div class="options">
-      <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-        <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
-      </MenuButton>
-    </div>
+    {#if !$inSelectMode}
+      <div class="options">
+        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
+          <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
+        </MenuButton>
+      </div>
+    {/if}
   </div>
 </CardClickable>
 

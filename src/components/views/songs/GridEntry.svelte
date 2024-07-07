@@ -52,7 +52,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <CardClickable type="transparent" highlight={highlighted} on:click={onClick} on:hold={select} extraOptions={{ style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;" }}>
-  <div class="content" class:highlight={highlighted}>
+  <div class="content" class:in-select-mode={$inSelectMode}>
     <ViewImage src={convertedPath} width={GRID_IMAGE_DIMENSIONS[$songGridSize].width} height={GRID_IMAGE_DIMENSIONS[$songGridSize].height} iconSize={size} />
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight}px;" class:expand={$songGridSize !== GridSize.LARGE}>
       <div class="info">
@@ -75,7 +75,7 @@
           {/if}
         </div>
       </div>
-      {#if !highlighted && $songGridSize === GridSize.LARGE}
+      {#if !$inSelectMode && $songGridSize === GridSize.LARGE}
         <div class="options">
           <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
             <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
@@ -108,7 +108,7 @@
     margin-right: 5px;
   }
 
-  .highlight .info,
+  .in-select-mode .info,
   .expand .info {
     margin-right: 0px;
     width: 100%;

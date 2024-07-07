@@ -82,7 +82,7 @@
   }
 
 
-  function cancel() {
+  function back() {
     pop();
     $songIdsToParse = [];
   }
@@ -117,8 +117,7 @@
     EditController.bulkEditSongs(songPaths, changes).then(() => {
       canSave = false;
       $showWritingChanges = false;
-      pop();
-      $songIdsToParse = [];
+      back();
     });
   }
 
@@ -198,7 +197,7 @@
   <span slot="header">
     <OverlayHeader highlight={!isAtTop}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
-        <Button type="text" iconType="full" on:click={cancel}>
+        <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
         <div style="font-size: 20px;">Metadata Parser</div>

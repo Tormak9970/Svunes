@@ -73,7 +73,7 @@
           {/if}
         </div>
       </div>
-      {#if !highlighted && $playlistGridSize === GridSize.LARGE}
+      {#if !$inSelectMode && $playlistGridSize === GridSize.LARGE}
         <div class="options">
           <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
             <PlaylistOptions bind:menuIsOpen={menuIsOpen} playlist={playlist} />

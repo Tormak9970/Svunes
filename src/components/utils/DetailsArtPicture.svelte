@@ -6,7 +6,8 @@
   import { createEventDispatcher } from "svelte";
 
   export let artPath: string | undefined;
-  $: convertedPath = artPath ? tauri.convertFileSrc(artPath) : "";
+  export let failValue = "";
+  $: convertedPath = artPath && artPath !== failValue ? tauri.convertFileSrc(artPath) : "";
   
   export let imageSize = 370;
   export let clickable = false;
