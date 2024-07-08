@@ -1,32 +1,12 @@
 <script lang="ts">
-  import Album from "@ktibow/iconset-material-symbols/album";
-  import Artist from "@ktibow/iconset-material-symbols/artist-rounded";
-  import Home from "@ktibow/iconset-material-symbols/home-rounded";
-  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
-  import MusicNote from "@ktibow/iconset-material-symbols/music-note";
-  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
-  import Search from "@ktibow/iconset-material-symbols/search-rounded";
-  import Settings from "@ktibow/iconset-material-symbols/settings";
   import { showMiniPlayer } from "@stores/Overlays";
   import { selected } from "@stores/Select";
   import { isLoading, isSwitchingView, lastView, selectedView, viewIndices, viewsToRender } from "@stores/State";
   import { push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
-  import { viewRoutesLUT } from "../../routes";
-  import { View } from "../../types/View";
+  import { getViewIcon, getViewRoute, View } from "../../types/View";
   import NavList from "./NavList.svelte";
   import NavListButton from "./NavListButton.svelte";
-  
-  const icons = {
-    0: QueueMusic,
-    1: Album,
-    2: MusicNote,
-    3: Artist,
-    4: LibraryMusic,
-    5: Settings,
-    6: Home,
-    7: Search
-  }
 
   /**
    * Sets the selected view to the provided view.
@@ -39,7 +19,7 @@
     $isSwitchingView = view !== View.SETTINGS && view !== View.SEARCH;
     
     if (!$isLoading) {
-      push(viewRoutesLUT[view]);
+      push(getViewRoute(view));
     }
   }
 </script>
@@ -48,7 +28,7 @@
   <NavList type="bar" extraOptions={{ style: "padding: 0.75rem 0.5rem; height: 56px;" }}>
     <div class="items">
       {#each $viewsToRender.sort((a, b) => $viewIndices[a] - $viewIndices[b]) as view}
-        <NavListButton type="auto" on:click={() => setSelectedView(view)} selected={view === $selectedView} icon={icons[view]} />
+        <NavListButton type="auto" on:click={() => setSelectedView(view)} selected={view === $selectedView} icon={getViewIcon(view)} />
       {/each}
     </div>
   </NavList>

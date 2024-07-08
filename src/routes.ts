@@ -36,20 +36,6 @@ import Songs from "./routes/songs/Songs.svelte";
 import { albumsMap } from "./stores/State";
 
 /**
- * A LUT for mapping Views to their routes.
- */
-export const viewRoutesLUT = {
-  0: "/playlists",
-  1: "/albums",
-  2: "/songs",
-  3: "/artists",
-  4: "/genres",
-  5: "/settings",
-  6: "/home",
-  7: "/search"
-}
-
-/**
  * The app's routes.
  */
 export const routes = {

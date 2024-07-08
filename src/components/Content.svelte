@@ -14,8 +14,8 @@
   import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
   import { AppController } from "../lib/controllers/AppController";
-  import { routes, viewRoutesLUT } from "../routes";
-  import { View } from "../types/View";
+  import { routes } from "../routes";
+  import { getViewRoute, View } from "../types/View";
   import Modals from "./modals/Modals.svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
@@ -88,7 +88,7 @@
     })
 
     loadingUnsub = isLoading.subscribe((newStatus) => {
-      if (!newStatus) push(viewRoutesLUT[$selectedView]);
+      if (!newStatus) push(getViewRoute($selectedView));
     });
 
     await SettingsController.init();

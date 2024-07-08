@@ -213,7 +213,7 @@ export const DEFAULT_SETTINGS: Settings = {
   },
 
   "personalization": {
-    "viewsToRender": [0, 1, 2, 3, 5],
+    "viewsToRender": [0, 1, 2, 3, 4],
     "viewIndices": {
       0: 0,
       1: 1,
