@@ -32,7 +32,7 @@ type CoverResponse = {
  * A wrapper for the Coverart API.
  */
 export class CoverArtApi {
-  private readonly BASE_URL = "http://coverartarchive.org/";
+  private readonly BASE_URL = "https://coverartarchive.org/";
 
   private userAgent: string;
   private timeout: number;
@@ -62,11 +62,7 @@ export class CoverArtApi {
     let response = await http.fetch<any>(`${this.BASE_URL}${url}`, options);
 
     if (response.ok) {
-      if (response?.data.success) {
-        return response.data.data ?? response.data.success;
-      } else {
-        throw new RequestError(response.data?.errors?.join(", ") ?? "Unknown CoverartArchive error.", response);
-      }
+      return response.data;
     } else {
       throw new RequestError(response.data?.errors?.join(", ") ?? "CoverartArchive error.", response);
     }

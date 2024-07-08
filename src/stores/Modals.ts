@@ -1,3 +1,4 @@
+import type { AlbumResult, SongResult } from "@lib/controllers/ApiController";
 import { writable, type Writable } from "svelte/store";
 
 export const showSavingSettings = writable(false);
@@ -28,12 +29,19 @@ export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> =
 export const showSearchingApi = writable(false);
 export const apiSearchCanceled = writable(false);
 
+
 export const showImageResults = writable(false);
-export const onImageResultsDone: Writable<(path: string | undefined) => void> = writable(() => {});
+export const imageResults: Writable<string[]> = writable([]);
+export const onImageResultsDone: Writable<(path: string | null) => void> = writable(() => {});
+
 export const showSongInfoResults = writable(false);
-export const onSongInfoResultsDone: Writable<(path: string | undefined) => void> = writable(() => {});
+export const songResults: Writable<SongResult[]> = writable([]);
+export const onSongInfoResultsDone: Writable<(selected: SongResult | null) => void> = writable(() => {});
+
 export const showAlbumInfoResults = writable(false);
-export const onAlbumInfoResultsDone: Writable<(path: string | undefined) => void> = writable(() => {});
+export const albumResults: Writable<AlbumResult[]> = writable([]);
+export const onAlbumInfoResultsDone: Writable<(selected: AlbumResult | null) => void> = writable(() => {});
+
 
 export const showControlledModal = writable(false);
 export const controlledModalTitle = writable("");

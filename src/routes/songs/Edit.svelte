@@ -5,14 +5,13 @@
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import PageViewOutlined from "@ktibow/iconset-material-symbols/pageview-outline-rounded";
   import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
   import { ApiController } from "@lib/controllers/ApiController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
+  import { showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
   import { showErrorSnackbar, showInfoSnackbar, songsMap } from "@stores/State";
   import { onMount } from "svelte";
@@ -95,46 +94,6 @@
       back();
     });
   }
-
-  /**
-   * Handles prompting the user to change the song's art.
-   */
-  function onAlbumArtClick() {
-    if (!!album) {
-      $showInfoSnackbar({ message: "Can't edit because this song is in an album" });
-      return;
-    }
-    
-    $onArtOptionsDone = async (path: string | undefined) => {
-      // const copiedPath = await EditController.copyAlbumImage(path, title);
-      // artPath = copiedPath;
-      $showInfoSnackbar({ message: "Need to implement this" });
-    }
-    $showArtOptions = true;
-  }
-  
-  /**
-   * Searches the api for album covers.
-   */
-  async function searchImage() {
-    if (!!album) {
-      $showInfoSnackbar({ message: "Can't edit because this song is in an album" });
-      return;
-    }
-
-    if (title) {
-      $showSearchingApi = true;
-
-      await ApiController.getPictureForSong(params.id!).then((path) => {
-        if (path && path !== "") {
-          $onArtOptionsDone(path as string);
-          $onArtOptionsDone = () => {};
-        }
-      });
-    } else {
-      $showErrorSnackbar({ message: "Song must have a title first" });
-    }
-  }
   
   /**
    * Searches the api for a picture of this artist.
@@ -175,9 +134,6 @@
         </Button>
       </span>
       <span slot="right" style="display: flex; align-items: center;">
-        <Button type="text" iconType="full" on:click={searchImage}>
-          <Icon icon={PageViewOutlined} />
-        </Button>
         <Button type="text" iconType="full" on:click={searchWeb}>
           <Icon icon={TravelExplore} />
         </Button>
@@ -188,7 +144,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
+    <DetailsArtPicture artPath={artPath} />
     <div class="fields">
       <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />

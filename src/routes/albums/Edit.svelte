@@ -109,10 +109,7 @@
       $showSearchingApi = true;
 
       await ApiController.getPictureForAlbum(albumName).then((path) => {
-        if (path && path !== "") {
-          $onArtOptionsDone(path as string);
-          $onArtOptionsDone = () => {};
-        }
+        if (path && path !== "") artPath = path;
       });
     } else {
       $showErrorSnackbar({ message: "Album must have a name first" });

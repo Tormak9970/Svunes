@@ -1,4 +1,4 @@
-import { apiSearchCanceled } from "@stores/Modals";
+import { albumResults, apiSearchCanceled, imageResults, onAlbumInfoResultsDone, onImageResultsDone, onSongInfoResultsDone, showAlbumInfoResults, showImageResults, showSearchingApi, showSongInfoResults, songResults } from "@stores/Modals";
 import { get, type Unsubscriber } from "svelte/store";
 import { songsMap } from "../../stores/State";
 import { CoverArtApi } from "../models/CoverArtApi";
@@ -11,6 +11,7 @@ function sleep(ms: number) {
 type Resolver<T> = (value: T | PromiseLike<T>) => void;
 
 export type AlbumResult = {
+  releaseId: string;
   artist?: string;
   genre?: string;
   releaseYear?: string;
@@ -36,15 +37,17 @@ export class ApiController {
   private static musicBrainzApiModel: MusicBrainzApi;
   private static coverArtApiModel: CoverArtApi;
 
-  private static albumIdReleaseIdMap: Record<string, string>;
+  private static albumNameReleaseIdsMap: Record<string, string[]> = {};
 
-  private static songImageCache: Record<string, string[]>;
-  private static songInfoCache: Record<string, SongResult[]>;
+  private static songInfoCache: Record<string, SongResult[]> = {};
 
-  private static albumImageCache: Record<string, string[]>;
-  private static albumInfoCache: Record<string, AlbumResult[]>;
+  private static albumImageCache: Record<string, string[]> = {};
+  private static albumInfoCache: Record<string, AlbumResult[]> = {};
 
 
+  /**
+   * Initializes the Api controller.
+   */
   static init() {
     this.musicBrainzApiModel = new MusicBrainzApi(this.USER_AGENT, this.TIMEOUT);
     this.coverArtApiModel = new CoverArtApi(this.USER_AGENT, this.TIMEOUT);
@@ -79,19 +82,31 @@ export class ApiController {
    */
   static async getPictureForAlbum(albumName: string): Promise<string | null> {
     return this.cancelablePromise<string | null>(async (resolve) => {
-      await sleep(this.TIMEOUT);
-      resolve(null);
-    }, null);
-  }
+      let results = this.albumImageCache[albumName];
 
-  /**
-   * Get the song's album cover from the api.
-   * @param songId The id of the song to get.
-   */
-  static async getPictureForSong(songId: string): Promise<string | null> {
-    return this.cancelablePromise<string | null>(async (resolve) => {
-      await sleep(this.TIMEOUT);
-      resolve(null);
+      if (!results || results.length === 0) {
+        let releaseIds = this.albumNameReleaseIdsMap[albumName];
+        if (!releaseIds) {
+          releaseIds = await this.musicBrainzApiModel.getReleaseIdForAlbum(albumName);
+          this.albumNameReleaseIdsMap[albumName] = releaseIds;
+        }
+
+        results = [];
+        for (const releaseId of releaseIds) {
+          const images = await this.coverArtApiModel.getAlbumCovers(releaseId);
+          if (images) results.push(...images);
+        }
+
+        this.albumImageCache[albumName] = results;
+      }
+      
+      showSearchingApi.set(false);
+
+      if (results.length > 0) {
+        imageResults.set(results);
+        onImageResultsDone.set((path: string | null) => resolve(path));
+        showImageResults.set(true);
+      }
     }, null);
   }
   
@@ -102,8 +117,21 @@ export class ApiController {
    */
   static async getInfoForAlbum(albumName: string): Promise<AlbumResult | null> {
     return this.cancelablePromise<AlbumResult | null>(async (resolve) => {
-      await sleep(this.TIMEOUT);
-      resolve(null);
+      let results = this.albumInfoCache[albumName];
+
+      if (!results || results.length === 0) {
+        results = await this.musicBrainzApiModel.getAlbumInfo(albumName);
+        this.albumNameReleaseIdsMap[albumName] = results.map((result) => result.releaseId);
+        this.albumInfoCache[albumName] = results;
+      }
+      
+      showSearchingApi.set(false);
+
+      if (results.length > 0) {
+        albumResults.set(results);
+        onAlbumInfoResultsDone.set((selected: AlbumResult | null) => resolve(selected));
+        showAlbumInfoResults.set(true);
+      }
     }, null);
   }
 
@@ -115,9 +143,20 @@ export class ApiController {
     const song = get(songsMap)[songId];
 
     return this.cancelablePromise<SongResult | null>(async (resolve) => {
-      // const songResults = this.musicBrainzApiModel.getSongInfo(song.fileName)
-      await sleep(this.TIMEOUT);
-      resolve(null);
+      let results = this.songInfoCache[songId];
+
+      if (!results || results.length === 0) {
+        results = await this.musicBrainzApiModel.getSongInfo(song.fileName);
+        this.songInfoCache[songId] = results;
+      }
+      
+      showSearchingApi.set(false);
+
+      if (results.length > 0) {
+        songResults.set(results);
+        onSongInfoResultsDone.set((selected: SongResult | null) => resolve(selected));
+        showSongInfoResults.set(true);
+      }
     }, null);
   }
 }

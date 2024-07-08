@@ -38,7 +38,11 @@
 			"http": {
 				"all": false,
 				"request": true,
-				"scope": []
+				"scope": [
+					"https://*.musicbrainz.org/*",
+					"https://coverartarchive.org/*",
+          "https://*.archive.org/*"
+        ]
 			},
 			"protocol": {
 				"all": true,
@@ -126,7 +130,7 @@
 			}
 		},
 		"security": {
-			"csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost https://*.musicbrainz.com https://coverartarchive.org https://*.archive.org; media-src 'self' asset: https://asset.localhost https://*.musicbrainz.com https://coverartarchive.org https://*.archive.org; style-src 'self' 'unsafe-inline'",
+			"csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; media-src 'self' asset: https://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; style-src 'self' 'unsafe-inline'",
 			"dangerousDisableAssetCspModification": [
 				"style-src"
 			]

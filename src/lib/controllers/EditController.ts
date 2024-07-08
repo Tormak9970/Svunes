@@ -51,11 +51,6 @@ export class EditController {
    * @param editedFields The edited fields.
    */
   static async editSong(original: Song, editedFields: SongEditFields) {
-    // if (changedAlbumFields.artPath) {
-    //   const copiedPath = await this.copyAlbumImage(changedAlbumFields.artPath, original.name);
-    //   changedAlbumFields.artPath = copiedPath;
-    // }
-
     const changes: Record<string, SongEditFields> = {};
     changes[original.filePath] = editedFields;
     const success = await RustInterop.writeMusicFiles(changes);

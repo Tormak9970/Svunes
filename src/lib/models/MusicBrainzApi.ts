@@ -2,14 +2,13 @@ import { http } from "@tauri-apps/api";
 import { ResponseType, type HttpVerb } from "@tauri-apps/api/http";
 import type { RecordingResponse, Release, ReleaseGroupResponse } from "../../types/MusicBrainz";
 import { LogController } from "../controllers/utils/LogController";
-import { getGenre } from "../utils/Utils";
 import { RequestError } from "./TauriResponse";
 
 export type MBAlbumInfo = {
+  releaseId: string;
   albumArtist: string | undefined;
   releaseYear: string | undefined;
   genre: string | undefined;
-  trackCount: string | undefined;
 }
 
 export type MBSongInfo = {
@@ -26,7 +25,7 @@ export type MBSongInfo = {
  * A wrapper for the MusicBrainz API.
  */
 export class MusicBrainzApi {
-  private readonly BASE_URL = "http://beta.musicbrainz.org/ws/2/";
+  private readonly BASE_URL = "https://beta.musicbrainz.org/ws/2/";
   private readonly extraOptions = "fmt=json&limit=10";
 
   private userAgent: string;
@@ -56,13 +55,26 @@ export class MusicBrainzApi {
     let response = await http.fetch<any>(`${this.BASE_URL}${url}`, options);
 
     if (response.ok) {
-      if (response?.data.success) {
-        return response.data.data ?? response.data.success;
-      } else {
-        throw new RequestError(response.data?.errors?.join(", ") ?? "Unknown MusicBrainz error.", response);
-      }
+      return response.data;
     } else {
       throw new RequestError(response.data?.errors?.join(", ") ?? "MusicBrainz error.", response);
+    }
+  }
+
+  /**
+   * Gets the releaseId for.
+   * @param albumName The name of the album.
+   */
+  async getReleaseIdForAlbum(albumName: string): Promise<string[]> {
+    try {
+      const results = await this.makeRequest<ReleaseGroupResponse>("GET", `release-group/?${this.extraOptions}&query=releasegroup:${albumName} OR alias:${albumName}`);
+      const albums = (results as ReleaseGroupResponse)["release-groups"];
+
+      const releases = albums[0].releases.map((release) => release.id);
+      return releases;
+    } catch (e: any) {
+      LogController.error(e);
+      return [];
     }
   }
 
@@ -78,17 +90,18 @@ export class MusicBrainzApi {
 
       const artists = release["artist-credit"];
       const releaseDate = release.date;
-      const genres = release.tags;
-      const genre = genres.length > 0 ? getGenre(genres[0].name) : undefined;
+      // ! This is not consistent enough to use
+      // const genres = release.tags;
+      // const genre = genres.length > 0 ? getGenre(genres[0].name) : undefined;
 
       return {
+        releaseId: release.id,
         albumArtist: artists.length > 0 ? artists[0].artist.name : undefined,
         releaseYear: releaseDate ? releaseDate.substring(0, 4) : undefined,
-        genre: genre,
-        trackCount: release["track-count"] ? release["track-count"].toString() : undefined,
+        genre: undefined
       }
     } catch (e: any) {
-      LogController.error(e.message);
+      LogController.error(e);
       return undefined;
     }
   }
@@ -104,16 +117,14 @@ export class MusicBrainzApi {
 
       const releases: MBAlbumInfo[] = [];
 
-      for (const album of albums) {
-        for (const release of album.releases) {
-          const releaseAlbumInfo = await this.getReleaseInfo(release.id);
-          if (releaseAlbumInfo) releases.push(releaseAlbumInfo);
-        }
+      for (const release of albums[0].releases) {
+        const releaseAlbumInfo = await this.getReleaseInfo(release.id);
+        if (releaseAlbumInfo) releases.push(releaseAlbumInfo);
       }
 
       return releases;
     } catch (e: any) {
-      LogController.error(e.message);
+      LogController.error(e);
       return [];
     }
   }
@@ -140,7 +151,7 @@ export class MusicBrainzApi {
         }
       });
     } catch (e: any) {
-      LogController.error(e.message);
+      LogController.error(e);
       return [];
     }
   }

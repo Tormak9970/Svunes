@@ -4,16 +4,16 @@
   import Button from "@interactables/Button.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
+  import type { Song } from "@lib/models/Song";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
   import { bulkEditSongIds } from "@stores/Select";
-  import { showErrorSnackbar, showInfoSnackbar, songsMap } from "@stores/State";
+  import { showErrorSnackbar, songsMap } from "@stores/State";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
-  import type { Song } from "../../lib/models/Song";
   
   let originalArtPath: string | undefined;
   let originalTitle: string | undefined;
@@ -143,29 +143,11 @@
     }
 
     $showWritingChanges = true;
-    console.log("changes:", changes);
-    // EditController.bulkEditSongs(songPaths, changes).then(() => {
-    //   canSave = false;
-    //   $showWritingChanges = false;
-    //   back();
-    // });
-  }
-
-  /**
-   * Handles prompting the user to change the song's art.
-   */
-  function onAlbumArtClick() {
-    if (!!album) {
-      $showInfoSnackbar({ message: "Can't edit because a song is in an album" });
-      return;
-    }
-    
-    $onArtOptionsDone = async (path: string | undefined) => {
-      // const copiedPath = await EditController.copyAlbumImage(path, title);
-      // artPath = copiedPath;
-      $showInfoSnackbar({ message: "Need to implement this" });
-    }
-    $showArtOptions = true;
+    EditController.bulkEditSongs(songPaths, changes).then(() => {
+      canSave = false;
+      $showWritingChanges = false;
+      back();
+    });
   }
 
   onMount(() => {
@@ -190,7 +172,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <DetailsArtPicture artPath={artPath} failValue={differencesLabel} clickable on:click={onAlbumArtClick} />
+    <DetailsArtPicture artPath={artPath} failValue={differencesLabel} />
     <div class="fields">
       <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
