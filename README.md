@@ -26,7 +26,9 @@ An offline-first music player for your music library. Allows you to make playlis
 
 
 ## Acknowledgements
-Resources / References I used:
+APIs Used:
+ - [MetaBrainz](https://beta.musicbrainz.org/doc/About) - Used for automatic song/album information lookup and covers.
+Resources / References used:
  - [Metro](https://github.com/MuntashirAkon/Metro) - Inspired the UI scheme and the project as a whole.
  - [Svelte Md3](https://ktibow.github.io/m3-svelte/) - Many of the base components are heavily modified version of components from Svelte Md3.
 

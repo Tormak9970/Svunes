@@ -5,6 +5,7 @@
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import PageViewOutlined from "@ktibow/iconset-material-symbols/pageview-outline-rounded";
   import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
   import { ApiController } from "@lib/controllers/ApiController";
   import { EditController } from "@lib/controllers/EditController";
@@ -101,20 +102,42 @@
   }
   
   /**
+   * Searches the api for album covers.
+   */
+  async function searchImage() {
+    if (albumName) {
+      $showSearchingApi = true;
+
+      await ApiController.getPictureForAlbum(albumName).then((path) => {
+        if (path && path !== "") {
+          $onArtOptionsDone(path as string);
+          $onArtOptionsDone = () => {};
+        }
+      });
+    } else {
+      $showErrorSnackbar({ message: "Album must have a name first" });
+    }
+  }
+  
+  /**
    * Searches the api for a picture of this artist.
    */
   async function searchWeb() {
-    $showSearchingApi = true;
+    if (albumName) {
+      $showSearchingApi = true;
 
-    await ApiController.getInfoForAlbum(albumName).then((albumInfo) => {
-      if (albumInfo) {
-        if (albumInfo.artist) albumArtist = albumInfo.artist;
-        if (albumInfo.genre) genre = albumInfo.genre;
-        if (albumInfo.releaseYear) releaseYear = albumInfo.releaseYear;
-        
-        $showInfoSnackbar({ message: "Applied results from search" });
-      }
-    });
+      await ApiController.getInfoForAlbum(albumName).then((albumInfo) => {
+        if (albumInfo) {
+          if (albumInfo.artist) albumArtist = albumInfo.artist;
+          if (albumInfo.genre) genre = albumInfo.genre;
+          if (albumInfo.releaseYear) releaseYear = albumInfo.releaseYear;
+          
+          $showInfoSnackbar({ message: "Applied results from search" });
+        }
+      });
+    } else {
+      $showErrorSnackbar({ message: "Album must have a name first" });
+    }
   }
 
   onMount(() => {
@@ -131,6 +154,9 @@
         </Button>
       </span>
       <span slot="right" style="display: flex; align-items: center;">
+        <Button type="text" iconType="full" on:click={searchImage}>
+          <Icon icon={PageViewOutlined} />
+        </Button>
         <Button type="text" iconType="full" on:click={searchWeb}>
           <Icon icon={TravelExplore} />
         </Button>

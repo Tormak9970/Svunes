@@ -1,5 +1,6 @@
 import { apiSearchCanceled } from "@stores/Modals";
-import type { Unsubscriber } from "svelte/store";
+import { get, type Unsubscriber } from "svelte/store";
+import { songsMap } from "../../stores/State";
 import { CoverArtApi } from "../models/CoverArtApi";
 import { MusicBrainzApi } from "../models/MusicBrainzApi";
 
@@ -103,7 +104,6 @@ export class ApiController {
     return this.cancelablePromise<AlbumResult | null>(async (resolve) => {
       await sleep(this.TIMEOUT);
       resolve(null);
-      // will search release and recording
     }, null);
   }
 
@@ -112,11 +112,12 @@ export class ApiController {
    * @param songId The id of the song to get.
    */
   static async getInfoForSong(songId: string): Promise<SongResult | null> {
+    const song = get(songsMap)[songId];
+
     return this.cancelablePromise<SongResult | null>(async (resolve) => {
+      // const songResults = this.musicBrainzApiModel.getSongInfo(song.fileName)
       await sleep(this.TIMEOUT);
       resolve(null);
-      // will search release group
-      // * filter type: album, single, ep
     }, null);
   }
 }

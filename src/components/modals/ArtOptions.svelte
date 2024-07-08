@@ -1,10 +1,8 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
   import ListItemButton from "@layout/ListItemButton.svelte";
-  import { ApiController } from "@lib/controllers/ApiController";
-  import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
+  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { dialog } from "@tauri-apps/api";
-  import { location } from "svelte-spa-router";
   import ListModalBody from "./utils/ListModalBody.svelte";
 
   /**
@@ -29,32 +27,6 @@
       $showArtOptions = false;
     }
   }
-  
-  /**
-   * Searches the api for a picture of this artist.
-   */
-  async function searchWeb() {
-    $showArtOptions = false;
-    $showSearchingApi = true;
-
-    let pathPromise: Promise<string | null>;
-    if ($location.startsWith("/albums")) {
-      const albumName = $location.substring(8).replaceAll("%20", " ");
-      pathPromise = ApiController.getPictureForAlbum(albumName);
-    } else {
-      const songId = $location.substring(7);
-      pathPromise = ApiController.getPictureForSong(songId);
-    }
-
-    await pathPromise.then((path) => {
-      if (path && path !== "") {
-        $onArtOptionsDone(path as string);
-        $onArtOptionsDone = () => {};
-      } else {
-        $showArtOptions = true;
-      }
-    });
-  }
 
   /**
    * Removes the current imagePath.
@@ -77,9 +49,6 @@
 <ListModalBody open headline="Update Image" on:close={cancel}>
   <div class="list">
     <ListItemButton headline="Pick from device" on:click={pickImage} />
-    {#if $location.startsWith("/albums") || $location.startsWith("/songs")}
-      <ListItemButton headline="Pull from Web" on:click={searchWeb} />
-    {/if}
     <ListItemButton headline="Remove image" on:click={removeImage} />
   </div>
   <div class="actions" slot="buttons">

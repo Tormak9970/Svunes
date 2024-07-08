@@ -5,6 +5,7 @@
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import PageViewOutlined from "@ktibow/iconset-material-symbols/pageview-outline-rounded";
   import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
   import { ApiController } from "@lib/controllers/ApiController";
   import { EditController } from "@lib/controllers/EditController";
@@ -113,24 +114,51 @@
   }
   
   /**
+   * Searches the api for album covers.
+   */
+  async function searchImage() {
+    if (!!album) {
+      $showInfoSnackbar({ message: "Can't edit because this song is in an album" });
+      return;
+    }
+
+    if (title) {
+      $showSearchingApi = true;
+
+      await ApiController.getPictureForSong(params.id!).then((path) => {
+        if (path && path !== "") {
+          $onArtOptionsDone(path as string);
+          $onArtOptionsDone = () => {};
+        }
+      });
+    } else {
+      $showErrorSnackbar({ message: "Song must have a title first" });
+    }
+  }
+  
+  /**
    * Searches the api for a picture of this artist.
    */
   async function searchWeb() {
-    $showSearchingApi = true;
+    if (title) {
+      $showSearchingApi = true;
 
-    await ApiController.getInfoForSong(params.id!).then((songInfo) => {
-      if (songInfo) {
-        if (songInfo.album) album = songInfo.album;
-        if (songInfo.artist) artist = songInfo.artist;
-        if (songInfo.albumArtist) albumArtist = songInfo.albumArtist;
-        if (songInfo.composer) composer = songInfo.composer;
-        if (songInfo.genre) genre = songInfo.genre;
-        if (songInfo.trackNumber) trackNumber = songInfo.trackNumber;
-        if (songInfo.releaseYear) releaseYear = songInfo.releaseYear;
-        
-        $showInfoSnackbar({ message: "Applied results from search" });
-      }
-    });
+      await ApiController.getInfoForSong(params.id!).then((songInfo) => {
+        if (songInfo) {
+          if (songInfo.album) album = songInfo.album;
+          if (songInfo.artist) artist = songInfo.artist;
+          if (songInfo.albumArtist) albumArtist = songInfo.albumArtist;
+          if (songInfo.composer) composer = songInfo.composer;
+          if (songInfo.genre) genre = songInfo.genre;
+          if (songInfo.trackNumber) trackNumber = songInfo.trackNumber;
+          if (songInfo.releaseYear) releaseYear = songInfo.releaseYear;
+          
+          $showInfoSnackbar({ message: "Applied results from search" });
+        }
+      });
+    } else {
+      $showErrorSnackbar({ message: "Song must have a title first" });
+    }
   }
 
   onMount(() => {
@@ -147,6 +175,9 @@
         </Button>
       </span>
       <span slot="right" style="display: flex; align-items: center;">
+        <Button type="text" iconType="full" on:click={searchImage}>
+          <Icon icon={PageViewOutlined} />
+        </Button>
         <Button type="text" iconType="full" on:click={searchWeb}>
           <Icon icon={TravelExplore} />
         </Button>
