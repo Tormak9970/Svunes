@@ -1,12 +1,13 @@
 <script lang="ts" context="module">
   type CacheEntry = {
-    start: number,
-    end: number,
-    heightMap: any[],
-    top: number,
-    bottom: number,
-    listScrollTop: number
-  }
+    start: number;
+    end: number;
+    heightMap: any[];
+    top: number;
+    bottom: number;
+    listScrollTop: number;
+  };
+  
   let virtualListCache: Record<string, CacheEntry> = {};
 
   function getCacheEntry(name: string, saveState: boolean): CacheEntry {

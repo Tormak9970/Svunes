@@ -91,7 +91,6 @@ async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: Strin
   let (sender, receiver) = channel();
 
   for music_folder in &music_folder_paths {
-    println!("{}", music_folder.clone());
     add_path_to_scope(app_handle.clone(), music_folder.clone()).await;
   }
 

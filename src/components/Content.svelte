@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ApiController } from "@lib/controllers/ApiController";
   import { DeviceController } from "@lib/controllers/DeviceController";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
@@ -61,6 +62,8 @@
   }
 
   onMount(async () => {
+    ApiController.init();
+
     handleMediaDeviceChange();
     navigator.mediaDevices.ondevicechange = handleMediaDeviceChange;
 

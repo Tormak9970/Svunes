@@ -1,9 +1,9 @@
-import type { Action } from "svelte/action"
+import type { Action } from "svelte/action";
 
 type HoldEventParams = {
-  onHold: () => void,
-  duration: number,
-  holdable?: boolean
+  onHold: () => void;
+  duration: number;
+  holdable?: boolean;
 }
 
 /**

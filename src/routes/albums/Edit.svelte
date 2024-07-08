@@ -5,13 +5,15 @@
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
+  import { ApiController } from "@lib/controllers/ApiController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
+  import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
-  import { albumsMap, showErrorSnackbar } from "@stores/State";
+  import { albumsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
   import { onMount } from "svelte";
   import { pop, replace } from "svelte-spa-router";
 
@@ -28,13 +30,11 @@
   let isAtTop = true;
   let albumNameChanged = false;
   
-  $: canSave = (
-    artPath !== album?.artPath ||
+  $: canSave = artPath !== album?.artPath ||
     albumName !== album?.name ||
     albumArtist !== album?.albumArtist ||
     genre !== album?.genre ||
-    releaseYear !== (album?.releaseYear === -1 ? undefined : album?.releaseYear.toString())
-  );
+    releaseYear !== (album?.releaseYear === -1 ? undefined : album?.releaseYear.toString());
 
   /**
    * Initializes the album fields.
@@ -99,6 +99,23 @@
     }
     $showArtOptions = true;
   }
+  
+  /**
+   * Searches the api for a picture of this artist.
+   */
+  async function searchWeb() {
+    $showSearchingApi = true;
+
+    await ApiController.getInfoForAlbum(albumName).then((albumInfo) => {
+      if (albumInfo) {
+        if (albumInfo.artist) albumArtist = albumInfo.artist;
+        if (albumInfo.genre) genre = albumInfo.genre;
+        if (albumInfo.releaseYear) releaseYear = albumInfo.releaseYear;
+        
+        $showInfoSnackbar({ message: "Applied results from search" });
+      }
+    });
+  }
 
   onMount(() => {
     initializeFields();
@@ -113,7 +130,10 @@
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
       </span>
-      <span slot="right">
+      <span slot="right" style="display: flex; align-items: center;">
+        <Button type="text" iconType="full" on:click={searchWeb}>
+          <Icon icon={TravelExplore} />
+        </Button>
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
           Save
         </Button>

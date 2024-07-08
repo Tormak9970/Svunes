@@ -5,11 +5,13 @@
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
+  import { ApiController } from "@lib/controllers/ApiController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
+  import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
   import { showErrorSnackbar, showInfoSnackbar, songsMap } from "@stores/State";
   import { onMount } from "svelte";
@@ -31,8 +33,7 @@
 
   let isAtTop = true;
   
-  $: canSave = (
-    artPath !== song?.artPath ||
+  $: canSave = artPath !== song?.artPath ||
     title !== song?.title ||
     album !== song?.album ||
     artist !== song?.artist ||
@@ -40,8 +41,7 @@
     composer !== song?.composer ||
     genre !== song?.genre ||
     trackNumber !== song?.trackNumber?.toString() ||
-    releaseYear !== (song?.releaseYear === -1 ? undefined : song?.releaseYear.toString())
-  );
+    releaseYear !== (song?.releaseYear === -1 ? undefined : song?.releaseYear.toString());
 
   /**
    * Initializes the song fields.
@@ -111,6 +111,27 @@
     }
     $showArtOptions = true;
   }
+  
+  /**
+   * Searches the api for a picture of this artist.
+   */
+  async function searchWeb() {
+    $showSearchingApi = true;
+
+    await ApiController.getInfoForSong(params.id!).then((songInfo) => {
+      if (songInfo) {
+        if (songInfo.album) album = songInfo.album;
+        if (songInfo.artist) artist = songInfo.artist;
+        if (songInfo.albumArtist) albumArtist = songInfo.albumArtist;
+        if (songInfo.composer) composer = songInfo.composer;
+        if (songInfo.genre) genre = songInfo.genre;
+        if (songInfo.trackNumber) trackNumber = songInfo.trackNumber;
+        if (songInfo.releaseYear) releaseYear = songInfo.releaseYear;
+        
+        $showInfoSnackbar({ message: "Applied results from search" });
+      }
+    });
+  }
 
   onMount(() => {
     initializeFields();
@@ -125,7 +146,10 @@
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
       </span>
-      <span slot="right">
+      <span slot="right" style="display: flex; align-items: center;">
+        <Button type="text" iconType="full" on:click={searchWeb}>
+          <Icon icon={TravelExplore} />
+        </Button>
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
           Save
         </Button>

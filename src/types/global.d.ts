@@ -7,17 +7,17 @@ declare const IS_DEBUG: string;
 type DialogModalType = "INFO" | "WARNING" | "ERROR";
 
 type ShowErrorOptions = {
-  message: string,
-  faster?: boolean
+  message: string;
+  faster?: boolean;
 }
 
 type ShowInfoOptions = {
-  message: string
+  message: string;
 }
 
 type ShowSnackbarOptions = {
-  message: string,
-  timeout?: number | null
+  message: string;
+  timeout?: number | null;
 }
 
 declare module "svelte-icons/md/*.svelte";
@@ -32,21 +32,21 @@ declare namespace svelte.JSX {
 }
 
 type SongEditFields = {
-  artPath: string | undefined,
-  title: string | undefined,
-  album: string | undefined,
-  composer: string | undefined,
-  albumArtist: string | undefined,
-  artist: string | undefined,
-  releaseYear: number | undefined,
-  genre: string | undefined,
-  trackNumber: number | undefined
+  artPath: string | undefined;
+  title: string | undefined;
+  album: string | undefined;
+  composer: string | undefined;
+  albumArtist: string | undefined;
+  artist: string | undefined;
+  releaseYear: number | undefined;
+  genre: string | undefined;
+  trackNumber: number | undefined;
 }
 
 type AlbumEditFields = {
-  artPath: string | undefined,
-  name: string,
-  artist: string | undefined,
-  releaseYear: number | undefined,
-  genre: string | undefined
+  artPath: string | undefined;
+  name: string;
+  artist: string | undefined;
+  releaseYear: number | undefined;
+  genre: string | undefined;
 }

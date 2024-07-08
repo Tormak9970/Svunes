@@ -93,95 +93,95 @@ export type ArtistEntriesSortOrder = "Alphabetical" | "Album" | "Year" | "Song D
 export type NowPlayingType = "Playlist" | "Album" | "Artist" | "Song" | "Genre";
 
 export type SongMetadata = {
-  dateAdded: string | undefined,
-  lastPlayedOn: string | undefined,
-  numTimesPlayed: number | undefined
+  dateAdded: string | undefined;
+  lastPlayedOn: string | undefined;
+  numTimesPlayed: number | undefined;
 }
 
 export type AlbumMetadata = {
-  lastPlayedOn: string | undefined,
-  numTimesPlayed: number | undefined
+  lastPlayedOn: string | undefined;
+  numTimesPlayed: number | undefined;
 }
 
 export type ArtistMetadata = {
-  imagePath: string | undefined,
+  imagePath: string | undefined;
 }
 
 export type Settings = {
-  FILE_SIG_DO_NOT_EDIT: "dev.travislane.tunistic",
-  version: string,
+  FILE_SIG_DO_NOT_EDIT: "dev.travislane.tunistic";
+  version: string;
 
-  palette: Palette,
-  useOledPalette: boolean,
-  themePrimaryColor: string,
+  palette: Palette;
+  useOledPalette: boolean;
+  themePrimaryColor: string;
 
-  musicDirectories: string[],
-  selectedView: View,
+  musicDirectories: string[];
+  selectedView: View;
 
   nowPlaying: {
-    layout: NowPlayingTheme,
-    backgroundType: NowPlayingBackgroundType,
-    songInfo: boolean,
+    layout: NowPlayingTheme;
+    backgroundType: NowPlayingBackgroundType;
+    songInfo: boolean;
     controls: {
-      dismissMiniWithSwipe: boolean,
-      volumeControls: boolean,
-      extralControl: NowPlayingExtraControl,
-    },
-    autoDetectCarMode: boolean,
-  },
+      dismissMiniWithSwipe: boolean;
+      volumeControls: boolean;
+      extralControl: NowPlayingExtraControl;
+    };
+    autoDetectCarMode: boolean;
+  };
 
   audio: {
-    autoPlay: boolean,
-  },
+    autoPlay: boolean;
+  };
 
   personalization: {
-    viewsToRender: View[],
+    viewsToRender: View[];
     viewIndices: Record<View, number>;
-    showSuggestions: boolean,
-    trackHistory: boolean,
-    showAlbumOnLockScreen: boolean,
-  },
+    showSuggestions: boolean;
+    trackHistory: boolean;
+    showAlbumOnLockScreen: boolean;
+  };
 
-  playlists: Playlist[],
+  playlists: Playlist[];
 
-  queue: string[],
+  queue: string[];
 
-  blacklistedFolders: string[],
-  filterSongDuration: number,
-  selectedLanguage: AppLanguage,
+  blacklistedFolders: string[];
+  filterSongDuration: number;
+  selectedLanguage: AppLanguage;
 
   cache: {
-    albumsMetadata: Record<string, AlbumMetadata>,
-    artistsMetadata: Record<string, ArtistMetadata>,
-    numSongs: number,
-    songsMetadata: Record<string, SongMetadata>,
-    songProgress: number,
-    playingSongId: string,
-    shuffle: boolean,
-    repeat: boolean,
-    volume: number,
-    nowPlayingList: string,
-    nowPlayingType: NowPlayingType,
-  },
+    albumsMetadata: Record<string, AlbumMetadata>;
+    artistsMetadata: Record<string, ArtistMetadata>;
+    numSongs: number;
+    songsMetadata: Record<string, SongMetadata>;
+    songProgress: number;
+    playingSongId: string;
+    shuffle: boolean;
+    repeat: boolean;
+    volume: number;
+    nowPlayingList: string;
+    nowPlayingType: NowPlayingType;
+  };
 
   playlistsView: {
-    gridSize: GridSize,
-    sortOrder: PlaylistSortOrder,
-  },
+    gridSize: GridSize;
+    sortOrder: PlaylistSortOrder;
+  };
   albumsView: {
-    gridSize: GridSize,
-    sortOrder: AlbumSortOrder,
-    useAlbumColors: boolean,
-  },
+    gridSize: GridSize;
+    sortOrder: AlbumSortOrder;
+    useAlbumColors: boolean;
+  };
   songsView: {
-    gridSize: GridSize,
-    sortOrder: SongSortOrder,
-  },
+    gridSize: GridSize;
+    sortOrder: SongSortOrder;
+  };
   artistsView: {
-    gridSize: GridSize,
-    gridStyle: GridStyle,
-    sortOrder: ArtistSortOrder,
-    useArtistColors: boolean,
+    gridSize: GridSize;
+    gridStyle: GridStyle;
+    sortOrder: ArtistSortOrder;
+    useArtistColors: boolean;
   }
 }
 

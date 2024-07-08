@@ -1,5 +1,8 @@
 <script context="module" lang="ts">
-  export type TabItem = { label: string, value: string };
+  export type TabItem = {
+    label: string;
+    value: string;
+  };
 </script>
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";

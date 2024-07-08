@@ -25,6 +25,16 @@ export const showParserVariables = writable(false);
 export const showArtOptions = writable(false);
 export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> = writable(() => {});
 
+export const showSearchingApi = writable(false);
+export const apiSearchCanceled = writable(false);
+
+export const showImageResults = writable(false);
+export const onImageResultsDone: Writable<(path: string | undefined) => void> = writable(() => {});
+export const showSongInfoResults = writable(false);
+export const onSongInfoResultsDone: Writable<(path: string | undefined) => void> = writable(() => {});
+export const showAlbumInfoResults = writable(false);
+export const onAlbumInfoResultsDone: Writable<(path: string | undefined) => void> = writable(() => {});
+
 export const showControlledModal = writable(false);
 export const controlledModalTitle = writable("");
 export const controlledModalMessage = writable("");
