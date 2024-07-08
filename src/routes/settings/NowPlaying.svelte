@@ -34,6 +34,7 @@
     <ButtonSetting label="Now Playing Theme" description={getNowPlayingTheme($nowPlayingTheme)} icon={PlayCircle} on:click={() => $showNowPlayingTheme = true} />
     <ButtonSetting label="Background Type" description={getNowPlayingBackgroundType($nowPlayingBackgroundType)} icon={Imagesmode} on:click={() => $showNowPlayingBackground = true} />
     <ToggleSetting label="Extra Song Info" description="Show extra song info, such as the file format, bitrate, and frequency" bind:checked={$showExtraSongInfo} />
+    <ToggleSetting label="Auto Car Mode" icon={MinorCrash} description="Automatically enable car mode while you're driving" bind:checked={$autoDetectCarMode} />
     <SettingSection label="Controls" />
     <ToggleSetting label="Dismiss with swipe down" description="Swipe down to dismiss the mini player" icon={SwipeDownAlt} bind:checked={$dismissMiniPlayerWithSwipe} />
     <ToggleSetting label="Volume Controls" description="Displays volume controls if there is enough space" icon={VolumeUp} bind:checked={$showVolumeControls} />
@@ -42,8 +43,6 @@
       <MultiButton name="additional-control" id="sleepTimer" icon={Bedtime} checked={$extraControl === "Sleep Timer"} on:input={() => setAdditionalControl("Sleep Timer")}>Sleep</MultiButton>
       <MultiButton name="additional-control" id="none" icon={HideSource} checked={$extraControl === "None"} on:input={() => setAdditionalControl("None")}>None</MultiButton>
     </MultiButtonSetting>
-    <SettingSection label="Other" />
-    <ToggleSetting label="Auto Car Mode" description="Automatically enable car mode when you're driving" icon={MinorCrash} bind:checked={$autoDetectCarMode} />
   </span>
 </SettingsBody>
 

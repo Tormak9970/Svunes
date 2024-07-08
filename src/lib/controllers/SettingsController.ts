@@ -25,6 +25,7 @@ import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
 import { debounce } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
+import { RustInterop } from "./utils/RustInterop";
 
 /**
  * Sets settings to defaults if they do not exist.
@@ -292,11 +293,14 @@ export class SettingsController {
     useOledPalette.set(this.settings.useOledPalette);
     themePrimaryColor.set(this.settings.themePrimaryColor);
 
-    const existingMusicDirs = [];
-
-    await Promise.all(this.settings.musicDirectories.map((dir) => fs.exists(dir))).then((exists: boolean[]) => {
-      const filtered = this.settings.musicDirectories.filter((_, i) => exists[i]);
-      musicDirectories.set(filtered);
+    const existencePromises = this.settings.musicDirectories.map((dir) => {
+      return RustInterop.addPathToScope(dir).then((success: boolean) => {
+        return success && fs.exists(dir);
+      });
+    });
+    await Promise.all(existencePromises).then((exists: boolean[]) => {
+      this.settings.musicDirectories = this.settings.musicDirectories.filter((_, i) => exists[i]);
+      musicDirectories.set(this.settings.musicDirectories);
     });
 
     selectedView.set(this.settings.selectedView);

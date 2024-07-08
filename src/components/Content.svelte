@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { DeviceController } from "@lib/controllers/DeviceController";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
@@ -92,6 +93,7 @@
 
     await SettingsController.init();
     AppController.init();
+    DeviceController.init();
 
     closeRequestListener = await window.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, () => {
       if (!SettingsController.settingsHaveChanged) exit(0);
@@ -104,6 +106,7 @@
   });
 
   onDestroy(() => {
+    DeviceController.destroy();
     AppController.destroy();
     SettingsController.destroy();
 
