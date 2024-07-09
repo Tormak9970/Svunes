@@ -102,7 +102,7 @@
     if (title) {
       $showSearchingApi = true;
 
-      await ApiController.getInfoForSong(params.id!).then((songInfo) => {
+      await ApiController.getInfoForSong(title).then((songInfo) => {
         if (songInfo) {
           if (songInfo.album) album = songInfo.album;
           if (songInfo.artist) artist = songInfo.artist;

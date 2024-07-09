@@ -13,7 +13,7 @@ export type MediaTrack = {
 }
 
 export type Media = {
-  tracks: MediaTrack[];
+  track: MediaTrack[];
   format: string;
   "disc-count": number;
   "track-count": number;
@@ -124,7 +124,7 @@ export type RecordingRelease = {
   title: string;
   "status-id": string;
   status: string;
-  "artist-credit": ArtistInfo[];
+  "artist-credit"?: ArtistInfo[];
   "release-group": {
     id: string;
     "primary-type": string;
@@ -144,6 +144,7 @@ export type Recording = {
   length: number;
   "artist-credit": ArtistInfo[];
   releases: RecordingRelease[];
+  "first-release-date": string;
 }
 
 export type RecordingResponse = {
