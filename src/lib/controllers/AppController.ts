@@ -123,7 +123,6 @@ export class AppController {
       // * This is kinda dumb but it works.
       isLoading.set(false);
 
-      console.log("cachedSongId:", cachedSongId);
       playingSongId.set(cachedSongId);
       if (cachedSongId !== "") {
         showNowPlaying.set(true);

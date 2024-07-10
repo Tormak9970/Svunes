@@ -79,6 +79,7 @@ dependencies = [
  "palette_extract",
  "panic-message",
  "rayon",
+ "reqwest",
  "serde",
  "serde_json",
  "symphonia",

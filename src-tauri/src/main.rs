@@ -7,12 +7,13 @@ mod music_readers;
 mod music_writers;
 mod mpa_reader;
 
-use std::{fs::{self, create_dir_all}, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel};
+use std::{fs::{self, create_dir_all, File}, io::Write, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel, time::Duration};
 
 use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use rayon::iter::IntoParallelRefIterator;
+use reqwest::Client;
 use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
@@ -297,6 +298,38 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
   }
 }
 
+#[tauri::command]
+/// Downloads a file from a url.
+async fn download_image(app_handle: AppHandle, image_url: String, dest_path: String, timeout: u64) -> String {
+  logger::log_to_file(app_handle.to_owned(), format!("Downloading image from {} to {}", image_url, dest_path).as_str(), 0);
+  
+  let http_client_res = reqwest::Client::builder().timeout(Duration::from_secs(timeout)).build();
+  let http_client: Client = http_client_res.expect("Should have been able to successfully make the reqwest client.");
+
+  let response_res = http_client.get(image_url.clone()).send().await;
+  
+  if response_res.is_ok() {
+    let response = response_res.ok().unwrap();
+    let response_bytes = response.bytes().await.expect("Should have been able to await getting response bytes.");
+
+    let mut dest_file: File = File::create(&dest_path).expect("Dest path should have existed.");
+    let write_res = dest_file.write_all(&response_bytes);
+
+    if write_res.is_ok() {
+      logger::log_to_file(app_handle.to_owned(), format!("Download of {} finished.", image_url.clone()).as_str(), 0);
+      return String::from("success");
+    } else {
+      let err = write_res.err().expect("Request failed, error should have existed.");
+      logger::log_to_file(app_handle.to_owned(), format!("Download of {} failed with {}.", image_url.clone(), err.to_string()).as_str(), 0);
+      return String::from("failed");
+    }
+  } else {
+    let err = response_res.err().expect("Request failed, error should have existed.");
+    logger::log_to_file(app_handle.to_owned(), format!("Download of {} failed with {}.", image_url.clone(), err.to_string()).as_str(), 0);
+    return String::from("failed");
+  }
+}
+
 /// This app's main function.
 fn main() {
   tauri::Builder::default()
@@ -311,7 +344,8 @@ fn main() {
       copy_artist_image,
       copy_playlist_image,
       delete_songs,
-      write_music_files
+      write_music_files,
+      download_image
     ])
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);

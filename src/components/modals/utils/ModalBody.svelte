@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
   import type { IconifyIcon } from "@iconify/types";
+  import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
 
@@ -10,6 +11,7 @@
   export let headline: string;
   export let open: boolean;
   export let canClose = true;
+  export let loading = false;
 
   const dispatch = createEventDispatcher();
   let dialog: HTMLDialogElement;
@@ -69,6 +71,11 @@
   class:hide={hideDialog}
   {...extraOptions}
 >
+  {#if loading}
+    <div class="loading-container">
+      <LoadingSpinner />
+    </div>
+  {/if}
   <div class="m3-container">
     {#if icon}
       <Icon {icon} />
@@ -95,12 +102,17 @@
     max-width: 35rem;
     padding: 0;
     overflow: auto;
+
+    position: relative;
   }
   .m3-container {
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
     width: 100%;
+
+    position: relative;
+    z-index: 1;
   }
 
   .m3-container > :global(svg) {
@@ -121,6 +133,22 @@
     color: rgb(var(--m3-scheme-on-surface-variant));
     margin-bottom: 1.5rem;
   }
+
+  .loading-container {
+    position: absolute;
+    z-index: 4;
+
+    background-color: rgb(var(--m3-scheme-scrim) / 0.7);
+    color: rgb(var(--m3-scheme-secondary));
+    
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .buttons {
     display: flex;
     justify-content: flex-end;

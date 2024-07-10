@@ -35,8 +35,9 @@ body {
 
 * {
   /* scrollbar-color: rgb(var(--m3-scheme-primary)) transparent; */
-  /* ! this is only ideal for mobile */
+  /* ! these are only ideal for mobile */
   scrollbar-width: none;
+  overscroll-behavior: contain;
 }
 
 #app {

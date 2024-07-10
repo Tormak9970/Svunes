@@ -108,10 +108,12 @@
     });
   });
 
-  onDestroy(() => {
+  onDestroy(async () => {
     DeviceController.destroy();
     AppController.destroy();
     SettingsController.destroy();
+
+    await ApiController.destroy();
 
     if (loadingUnsub) loadingUnsub();
     if (isPausedUnsub) isPausedUnsub();

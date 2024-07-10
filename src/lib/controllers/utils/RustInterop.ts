@@ -126,4 +126,21 @@ export class RustInterop {
   static async deleteSongs(paths: string[]): Promise<boolean> {
     return await invoke<boolean>("delete_songs", { filePathsStr: JSON.stringify(paths) });
   }
+
+  /**
+   * Downloads a file to the provided destination from a given url.
+   * @param imageUrl The url of the image to download.
+   * @param destPath The path to write the file to.
+   * @param timeout The time before the request times out.
+   * @returns A promise resolving to true if the file was successfully downloaded.
+   */
+  static async downloadImage(imageUrl: string, destPath: string, timeout: number): Promise<string> {
+    let timedOut = false;
+
+    setTimeout(() => timedOut = true, timeout - 1);
+
+    const status = await invoke<string>("download_image", { imageUrl: imageUrl, destPath: destPath, timeout: timeout });
+
+    return timedOut ? "timedOut" : status;
+  }
 }
