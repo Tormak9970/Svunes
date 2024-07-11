@@ -16,9 +16,6 @@
 
   const imageSize = 150;
   const iconSize = 40;
-  
-  $: console.log($availableReleaseGroups);
-  $: console.log($selectedReleaseGroupId);
 
   $: options = $availableReleaseGroups.map((releaseGroup) => {
     return { label: releaseGroup.title, value: releaseGroup.id };
@@ -72,13 +69,15 @@
 
   onMount(() => {
     selectedReleaseGroupIdUnsub = selectedReleaseGroupId.subscribe((id) => {
-      const currentReleaseGroup = $availableReleaseGroups.find((releaseGroup) => releaseGroup.id === id);
+      const currentReleaseGroup = $availableReleaseGroups.find((releaseGroup) => releaseGroup?.id === id);
       showCoversLoadingSpinner = true;
       
-      ApiController.getCoversForReleaseGroup(currentReleaseGroup!).then((covers) => {
-        $imageResults = covers;
-        showCoversLoadingSpinner = false;
-      });
+      if (currentReleaseGroup) {
+        ApiController.getCoversForReleaseGroup(currentReleaseGroup).then((covers) => {
+          $imageResults = covers;
+          showCoversLoadingSpinner = false;
+        });
+      }
     });
   });
 
