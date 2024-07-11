@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Button from "./Button.svelte";
-  import Icon from "../utils/Icon.svelte";
   import type { HTMLAttributes } from "svelte/elements";
+  import Icon from "../utils/Icon.svelte";
+  import Button from "./Button.svelte";
 
   export let extraOptions: HTMLAttributes<HTMLButtonElement> = {};
   export let size = "2.5rem";
@@ -33,7 +33,14 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="container" on:click|stopPropagation on:mousedown|stopPropagation style="--md-menu-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-container-color: rgb(var(--m3-scheme-surface-container)); --md-menu-item-selected-container-color: rgb(var(--m3-scheme-secondary-container));">
+<div
+  class="container"
+  on:click|stopPropagation
+  on:mousedown|stopPropagation
+  style:--md-menu-container-color="rgb(var(--m3-scheme-surface-container))"
+  style:--md-menu-item-container-color="rgb(var(--m3-scheme-surface-container))"
+  style:--md-menu-item-selected-container-color="rgb(var(--m3-scheme-secondary-container))"
+>
   <Button type="text" iconType="full" size={size} iconSize={iconSize} on:click={onClick} extraOptions={extraOptions}>
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { albumResults, onAlbumInfoResultsDone, showAlbumInfoResults } from "@stores/Modals";
+  import { albumResults, availableReleaseGroups, onAlbumInfoResultsDone, selectedReleaseGroupId, showAlbumInfoResults } from "@stores/Modals";
   import ModalBody from "../utils/ModalBody.svelte";
 
   $: console.log($albumResults);
@@ -7,6 +7,8 @@
   function cancel() {
     $showAlbumInfoResults = false;
     $albumResults = [];
+    $availableReleaseGroups = [];
+    $selectedReleaseGroupId = "";
     $onAlbumInfoResultsDone(null);
     $onAlbumInfoResultsDone = () => {};
   }

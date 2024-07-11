@@ -1,5 +1,6 @@
 import type { AlbumResult, SelectedAlbum } from "@lib/controllers/ApiController";
 import { writable, type Writable } from "svelte/store";
+import type { ReleaseGroup } from "../types/MusicBrainz";
 
 export const showSavingSettings = writable(false);
 
@@ -29,6 +30,9 @@ export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> =
 export const showSearchingApi = writable(false);
 export const apiSearchCanceled = writable(false);
 
+
+export const availableReleaseGroups: Writable<ReleaseGroup[]> = writable([]);
+export const selectedReleaseGroupId: Writable<string> = writable("");
 
 export const showImageResults = writable(false);
 export const imageResults: Writable<string[]> = writable([]);

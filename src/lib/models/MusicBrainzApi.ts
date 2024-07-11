@@ -43,7 +43,7 @@ export class MusicBrainzApi {
     const specialChars = /[+\-\&\&\|\|!\(\)\{\}\[\]\^"~*?:\\]/g;
 
     return query.replace(specialChars, '\\$&');
-}
+  }
 
   /**
    * Makes a request and returns the result.
@@ -66,25 +66,6 @@ export class MusicBrainzApi {
       return response.data;
     } else {
       throw new RequestError(response.data?.error ?? "MusicBrainz error.", response);
-    }
-  }
-
-  /**
-   * Gets the releaseId for.
-   * @param albumName The name of the album.
-   */
-  async getReleaseIdForAlbum(albumName: string): Promise<string[]> {
-    const query = this.escapeLuceneChars(albumName);
-
-    try {
-      const results = await this.makeRequest<ReleaseGroupResponse>("GET", `release-group/?${this.extraOptions}&query=releasegroup:${query} OR alias:${query}`);
-      const albums = (results as ReleaseGroupResponse)["release-groups"];
-
-      const releases = albums[0].releases.map((release) => release.id);
-      return releases;
-    } catch (e: any) {
-      LogController.error(e.message);
-      return [];
     }
   }
 
@@ -115,10 +96,10 @@ export class MusicBrainzApi {
   }
 
   /**
-   * Gets info about an album.
+   * Gets the release for an album.
    * @param albumName The name of the album.
    */
-  async getAlbumInfo(albumName: string): Promise<ReleaseGroup[]> {
+  async getReleaseGroups(albumName: string): Promise<ReleaseGroup[]> {
     const query = this.escapeLuceneChars(albumName);
 
     try {

@@ -1,4 +1,4 @@
-import { albumResults, apiSearchCanceled, imageResults, onAlbumInfoResultsDone, onImageResultsDone, showAlbumInfoResults, showImageResults, showSearchingApi } from "@stores/Modals";
+import { albumResults, apiSearchCanceled, availableReleaseGroups, imageResults, onAlbumInfoResultsDone, onImageResultsDone, selectedReleaseGroupId, showAlbumInfoResults, showImageResults, showSearchingApi } from "@stores/Modals";
 import { fs, path } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
 import { showErrorSnackbar } from "../../stores/State";
@@ -48,6 +48,25 @@ export type SelectedSong = {
   releaseYear?: string;
 }
 
+// ! Album Info Process
+// albumName -> releaseGroups
+  // ? Store so user can select desired releaseGroup
+  // * cache these
+
+  // releaseGroupId -> releaseIds -> releaseInfo
+    // ? Store so user can select desired release info
+    // * cache these
+
+
+// ! Album Cover Process
+// albumName -> releaseGroups
+  // ? Store so user can select desired releaseGroup
+  // * cache these
+
+  // releaseGroupId -> releaseIds -> releaseCovers
+    // ? Store so user can select desired release cover
+    // * cache these
+
 /**
  * Handles interacting with the external apis used by the app
  */
@@ -60,9 +79,13 @@ export class ApiController {
   private static musicBrainzApiModel: MusicBrainzApi;
   private static coverArtApiModel: CoverArtApi;
 
-  private static albumNameReleaseIdsMap: Record<string, string[]> = {};
 
+  private static albumNameGroupsMap: Record<string, ReleaseGroup[]> = {};
+
+  private static groupIdCoversMap: Record<string, string[]> = {};
   private static albumImageCache: Record<string, string[]> = {};
+
+  private static groupIdInfoMap: Record<string, AlbumResult[]> = {};
   private static albumInfoCache: Record<string, AlbumResult[]> = {};
 
 
@@ -157,50 +180,13 @@ export class ApiController {
       await callback(wrappedResolver);
     });
   }
-
-  /**
-   * Get the album's cover from the api.
-   * @param albumName The name of the album.
-   */
-  static async getPictureForAlbum(albumName: string): Promise<string | null> {
-    return this.cancelablePromise<string | null>(async (resolve) => {
-      let results = this.albumImageCache[albumName];
-
-      if (!results || results.length === 0) {
-        let releaseIds = this.albumNameReleaseIdsMap[albumName];
-        if (!releaseIds) {
-          releaseIds = await this.musicBrainzApiModel.getReleaseIdForAlbum(albumName);
-          this.albumNameReleaseIdsMap[albumName] = releaseIds;
-        }
-
-        results = [];
-        for (const releaseId of releaseIds) {
-          const images = await this.coverArtApiModel.getAlbumCovers(releaseId);
-          if (images) results.push(...images);
-        }
-
-        this.albumImageCache[albumName] = results;
-      }
-      
-      showSearchingApi.set(false);
-
-      if (results.length > 0) {
-        imageResults.set(results);
-        onImageResultsDone.set((path: string | null) => resolve(path));
-        showImageResults.set(true);
-      }
-    }, null);
-  }
   
   /**
-   * Gets releases for an album from a list of release-groups.
-   * @param albumName The name of the albums.
-   * @param releaseGroups The release-groups to check.
-   * @returns The releases.
+   * Gets the release group with a title closest to the album name.
+   * @param albumName The name of the album.
+   * @param releaseGroups The release groups to check.
    */
-  private static async getReleasesFromReleaseGroups(albumName: string, releaseGroups: ReleaseGroup[]): Promise<AlbumResult[]> {
-    const releases: AlbumResult[] = [];
-
+  private static getClosestRelease(albumName: string, releaseGroups: ReleaseGroup[]): ReleaseGroup {
     let closest = releaseGroups[0];
     let highestSimilarity = compareStrings(albumName, closest.title);
 
@@ -214,9 +200,74 @@ export class ApiController {
       }
     }
 
-    for (const release of closest.releases) {
-      const releaseAlbumInfo = await this.musicBrainzApiModel.getReleaseInfo(release.id);
-      if (releaseAlbumInfo) releases.push(releaseAlbumInfo);
+    return closest;
+  }
+  
+  /**
+   * Gets the album covers from a release group
+   * @param releaseGroup The release-group to get releases for.
+   */
+  static async getCoversForReleaseGroup(releaseGroup: ReleaseGroup): Promise<string[]> {
+    let covers = this.groupIdCoversMap[releaseGroup.id];
+
+    if (!covers || covers.length === 0) {
+      covers = [];
+
+      for (const release of releaseGroup.releases) {
+        const images = await this.coverArtApiModel.getAlbumCovers(release.id);
+        if (images) covers.push(...images);
+      }
+
+      this.groupIdCoversMap[releaseGroup.id] = covers;
+    }
+
+    return covers;
+  }
+
+  /**
+   * Get the album's cover from the api.
+   * @param albumName The name of the album.
+   */
+  static async getPictureForAlbum(albumName: string): Promise<string | null> {
+    return this.cancelablePromise<string | null>(async (resolve) => {
+      let releaseGroups = this.albumNameGroupsMap[albumName];
+
+      if (!releaseGroups) {
+        releaseGroups = await this.musicBrainzApiModel.getReleaseGroups(albumName);
+        this.albumNameGroupsMap[albumName] = releaseGroups;
+      }
+
+      const closest = this.getClosestRelease(albumName, releaseGroups);
+      const covers = await this.getCoversForReleaseGroup(closest);
+      
+      showSearchingApi.set(false);
+
+      if (covers.length > 0) {
+        availableReleaseGroups.set(releaseGroups);
+        selectedReleaseGroupId.set(closest.id);
+        imageResults.set(covers);
+        onImageResultsDone.set((path: string | null) => resolve(path));
+        showImageResults.set(true);
+      }
+    }, null);
+  }
+
+  /**
+   * Gets releases for an album from a release group
+   * @param releaseGroup The release-group to get releases for.
+   */
+  static async getReleasesForReleaseGroup(releaseGroup: ReleaseGroup): Promise<AlbumResult[]> {
+    let releases: AlbumResult[] = this.groupIdInfoMap[releaseGroup.id];
+
+    if (!releases) {
+      releases = [];
+
+      for (const release of releaseGroup.releases) {
+        const releaseAlbumInfo = await this.musicBrainzApiModel.getReleaseInfo(release.id);
+        if (releaseAlbumInfo) releases.push(releaseAlbumInfo);
+      }
+
+      this.groupIdInfoMap[releaseGroup.id] = releases;
     }
 
     return releases;
@@ -228,22 +279,22 @@ export class ApiController {
    */
   static async getInfoForAlbum(albumName: string): Promise<SelectedAlbum | null> {
     return this.cancelablePromise<SelectedAlbum | null>(async (resolve) => {
-      let results = this.albumInfoCache[albumName];
+      let releaseGroups = this.albumNameGroupsMap[albumName];
 
-      if (!results || results.length === 0) {
-        const releaseGroups = await this.musicBrainzApiModel.getAlbumInfo(albumName);
-
-        const releases = await this.getReleasesFromReleaseGroups(albumName, releaseGroups);
-
-        results = releases;
-        this.albumNameReleaseIdsMap[albumName] = results.map((result) => result.releaseId);
-        this.albumInfoCache[albumName] = results;
+      if (!releaseGroups) {
+        releaseGroups = await this.musicBrainzApiModel.getReleaseGroups(albumName);
+        this.albumNameGroupsMap[albumName] = releaseGroups;
       }
+
+      const closest = this.getClosestRelease(albumName, releaseGroups);
+      const releases = await this.getReleasesForReleaseGroup(closest);
       
       showSearchingApi.set(false);
 
-      if (results.length > 0) {
-        albumResults.set(results);
+      if (releases.length > 0) {
+        availableReleaseGroups.set(releaseGroups);
+        selectedReleaseGroupId.set(closest.id);
+        albumResults.set(releases);
         onAlbumInfoResultsDone.set((selected: SelectedAlbum | null) => resolve(selected));
         showAlbumInfoResults.set(true);
       }

@@ -5,11 +5,16 @@
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
-  import { imageResults, onImageResultsDone, showImageResults } from "@stores/Modals";
+  import { availableReleaseGroups, imageResults, onImageResultsDone, selectedReleaseGroupId, showImageResults } from "@stores/Modals";
+  import Select from "../../interactables/Select.svelte";
+  import SelectOption from "../../interactables/SelectOption.svelte";
   import ModalBody from "../utils/ModalBody.svelte";
 
   const imageSize = 150;
   const iconSize = 40;
+  
+  $: console.log($availableReleaseGroups);
+  $: console.log($selectedReleaseGroupId);
 
   let selectedIndex = -1;
   let isOverflowingTop = false;
@@ -38,6 +43,8 @@
   function cancel() {
     $showImageResults = false;
     $imageResults = [];
+    $availableReleaseGroups = [];
+    $selectedReleaseGroupId = "";
     $onImageResultsDone(null);
     $onImageResultsDone = () => {};
   }
@@ -48,6 +55,8 @@
       $onImageResultsDone(localPath);
       $showImageResults = false;
       $imageResults = [];
+      $availableReleaseGroups = [];
+      $selectedReleaseGroupId = "";
       $onImageResultsDone = () => {};
     });
   }
@@ -56,6 +65,11 @@
 <div class="image-modal">
   <ModalBody open headline="Album Cover Results" loading={showDownloadingSpinner} on:close={cancel}>
     <div class="content-wrapper">
+      <Select label="Album" value={$selectedReleaseGroupId}>
+        {#each $availableReleaseGroups as releaseGroup}
+          <SelectOption value={releaseGroup.id}>{releaseGroup.title}</SelectOption>
+        {/each}
+      </Select>
       <div
         class="content"
         class:overflow-top={isOverflowingTop}

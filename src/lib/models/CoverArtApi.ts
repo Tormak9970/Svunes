@@ -64,7 +64,7 @@ export class CoverArtApi {
     if (response.ok) {
       return response.data;
     } else {
-      throw new RequestError(response.data?.errors?.join(", ") ?? "CoverartArchive error.", response);
+      throw new RequestError(response.data?.error ?? "CoverartArchive error.", response);
     }
   }
 
