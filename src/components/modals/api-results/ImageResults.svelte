@@ -6,9 +6,13 @@
   import { ApiController } from "@lib/controllers/ApiController";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { availableReleaseGroups, imageResults, onImageResultsDone, selectedReleaseGroupId, showImageResults } from "@stores/Modals";
-  import Select from "../../interactables/Select.svelte";
-  import SelectOption from "../../interactables/SelectOption.svelte";
+  import { onDestroy, onMount } from "svelte";
+  import type { Unsubscriber } from "svelte/store";
+  import Select from "../../interactables/select/Select.svelte";
+  import LoadingSpinner from "../../layout/loading-animations/LoadingSpinner.svelte";
   import ModalBody from "../utils/ModalBody.svelte";
+
+  let selectedReleaseGroupIdUnsub: Unsubscriber;
 
   const imageSize = 150;
   const iconSize = 40;
@@ -16,11 +20,16 @@
   $: console.log($availableReleaseGroups);
   $: console.log($selectedReleaseGroupId);
 
+  $: options = $availableReleaseGroups.map((releaseGroup) => {
+    return { label: releaseGroup.title, value: releaseGroup.id };
+  });
+
   let selectedIndex = -1;
   let isOverflowingTop = false;
   let isOverflowingBottom = $imageResults.length > 4;
 
   let showDownloadingSpinner = false;
+  let showCoversLoadingSpinner = false;
   
   function scrollHandler(e: Event) {
     const element = e.currentTarget as HTMLDivElement;
@@ -60,40 +69,60 @@
       $onImageResultsDone = () => {};
     });
   }
+
+  onMount(() => {
+    selectedReleaseGroupIdUnsub = selectedReleaseGroupId.subscribe((id) => {
+      const currentReleaseGroup = $availableReleaseGroups.find((releaseGroup) => releaseGroup.id === id);
+      showCoversLoadingSpinner = true;
+      
+      ApiController.getCoversForReleaseGroup(currentReleaseGroup!).then((covers) => {
+        $imageResults = covers;
+        showCoversLoadingSpinner = false;
+      });
+    });
+  });
+
+  onDestroy(() => {
+    if (selectedReleaseGroupIdUnsub) selectedReleaseGroupIdUnsub();
+  });
 </script>
 
 <div class="image-modal">
   <ModalBody open headline="Album Cover Results" loading={showDownloadingSpinner} on:close={cancel}>
+    <div class="select-wrapper">
+      <Select name="Album" bind:value={$selectedReleaseGroupId} options={options} />
+    </div>
     <div class="content-wrapper">
-      <Select label="Album" value={$selectedReleaseGroupId}>
-        {#each $availableReleaseGroups as releaseGroup}
-          <SelectOption value={releaseGroup.id}>{releaseGroup.title}</SelectOption>
-        {/each}
-      </Select>
-      <div
-        class="content"
-        class:overflow-top={isOverflowingTop}
-        class:overflow-bottom={isOverflowingBottom}
-        on:scroll={scrollHandler}
-      >
-        {#each $imageResults as url, i}
-          <CardClickable type="transparent" highlight={selectedIndex === i} on:click={() => handleImageClick(i)} extraOptions={{ style: `width: ${imageSize + 10}px; height: ${imageSize + 10}px; display: flex; align-items: center; padding: 5px; border-radius: 10px; position: relative; z-index: 1;` }}>
-            <div style="width: {imageSize}px; height: {imageSize}px; overflow: hidden; border-radius: 10px;">
-              {#if url !== ""}
-                <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-                  <!-- svelte-ignore a11y-missing-attribute -->
-                  <img src="{url}" style="width: {imageSize}px; height: {imageSize}px;" draggable="false" on:error={onError} />
-                  <span slot="placeholder">
-                    <MusicNotePlaceholder width={iconSize} height={iconSize} />
-                  </span>
-                </Lazy>
-              {:else}
-                <MusicNotePlaceholder width={iconSize} height={iconSize} />
-              {/if}
-            </div>
-          </CardClickable>
-        {/each}
-      </div>
+      {#if showCoversLoadingSpinner}
+        <div class="loading-content">
+          <LoadingSpinner />
+        </div>
+      {:else}
+        <div
+          class="content"
+          class:overflow-top={isOverflowingTop}
+          class:overflow-bottom={isOverflowingBottom}
+          on:scroll={scrollHandler}
+        >
+          {#each $imageResults as url, i (`${$selectedReleaseGroupId}|${url}`)}
+            <CardClickable type="transparent" highlight={selectedIndex === i} on:click={() => handleImageClick(i)} extraOptions={{ style: `width: ${imageSize + 10}px; height: ${imageSize + 10}px; display: flex; align-items: center; padding: 5px; border-radius: 10px; position: relative; z-index: 1;` }}>
+              <div style="width: {imageSize}px; height: {imageSize}px; overflow: hidden; border-radius: 10px;">
+                {#if url !== ""}
+                  <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
+                    <!-- svelte-ignore a11y-missing-attribute -->
+                    <img src="{url}" style="width: {imageSize}px; height: {imageSize}px;" draggable="false" on:error={onError} />
+                    <span slot="placeholder">
+                      <MusicNotePlaceholder width={iconSize} height={iconSize} />
+                    </span>
+                  </Lazy>
+                {:else}
+                  <MusicNotePlaceholder width={iconSize} height={iconSize} />
+                {/if}
+              </div>
+            </CardClickable>
+          {/each}
+        </div>
+      {/if}
     </div>
     <div class="actions" slot="buttons">
       <div class="left" />
@@ -124,12 +153,27 @@
     padding: 0px 1rem;
   }
 
+  .select-wrapper {
+    padding: 0px 0.5rem;
+  }
+
   .content-wrapper {
     padding: 0px 0.5rem;
     height: 400px;
     
     position: relative;
     z-index: 1;
+  }
+
+  .loading-content {
+    height: 100%;
+    width: 325px;
+    
+    margin-top: 0.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .content {
@@ -141,6 +185,8 @@
     gap: 5px;
 
     overflow: scroll;
+
+    margin-top: 0.5rem;
   }
 
   .overflow-top::before {

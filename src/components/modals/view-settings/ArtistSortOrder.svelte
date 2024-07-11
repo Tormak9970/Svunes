@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RadioInput from "@interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/radio/RadioInput.svelte";
   import { showArtistSortOrder } from "@stores/Modals";
   import { artistSortOrder } from "@stores/State";
   import type { ArtistSortOrder } from "../../../types/Settings";

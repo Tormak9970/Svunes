@@ -1,7 +1,7 @@
 <script lang="ts">
   import { View } from "../../../types/View";
 
-  import RadioInput from "@interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/radio/RadioInput.svelte";
   import { showGridSize } from "@stores/Modals";
   import { albumGridSize, artistGridSize, playlistGridSize, selectedView, songGridSize } from "@stores/State";
   import { GridSize } from "../../../types/Settings";

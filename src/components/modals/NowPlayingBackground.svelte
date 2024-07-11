@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RadioInput from "@interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/radio/RadioInput.svelte";
   import { showNowPlayingBackground } from "@stores/Modals";
   import { nowPlayingBackgroundType } from "@stores/State";
   import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "../../types/Settings";

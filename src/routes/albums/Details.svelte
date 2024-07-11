@@ -4,7 +4,7 @@
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
-  import RadioMenuItem from "@interactables/RadioMenuItem.svelte";
+  import RadioMenuItem from "@interactables/radio/RadioMenuItem.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";

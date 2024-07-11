@@ -81,12 +81,8 @@ export class ApiController {
 
 
   private static albumNameGroupsMap: Record<string, ReleaseGroup[]> = {};
-
   private static groupIdCoversMap: Record<string, string[]> = {};
-  private static albumImageCache: Record<string, string[]> = {};
-
   private static groupIdInfoMap: Record<string, AlbumResult[]> = {};
-  private static albumInfoCache: Record<string, AlbumResult[]> = {};
 
 
   /**

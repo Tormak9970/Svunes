@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RadioInput from "@interactables/RadioInput.svelte";
+  import RadioInput from "@interactables/radio/RadioInput.svelte";
   import { showSelectLanguage } from "@stores/Modals";
   import { selectedLanguage } from "@stores/State";
   import { AppLanguage, getLanguage } from "../../types/Settings";

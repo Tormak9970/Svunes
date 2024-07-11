@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { HTMLButtonAttributes } from "svelte/elements";
+  import Icon from "@component-utils/Icon.svelte";
   import type { IconifyIcon } from "@iconify/types";
-  import Icon from "../utils/Icon.svelte";
+  import type { HTMLButtonAttributes } from "svelte/elements";
 
   export let display = "inline-flex";
   export let extraOptions: HTMLButtonAttributes = {};
