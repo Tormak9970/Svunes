@@ -5,7 +5,7 @@
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
-  import { availableReleaseGroups, imageResults, onImageResultsDone, selectedReleaseGroupId, showImageResults } from "@stores/Modals";
+  import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import Select from "../../interactables/select/Select.svelte";
@@ -17,16 +17,16 @@
   const imageSize = 150;
   const iconSize = 40;
 
-  $: options = $availableReleaseGroups.map((releaseGroup) => {
+  $: releaseGroupOptions = $availableReleaseGroups.map((releaseGroup) => {
     return { label: releaseGroup.title, value: releaseGroup.id };
   });
 
   let selectedIndex = -1;
   let isOverflowingTop = false;
-  let isOverflowingBottom = $imageResults.length > 4;
+  let isOverflowingBottom = $albumCovers.length > 4;
 
   let showDownloadingSpinner = false;
-  let showCoversLoadingSpinner = false;
+  let coversLoading = false;
   
   function scrollHandler(e: Event) {
     const element = e.currentTarget as HTMLDivElement;
@@ -47,35 +47,35 @@
   }
 
   function cancel() {
-    $showImageResults = false;
-    $imageResults = [];
+    $showPickAlbumCover = false;
+    $albumCovers = [];
     $availableReleaseGroups = [];
     $selectedReleaseGroupId = "";
-    $onImageResultsDone(null);
-    $onImageResultsDone = () => {};
+    $onPickCoverDone(null);
+    $onPickCoverDone = () => {};
   }
 
   async function done() {
     showDownloadingSpinner = true;
-    await ApiController.getLocalImagePath($imageResults[selectedIndex]).then((localPath) => {
-      $onImageResultsDone(localPath);
-      $showImageResults = false;
-      $imageResults = [];
+    await ApiController.getLocalImagePath($albumCovers[selectedIndex]).then((localPath) => {
+      $onPickCoverDone(localPath);
+      $showPickAlbumCover = false;
+      $albumCovers = [];
       $availableReleaseGroups = [];
       $selectedReleaseGroupId = "";
-      $onImageResultsDone = () => {};
+      $onPickCoverDone = () => {};
     });
   }
 
   onMount(() => {
     selectedReleaseGroupIdUnsub = selectedReleaseGroupId.subscribe((id) => {
       const currentReleaseGroup = $availableReleaseGroups.find((releaseGroup) => releaseGroup?.id === id);
-      showCoversLoadingSpinner = true;
+      coversLoading = true;
       
       if (currentReleaseGroup) {
         ApiController.getCoversForReleaseGroup(currentReleaseGroup).then((covers) => {
-          $imageResults = covers;
-          showCoversLoadingSpinner = false;
+          $albumCovers = covers;
+          coversLoading = false;
         });
       }
     });
@@ -89,10 +89,10 @@
 <div class="image-modal">
   <ModalBody open headline="Album Cover Results" loading={showDownloadingSpinner} on:close={cancel}>
     <div class="select-wrapper">
-      <Select name="Album" bind:value={$selectedReleaseGroupId} options={options} />
+      <Select name="Album" bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
     </div>
     <div class="content-wrapper">
-      {#if showCoversLoadingSpinner}
+      {#if coversLoading}
         <div class="loading-content">
           <LoadingSpinner />
         </div>
@@ -103,7 +103,7 @@
           class:overflow-bottom={isOverflowingBottom}
           on:scroll={scrollHandler}
         >
-          {#each $imageResults as url, i (`${$selectedReleaseGroupId}|${url}`)}
+          {#each $albumCovers as url, i (`${$selectedReleaseGroupId}|${url}`)}
             <CardClickable type="transparent" highlight={selectedIndex === i} on:click={() => handleImageClick(i)} extraOptions={{ style: `width: ${imageSize + 10}px; height: ${imageSize + 10}px; display: flex; align-items: center; padding: 5px; border-radius: 10px; position: relative; z-index: 1;` }}>
               <div style="width: {imageSize}px; height: {imageSize}px; overflow: hidden; border-radius: 10px;">
                 {#if url !== ""}

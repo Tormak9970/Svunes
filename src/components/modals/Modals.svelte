@@ -1,8 +1,8 @@
 <script>
-  import { showAdvancedFilters, showAlbumInfoResults, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showImageResults, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPlaylistSortOrder, showSavingSettings, showSearchingApi, showSelectLanguage, showSongSortOrder } from "@stores/Modals";
+  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSavingSettings, showSearchingApi, showSelectLanguage, showSongSortOrder } from "@stores/Modals";
   import AdvancedSearchFilters from "./AdvancedSearchFilters.svelte";
-  import AlbumInfoResults from "./api-results/AlbumInfoResults.svelte";
-  import ImageResults from "./api-results/ImageResults.svelte";
+  import PickAlbumCover from "./api-results/PickAlbumCover.svelte";
+  import PickAlbumInfo from "./api-results/PickAlbumInfo.svelte";
   import ArtOptions from "./ArtOptions.svelte";
   import BlacklistFolders from "./BlacklistFolders.svelte";
   import Controlled from "./Controlled.svelte";
@@ -65,11 +65,11 @@
 {#if $showSearchingApi}
   <SearchingApi />
 {/if}
-{#if $showAlbumInfoResults}
-  <AlbumInfoResults />
+{#if $showPickAlbumInfo}
+  <PickAlbumInfo />
 {/if}
-{#if $showImageResults}
-  <ImageResults />
+{#if $showPickAlbumCover}
+  <PickAlbumCover />
 {/if}
 
 <!-- ? Misc -->

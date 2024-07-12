@@ -66,13 +66,15 @@
 >
   <div
     class="m3-container"
-    class:focus={open} class:empty={!label}
+    class:focus={open}
+    class:disabled
+    class:empty={!label}
     style="display: inline-flex"
     {...extraWrapperOptions}
     on:click={onClick}
     on:mouseup|stopPropagation
   >
-    <div class="select-mimic m3-font-body-large" {id} class:disabled {...extraOptions}>
+    <div class="select-mimic m3-font-body-large" {id} {...extraOptions}>
       <div class="current-label">{label}</div>
     </div>
     <div class="layer" />
@@ -184,8 +186,9 @@
   .m3-container:hover :global(svg) { color: rgb(var(--m3-scheme-on-surface)); }
   .m3-container.focus :global(svg) { color: rgb(var(--m3-scheme-primary)); }
 
-  .disabled { color: rgb(var(--m3-scheme-on-surface) / 0.38);  }
-  .disabled ~ label { color: rgb(var(--m3-scheme-on-surface) / 0.38); }
-  .disabled ~ .layer { border-color: rgb(var(--m3-scheme-on-surface) / 0.38); }
-  .disabled ~ :global(svg) { color: rgb(var(--m3-scheme-on-surface) / 0.38); }
+  .disabled { pointer-events: none; }
+  .disabled .select-mimic {color: rgb(var(--m3-scheme-on-surface) / 0.38); }
+  .disabled label {color: rgb(var(--m3-scheme-on-surface) / 0.38); }
+  .disabled .layer { border-color: rgb(var(--m3-scheme-on-surface) / 0.38); }
+  .disabled :global(svg) { color: rgb(var(--m3-scheme-on-surface) / 0.38); }
 </style>

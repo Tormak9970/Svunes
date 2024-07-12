@@ -63,6 +63,9 @@ export class CoverArtApi {
 
     if (response.ok) {
       return response.data;
+    } else if (response.status === 404) {
+      const errorMessage = response.data.substring(response.data.indexOf("<p>") + 3, response.data.indexOf("</p>"));
+      throw new RequestError(errorMessage, response);
     } else {
       throw new RequestError(response.data?.error ?? "CoverartArchive error.", response);
     }

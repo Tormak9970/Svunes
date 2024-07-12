@@ -1,4 +1,4 @@
-import type { AlbumResult, SelectedAlbum } from "@lib/controllers/ApiController";
+import type { AlbumInfo, SelectedAlbum } from "@lib/controllers/ApiController";
 import { writable, type Writable } from "svelte/store";
 import type { ReleaseGroup } from "../types/MusicBrainz";
 
@@ -34,13 +34,13 @@ export const apiSearchCanceled = writable(false);
 export const availableReleaseGroups: Writable<ReleaseGroup[]> = writable([]);
 export const selectedReleaseGroupId: Writable<string> = writable("");
 
-export const showImageResults = writable(false);
-export const imageResults: Writable<string[]> = writable([]);
-export const onImageResultsDone: Writable<(path: string | null) => void> = writable(() => {});
+export const showPickAlbumCover = writable(false);
+export const albumCovers: Writable<string[]> = writable([]);
+export const onPickCoverDone: Writable<(path: string | null) => void> = writable(() => {});
 
-export const showAlbumInfoResults = writable(false);
-export const albumResults: Writable<AlbumResult[]> = writable([]);
-export const onAlbumInfoResultsDone: Writable<(selected: SelectedAlbum | null) => void> = writable(() => {});
+export const showPickAlbumInfo = writable(false);
+export const albumInfos: Writable<AlbumInfo[]> = writable([]);
+export const onAlbumInfoDone: Writable<(selected: SelectedAlbum | null) => void> = writable(() => {});
 
 
 export const showControlledModal = writable(false);

@@ -1,4 +1,4 @@
-import { albumResults, apiSearchCanceled, availableReleaseGroups, imageResults, onAlbumInfoResultsDone, onImageResultsDone, selectedReleaseGroupId, showAlbumInfoResults, showImageResults, showSearchingApi } from "@stores/Modals";
+import { albumCovers, albumInfos, apiSearchCanceled, availableReleaseGroups, onAlbumInfoDone, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover, showPickAlbumInfo, showSearchingApi } from "@stores/Modals";
 import { fs, path } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
 import { showErrorSnackbar } from "../../stores/State";
@@ -11,7 +11,7 @@ import { RustInterop } from "./utils/RustInterop";
 
 type Resolver<T> = (value: T | PromiseLike<T>) => void;
 
-export type AlbumResult = {
+export type AlbumInfo = {
   releaseId: string;
   title: string;
   artist?: string;
@@ -23,28 +23,6 @@ export type SelectedAlbum = {
   title: string;
   artist?: string;
   genre?: string;
-  releaseYear?: string;
-}
-
-export type SongResult = {
-  title: string;
-  album?: string;
-  artist?: string;
-  albumArtist?: string;
-  composer?: string;
-  genres: string[];
-  trackNumber?: string;
-  releaseYear?: string;
-}
-
-export type SelectedSong = {
-  title: string;
-  album?: string;
-  artist?: string;
-  albumArtist?: string;
-  composer?: string;
-  genre?: string;
-  trackNumber?: string;
   releaseYear?: string;
 }
 
@@ -82,7 +60,7 @@ export class ApiController {
 
   private static albumNameGroupsMap: Record<string, ReleaseGroup[]> = {};
   private static groupIdCoversMap: Record<string, string[]> = {};
-  private static groupIdInfoMap: Record<string, AlbumResult[]> = {};
+  private static groupIdInfoMap: Record<string, AlbumInfo[]> = {};
 
 
   /**
@@ -241,9 +219,9 @@ export class ApiController {
       if (covers.length > 0) {
         availableReleaseGroups.set(releaseGroups);
         selectedReleaseGroupId.set(closest.id);
-        imageResults.set(covers);
-        onImageResultsDone.set((path: string | null) => resolve(path));
-        showImageResults.set(true);
+        albumCovers.set(covers);
+        onPickCoverDone.set((path: string | null) => resolve(path));
+        showPickAlbumCover.set(true);
       }
     }, null);
   }
@@ -252,8 +230,8 @@ export class ApiController {
    * Gets releases for an album from a release group
    * @param releaseGroup The release-group to get releases for.
    */
-  static async getReleasesForReleaseGroup(releaseGroup: ReleaseGroup): Promise<AlbumResult[]> {
-    let releases: AlbumResult[] = this.groupIdInfoMap[releaseGroup.id];
+  static async getReleasesForReleaseGroup(releaseGroup: ReleaseGroup): Promise<AlbumInfo[]> {
+    let releases: AlbumInfo[] = this.groupIdInfoMap[releaseGroup.id];
 
     if (!releases) {
       releases = [];
@@ -290,9 +268,9 @@ export class ApiController {
       if (releases.length > 0) {
         availableReleaseGroups.set(releaseGroups);
         selectedReleaseGroupId.set(closest.id);
-        albumResults.set(releases);
-        onAlbumInfoResultsDone.set((selected: SelectedAlbum | null) => resolve(selected));
-        showAlbumInfoResults.set(true);
+        albumInfos.set(releases);
+        onAlbumInfoDone.set((selected: SelectedAlbum | null) => resolve(selected));
+        showPickAlbumInfo.set(true);
       }
     }, null);
   }

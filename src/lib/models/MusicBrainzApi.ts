@@ -7,7 +7,7 @@ import { RequestError } from "./TauriResponse";
 export type MBAlbumInfo = {
   releaseId: string;
   title: string;
-  albumArtist: string | undefined;
+  artist: string | undefined;
   releaseYear: string | undefined;
   genres: string[];
 }
@@ -85,7 +85,7 @@ export class MusicBrainzApi {
       return {
         releaseId: release.id,
         title: release.title,
-        albumArtist: artists.length > 0 ? artists[0].artist.name : undefined,
+        artist: artists.length > 0 ? artists[0].artist.name : undefined,
         releaseYear: releaseDate ? releaseDate.substring(0, 4) : undefined,
         genres: release.tags.map((tag) => tag.name)
       }
