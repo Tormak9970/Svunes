@@ -7,6 +7,8 @@
   import FolderEntry from "./utils/FolderEntry.svelte";
   import ModalBody from "./utils/ModalBody.svelte";
 
+  let open = true;
+
   let folders = [ ...$musicDirectories ];
 
   /**
@@ -29,7 +31,7 @@
    */
   function done() {
     $musicDirectories = [ ...folders ];
-    $showEditMusicFolders = false;
+    open = false;
   }
 
   /**
@@ -42,7 +44,7 @@
   }
 </script>
 
-<ModalBody open headline="Music Folders" canClose={$location.startsWith("/settings")} on:close={() => $showEditMusicFolders = false}>
+<ModalBody open={open} headline="Music Folders" canClose={$location.startsWith("/settings")} on:close={() => open = false} on:closeEnd={() => $showEditMusicFolders = false}>
   <div>
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />

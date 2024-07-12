@@ -12,6 +12,8 @@
   import LoadingSpinner from "../../layout/loading-animations/LoadingSpinner.svelte";
   import ModalBody from "../utils/ModalBody.svelte";
 
+  let open = true;
+
   let selectedReleaseGroupIdUnsub: Unsubscriber;
 
   const imageSize = 150;
@@ -47,24 +49,24 @@
   }
 
   function cancel() {
-    $showPickAlbumCover = false;
-    $albumCovers = [];
-    $availableReleaseGroups = [];
-    $selectedReleaseGroupId = "";
     $onPickCoverDone(null);
-    $onPickCoverDone = () => {};
+    open = false;
   }
 
   async function done() {
     showDownloadingSpinner = true;
     await ApiController.getLocalImagePath($albumCovers[selectedIndex]).then((localPath) => {
       $onPickCoverDone(localPath);
-      $showPickAlbumCover = false;
-      $albumCovers = [];
-      $availableReleaseGroups = [];
-      $selectedReleaseGroupId = "";
-      $onPickCoverDone = () => {};
+      open = false;
     });
+  }
+
+  function close() {
+    $showPickAlbumCover = false;
+    $albumCovers = [];
+    $availableReleaseGroups = [];
+    $selectedReleaseGroupId = "";
+    $onPickCoverDone = () => {};
   }
 
   onMount(() => {
@@ -87,7 +89,7 @@
 </script>
 
 <div class="image-modal">
-  <ModalBody open headline="Album Cover Results" loading={showDownloadingSpinner} on:close={cancel}>
+  <ModalBody open={open} headline="Album Cover Results" loading={showDownloadingSpinner} on:close={cancel} on:closeEnd={close}>
     <div class="select-wrapper">
       <Select name="Album" bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
     </div>

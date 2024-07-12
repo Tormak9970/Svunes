@@ -6,6 +6,8 @@
   import FolderEntry from "./utils/FolderEntry.svelte";
   import ModalBody from "./utils/ModalBody.svelte";
 
+  let open = true;
+
   let folders = [ ...$blacklistedFolders ];
 
   /**
@@ -35,7 +37,7 @@
    */
   function done() {
     $blacklistedFolders = [ ...folders ];
-    $showBlacklistFolders = false;
+    open = false;
   }
 
   /**
@@ -48,7 +50,7 @@
   }
 </script>
 
-<ModalBody open headline="Blacklisted Folders" on:close={() => $showBlacklistFolders = false }>
+<ModalBody open={open} headline="Blacklisted Folders" on:close={() => open = false} on:closeEnd={() => $showBlacklistFolders = false }>
   <div>
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />

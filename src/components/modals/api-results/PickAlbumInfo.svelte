@@ -7,6 +7,8 @@
   import Select from "../../interactables/select/Select.svelte";
   import LoadingSpinner from "../../layout/loading-animations/LoadingSpinner.svelte";
   import ModalBody from "../utils/ModalBody.svelte";
+  
+  let open = true;
 
   let selectedReleaseGroupIdUnsub: Unsubscriber;
   let infoLoading = false;
@@ -30,12 +32,8 @@
   $: selectedGenre = selectedInfo.genres[parseInt(genreIndex)];
 
   function cancel() {
-    $showPickAlbumInfo = false;
-    $albumInfos = [];
-    $availableReleaseGroups = [];
-    $selectedReleaseGroupId = "";
     $onAlbumInfoDone(null);
-    $onAlbumInfoDone = () => {};
+    open = false;
   }
 
   async function done() {
@@ -45,6 +43,10 @@
       genre: genreIndex === "0" ? undefined : selectedGenre,
       releaseYear: selectedInfo.releaseYear
     });
+    open = false;
+  }
+
+  function close() {
     $showPickAlbumInfo = false;
     $albumInfos = [];
     $availableReleaseGroups = [];
@@ -72,7 +74,7 @@
 </script>
 
 <div class="image-modal">
-  <ModalBody open headline="Album Info Results" on:close={cancel}>
+  <ModalBody open={open} headline="Album Info Results" on:close={cancel} on:closeEnd={close}>
     <div class="select-wrapper">
       <Select name="Album" bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
     </div>

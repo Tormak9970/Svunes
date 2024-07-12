@@ -11,6 +11,8 @@
   import { getNowPlayingTheme, NowPlayingTheme } from "../../types/Settings";
   import ModalBody from "./utils/ModalBody.svelte";
 
+  let open = true;
+
   let nowPlayingUnsub: Unsubscriber;
   let selectedTheme = $nowPlayingTheme;
   
@@ -56,7 +58,7 @@
    */
   function done() {
     $nowPlayingTheme = selectedTheme;
-    $showNowPlayingTheme = false;
+    open = false;
   }
 
   onMount(() => {
@@ -72,7 +74,7 @@
   });
 </script>
 
-<ModalBody open headline="Now Playing Theme" on:close={() => { $showNowPlayingTheme = false; selectedTheme = $nowPlayingTheme; }}>
+<ModalBody open={open} headline="Now Playing Theme" on:close={() => open = false} on:closeEnd={() => $showNowPlayingTheme = false}>
   <div class="content">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="themes-container" style:left="{20 + $dragOffset}px" use:drag on:drag={handleDrag}>

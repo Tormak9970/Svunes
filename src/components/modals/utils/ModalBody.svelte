@@ -41,6 +41,7 @@
     if (hideDialog) {
       hideDialog = false;
       dialog.close();
+      dispatch("closeEnd");
     }
   }
 

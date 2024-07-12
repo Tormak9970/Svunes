@@ -3,12 +3,14 @@
   import { controlledModalCancel, controlledModalCancelText, controlledModalConfirm, controlledModalConfirmText, controlledModalMessage, controlledModalTitle, showControlledModal } from "@stores/Modals";
   import ModalBody from "./utils/ModalBody.svelte";
 
+  let open = true;
+
   /**
    * Function to run on confirmation.
    */
   async function onConfirm(): Promise<void> {
     await $controlledModalConfirm();
-    $showControlledModal = false;
+    open = false;
   }
 
   /**
@@ -16,11 +18,11 @@
    */
   async function onCancel(): Promise<void> {
     await $controlledModalCancel();
-    $showControlledModal = false;
+    open = false;
   }
 </script>
 
-<ModalBody headline={$controlledModalTitle} open canClose={false} on:close={() => {}}>
+<ModalBody headline={$controlledModalTitle} open={open} canClose={false} on:closeEnd={() => { $showControlledModal = false }}>
   <div class="content">
     {$controlledModalMessage}
   </div>

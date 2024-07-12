@@ -12,6 +12,8 @@
   import { clamp, swap } from "@lib/utils/Utils";
   import { drag } from "svelte-gesture";
 
+  let open = true;
+
   const entryHeight = 40;
 
   let viewsList = Views.sort((a, b) => $viewIndices[a] - $viewIndices[b]);
@@ -72,11 +74,11 @@
   function done() {
     $viewsToRender = viewsList.filter((view) => checkDict[view]);
     $viewIndices = Object.fromEntries(viewsList.map((item, i) => [item, i])) as Record<View, number>;
-    $showEditViewOrder = false;
+    open = false;
   }
 </script>
 
-<ModalBody open headline="Library Order" on:close={() => $showEditViewOrder = false}>
+<ModalBody open={open} headline="Library Order" on:close={() => open = false} on:closeEnd={() => $showEditViewOrder = false}>
   <div>
     {#key reset}
       <div class="drag-container" style:height="{viewsList.length * entryHeight}px">
@@ -104,7 +106,7 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={() => $showEditViewOrder = false }>Cancel</Button>
+      <Button type="text" on:click={() => open = false }>Cancel</Button>
       <Button type="text" on:click={done}>Done</Button>
     </div>
   </div>

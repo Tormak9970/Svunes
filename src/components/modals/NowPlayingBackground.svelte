@@ -5,19 +5,21 @@
   import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "../../types/Settings";
   import SmallModalBody from "./utils/SmallModalBody.svelte";
 
+  let open = true;
+
   /**
    * Sets the now playing background type.
    * @param backgroundType The new background type.
    */
   function setBackgroundType(backgroundType: NowPlayingBackgroundType) {
     $nowPlayingBackgroundType = backgroundType;
-    $showNowPlayingBackground = false;
+    open = false;
   }
 
   const backgroundTypes: NowPlayingBackgroundType[] = Object.values(NowPlayingBackgroundType).filter((v) => !isNaN(Number(v))) as NowPlayingBackgroundType[];
 </script>
 
-<SmallModalBody headline="Background Type" open on:close={() => $showNowPlayingBackground = false}>
+<SmallModalBody headline="Background Type" open={open} on:close={() => open = false} on:closeEnd={() => $showNowPlayingBackground = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each backgroundTypes as backgroundType}

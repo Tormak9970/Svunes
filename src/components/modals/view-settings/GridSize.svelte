@@ -9,6 +9,8 @@
 
   $: gridSize = $selectedView === View.PLAYLISTS ? $playlistGridSize : ($selectedView === View.ALBUMS ? $albumGridSize : ($selectedView === View.SONGS ? $songGridSize : $artistGridSize));
 
+  let open = true;
+
   /**
    * Sets the song grid size.
    * @param size The size to set to.
@@ -35,7 +37,7 @@
   }
 </script>
 
-<SmallModalBody headline="Grid Size" open on:close={() => $showGridSize = false}>
+<SmallModalBody headline="Grid Size" open={open} on:close={() => open = false} on:closeEnd={() => $showGridSize = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">

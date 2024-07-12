@@ -2,9 +2,11 @@
   import Button from "@interactables/Button.svelte";
   import { showParserVariables } from "@stores/Modals";
   import ModalBody from "./utils/ModalBody.svelte";
+
+  let open = true;
 </script>
 
-<ModalBody open headline="Parser Variables" on:close={() => $showParserVariables = false }>
+<ModalBody headline="Parser Variables" open={open} on:close={() => open = false} on:closeEnd={() => $showParserVariables = false }>
   <div class="content">
     <div>You can only use a variable once.<br/>%dummy% can be used many times.</div>
     <div><b>%title%</b> - The track's title</div>
@@ -19,7 +21,7 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={() => $showParserVariables = false }>Close</Button>
+      <Button type="text" on:click={() => open = false }>Close</Button>
     </div>
   </div>
 </ModalBody>

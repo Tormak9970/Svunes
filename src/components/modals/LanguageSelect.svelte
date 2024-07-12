@@ -5,19 +5,21 @@
   import { AppLanguage, getLanguage } from "../../types/Settings";
   import SmallModalBody from "./utils/SmallModalBody.svelte";
 
+  let open = true;
+
   /**
    * Sets the app language.
    * @param lang The new language.
    */
   function setLanguage(lang: AppLanguage) {
     $selectedLanguage = lang;
-    $showSelectLanguage = false;
+    open = false;
   }
 
   const langs: AppLanguage[] = Object.values(AppLanguage).filter((v) => !isNaN(Number(v))) as AppLanguage[];
 </script>
 
-<SmallModalBody open headline="Select Language" on:close={() => $showSelectLanguage = false}>
+<SmallModalBody open={open} headline="Select Language" on:close={() => open = false} on:closeEnd={() => $showSelectLanguage = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each langs as lang}

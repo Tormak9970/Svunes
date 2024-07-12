@@ -5,6 +5,8 @@
   import { dialog } from "@tauri-apps/api";
   import ListModalBody from "./utils/ListModalBody.svelte";
 
+  let open = true;
+
   /**
    * Prompts the user to select an image.
    */
@@ -24,7 +26,7 @@
     if (path && path !== "") {
       $onArtOptionsDone(path as string);
       $onArtOptionsDone = () => {};
-      $showArtOptions = false;
+      open = false;
     }
   }
 
@@ -34,7 +36,7 @@
   function removeImage() {
     $onArtOptionsDone(undefined);
     $onArtOptionsDone = () => {};
-    $showArtOptions = false;
+    open = false;
   }
 
   /**
@@ -42,11 +44,11 @@
    */
   function cancel() {
     $onArtOptionsDone = () => {};
-    $showArtOptions = false;
+    open = false;
   }
 </script>
 
-<ListModalBody open headline="Update Image" on:close={cancel}>
+<ListModalBody headline="Update Image" open={open} on:close={cancel} on:closeEnd={() => $showArtOptions = false}>
   <div class="list">
     <ListItemButton headline="Pick from device" on:click={pickImage} />
     <ListItemButton headline="Remove image" on:click={removeImage} />

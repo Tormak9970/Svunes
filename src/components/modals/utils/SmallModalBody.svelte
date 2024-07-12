@@ -11,7 +11,7 @@
 </script>
 
 <div class="small-modal">
-  <ModalBody bind:open={open} headline={headline} icon={icon} extraOptions={extraOptions} canClose={canClose} on:close>
+  <ModalBody bind:open={open} headline={headline} icon={icon} extraOptions={extraOptions} canClose={canClose} on:close on:closeEnd>
     <slot />
   </ModalBody>
 </div>

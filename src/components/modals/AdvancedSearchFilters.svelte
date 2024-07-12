@@ -6,6 +6,8 @@
   import { showOnlyMissingAlbum, showOnlyMissingAlbumArtist, showOnlyMissingArtist, showOnlyMissingCover, showOnlyMissingGenre, showOnlyMissingTitle, showOnlyMissingYear } from "@stores/Search";
   import ModalBody from "./utils/ModalBody.svelte";
 
+  let open = true;
+
   const options = [
     { label: "Only show with no title", enabled: $showOnlyMissingTitle },
     { label: "Only show with no cover", enabled: $showOnlyMissingCover },
@@ -25,11 +27,11 @@
     $showOnlyMissingGenre = options[5].enabled;
     $showOnlyMissingYear = options[6].enabled;
     
-    $showAdvancedFilters = false;
+    open = false;
   }
 </script>
 
-<ModalBody open headline="Advanced Song Filters" on:close={() => $showAdvancedFilters = false }>
+<ModalBody headline="Advanced Song Filters" open={open} on:close={() => open = false} on:closeEnd={() => $showAdvancedFilters = false }>
   <div style="height: fit-content;">
     {#each options as option, i (option.label + "|" + i)}
       <div class="entry">

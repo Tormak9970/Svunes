@@ -5,6 +5,8 @@
   import type { PlaylistSortOrder } from "../../../types/Settings";
   import SmallModalBody from "../utils/SmallModalBody.svelte";
 
+  let open = true;
+
   /**
    * Sets the playlist sort order.
    * @param order The sort order to set to.
@@ -15,7 +17,7 @@
   }
 </script>
 
-<SmallModalBody headline="Sort Order" open on:close={() => $showPlaylistSortOrder = false}>
+<SmallModalBody headline="Sort Order" open={open} on:close={() => open = false} on:closeEnd={() => $showPlaylistSortOrder = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">
