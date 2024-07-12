@@ -105,36 +105,48 @@
    * Searches the api for album covers.
    */
   async function searchImage() {
-    if (albumName) {
-      $showSearchingApi = true;
-
-      await ApiController.getPictureForAlbum(albumName).then((path) => {
-        if (path && path !== "") artPath = path;
-      });
-    } else {
-      $showErrorSnackbar({ message: "Album must have a name first" });
+    if (!navigator.onLine) {
+      $showErrorSnackbar({ message: "Cover search requires an internet connection" });
+      return;
     }
+
+    if (!albumName) {
+      $showErrorSnackbar({ message: "Album must have a name first" });
+      return;
+    }
+
+    $showSearchingApi = true;
+
+    await ApiController.getPictureForAlbum(albumName).then((path) => {
+      if (path && path !== "") artPath = path;
+    });
   }
   
   /**
    * Searches the api for a picture of this artist.
    */
   async function searchWeb() {
-    if (albumName) {
-      $showSearchingApi = true;
-
-      await ApiController.getInfoForAlbum(albumName).then((albumInfo) => {
-        if (albumInfo) {
-          if (albumInfo.artist) albumArtist = albumInfo.artist;
-          if (albumInfo.genre) genre = albumInfo.genre;
-          if (albumInfo.releaseYear) releaseYear = albumInfo.releaseYear;
-          
-          $showInfoSnackbar({ message: "Applied results from search" });
-        }
-      });
-    } else {
-      $showErrorSnackbar({ message: "Album must have a name first" });
+    if (!navigator.onLine) {
+      $showErrorSnackbar({ message: "Info search requires an internet connection" });
+      return;
     }
+
+    if (!albumName) {
+      $showErrorSnackbar({ message: "Album must have a name first" });
+      return;
+    }
+
+    $showSearchingApi = true;
+
+    await ApiController.getInfoForAlbum(albumName).then((albumInfo) => {
+      if (albumInfo) {
+        if (albumInfo.artist) albumArtist = albumInfo.artist;
+        if (albumInfo.genre) genre = albumInfo.genre;
+        if (albumInfo.releaseYear) releaseYear = albumInfo.releaseYear;
+        
+        $showInfoSnackbar({ message: "Applied results from search" });
+      }
+    });
   }
 
   onMount(() => {
