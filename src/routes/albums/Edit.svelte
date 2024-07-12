@@ -17,6 +17,7 @@
   import { albumsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
   import { onMount } from "svelte";
   import { pop, replace } from "svelte-spa-router";
+  import { AppController } from "../../lib/controllers/AppController";
 
   export let params: { key?: string } = {};
   $: album = params.key ? $albumsMap[params.key] : null;
@@ -105,7 +106,7 @@
    * Searches the api for album covers.
    */
   async function searchImage() {
-    if (!navigator.onLine) {
+    if (!AppController.isOnline()) {
       $showErrorSnackbar({ message: "Cover search requires an internet connection" });
       return;
     }
@@ -126,7 +127,7 @@
    * Searches the api for a picture of this artist.
    */
   async function searchWeb() {
-    if (!navigator.onLine) {
+    if (!AppController.isOnline()) {
       $showErrorSnackbar({ message: "Info search requires an internet connection" });
       return;
     }

@@ -63,11 +63,27 @@
   <div slot="content" style="height: 100%; width: 100%;">
     {#if sortedSongs.length > 0}
       {#if $songGridSize === GridSize.LIST}
-        <VirtualList name="songsView" itemHeight={60} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={$songsIsAtTop} let:entry>
+        <VirtualList
+          name="songsView"
+          itemHeight={60}
+          items={sortedSongs}
+          keyFunction={keyFunction}
+          bind:isAtTop={$songsIsAtTop}
+          let:entry
+        >
           <ListEntry song={entry} detailType={$songSortOrder} />
         </VirtualList>
       {:else}
-        <VirtualGrid name="songsView" itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap} items={sortedSongs} keyFunction={keyFunction} bind:isAtTop={$songsIsAtTop} let:entry>
+        <VirtualGrid
+          name="songsView"
+          itemHeight={GRID_IMAGE_DIMENSIONS[$songGridSize].height + GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight + 12}
+          itemWidth={GRID_IMAGE_DIMENSIONS[$songGridSize].width + 10}
+          rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap}
+          columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap}
+          items={sortedSongs} keyFunction={keyFunction}
+          bind:isAtTop={$songsIsAtTop}
+          let:entry
+        >
           <GridEntry song={entry} />
         </VirtualGrid>
       {/if}

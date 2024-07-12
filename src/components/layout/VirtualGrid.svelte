@@ -246,7 +246,7 @@
 		width: 100%;
     display: grid;
     
-    grid-template-columns: repeat(auto-fit, var(--img-width));
+    grid-template-columns: repeat(auto-fill, var(--img-width));
     
     row-gap: var(--row-gap);
     column-gap: var(--column-gap);

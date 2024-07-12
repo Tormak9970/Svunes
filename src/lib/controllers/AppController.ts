@@ -24,6 +24,13 @@ export class AppController {
   private static oldBlacklist: string[] = [];
 
   /**
+   * Checks if the app has an internet connection.
+   */
+  static isOnline() {
+    return navigator.onLine;
+  }
+
+  /**
    * Initializes the app.
    */
   static async init() {
