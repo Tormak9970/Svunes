@@ -5,11 +5,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { AppController } from "@lib/controllers/AppController";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { songsMap } from "@stores/State";
   import DetailsField from "./DetailsField.svelte";
   
@@ -25,14 +21,15 @@
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
   import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
-  import MenuItem from "@layout/MenuItem.svelte";
-  import { EditController } from "@lib/controllers/EditController";
-  import { pop, push, replace } from "svelte-spa-router";
+  import t from "@lib/utils/i18n";
+  import { pop, push } from "svelte-spa-router";
+  import SongOptions from "../../components/views/songs/SongOptions.svelte";
   
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
 
   let isAtTop = true;
+  let menuIsOpen = false;
 
   /**
    * Closes the details overlay.
@@ -42,68 +39,10 @@
   }
 
   /**
-   * Plays this song.
-   */
-  function playSong() {
-    PlaybackController.playSong(song!);
-  }
-
-  /**
-   * Plays this song next.
-   */
-  function playNext() {
-    QueueController.playSongsNext([song!.id]);
-  }
-
-  /**
-   * Queues this song.
-   */
-  function queueSong() {
-    QueueController.queueSongs([song!.id]);
-  }
-
-  /**
-   * Opens the add to playlist dialog with this song set to be added.
-   */
-  function addToPlaylist() {
-    $songToAdd = song!.id;
-    $showAddToPlaylist = true;
-  }
-
-  /**
-   * Shows the song's album.
-   */
-  function goToAlbum() {
-    push(`/albums/${song!.album!}`);
-  }
-
-  /**
-   * Shows the song's artist.
-   */
-  function goToArtist() {
-    push(`/artists/${song!.artist!}`);
-  }
-
-  /**
    * Shows the edit song overlay.
    */
   function showSongEdit() {
     push(`/songs/${song!.id}/edit`);
-  }
-
-  /**
-   * Opens the platform's share ui.
-   */
-  function share() {
-    AppController.share([song!.id]);
-  }
-
-  /**
-   * Prompts the user to confirm if they want to delete this song.
-   */
-  function deleteSong() {
-    EditController.deleteSongsFromDevice([song!.id]);
-    replace("/songs");
   }
 </script>
 
@@ -120,19 +59,10 @@
           <Icon icon={Edit} width="20px" height="20px" />
         </Button>
         <div style="height: 100%; width: 5px;" />
-        <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playSong}>Play</MenuItem>
-          <MenuItem on:click={playNext}>Play Next</MenuItem>
-          <MenuItem on:click={queueSong}>Add to Queue</MenuItem>
-          <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
-          {#if song?.album}
-            <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
+        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
+          {#if song}
+            <SongOptions bind:menuIsOpen={menuIsOpen} song={song} hideEditOption />
           {/if}
-          {#if song?.artist}
-            <MenuItem on:click={goToArtist}>Go to Artist</MenuItem>
-          {/if}
-          <MenuItem on:click={share}>Share</MenuItem>
-          <MenuItem on:click={deleteSong}>Delete</MenuItem>
         </MenuButton>
       </span>
     </OverlayHeader>
@@ -140,11 +70,11 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={song?.artPath} />
     <div class="details">
-      <DetailsField icon={Sell} headline={song?.title ?? "Unkown"} />
-      <DetailsField icon={Album} headline={song?.album ?? "Unkown"} />
-      <DetailsField icon={Artist} headline={song?.artist ?? "Unkown"} />
-      <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? "Unkown" : song?.releaseYear.toString()} />
-      <DetailsField icon={Genre} headline={song?.genre ?? "Unkown"} />
+      <DetailsField icon={Sell} headline={song?.title ?? t("UNKOWN_VALUE")} />
+      <DetailsField icon={Album} headline={song?.album ?? t("UNKOWN_VALUE")} />
+      <DetailsField icon={Artist} headline={song?.artist ?? t("UNKOWN_VALUE")} />
+      <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? t("UNKOWN_VALUE") : song?.releaseYear.toString()} />
+      <DetailsField icon={Genre} headline={song?.genre ?? t("UNKOWN_VALUE")} />
       <DetailsField icon={TrackNumber} headline={song?.displayTrack()} />
       <DetailsField icon={Duration} headline={song?.displayLength()} />
       <DetailsField icon={Frequency} headline={song?.displayFrequency()} />

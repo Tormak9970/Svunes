@@ -4,9 +4,10 @@
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
+  import t from "@lib/utils/i18n";
+  import { formatTime } from "@lib/utils/Utils";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { formatTime } from "../../../lib/utils/Utils";
-  import { showMiniPlayer, showQueue } from "../../../stores/Overlays";
+  import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { queue, songsMap } from "../../../stores/State";
   import QueueSongs from "./QueueSongs.svelte";
 
@@ -32,8 +33,8 @@
             <Icon icon={BackArrow} width="20px" height="20px" />
           </Button>
           <div class="info">
-            <div class="title">Queue</div>
-            <div class="sub-title">Up next • {formatTime(queueLength)}</div>
+            <div class="title">{t("QUEUE_TITLE")}</div>
+            <div class="sub-title">{t("UP_NEXT_MESSAGE")} • {formatTime(queueLength)}</div>
           </div>
         </span>
         <span slot="right">

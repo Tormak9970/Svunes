@@ -9,6 +9,7 @@ import { Artist } from "../models/Artist";
 import { Genre } from "../models/Genre";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
+import t from "../utils/i18n";
 import { getAllArtistNames } from "../utils/Utils";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
@@ -288,13 +289,13 @@ export class AppController {
   static async importPlaylist(playlistPath: string) {
     const contents = await fs.readTextFile(playlistPath);
     if (contents === "") {
-      get(showInfoSnackbar)({ message: "Playlist was empty" });
+      get(showInfoSnackbar)({ message: t("PLAYLIST_EMPTY_MESSAGE") });
       LogController.error("Playlist JSON was empty.");
     }
 
     let playlistJson: any = JSON.parse(contents);
     if (playlistJson.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.tunistic") {
-      get(showErrorSnackbar)({ message: "Invalid playlist file", faster: true });
+      get(showErrorSnackbar)({ message: t("INVALID_PLAYLIST_MESSAGE"), faster: true });
       LogController.error("Playlist did not contain the FILE_SIG.");
     }
 
@@ -314,7 +315,7 @@ export class AppController {
 
     playlists.set([ ...playlistList ]);
 
-    get(showInfoSnackbar)({ message: "Success!" });
+    get(showInfoSnackbar)({ message: t("SUCCESS_MESSAGE") });
     LogController.log(`Successfully imported playlist ${playlist.name}`);
   }
 

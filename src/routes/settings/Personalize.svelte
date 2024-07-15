@@ -11,18 +11,19 @@
   
   import History from "@ktibow/iconset-material-symbols/history-rounded";
   import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
+  import t from "@lib/utils/i18n";
 </script>
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label="Personalize" goBack={pop} />
+    <SettingsHeader label={t("SETTINGS_PERSONALIZE_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
-    <SettingSection label="Home" />
-    <ToggleSetting label="Show Suggestions" description="Show suggested albums and artists on the home screen" bind:checked={$showSuggestions} />
-    <ToggleSetting label="Track History" description="Track when songs and albums are played. Used for recents on the home page" icon={History} bind:checked={$trackHistory} />
-    <SettingSection label="Library" />
-    <ButtonSetting label="Library Categories" description="Customize the categories displayed and their order" icon={LibraryMusic} on:click={() => $showEditViewOrder = true} />
+    <SettingSection label={t("SETTINGS_PERSONALIZE_HOME_LABEL")} />
+    <ToggleSetting label={t("SETTINGS_PERSONALIZE_SUGGESTIONS_LABEL")} description={t("SETTINGS_PERSONALIZE_SUGGESTIONS_DESC")} bind:checked={$showSuggestions} />
+    <ToggleSetting label={t("SETTINGS_PERSONALIZE_TRACK_HISTORY_LABEL")} description={t("SETTINGS_PERSONALIZE_TRACK_HISTORY_DESC")} icon={History} bind:checked={$trackHistory} />
+    <SettingSection label={t("SETTINGS_PERSONALIZE_LIBRARY_LABEL")} />
+    <ButtonSetting label={t("SETTINGS_PERSONALIZE_CATEGORIES_LABEL")} description={t("SETTINGS_PERSONALIZE_CATEGORIES_DESC")} icon={LibraryMusic} on:click={() => $showEditViewOrder = true} />
   </span>
 </SettingsBody>
 

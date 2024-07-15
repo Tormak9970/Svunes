@@ -5,6 +5,7 @@
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Album } from "@lib/models/Album";
+  import t from "@lib/utils/i18n";
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { albumGridSize, albumSortOrder, albums, albumsIsAtTop } from "@stores/State";
@@ -95,7 +96,7 @@
     {:else}
       <div class="message-container">
         <Icon icon={SadFace} width="60px" height="60px" />
-        <div class="message">No albums found. Try adding music folders in settings</div>
+        <div class="message">{t("NO_TYPE_FOUND_MESSAGE").replace("{type}", t("ALBUM_PLURAL_VALUE"))}.</div>
       </div>
     {/if}
   </div>

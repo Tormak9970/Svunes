@@ -2,6 +2,7 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import type { Song } from "@lib/models/Song";
+  import t from "@lib/utils/i18n";
   import { showAddToPlaylist, showCarMode, showMiniPlayer, showQueue, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
   import { push } from "svelte-spa-router";
@@ -97,21 +98,21 @@
 </script>
 
 {#if showQueueOption}
-  <MenuItem on:click={goToQueue}>Queue</MenuItem>
+  <MenuItem on:click={goToQueue}>{t("QUEUE_ACTION")}</MenuItem>
 {/if}
 {#if $extraControl === "Sleep Timer" ||  $extraControl === "None"}
-  <MenuItem on:click={goToCarMode}>Car Mode</MenuItem>
+  <MenuItem on:click={goToCarMode}>{t("CAR_MODE_ACTION")}</MenuItem>
 {/if}
 {#if $extraControl === "Car Mode" ||  $extraControl === "None"}
-  <MenuItem on:click={goToSleepTimer}>Sleep Timer</MenuItem>
+  <MenuItem on:click={goToSleepTimer}>{t("SLEEP_TIMER_ACTION")}</MenuItem>
 {/if}
 {#if song?.album}
-  <MenuItem on:click={goToAlbum}>Go to Album</MenuItem>
+  <MenuItem on:click={goToAlbum}>{t("GO_TO_ALBUM_ACTION")}</MenuItem>
 {/if}
 {#if song?.artist}
-  <MenuItem on:click={goToArtist}>Go to Artist</MenuItem>
+  <MenuItem on:click={goToArtist}>{t("GO_TO_ARTIST_ACTION")}</MenuItem>
 {/if}
-<MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
-<MenuItem on:click={showDetails}>Details</MenuItem>
-<MenuItem on:click={showSongEdit}>Edit</MenuItem>
-<MenuItem on:click={share}>Share</MenuItem>
+<MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
+<MenuItem on:click={showDetails}>{t("DETAILS_ACTION")}</MenuItem>
+<MenuItem on:click={showSongEdit}>{t("EDIT_ACTION")}</MenuItem>
+<MenuItem on:click={share}>{t("SHARE_ACTION")}</MenuItem>

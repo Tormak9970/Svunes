@@ -11,6 +11,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
+  import t from "@lib/utils/i18n";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { isPaused, nowPlayingList, playlistsMap } from "@stores/State";
@@ -101,11 +102,11 @@
         {/if}
         <div style="height: 100%; width: 5px;" />
         <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playNext}>Play Next</MenuItem>
-          <MenuItem on:click={queuePlaylist}>Add to Queue</MenuItem>
-          <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
+          <MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
+          <MenuItem on:click={queuePlaylist}>{t("ADD_TO_QUEUE_ACTION")}</MenuItem>
+          <MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
           {#if playlist?.isUserPlaylist}
-            <MenuItem on:click={deletePlaylist}>Delete</MenuItem>
+            <MenuItem on:click={deletePlaylist}>{t("DELETE_ACTION")}</MenuItem>
           {/if}
         </MenuButton>
       </span>
@@ -120,7 +121,7 @@
             <h3 class="name">{playlist?.name}</h3>
           </Marquee>
           <div class="other">
-            <div>{playlist?.songIds?.length === 1 ? `1 Song` : `${playlist?.songIds?.length} Songs`} • {playlist?.displayLength()}</div>
+            <div>{playlist?.songIds?.length} {playlist?.songIds?.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")} • {playlist?.displayLength()}</div>
           </div>
         </div>
         <div class="buttons">

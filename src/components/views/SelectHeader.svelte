@@ -13,7 +13,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import { pluralize } from "@lib/utils/Utils";
+  import t from "@lib/utils/i18n";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { bulkEditSongIds, selected } from "@stores/Select";
   import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songIdsToParse, songs } from "@stores/State";
@@ -350,7 +350,7 @@
 
     $playlists = [ ...$playlists ];
 
-    $showInfoSnackbar({ message: `Removed ${$selected.length} ${pluralize("song", $selected.length)}` });
+    $showInfoSnackbar({ message: `${t("REMOVED_VALUE")} ${$selected.length} ${$selected.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")}` });
 
     $selected = [];
     menuIsOpen = false;
@@ -366,7 +366,7 @@
     </Button>
   </div>
   <div class="title">
-    {$selected.length + " selected"}
+    {$selected.length} {t("SELECTED_VALUE")}
   </div>
   <div class="right">
     {#if $showQueue}
@@ -388,16 +388,16 @@
     </Button>
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       {#if !$showQueue}
-        <MenuItem on:click={playNext}>Play Next</MenuItem>
+        <MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
       {/if}
-      <MenuItem on:click={goToBulkEdit}>Bulk Edit</MenuItem>
-      <MenuItem on:click={goToInfoParser}>Info Parser</MenuItem>
-      <MenuItem on:click={share}>Share</MenuItem>
+      <MenuItem on:click={goToBulkEdit}>{t("BULK_EDIT_ACTION")}</MenuItem>
+      <MenuItem on:click={goToInfoParser}>{t("INFO_PARSER_ACTION")}</MenuItem>
+      <MenuItem on:click={share}>{t("SHARE_ACTION")}</MenuItem>
       {#if $location !== "/artists" && !$showQueue}
-        <MenuItem on:click={deleteFromDevice}>Delete from Device</MenuItem>
+        <MenuItem on:click={deleteFromDevice}>{t("DELETE_FROM_DEVICE_ACTION")}</MenuItem>
       {/if}
       {#if $selectedView !== View.SEARCH}
-        <MenuItem on:click={selectAll}>Select All</MenuItem>
+        <MenuItem on:click={selectAll}>{t("SELECT_ALL_ACTION")}</MenuItem>
       {/if}
     </MenuButton>
   </div>

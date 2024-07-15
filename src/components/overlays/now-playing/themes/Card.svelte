@@ -17,6 +17,7 @@
   import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import t from "@lib/utils/i18n";
   import ExtraControl from "../ExtraControl.svelte";
   
   let menuIsOpen = false;
@@ -56,7 +57,7 @@
             <Marquee speed={35} gap={100}>{label}</Marquee>
           {/key}
         </div>
-        <div class="artist">{song?.artist ?? "Unkown"}</div>
+        <div class="artist">{song?.artist ?? t("UNKOWN_VALUE")}</div>
       </div>
     </div>
     <div class="options-side" style="justify-content: flex-end; margin-right: 5px;">

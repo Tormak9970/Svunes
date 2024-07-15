@@ -1,5 +1,6 @@
 <script lang="ts">
   import TabsHeader, { type TabItem } from "@layout/TabsHeader.svelte";
+  import t from "@lib/utils/i18n";
   import { showInfoSnackbar } from "../../../stores/State";
   import type { ParseResult } from "../../../types/MetadataParser";
   import ParseEntry from "./ParseEntry.svelte";
@@ -18,7 +19,7 @@
   }
 
   function notifyUserOfErrors() {
-    $showInfoSnackbar({ message: `${numFailed} entries did not match the pattern` });
+    $showInfoSnackbar({ message: `${numFailed} ${t("ENTRIES_DONT_MATCH_PATTERN_MESSAGE")}` });
   }
 </script>
 

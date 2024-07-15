@@ -5,6 +5,7 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Playlist } from "@lib/models/Playlist";
+  import t from "@lib/utils/i18n";
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
@@ -65,11 +66,11 @@
             </div>
           {/if}
           {#if $playlistSortOrder === "Alphabetical" || $playlistSortOrder === "Song Count"}
-            <div in:fade={{ duration: 200 }}>{playlist.songIds.length === 1 ? `1 Song` : `${playlist.songIds.length} Songs`} • {playlist.displayLength()}</div>
+            <div in:fade={{ duration: 200 }}>{playlist.songIds.length} {playlist.songIds.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")} • {playlist.displayLength()}</div>
           {:else if $playlistSortOrder === "Most Played"}
-            <div in:fade={{ duration: 200 }}>Played {playlist.numTimesPlayed} Times</div>
+            <div in:fade={{ duration: 200 }}>{t("PLAYED_TIMES_MESSAGE").replace("{numTimes}", playlist.numTimesPlayed.toString())}</div>
           {:else if $playlistSortOrder === "Last Played"}
-            <div in:fade={{ duration: 200 }}>{playlist.lastPlayedOn === "Never" ? "Never" : renderDate(playlist.lastPlayedOn)}</div>
+            <div in:fade={{ duration: 200 }}>{playlist.lastPlayedOn === "Never" ? t("NEVER_VALUE") : renderDate(playlist.lastPlayedOn)}</div>
           {/if}
         </div>
       </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
   import ListItemButton from "@layout/ListItemButton.svelte";
+  import t from "@lib/utils/i18n";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { dialog } from "@tauri-apps/api";
   import ListModalBody from "./utils/ListModalBody.svelte";
@@ -12,12 +13,12 @@
    */
   async function pickImage() {
     const path = await dialog.open({
-      title: "Choose an Image",
+      title: t("CHOOSE_IMAGE_MESSAGE"),
       directory: false,
       multiple: false,
       filters: [
         {
-          "name": "image",
+          "name": t("IMAGE_LOWERCASE_VALUE"),
           "extensions": [ "png", "PNG", "jpg", "JPG", "jpeg", "JPEG" ]
         }
       ]
@@ -48,15 +49,15 @@
   }
 </script>
 
-<ListModalBody headline="Update Image" open={open} on:close={cancel} on:closeEnd={() => $showArtOptions = false}>
+<ListModalBody headline={t("UPDATE_IMAGE_TITLE")} open={open} on:close={cancel} on:closeEnd={() => $showArtOptions = false}>
   <div class="list">
-    <ListItemButton headline="Pick from device" on:click={pickImage} />
-    <ListItemButton headline="Remove image" on:click={removeImage} />
+    <ListItemButton headline={t("PICK_FROM_DEVICE_MESSAGE")} on:click={pickImage} />
+    <ListItemButton headline={t("REMOVE_IMAGE_MESSAGE")} on:click={removeImage} />
   </div>
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={cancel}>Cancel</Button>
+      <Button type="text" on:click={cancel}>{t("CANCEL_ACTION")}</Button>
     </div>
   </div>
 </ListModalBody>

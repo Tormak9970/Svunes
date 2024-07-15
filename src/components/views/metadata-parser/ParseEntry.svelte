@@ -7,10 +7,11 @@
   import Icon from "@component-utils/Icon.svelte";
   import ArrowForward from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import SubdirectoryArrowRight from "@ktibow/iconset-material-symbols/subdirectory-arrow-right-rounded";
+  import t from "@lib/utils/i18n";
 
   $: doesntMatchPattern = Object.keys(result).length === 2;
   // @ts-expect-error Tab will always index result because of checks in MetadataParser.svelte.
-  $: value = doesntMatchPattern ? "Doesn't match pattern" : (result[tab] === "" ? "None" : result[tab]);
+  $: value = doesntMatchPattern ? t("ENTRY_DOESNT_MATCH_PATTERN_MESSAGE") : (result[tab] === "" ? t("NONE_VALUE") : result[tab]);
 </script>
 
 <div class="parse-entry">

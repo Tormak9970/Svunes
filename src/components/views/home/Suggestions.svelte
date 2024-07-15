@@ -3,6 +3,7 @@
   import Button from "@interactables/Button.svelte";
 
   import Refresh from "@ktibow/iconset-material-symbols/refresh-rounded";
+  import t from "@lib/utils/i18n";
   import { albums } from "@stores/State";
   import { shuffle } from "../../../lib/utils/Shuffle";
   import FavoritesMix from "./FavoritesMix.svelte";
@@ -20,7 +21,7 @@
 
 <div class="suggestions-container">
   <div class="suggestions-header">
-    <h3 class="label">Suggestions</h3>
+    <h3 class="label">{t("SUGGESTIONS_TITLE")}</h3>
     <Button type="text" iconType="full" on:click={regenerate}>
       <Icon icon={Refresh} width="20px" height="20px" />
     </Button>

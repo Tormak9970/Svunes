@@ -13,19 +13,20 @@
   import FolderOpen from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import Language from "@ktibow/iconset-material-symbols/translate-rounded";
   import VisibilityOff from "@ktibow/iconset-material-symbols/visibility-off-rounded";
+  import t from "@lib/utils/i18n";
 </script>
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label="Other" goBack={pop} />
+    <SettingsHeader label={t("SETTINGS_OTHER_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
-    <ButtonSetting label="Music Folders" description="Edit the list of folders music is loaded from" icon={FolderOpen} on:click={() => $showEditMusicFolders = true} />
-    <SettingSection label="Blacklist" />
-    <ButtonSetting label="Blacklisted Folders" description="Blacklisted folders are excluded from being loaded" icon={VisibilityOff} on:click={() => $showBlacklistFolders = true} />
-    <SettingSection label="Advanced" />
-    <SliderSetting label="Max Song Length" description="Filters out songs that are longer than the provided value (in minutes)" max={60} bind:value={$filterSongDuration} />
-    <ButtonSetting label="Change Language" description={getLanguage($selectedLanguage)} icon={Language} on:click={() => $showSelectLanguage = true} />
+    <ButtonSetting label={t("SETTINGS_OTHER_MUSIC_FOLDER_LABEL")} description={t("SETTINGS_OTHER_MUSIC_FOLDER_DESC")} icon={FolderOpen} on:click={() => $showEditMusicFolders = true} />
+    <SettingSection label={t("SETTINGS_OTHER_BLACKLIST_LABEL")} />
+    <ButtonSetting label={t("SETTINGS_OTHER_BLACKLIST_FOLDER_LABEL")} description={t("SETTINGS_OTHER_BLACKLIST_FOLDER_DESC")} icon={VisibilityOff} on:click={() => $showBlacklistFolders = true} />
+    <SettingSection label={t("SETTINGS_OTHER_ADVANCED_LABEL")} />
+    <SliderSetting label={t("SETTINGS_OTHER_MAX_LENGTH_LABEL")} description={t("SETTINGS_OTHER_MAX_LENGTH_DESC")} max={60} bind:value={$filterSongDuration} />
+    <ButtonSetting label={t("SETTINGS_OTHER_CHANGE_LANGUAGE_LABEL")} description={getLanguage($selectedLanguage)} icon={Language} on:click={() => $showSelectLanguage = true} />
   </span>
 </SettingsBody>
 

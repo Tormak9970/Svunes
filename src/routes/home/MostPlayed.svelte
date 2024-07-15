@@ -8,6 +8,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
+  import t from "@lib/utils/i18n";
   import { shuffleSongs } from "@lib/utils/Shuffle";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { isPaused, nowPlayingList, songs, songsMap } from "@stores/State";
@@ -59,7 +60,7 @@
         <Button type="text" iconType="full" on:click={pop}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div style="font-size: 20px;">Most Played</div>
+        <div style="font-size: 20px;">{t("MOST_PLAYED_TITLE")}</div>
       </span>
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
         <PlayButton type="text" name="most-played" on:click={playSongs} />

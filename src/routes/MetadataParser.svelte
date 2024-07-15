@@ -13,6 +13,7 @@
   import TextRotationNone from "@ktibow/iconset-material-symbols/text-rotation-none-rounded";
   import type { TabItem } from "@layout/TabsHeader.svelte";
   import { EditController } from "@lib/controllers/EditController";
+  import t from "@lib/utils/i18n";
   import { showParserVariables } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
   import ParsePreview from "@views/metadata-parser/ParsePreview.svelte";
@@ -126,12 +127,12 @@
    */
   function parse() {
     if (patternString.includes("%%")) {
-      $showErrorSnackbar({ message: "Must have a space/character between variables" });
+      $showErrorSnackbar({ message: t("PARSER_SPACE_NEEDED_MESSAGE") });
       return;
     }
 
     if (checkForDuplicates(patternString)) {
-      $showErrorSnackbar({ message: "Found duplicate variables (besides %dummy%)" });
+      $showErrorSnackbar({ message: t("PARSER_DUPLICATES_FOUND_MESSAGE") });
       return;
     }
 
@@ -200,7 +201,7 @@
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div style="font-size: 20px;">Metadata Parser</div>
+        <div style="font-size: 20px;">{t("METADATA_PARSER_TITLE")}</div>
       </span>
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
         <Button type="text" iconType="full" on:click={parse}>
@@ -222,11 +223,11 @@
     <div class="preview">
       {#if results.length === 0 && parserWasRun}
         <div class="message-container">
-          <div class="message">No results for this parser with the selected tracks.</div>
+          <div class="message">{t("NO_PARSER_RESULTS_MESSAGE")}.</div>
         </div>
       {:else if results.length === 0}
         <div class="message-container">
-          <div class="message">Run a parser to see results.</div>
+          <div class="message">{t("RUN_PARSER_MESSAGE")}.</div>
         </div>
       {:else}
         <ParsePreview results={results} tabsUsed={tabsUsed} bind:tab={tab} />

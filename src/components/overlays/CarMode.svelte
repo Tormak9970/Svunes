@@ -17,13 +17,15 @@
   
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
+  import t from "@lib/utils/i18n";
+  import { hash64 } from "@lib/utils/Utils";
   import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songsMap } from "@stores/State";
   import { sharedAxisTransition } from "../utils/animations/animations";
   
   $: song = $playingSongId !== "" ? $songsMap[$playingSongId] : null;
   $: songLength = song?.length ?? 0;
   
-  $: favoritesPlaylist = $playlists.find((playlist) => playlist.name === "Favorites");
+  $: favoritesPlaylist = $playlists.find((playlist) => playlist.id === hash64("Favorites"));
   $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
 
   $: label = song?.title ?? song?.fileName;
@@ -54,7 +56,7 @@
 <div class="container" transition:sharedAxisTransition={{ direction: "Z", leaving: false }}>
   <div class="options">
     <div class="left" />
-    <div class="center">Car Mode</div>
+    <div class="center">{t("CAR_MODE_TITLE")}</div>
     <div class="right">
       <Button type="text" iconType="full" size="3.5rem" iconSize="2rem" on:click={() => $showCarMode = false}>
         <Icon icon={Close} />
@@ -71,7 +73,7 @@
         {label}
       {/if}
     </div>
-    <div class="artist">{song?.artist ?? "Unkown"}</div>
+    <div class="artist">{song?.artist ?? t("UNKOWN_VALUE")}</div>
   </div>
   <ProgressControls songLength={songLength} />
   <div class="player-controls">

@@ -10,6 +10,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
+  import t from "@lib/utils/i18n";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { genresMap, isPaused, nowPlayingList, songsMap } from "@stores/State";
@@ -82,9 +83,9 @@
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
         <PlayButton type="text" name={genre?.name} on:click={playGenre} />
         <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playNext}>Play Next</MenuItem>
-          <MenuItem on:click={queueGenre}>Add to Queue</MenuItem>
-          <MenuItem on:click={addToPlaylist}>Add to Playlist</MenuItem>
+          <MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
+          <MenuItem on:click={queueGenre}>{t("ADD_TO_QUEUE_ACTION")}</MenuItem>
+          <MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
         </MenuButton>
       </span>
     </OverlayHeader>

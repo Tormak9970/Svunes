@@ -23,6 +23,7 @@ import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
+import t from "../utils/i18n";
 import { debounce } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
@@ -248,13 +249,13 @@ export class SettingsController {
   static async applyBackup(filePath: string) {
     const contents = await fs.readTextFile(filePath);
     if (contents === "") {
-      get(showInfoSnackbar)({ message: "Backup file was empty" });
+      get(showInfoSnackbar)({ message: t("BACKUP_FILE_EMPTY_MESSAGE") });
       LogController.error("Backup was empty.");
     }
 
     let currentContents: any = JSON.parse(contents);
     if (currentContents.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.tunistic") {
-      get(showErrorSnackbar)({ message: "Invalid backup file", faster: true });
+      get(showErrorSnackbar)({ message: t("INVALID_BACKUP_FILE_MESSAGE"), faster: true });
       LogController.error("Backup did not contain the FILE_SIG.");
     }
 
@@ -281,7 +282,7 @@ export class SettingsController {
     this.settings = structuredClone(DEFAULT_SETTINGS);
     await this.save();
 
-    get(showInfoSnackbar)({ message: "Success!" });
+    get(showInfoSnackbar)({ message: t("SUCCESS_MESSAGE") });
     LogController.log("Successfully reset settings.");
   }
 

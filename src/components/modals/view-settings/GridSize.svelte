@@ -2,6 +2,7 @@
   import { View } from "../../../types/View";
 
   import RadioInput from "@interactables/radio/RadioInput.svelte";
+  import t from "@lib/utils/i18n";
   import { showGridSize } from "@stores/Modals";
   import { albumGridSize, artistGridSize, playlistGridSize, selectedView, songGridSize } from "@stores/State";
   import { GridSize } from "../../../types/Settings";
@@ -37,20 +38,20 @@
   }
 </script>
 
-<SmallModalBody headline="Grid Size" open={open} on:close={() => open = false} on:closeEnd={() => $showGridSize = false}>
+<SmallModalBody headline={t("GRID_SIZE_TITLE")} open={open} on:close={() => open = false} on:closeEnd={() => $showGridSize = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LARGE} on:input={() => gridSizeChange(GridSize.LARGE)} />
-      <div class="radio">Large</div>
+      <div class="radio">{t("LARGE_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)} />
-      <div class="radio">Medium</div>
+      <div class="radio">{t("LARGE_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)} />
-      <div class="radio">List</div>
+      <div class="radio">{t("LARGE_LABEL")}</div>
     </label>
   </div>
 </SmallModalBody>

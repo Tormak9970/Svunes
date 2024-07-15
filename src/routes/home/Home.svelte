@@ -17,6 +17,7 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Album } from "@lib/models/Album";
   import type { Artist } from "@lib/models/Artist";
+  import t from "@lib/utils/i18n";
   import { shuffleSongs } from "@lib/utils/Shuffle";
   import { getAllArtistNames } from "@lib/utils/Utils";
   import { albumsMap, artistsMap, showSuggestions, songs, songsMap } from "@stores/State";
@@ -71,26 +72,26 @@
       <div class="buttons-container" style:--m3-button-shape="10px" style:--m3-scheme-secondary-container="var(--m3-scheme-surface-container)">
         <Button type="tonal" iconType="left" on:click={() => push("/home/history")}>
           <Icon icon={History} />
-          History
+          {t("HISTORY_TITLE")}
         </Button>
         <Button type="tonal" iconType="left" on:click={() => push("/home/recently-added")}>
           <Icon icon={CalendarAddOn} />
-          Recently Added
+          {t("RECENTLY_ADDED_TITLE")}
         </Button>
         <Button type="tonal" iconType="left" on:click={() => push("/home/most-played")}>
           <Icon icon={TrendingUp} />
-          Most Played
+          {t("MOST_PLAYED_TITLE")}
         </Button>
         <Button type="tonal" iconType="left" on:click={shuffleAllSongs}>
           <Icon icon={Shuffle} />
-          Shuffle
+          {t("SHUFFLE_TITLE")}
         </Button>
       </div>
       {#if $showSuggestions}
         <Suggestions />
       {/if}
-      <ArtistCarousel label="Top Artists" artists={artists} on:click={() => push("/home/top-artists")} />
-      <AlbumCarousel label="Top Albums" albums={albums} on:click={() => push("/home/top-albums")} />
+      <ArtistCarousel label={t("TOP_ARTISTS_TITLE")} artists={artists} on:click={() => push("/home/top-artists")} />
+      <AlbumCarousel label={t("TOP_ALBUMS_TITLE")} albums={albums} on:click={() => push("/home/top-albums")} />
     </div>
   </div>
 </ViewContainer>

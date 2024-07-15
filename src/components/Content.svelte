@@ -23,7 +23,6 @@
   import Overlays from "./overlays/Overlays.svelte";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
   import InfoSnackbar from "./snackbars/InfoSnackbar.svelte";
-  import Titlebar from "./Titlebar.svelte";
   import SelectHeader from "./views/SelectHeader.svelte";
 
   let loadingUnsub: Unsubscriber;
@@ -32,8 +31,6 @@
   let closeRequestListener: UnlistenFn;
 
   let audioPlayer: HTMLAudioElement;
-
-  let isDesktop = false;
 
   let oldNumAudioDevices: number;
 
@@ -140,9 +137,6 @@
   {/if}
   <Router {routes} restoreScrollState={true} on:conditionsFailed={conditionsFailed} />
 </div>
-{#if isDesktop}
-  <Titlebar title="Tunistic" />
-{/if}
 
 <style>
   .content {

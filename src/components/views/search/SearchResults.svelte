@@ -4,6 +4,7 @@
   import type { Genre } from "@lib/models/Genre";
   import type { Playlist } from "@lib/models/Playlist";
   import type { Song } from "@lib/models/Song";
+  import t from "@lib/utils/i18n";
   import { searchQuery, selectedChips, showOnlyMissingAlbum, showOnlyMissingAlbumArtist, showOnlyMissingArtist, showOnlyMissingCover, showOnlyMissingGenre, showOnlyMissingTitle, showOnlyMissingYear } from "@stores/Search";
   import { albums, artists, genres, playlists, songs } from "@stores/State";
   import { derived } from "svelte/store";
@@ -46,7 +47,7 @@
           (!$genre || ($genre && !song.genre)) &&
           (!$year || ($year && song.releaseYear === -1));
       });
-      if (songResults.length > 0) results.push("Songs", ...songResults);
+      if (songResults.length > 0) results.push(t("SONGS_TITLE"), ...songResults);
     }
 
     if (($chips.length === 0 || $chips.includes("album")) && !($title || $album || $artist)) {
@@ -57,24 +58,24 @@
           (!$genre || ($genre && !album.genre)) &&
           (!$year || ($year && album.releaseYear === -1));
       });
-      if (albumResults.length > 0) results.push("Albums", ...albumResults);
+      if (albumResults.length > 0) results.push(t("ALBUMS_TITLE"), ...albumResults);
     }
 
     const onlyShowIsDisabled = !($title || $cover || $album || $artist || $albumArtist || $genre || $year);
 
     if (($chips.length === 0 || $chips.includes("artist")) && onlyShowIsDisabled) {
       const artistsResults = $artists.filter((artist) => artist.name.includes($query));
-      if (artistsResults.length > 0) results.push("Artists", ...artistsResults);
+      if (artistsResults.length > 0) results.push(t("ARTISTS_TITLE"), ...artistsResults);
     }
 
     if (($chips.length === 0 || $chips.includes("playlist")) && onlyShowIsDisabled) {
       const playlistsResults = $playlists.filter((playlist) => playlist.name.includes($query));
-      if (playlistsResults.length > 0) results.push("Playlists", ...playlistsResults);
+      if (playlistsResults.length > 0) results.push(t("PLAYLISTS_TITLE"), ...playlistsResults);
     }
     
     if (($chips.length === 0 || $chips.includes("genre")) && onlyShowIsDisabled) {
       const genreResults = $genres.filter((genre) => genre.name.includes($query));
-      if (genreResults.length > 0) results.push("Genres", ...genreResults);
+      if (genreResults.length > 0) results.push(t("GENRES_TITLE"), ...genreResults);
     }
 
     return results;
@@ -102,7 +103,7 @@
     {/key}
   {:else}
     <div class="message-container">
-      <div class="message">No search results for the these filters</div>
+      <div class="message">{t("NO_SEARCH_RESULTS_MESSAGE")}</div>
     </div>
   {/if}
 </div>

@@ -15,6 +15,7 @@
   import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
   import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import t from "@lib/utils/i18n";
   import ExtraControl from "../ExtraControl.svelte";
   
   let menuIsOpen = false;
@@ -68,7 +69,7 @@
             {label}
           {/if}
         </div>
-        <div class="artist">{song?.artist ?? "Unkown"}</div>
+        <div class="artist">{song?.artist ?? t("UNKOWN_VALUE")}</div>
       </div>
       <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
         <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} showQueueOption />

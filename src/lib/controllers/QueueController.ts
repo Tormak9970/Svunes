@@ -1,6 +1,6 @@
 import { albumsMap, artistsMap, genresMap, history, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import { pluralize } from "../utils/Utils";
+import t from "../utils/i18n";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 
@@ -171,7 +171,7 @@ export class QueueController {
 
     playlists.set([ ...get(playlists) ]);
 
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("playlist", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("PLAYLIST_SINGULAR_VALUE") : t("PLAYLIST_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -190,7 +190,7 @@ export class QueueController {
       songQueue.push(id);
     }
 
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("song", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -216,7 +216,7 @@ export class QueueController {
       }
     }
 
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("album", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("ALBUM_SINGULAR_VALUE") : t("ALBUM_PLURAL_VALUE")}`});
     
     SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
@@ -240,7 +240,7 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("artist", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("ARTIST_SINGULAR_VALUE") : t("ARTIST_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -262,7 +262,7 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("genre", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("GENRE_SINGULAR_VALUE") : t("GENRE_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -303,7 +303,7 @@ export class QueueController {
 
     playlists.set([ ...get(playlists) ]);
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("playlist", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("PLAYLIST_SINGULAR_VALUE") : t("PLAYLIST_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -322,7 +322,7 @@ export class QueueController {
       songQueue.unshift(songId);
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("song", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -348,7 +348,7 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("album", initialLength)}`})
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("ALBUM_SINGULAR_VALUE") : t("ALBUM_PLURAL_VALUE")}`})
 
     SettingsController.updateAlbumsMetadata(albumNames.map((name) => albumMap[name]));
     
@@ -372,7 +372,7 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("artist", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("ARTIST_SINGULAR_VALUE") : t("ARTIST_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }
@@ -394,7 +394,7 @@ export class QueueController {
       }
     }
     
-    get(showInfoSnackbar)({ message: `Queued ${initialLength} ${pluralize("genre", initialLength)}`});
+    get(showInfoSnackbar)({ message: `${t("QUEUED_VALUE")} ${initialLength} ${initialLength === 1 ? t("GENRE_SINGULAR_VALUE") : t("GENRE_PLURAL_VALUE")}`});
     
     queue.set(songQueue);
   }

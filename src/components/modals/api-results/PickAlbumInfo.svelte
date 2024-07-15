@@ -1,11 +1,12 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
+  import Select from "@interactables/select/Select.svelte";
+  import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
+  import t from "@lib/utils/i18n";
   import { albumInfos, availableReleaseGroups, onAlbumInfoDone, selectedReleaseGroupId, showPickAlbumInfo } from "@stores/Modals";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
-  import Select from "../../interactables/select/Select.svelte";
-  import LoadingSpinner from "../../layout/loading-animations/LoadingSpinner.svelte";
   import ModalBody from "../utils/ModalBody.svelte";
   
   let open = true;
@@ -74,12 +75,12 @@
 </script>
 
 <div class="image-modal">
-  <ModalBody open={open} headline="Album Info Results" on:close={cancel} on:closeEnd={close}>
+  <ModalBody open={open} headline={t("ALBUM_INFO_RESULTS_TITLE")} on:close={cancel} on:closeEnd={close}>
     <div class="select-wrapper">
-      <Select name="Album" bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
+      <Select name={t("ALBUM_LABEL")} bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
     </div>
     <div class="select-wrapper">
-      <Select name="Release" bind:value={infoIndex} options={releaseOptions} disabled={releaseOptions.length === 1} />
+      <Select name={t("RELEASE_LABEL")} bind:value={infoIndex} options={releaseOptions} disabled={releaseOptions.length === 1} />
     </div>
     <div class="content-wrapper">
       {#if infoLoading}
@@ -89,16 +90,16 @@
       {:else}
         <div class="content">
           <div class="field">
-            <b>Title:</b> {selectedInfo.title}
+            <b>{t("TITLE_LABEL")}:</b> {selectedInfo.title}
           </div>
           <div class="field">
-            <b>Artist:</b> {selectedInfo.artist ?? "Unkown"}
+            <b>{t("ARTIST_LABEL")}:</b> {selectedInfo.artist ?? t("UNKOWN_VALUE")}
           </div>
           <div style:margin="0.5rem 0">
-            <Select name="Genre" bind:value={genreIndex} options={genreOptions} disabled={genreOptions.length === 1} />
+            <Select name={t("GENRE_LABEL")} bind:value={genreIndex} options={genreOptions} disabled={genreOptions.length === 1} />
           </div>
           <div class="field">
-            <b>Release Year:</b> {selectedInfo.releaseYear ?? "Unkown"}
+            <b>{t("RELEASE_YEAR_LABEL")}:</b> {selectedInfo.releaseYear ?? t("UNKOWN_VALUE")}
           </div>
         </div>
       {/if}
@@ -106,8 +107,8 @@
     <div class="actions" slot="buttons">
       <div class="left" />
       <div class="right">
-        <Button type="text" on:click={cancel}>Cancel</Button>
-        <Button type="text" on:click={done}>Apply</Button>
+        <Button type="text" on:click={cancel}>{t("CANCEL_ACTION")}</Button>
+        <Button type="text" on:click={done}>{t("APPLY_ACTION")}</Button>
       </div>
     </div>
   </ModalBody>

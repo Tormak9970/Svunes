@@ -15,22 +15,23 @@
   import Person from "@ktibow/iconset-material-symbols/person-rounded";
   import Star from "@ktibow/iconset-material-symbols/star-rounded";
   import Translate from "@ktibow/iconset-material-symbols/translate-rounded";
+  import t from "@lib/utils/i18n";
 </script>
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label="About" goBack={pop} />
+    <SettingsHeader label={t("SETTINGS_ABOUT_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
     <!-- svelte-ignore missing-declaration -->
-    <TextSetting label="Version" description={APP_VERSION} icon={Version} />
-    <TextSetting label="Developer" description="Travis Lane" icon={Person} />
-    <ButtonSetting label="View Changelog" description="View the changes made in each release" icon={EditDocument} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/CHANGELOG.md")} />
-    <ButtonSetting label="GitHub" description="View the app's source and star it!" icon={Star} on:click={() => open("https://github.com/Tormak9970/Tunistic")} />
-    <ButtonSetting label="Translate" description="Help translate the app into your language" icon={Translate} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/Translate.md")} />
-    <ButtonSetting label="Report a Bug" description="Ran into an issue? Let me know!" icon={BugReport} on:click={() => open("https://github.com/Tormak9970/Tunistic/issues/new/choose")} />
-    <ButtonSetting label="FAQ" description="Get answers to common questions" icon={Help} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/FAQ.md")} />
-    <ButtonSetting label="Licensing" description="GPL v3.0" icon={License} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/LICENSE")} />
+    <TextSetting label={t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={Version} />
+    <TextSetting label={t("SETTINGS_ABOUT_DEV_LABEL")} description="Travis Lane" icon={Person} />
+    <ButtonSetting label={t("SETTINGS_ABOUT_CHANGELOG_LABEL")} description={t("SETTINGS_ABOUT_CHANGELOG_DESC")} icon={EditDocument} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/CHANGELOG.md")} />
+    <ButtonSetting label={t("SETTINGS_ABOUT_GITHUB_LABEL")} description={t("SETTINGS_ABOUT_GITHUB_LABEL")} icon={Star} on:click={() => open("https://github.com/Tormak9970/Tunistic")} />
+    <ButtonSetting label={t("SETTINGS_ABOUT_TRANSLATE_LABEL")} description={t("SETTINGS_ABOUT_TRANSLATE_LABEL")} icon={Translate} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/Translate.md")} />
+    <ButtonSetting label={t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} description={t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} icon={BugReport} on:click={() => open("https://github.com/Tormak9970/Tunistic/issues/new/choose")} />
+    <ButtonSetting label={t("SETTINGS_ABOUT_FAQ_LABEL")} description={t("SETTINGS_ABOUT_FAQ_LABEL")} icon={Help} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/FAQ.md")} />
+    <ButtonSetting label={t("SETTINGS_ABOUT_LICENSING_LABEL")} description={t("SETTINGS_ABOUT_LICENSING_LABEL")} icon={License} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/LICENSE")} />
   </span>
 </SettingsBody>
 

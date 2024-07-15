@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
   import Lazy from "@layout/Lazy.svelte";
+  import t from "@lib/utils/i18n";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { showNowPlayingTheme } from "@stores/Modals";
   import { nowPlayingTheme } from "@stores/State";
@@ -74,7 +75,7 @@
   });
 </script>
 
-<ModalBody open={open} headline="Now Playing Theme" on:close={() => open = false} on:closeEnd={() => $showNowPlayingTheme = false}>
+<ModalBody open={open} headline={t("NOW_PLAYING_THEME_TITLE")} on:close={() => open = false} on:closeEnd={() => $showNowPlayingTheme = false}>
   <div class="content">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="themes-container" style:left="{20 + $dragOffset}px" use:drag on:drag={handleDrag}>
@@ -94,7 +95,7 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={done}>Save</Button>
+      <Button type="text" on:click={done}>{t("SAVE_ACTION")}</Button>
     </div>
   </div>
 </ModalBody>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { hash64 } from "@lib/utils/Utils";
   import { albumsMap, nowPlayingTheme, playingSongId, playlists, songsMap } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
   import { onMount } from "svelte";
@@ -14,7 +15,7 @@
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
 
-  $: favoritesPlaylist = $playlists.find((playlist) => playlist.name === "Favorites");
+  $: favoritesPlaylist = $playlists.find((playlist) => playlist.id === hash64("Favorites"));
   $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
   
   $: convertedPath = song?.artPath ? tauri.convertFileSrc(song?.artPath) : "";

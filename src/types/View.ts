@@ -7,6 +7,7 @@ import MusicNote from "@ktibow/iconset-material-symbols/music-note";
 import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
 import Search from "@ktibow/iconset-material-symbols/search-rounded";
 import Settings from "@ktibow/iconset-material-symbols/settings";
+import t from "../lib/utils/i18n";
 
 export enum View {
   PLAYLISTS,
@@ -37,21 +38,21 @@ export const Views = [
 export function getViewName(view: View): string {
   switch(view){
     case View.PLAYLISTS:
-      return "Playlists";
+      return t("PLAYLISTS_TITLE");
     case View.ALBUMS:
-      return "Albums";
+      return t("ALBUMS_TITLE");
     case View.SEARCH:
-      return "Search";
+      return t("SEARCH_TITLE");
     case View.SONGS:
-      return "Songs";
+      return t("SONGS_TITLE");
     case View.SETTINGS:
-      return "Settings";
+      return t("SETTINGS_TITLE");
     case View.ARTISTS:
-      return "Artists";
+      return t("ARTISTS_TITLE");
     case View.GENRES:
-      return "Genres";
+      return t("GENRES_TITLE");
     case View.HOME:
-      return "Home";
+      return t("HOME_TITLE");
   }
 }
 

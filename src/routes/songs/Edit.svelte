@@ -5,15 +5,13 @@
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
-  import { ApiController } from "@lib/controllers/ApiController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
+  import t from "@lib/utils/i18n";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
-  import { showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
-  import { showErrorSnackbar, showInfoSnackbar, songsMap } from "@stores/State";
+  import { showErrorSnackbar, songsMap } from "@stores/State";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
 
@@ -71,7 +69,7 @@
    */
   function saveChanges() {
     if (title === "") {
-      $showErrorSnackbar({ message: "Title is required!", faster: true });
+      $showErrorSnackbar({ message: t("SONG_TITLE_REQUIRED_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! A title is required!");
       return;
     }
@@ -94,31 +92,6 @@
       back();
     });
   }
-  
-  /**
-   * Searches the api for a picture of this artist.
-   */
-  async function searchWeb() {
-    if (title) {
-      $showSearchingApi = true;
-
-      await ApiController.getInfoForSong(title).then((songInfo) => {
-        if (songInfo) {
-          if (songInfo.album) album = songInfo.album;
-          if (songInfo.artist) artist = songInfo.artist;
-          if (songInfo.albumArtist) albumArtist = songInfo.albumArtist;
-          if (songInfo.composer) composer = songInfo.composer;
-          if (songInfo.genre) genre = songInfo.genre;
-          if (songInfo.trackNumber) trackNumber = songInfo.trackNumber;
-          if (songInfo.releaseYear) releaseYear = songInfo.releaseYear;
-          
-          $showInfoSnackbar({ message: "Applied results from search" });
-        }
-      });
-    } else {
-      $showErrorSnackbar({ message: "Song must have a title first" });
-    }
-  }
 
   onMount(() => {
     initializeFields();
@@ -134,11 +107,8 @@
         </Button>
       </span>
       <span slot="right" style="display: flex; align-items: center;">
-        <Button type="text" iconType="full" on:click={searchWeb}>
-          <Icon icon={TravelExplore} />
-        </Button>
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
-          Save
+          {t("SAVE_ACTION")}
         </Button>
       </span>
     </OverlayHeader>
@@ -146,15 +116,15 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={artPath} />
     <div class="fields">
-      <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Artist" bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Album Artist" bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Composer" bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Genre" bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("ALBUM_LABEL")} bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("ARTIST_LABEL")} bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("ALBUM_ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("COMPOSER_LABEL")} bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <div class="two-wide">
-        <NumberField name="Track #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
-        <NumberField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
+        <NumberField name="{t("TRACK_LABEL")} #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
+        <NumberField name={t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
       </div>
     </div>
   </span>

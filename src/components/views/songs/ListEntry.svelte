@@ -5,6 +5,7 @@
   import CardClickable from "@layout/CardClickable.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Song } from "@lib/models/Song";
+  import t from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
@@ -61,17 +62,17 @@
         </div>
         <div class="secondary">
           {#if detailType === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{song.artist ?? t("UNKOWN_VALUE")}</div>
           {:else if detailType === "Album"}
-            <div in:fade={{ duration: 200 }}>{song.album ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{song.album ?? t("UNKOWN_VALUE")}</div>
           {:else if detailType === "Artist"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{song.artist ?? t("UNKOWN_VALUE")}</div>
           {:else if detailType === "Year"}
-            <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? "Unkown" : song.releaseYear}</div>
+            <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? t("UNKOWN_VALUE") : song.releaseYear}</div>
           {:else if detailType === "Most Played"}
             <div in:fade={{ duration: 200 }}>{song.numTimesPlayed}</div>
           {:else if detailType === "Last Played"}
-            <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? "Never" : renderDate(song.lastPlayedOn)}</div>
+            <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? t("NEVER_VALUE") : renderDate(song.lastPlayedOn)}</div>
           {/if}
         </div>
       </div>

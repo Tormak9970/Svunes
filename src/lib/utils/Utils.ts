@@ -120,7 +120,7 @@ export function getRandomElements<T>(arr: T[], n: number): T[] {
   let result = new Array(n);
   let len = arr.length;
   let taken = new Array(len);
-  if (n > len) throw new RangeError("getRandom: more elements taken than available");
+  if (n > len) throw new RangeError("getRandomElements: more elements taken than available");
 
   while (n--) {
     const x = Math.floor(Math.random() * len);
@@ -375,15 +375,6 @@ export function normalizeString(value: string): string {
   };
   
   return value.normalize("NFD").replace(/[ąćęłńóśźż]/g, (matched) => accentMap[matched]);
-}
-
-/**
- * Adds an "s" to the value if lengthOfValues !== 1.
- * @param value The value to pluralize.
- * @param lengthOfValues The length of the values.
- */
-export function pluralize(value: string, lengthOfValues?: number): string {
-  return lengthOfValues === 1 ? value : value + "s";
 }
 
 // cyrb53 (c) 2018 bryc (github.com/bryc). License: Public domain. Attribution appreciated.

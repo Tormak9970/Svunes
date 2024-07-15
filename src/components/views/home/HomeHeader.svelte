@@ -29,8 +29,6 @@
     $selectedChips = [];
     push("/search");
   }
-
-  let menuIsOpen = false;
 </script>
 
 <ViewHeader title="Tunistic" highlight={highlight}>

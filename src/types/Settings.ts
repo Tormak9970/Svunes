@@ -1,4 +1,6 @@
 import { Playlist } from "../lib/models/Playlist";
+import t from "../lib/utils/i18n";
+import { hash64 } from "../lib/utils/Utils";
 import type { View } from "./View";
 
 export enum NowPlayingTheme {
@@ -15,13 +17,13 @@ export enum NowPlayingTheme {
 export function getNowPlayingTheme(theme: NowPlayingTheme): string {
   switch (theme) {
     case NowPlayingTheme.NORMAL:
-      return "Normal";
+      return t("NOW_PLAYING_THEME_NORMAL");
     case NowPlayingTheme.CARD:
-      return "Card";
+      return t("NOW_PLAYING_THEME_CARD");
     case NowPlayingTheme.SIMPLE:
-      return "Simple";
+      return t("NOW_PLAYING_THEME_SIMPLE");
     case NowPlayingTheme.FULL:
-      return "Full";
+      return t("NOW_PLAYING_THEME_FULL");
   }
 }
 
@@ -38,11 +40,11 @@ export enum NowPlayingBackgroundType {
 export function getNowPlayingBackgroundType(type: NowPlayingBackgroundType): string {
   switch (type) {
     case NowPlayingBackgroundType.SOLID:
-      return "Solid";
+      return t("NOW_PLAYING_BACKGROUND_SOLID");
     case NowPlayingBackgroundType.GRADIENT:
-      return "Gradient";
+      return t("NOW_PLAYING_BACKGROUND_GRADIENT");
     case NowPlayingBackgroundType.BLUR:
-      return "Blur";
+      return t("NOW_PLAYING_BACKGROUND_BLUR");
   }
 }
 
@@ -72,7 +74,7 @@ export enum AppLanguage {
 export function getLanguage(lang: AppLanguage): string {
   switch (lang) {
     case AppLanguage.SYSTEM:
-      return "System Default";
+      return t("SYSTEM_DEFAULT_LANGUAGE_LABEL");
     case AppLanguage.ENGLISH:
       return "English";
   }
@@ -185,7 +187,7 @@ export type Settings = {
   }
 }
 
-const FAVORITES_PLAYLIST = new Playlist(undefined, false, "Favorites", "", [], false, undefined, undefined, 0);
+const FAVORITES_PLAYLIST = new Playlist(hash64("Favorites"), false, "Favorites", "", [], false, undefined, undefined, 0);
 
 export const DEFAULT_SETTINGS: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",

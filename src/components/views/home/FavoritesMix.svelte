@@ -1,6 +1,8 @@
 <script lang="ts">
   import Favorites from "@layout/placeholders/Favorites.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import t from "@lib/utils/i18n";
+  import { hash64 } from "@lib/utils/Utils";
   import { playlists, showErrorSnackbar } from "@stores/State";
 
   export let size = 146;
@@ -9,9 +11,9 @@
    * Handles when the user clicks on the entry.
    */
   function onClick() {
-    const favorites = $playlists.find((playlist) => playlist.name === "Favorites")!;
+    const favorites = $playlists.find((playlist) => playlist.id === hash64("Favorites"))!;
     if (favorites.songIds.length === 0) {
-      $showErrorSnackbar({ message: "You don't have any favorites yet!" });
+      $showErrorSnackbar({ message: t("NO_FAVORITES_MESSAGE") });
     } else {
       PlaybackController.playPlaylist(favorites);
     }

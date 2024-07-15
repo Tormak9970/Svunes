@@ -1,6 +1,7 @@
 <script lang="ts">
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Album } from "@lib/models/Album";
+  import t from "@lib/utils/i18n";
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
@@ -56,19 +57,19 @@
         </div>
         <div class="secondary">
           {#if $albumSortOrder === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? t("UNKOWN_VALUE")}</div>
           {:else if $albumSortOrder === "Artist"}
-            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? "Unkown"}</div>
+            <div in:fade={{ duration: 200 }}>{album.albumArtist ?? t("UNKOWN_VALUE")}</div>
           {:else if $albumSortOrder === "Year"}
-            <div in:fade={{ duration: 200 }}>{album.releaseYear === -1 ? "Unkown" : album.releaseYear}</div>
+            <div in:fade={{ duration: 200 }}>{album.releaseYear === -1 ? t("UNKOWN_VALUE") : album.releaseYear}</div>
           {:else if $albumSortOrder === "Length"}
             <div in:fade={{ duration: 200 }}>{album.displayAlbumLength()}</div>
           {:else if $albumSortOrder === "Track Count"}
-            <div in:fade={{ duration: 200 }}>{album.songIds.length + " tracks"}</div>
+            <div in:fade={{ duration: 200 }}>{album.songIds.length} {album.songIds.length === 1 ? t("TRACKS_SINGULAR_VALUE") : t("TRACKS_PLURAL_VALUE")}</div>
           {:else if $albumSortOrder === "Most Played"}
             <div in:fade={{ duration: 200 }}>{album.numTimesPlayed}</div>
           {:else if $albumSortOrder === "Last Played"}
-            <div in:fade={{ duration: 200 }}>{album.lastPlayedOn === "Never" ? "Never" : renderDate(album.lastPlayedOn)}</div>
+            <div in:fade={{ duration: 200 }}>{album.lastPlayedOn === "Never" ? t("NEVER_VALUE") : renderDate(album.lastPlayedOn)}</div>
           {/if}
         </div>
       </div>

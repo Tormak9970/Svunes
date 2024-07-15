@@ -4,9 +4,11 @@
   import BottomSheet from "@layout/BottomSheet.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
   import { Playlist } from "@lib/models/Playlist";
+  import t from "@lib/utils/i18n";
   import { hash64 } from "@lib/utils/Utils";
   import { showCreatePlaylist, songsForNewPlaylist } from "@stores/Overlays";
   import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
+
   let newPlaylistName = "";
 
   /**
@@ -14,7 +16,7 @@
    */
   function createPlaylist() {
     if ($playlistsMap[hash64(newPlaylistName)]) {
-      $showErrorSnackbar({ message: "Playlist with that name already exists", faster: true });
+      $showErrorSnackbar({ message: t("PLAYLIST_EXISTS_MESSAGE"), faster: true });
       return;
     }
 
@@ -23,7 +25,7 @@
 
     $songsForNewPlaylist = [];
     LogController.log(`Created playlist ${newPlaylistName}.`);
-    $showInfoSnackbar({ message: "Playlist created" });
+    $showInfoSnackbar({ message: t("PLAYLIST_CREATED_MESSAGE") });
 
     close();
   }
@@ -39,9 +41,9 @@
 
 <BottomSheet on:close={close}>
   <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
-    <div class="message">Give your playlist a name</div>
+    <div class="message">{t("NAME_PLAYLIST_TITLE")}</div>
     <TextField name="Playlist Name" bind:value={newPlaylistName} extraWrapperOptions={{ style: "width: 80%; margin-bottom: 20px;" }} />
-    <Button type="tonal" disabled={newPlaylistName === ""} on:click={createPlaylist}>Create</Button>
+    <Button type="tonal" disabled={newPlaylistName === ""} on:click={createPlaylist}>{t("CREATE_ACTION")}</Button>
   </div>
 </BottomSheet>
 

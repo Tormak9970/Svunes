@@ -7,6 +7,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@lib/models/Song";
+  import t from "@lib/utils/i18n";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { showWritingChanges } from "@stores/Overlays";
@@ -35,7 +36,7 @@
   let trackNumber: string | undefined;
   let releaseYear: string | undefined;
 
-  const differencesLabel = "Keep";
+  const differencesLabel = t("KEEP_VALUE");
 
   let isAtTop = true;
   
@@ -104,19 +105,19 @@
    */
   function saveChanges() {
     if (title === "") {
-      $showErrorSnackbar({ message: "Title is required!", faster: true });
+      $showErrorSnackbar({ message: t("SONG_TITLE_REQUIRED_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! A title is required!");
       return;
     }
 
     if (trackNumber && trackNumber !== differencesLabel && !isNumeric(trackNumber)) {
-      $showErrorSnackbar({ message: "Track must be a number!", faster: true });
+      $showErrorSnackbar({ message: t("TRACK_MUST_BE_NUMBER_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! Track must be a number!");
       return;
     }
 
     if (releaseYear && releaseYear !== differencesLabel && !isNumeric(releaseYear)) {
-      $showErrorSnackbar({ message: "Release Year must be a number!", faster: true });
+      $showErrorSnackbar({ message: t("YEAR_MUST_BE_NUMBER_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! Release Year must be a number!");
       return;
     }
@@ -162,11 +163,11 @@
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div style="font-size: 20px;">Bulk Editing {$bulkEditSongIds.length} Songs</div>
+        <div style="font-size: 20px;">{t("BULK_EDITING_TITLE").replace("{count}", $bulkEditSongIds.length.toString())}</div>
       </span>
       <span slot="right">
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
-          Save
+          {t("SAVE_ACTION")}
         </Button>
       </span>
     </OverlayHeader>
@@ -174,15 +175,15 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={artPath} failValue={differencesLabel} />
     <div class="fields">
-      <TextField name="Title" bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Album" bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Artist" bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Album Artist" bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Composer" bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name="Genre" bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("ALBUM_LABEL")} bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("ARTIST_LABEL")} bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("ALBUM_ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("COMPOSER_LABEL")} bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <div class="two-wide">
-        <TextField name="Track #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
-        <TextField name="Year" bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
+        <TextField name="{t("TRACK_LABEL")} #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
+        <TextField name={t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
       </div>
     </div>
   </span>

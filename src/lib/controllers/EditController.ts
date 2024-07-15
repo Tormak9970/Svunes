@@ -2,7 +2,7 @@ import { albums, history, nowPlayingList, playingSongId, playlists, queue, showE
 import { get } from "svelte/store";
 import { Album } from "../models/Album";
 import { Song } from "../models/Song";
-import { pluralize } from "../utils/Utils";
+import t from "../utils/i18n";
 import { AppController } from "./AppController";
 import { QueueController } from "./QueueController";
 import { DialogController } from "./utils/DialogController";
@@ -65,10 +65,10 @@ export class EditController {
       AppController.loadArtistsFromSongs(songsList);
       AppController.loadGenresFromSongs(songsList);
 
-      get(showInfoSnackbar)({ message: "Finished writing changes" });
+      get(showInfoSnackbar)({ message: t("FINISHED_WRITING_CHANGES_MESSAGE") });
       LogController.log(`Finished writing edits to ${original.id}`);
     } else {
-      get(showErrorSnackbar)({ message: "Failed to write all changes" });
+      get(showErrorSnackbar)({ message: t("FAILED_WRITING_CHANGES_MESSAGE") });
     }
   }
 
@@ -98,10 +98,10 @@ export class EditController {
       AppController.loadArtistsFromSongs(songsList);
       AppController.loadGenresFromSongs(songsList);
 
-      get(showInfoSnackbar)({ message: "Finished writing changes" });
+      get(showInfoSnackbar)({ message: t("FINISHED_WRITING_CHANGES_MESSAGE") });
       LogController.log(`Finished writing edits to ${songIds.length} songs`);
     } else {
-      get(showErrorSnackbar)({ message: "Failed to write all changes" });
+      get(showErrorSnackbar)({ message: t("FAILED_WRITING_CHANGES_MESSAGE") });
     }
   }
 
@@ -178,11 +178,11 @@ export class EditController {
         AppController.loadArtistsFromSongs(songsList);
         AppController.loadGenresFromSongs(songsList);
 
-        get(showInfoSnackbar)({ message: "Finished writing changes" });
+        get(showInfoSnackbar)({ message: t("FINISHED_WRITING_CHANGES_MESSAGE") });
         LogController.log(`Finished writing edits to ${original.name}`);
         resolve();
       } else {
-        get(showErrorSnackbar)({ message: "Failed to write all changes" });
+        get(showErrorSnackbar)({ message: t("FAILED_WRITING_CHANGES_MESSAGE") });
         reject();
       }
     });
@@ -193,9 +193,9 @@ export class EditController {
    * @param songIds The ids of the songs to delete.
    */
   static async deleteSongsFromDevice(songIds: string[]) {
-    const numSongsMessage = `${songIds.length} ${pluralize("song", songIds.length)}`;
+    const numSongsMessage = `${songIds.length} ${songIds.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")}`;
 
-    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
+    DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numSongsMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then(async (shouldContinue) => {
       if (shouldContinue) {
         const filePaths: string[] = [];
         const songList = get(songs);
@@ -240,9 +240,9 @@ export class EditController {
         const success = await successPromise;
 
         if (success) {
-          get(showInfoSnackbar)({ message: numSongsMessage + " deleted" });
+          get(showInfoSnackbar)({ message: numSongsMessage + " " + t("DELETED_VALUE") });
         } else {
-          get(showErrorSnackbar)({ message: "Failed to delete all selected songs."})
+          get(showErrorSnackbar)({ message: t("FAILED_DELETE_SELECTED_MESSAGE") + " " + t("SONG_PLURAL_VALUE") })
         }
       }
     });
@@ -253,9 +253,9 @@ export class EditController {
    * @param albumNames The names of the albums to delete.
    */
   static async deleteAlbumsFromDevice(albumNames: string[]) {
-    const numSongsMessage = `${albumNames.length} ${pluralize("album", albumNames.length)}`;
+    const numSongsMessage = `${albumNames.length} ${albumNames.length === 1 ? t("ALBUM_SINGULAR_VALUE") : t("ALBUM_PLURAL_VALUE")}`;
 
-    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numSongsMessage}?`, "Yes", "No").then(async (shouldContinue) => {
+    DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numSongsMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then(async (shouldContinue) => {
       if (shouldContinue) {
         const filePaths: string[] = [];
         const albumList = get(albums);
@@ -313,9 +313,9 @@ export class EditController {
         const success = await successPromise;
 
         if (success) {
-          get(showInfoSnackbar)({ message: numSongsMessage + " deleted" });
+          get(showInfoSnackbar)({ message: numSongsMessage + " " + t("DELETED_VALUE") });
         } else {
-          get(showErrorSnackbar)({ message: "Failed to delete all selected albums."});
+          get(showErrorSnackbar)({ message: t("FAILED_DELETE_SELECTED_MESSAGE") + " " + t("ALBUM_PLURAL_VALUE") });
         }
       }
     });
@@ -326,9 +326,9 @@ export class EditController {
    * @param playlistIds The ids of the playlists to delete.
    */
   static async deletePlaylistsFromDevice(playlistIds: string[]) {
-    const numPlaylistMessage = `${playlistIds.length} ${pluralize("playlist", playlistIds.length)}`;
+    const numPlaylistMessage = `${playlistIds.length} ${playlistIds.length === 1 ? t("PLAYLIST_SINGULAR_VALUE") : t("PLAYLIST_PLURAL_VALUE")}`;
 
-    DialogController.ask("This can't be undone!", `Are you sure you want to delete ${numPlaylistMessage}?`, "Yes", "No").then((shouldContinue) => {
+    DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numPlaylistMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then((shouldContinue) => {
       if (shouldContinue) {
         const playlistList = get(playlists);
         const nowPlayingName = get(nowPlayingList);
@@ -345,7 +345,7 @@ export class EditController {
         playlists.set(playlistList);
 
         LogController.log(`Deleted ${numPlaylistMessage}.`);
-        get(showInfoSnackbar)({ message: numPlaylistMessage + " deleted" });
+        get(showInfoSnackbar)({ message: numPlaylistMessage + " " + t("DELETED_VALUE") });
       }
     });
   }
@@ -361,7 +361,7 @@ export class EditController {
     
     const result = await RustInterop.copyAlbumsImage(imagePath, albumName);
     if (result === "") {
-      get(showErrorSnackbar)({ message: "Invalid image selected", faster: true })
+      get(showErrorSnackbar)({ message: t("INVALID_IMAGE_MESSAGE"), faster: true })
       return undefined;
     }
 
@@ -378,7 +378,7 @@ export class EditController {
 
     const result = await RustInterop.copyArtistImage(imagePath);
     if (result === "") {
-      get(showErrorSnackbar)({ message: "Invalid image selected", faster: true })
+      get(showErrorSnackbar)({ message: t("INVALID_IMAGE_MESSAGE"), faster: true })
       return undefined;
     }
 
@@ -395,7 +395,7 @@ export class EditController {
 
     const result = await RustInterop.copyPlaylistImage(imagePath);
     if (result === "") {
-      get(showErrorSnackbar)({ message: "Invalid image selected", faster: true })
+      get(showErrorSnackbar)({ message: t("INVALID_IMAGE_MESSAGE"), faster: true })
       return undefined;
     }
 

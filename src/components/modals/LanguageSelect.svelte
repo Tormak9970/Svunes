@@ -1,5 +1,6 @@
 <script lang="ts">
   import RadioInput from "@interactables/radio/RadioInput.svelte";
+  import t from "@lib/utils/i18n";
   import { showSelectLanguage } from "@stores/Modals";
   import { selectedLanguage } from "@stores/State";
   import { AppLanguage, getLanguage } from "../../types/Settings";
@@ -19,7 +20,7 @@
   const langs: AppLanguage[] = Object.values(AppLanguage).filter((v) => !isNaN(Number(v))) as AppLanguage[];
 </script>
 
-<SmallModalBody open={open} headline="Select Language" on:close={() => open = false} on:closeEnd={() => $showSelectLanguage = false}>
+<SmallModalBody open={open} headline={t("LANGUAGE_TITLE")} on:close={() => open = false} on:closeEnd={() => $showSelectLanguage = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each langs as lang}
