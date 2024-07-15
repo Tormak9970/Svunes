@@ -62,24 +62,6 @@ export enum GridStyle {
   SQUARE
 }
 
-export enum AppLanguage {
-  SYSTEM,
-  ENGLISH
-}
-
-/**
- * Gets a string to render for the given app language.
- * @param lang The language to get.
- */
-export function getLanguage(lang: AppLanguage): string {
-  switch (lang) {
-    case AppLanguage.SYSTEM:
-      return t("SYSTEM_DEFAULT_LANGUAGE_LABEL");
-    case AppLanguage.ENGLISH:
-      return "English";
-  }
-}
-
 export type NowPlayingExtraControl = "Car Mode" | "Sleep Timer" | "None";
 
 export type Palette = "Auto" | "Dark" | "Light";
@@ -150,7 +132,7 @@ export type Settings = {
 
   blacklistedFolders: string[];
   filterSongDuration: number;
-  selectedLanguage: AppLanguage;
+  selectedLanguage: string;
 
   cache: {
     albumsMetadata: Record<string, AlbumMetadata>;
@@ -239,7 +221,7 @@ export const DEFAULT_SETTINGS: Settings = {
 
   "blacklistedFolders": [],
   "filterSongDuration": 30,
-  "selectedLanguage": AppLanguage.SYSTEM,
+  "selectedLanguage": "system",
 
   "cache": {
     "artistsMetadata": {},

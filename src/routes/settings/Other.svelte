@@ -2,7 +2,6 @@
   import { showBlacklistFolders, showEditMusicFolders, showSelectLanguage } from "@stores/Modals";
   import { filterSongDuration, selectedLanguage } from "@stores/State";
   import { pop } from "svelte-spa-router";
-  import { getLanguage } from "../../types/Settings";
 
   import SettingSection from "@views/settings/SettingSection.svelte";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
@@ -13,7 +12,7 @@
   import FolderOpen from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import Language from "@ktibow/iconset-material-symbols/translate-rounded";
   import VisibilityOff from "@ktibow/iconset-material-symbols/visibility-off-rounded";
-  import t from "@lib/utils/i18n";
+  import t, { getLanguageName } from "@lib/utils/i18n";
 </script>
 
 <SettingsBody>
@@ -26,7 +25,7 @@
     <ButtonSetting label={t("SETTINGS_OTHER_BLACKLIST_FOLDER_LABEL")} description={t("SETTINGS_OTHER_BLACKLIST_FOLDER_DESC")} icon={VisibilityOff} on:click={() => $showBlacklistFolders = true} />
     <SettingSection label={t("SETTINGS_OTHER_ADVANCED_LABEL")} />
     <SliderSetting label={t("SETTINGS_OTHER_MAX_LENGTH_LABEL")} description={t("SETTINGS_OTHER_MAX_LENGTH_DESC")} max={60} bind:value={$filterSongDuration} />
-    <ButtonSetting label={t("SETTINGS_OTHER_CHANGE_LANGUAGE_LABEL")} description={getLanguage($selectedLanguage)} icon={Language} on:click={() => $showSelectLanguage = true} />
+    <ButtonSetting label={t("SETTINGS_OTHER_CHANGE_LANGUAGE_LABEL")} description={getLanguageName($selectedLanguage)} icon={Language} on:click={() => $showSelectLanguage = true} />
   </span>
 </SettingsBody>
 

@@ -1,5 +1,5 @@
-// import * as es from '../i18n/es.json';
-// import * as es419 from '../i18n/es-419.json';
+import { get } from "svelte/store";
+import { selectedLanguage } from "../../stores/State";
 import * as translationKeys from '../i18n/strings.json';
 
 const fallbacks = translationKeys as Record<string, string>;
@@ -11,43 +11,67 @@ type LanguageEntry = {
 }
 
 export const LANGS: Record<string, LanguageEntry> = {
-  // es: {
-  //   name: 'Español-España',
-  //   strings: es,
-  //   credit: ['Andrea Laguillo', 'Kam', 'm0uch0'],
-  // },
-  // 'es-419': {
-  //   name: 'Español-Latinoamérica',
-  //   strings: es419,
-  //   credit: ['Kam'],
-  // },
+  system: {
+    name: "",
+    strings: null,
+    credit: []
+  },
+  en: {
+    name: "English",
+    strings: fallbacks,
+    credit: []
+  }
 };
 
-export function getCredits(lang?: string) {
-  if (lang) return LANGS[lang]?.credit;
-  return LANGS[navigator.language]?.credit;
-};
+function getLanguage(): string {
+  const lang = get(selectedLanguage);
 
-export function getLanguageName(lang?: string): string {
-  if (lang) return LANGS[lang]?.name;
-  return LANGS[navigator.language]?.name;
-};
+  if (lang === "system") return navigator.language;
+  return lang;
+}
 
 /**
- * Gets the localized value for the provided key, falling back to the original string if its not defined.
+ * Gets the credits for the provided language.
+ * @param lang The language to get the credits for.
+ */
+export function getCredits(lang?: string) {
+  if (lang) return LANGS[lang]?.credit;
+  return LANGS[getLanguage()]?.credit;
+}
+
+/**
+ * Renders the provided date in short form.
+ * @param formattedDate The date in ISO format.
+ */
+export function renderDate(formattedDate: string): string {
+  const lang = getLanguage();
+  const formatter = new Intl.DateTimeFormat(lang);
+  const date = new Date(formattedDate);
+  return formatter.format(date);
+}
+
+/**
+ * Gets the localized value for the provided key.
  * @param key Locale key
- * @param originalString Original text
  *
  * @example
- * t('TITLE_FILTER_MODAL', 'Asset Filters')
+ * t('SYSTEM_DEFAULT_LANGUAGE_LABEL')
  * @example
  * // if you need variables use .replace()
- * t('ACTION_REMOVE_GAME', 'Delete {gameName}').replaceAll('{gameName}', gameName)
+ * t('BULK_EDITING_TITLE').replaceAll('{count}', songCount)
  */
 function trans_string(key: string): string {
-  if (navigator.language.startsWith('en')) return fallbacks[key];
-
-  return LANGS[navigator.language]?.strings?.[key] ?? fallbacks[key];
-};
+  return LANGS[getLanguage()]?.strings?.[key] ?? fallbacks[key];
+}
 
 export default trans_string;
+
+/**
+ * Gets the name of the provided language.
+ * @param lang The language to get the name of.
+ */
+export function getLanguageName(lang?: string): string {
+  if (lang === "system") return trans_string("SYSTEM_DEFAULT_LANGUAGE_LABEL");
+  if (lang) return LANGS[lang]?.name;
+  return LANGS[getLanguage()]?.name;
+}

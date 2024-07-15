@@ -5,9 +5,8 @@
   import CardClickable from "@layout/CardClickable.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Song } from "@lib/models/Song";
-  import t from "@lib/utils/i18n";
+  import t, { renderDate } from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
-  import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
   import { tauri } from "@tauri-apps/api";
   import { fade } from "svelte/transition";

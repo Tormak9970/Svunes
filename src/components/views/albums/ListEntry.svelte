@@ -2,9 +2,8 @@
   import ViewImage from "@component-utils/ViewImage.svelte";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Album } from "@lib/models/Album";
-  import t from "@lib/utils/i18n";
+  import t, { renderDate } from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
-  import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
   import { tauri } from "@tauri-apps/api";
   import { push } from "svelte-spa-router";

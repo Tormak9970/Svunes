@@ -1,5 +1,5 @@
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
-import { isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress, trackHistory } from "@stores/State";
+import { albums, isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress, songs, trackHistory } from "@stores/State";
 import { get } from "svelte/store";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
@@ -83,6 +83,7 @@ export class PlaybackController {
     song.numTimesPlayed++;
     if (get(trackHistory)) song.setLastPlayed();
     SettingsController.updateSongMetadata(song);
+    songs.set([ ...get(songs) ]);
 
     playingSongId.set(song.id);
 
@@ -106,6 +107,7 @@ export class PlaybackController {
     album.numTimesPlayed++;
     album.setLastPlayed();
     SettingsController.updateAlbumsMetadata([album]);
+    albums.set([ ...get(albums) ]);
     
     const cloned = structuredClone(album.songIds);
     const newQueue: string[] = (shouldShuffle && !ignoreShuffle) ? shuffleSongs(cloned) : cloned;

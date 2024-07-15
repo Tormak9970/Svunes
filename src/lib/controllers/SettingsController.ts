@@ -17,7 +17,7 @@
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedLanguage, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { fs, path } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
-import { AppLanguage, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
+import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
 import { View } from "../../types/View";
 import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
@@ -418,7 +418,7 @@ export class SettingsController {
     
     this.blacklistedFoldersUnsub = blacklistedFolders.subscribe(this.updateStoreIfChanged<string[]>("blacklistedFolders"));
     this.filterSongDurationUnsub = filterSongDuration.subscribe(this.updateStoreIfChanged<number>("filterSongDuration"));
-    this.selectedLanguageUnsub = selectedLanguage.subscribe(this.updateStoreIfChanged<AppLanguage>("selectedLanguage"));
+    this.selectedLanguageUnsub = selectedLanguage.subscribe(this.updateStoreIfChanged<string>("selectedLanguage"));
 
     this.albumsUnsub = albums.subscribe((newAlbums) => {
       this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", Object.fromEntries(newAlbums.map((album) => {

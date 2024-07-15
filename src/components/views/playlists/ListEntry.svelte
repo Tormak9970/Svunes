@@ -5,9 +5,8 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Playlist } from "@lib/models/Playlist";
-  import t from "@lib/utils/i18n";
+  import t, { renderDate } from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
-  import { renderDate } from "@lib/utils/Utils";
   import { inSelectMode, selected } from "@stores/Select";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";

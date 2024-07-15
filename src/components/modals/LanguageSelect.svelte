@@ -1,9 +1,8 @@
 <script lang="ts">
   import RadioInput from "@interactables/radio/RadioInput.svelte";
-  import t from "@lib/utils/i18n";
+  import t, { getLanguageName, LANGS } from "@lib/utils/i18n";
   import { showSelectLanguage } from "@stores/Modals";
   import { selectedLanguage } from "@stores/State";
-  import { AppLanguage, getLanguage } from "../../types/Settings";
   import SmallModalBody from "./utils/SmallModalBody.svelte";
 
   let open = true;
@@ -12,12 +11,12 @@
    * Sets the app language.
    * @param lang The new language.
    */
-  function setLanguage(lang: AppLanguage) {
+  function setLanguage(lang: string) {
     $selectedLanguage = lang;
     open = false;
   }
 
-  const langs: AppLanguage[] = Object.values(AppLanguage).filter((v) => !isNaN(Number(v))) as AppLanguage[];
+  const langs: string[] = Object.keys(LANGS);
 </script>
 
 <SmallModalBody open={open} headline={t("LANGUAGE_TITLE")} on:close={() => open = false} on:closeEnd={() => $showSelectLanguage = false}>
@@ -26,7 +25,7 @@
     {#each langs as lang}
       <label style="height: 2.5rem;">
         <RadioInput name="appLanguage" checked={$selectedLanguage === lang} on:input={() => setLanguage(lang)} />
-        <div class="radio">{getLanguage(lang)}</div>
+        <div class="radio">{getLanguageName(lang)}</div>
       </label>
     {/each}
   </div>

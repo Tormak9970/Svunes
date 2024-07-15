@@ -32,13 +32,13 @@ export function stringCallbackSort<T>(callback: (entry: T) => string | undefined
 export function dateSort<T>(property: keyof T): (a: T, b: T) => number {
   return (a: T, b: T) => {
     if (a[property] === "Never" && b[property] === "Never") return 0;
-    if (a[property] === "Never") return -1;
-    if (b[property] === "Never") return 1;
+    if (a[property] === "Never") return 1;
+    if (b[property] === "Never") return -1;
 
     const aDate = Date.parse(a[property] as string);
     const bDate = Date.parse(b[property] as string);
-    if (aDate < bDate) return -1;
-    if (aDate > bDate) return 1;
+    if (aDate > bDate) return -1;
+    if (aDate < bDate) return 1;
     return 0;
   }
 }

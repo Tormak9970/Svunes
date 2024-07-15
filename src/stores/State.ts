@@ -5,10 +5,11 @@ import type { Artist } from "../lib/models/Artist";
 import type { Genre } from "../lib/models/Genre";
 import type { Playlist } from "../lib/models/Playlist";
 import type { Song } from "../lib/models/Song";
-import { AppLanguage, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
+import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import { View } from "../types/View";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
 
+export const selectedLanguage = writable("system");
 export const isLoading = writable(true);
 export const shuffle = writable(true);
 export const repeatPlayed = writable(false);
@@ -46,7 +47,6 @@ export const queue: Writable<string[]> = writable([]);
 
 export const blacklistedFolders: Writable<string[]> = writable([]);
 export const filterSongDuration = writable(30);
-export const selectedLanguage = writable(AppLanguage.SYSTEM);
 
 export const artists: Writable<Artist[]> = writable([]);
 export const artistsMap: Readable<Record<string, Artist>> = derived(artists, (artists: Artist[]) => {

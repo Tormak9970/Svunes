@@ -68,15 +68,6 @@ export function asyncDebounce(func: any, wait:number, resolve: (value?: unknown)
   }
 }
 
-/**
- * Renders the provided date in short form.
- * @param formattedDate The date in ISO format.
- */
-export function renderDate(formattedDate: string): string {
-  const date = new Date(formattedDate);
-  return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
-}
-
 function prefixIfNeeded(time: number): string {
   return time < 10 ? "0" + time.toFixed(0) : time.toFixed(0)
 }
