@@ -19,10 +19,10 @@
   import { LogController } from "@lib/controllers/utils/LogController";
   import { Artist } from "@lib/models/Artist";
   import type { Song } from "@lib/models/Song";
-  import t from "@lib/utils/i18n";
   import { stringSort } from "@lib/utils/Sorters";
   import { getRandomElements } from "@lib/utils/Utils";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { artistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, songsMap, useArtistColors } from "@stores/State";
@@ -145,9 +145,9 @@
       </span>
       <span slot="right" style="display: flex; flex-direction: row;">
         <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
-          <MenuItem on:click={queueArtist}>{t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-          <MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
+          <MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
+          <MenuItem on:click={queueArtist}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
+          <MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
         </MenuButton>
       </span>
     </OverlayHeader>
@@ -161,7 +161,7 @@
         <Marquee speed={50} gap={100}>
           <h3 class="name">{artist?.name}</h3>
         </Marquee>
-        <div class="other">{`${artist?.albumNames.size} ${artist?.albumNames.size === 1 ? t("ALBUM_SINGULAR_VALUE") : t("ALBUM_PLURAL_VALUE")} • `}{`${artist?.songIds.length} ${artist?.songIds.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")} • `}{artist?.displayArtistSongLength()}</div>
+        <div class="other">{`${artist?.albumNames.size} ${artist?.albumNames.size === 1 ? $t("ALBUM_SINGULAR_VALUE") : $t("ALBUM_PLURAL_VALUE")} • `}{`${artist?.songIds.length} ${artist?.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • `}{artist?.displayArtistSongLength()}</div>
       </div>
       {#key rerenderArt}
         <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
@@ -173,7 +173,7 @@
     {#if artistAlbums.length > 0 }
       <div class="albums">
         <div class="section-header">
-          <h3 class="label">{t("ALBUMS_TITLE")}</h3>
+          <h3 class="label">{$t("ALBUMS_TITLE")}</h3>
           <div />
         </div>
         <AlbumCarouselList albums={artistAlbums} />
@@ -181,18 +181,18 @@
     {/if}
     <div class="songs">
       <div class="section-header">
-        <h3 class="label">{t("SONGS_TITLE")}</h3>
+        <h3 class="label">{$t("SONGS_TITLE")}</h3>
         <MenuButton icon={Filter}>
-          <RadioMenuItem name="artistEntriesSort" label={t("ALPHABETICAL_LABEL")} checked={artistSortMethod === "Alphabetical"} on:input={() => artistSortMethod = "Alphabetical" } />
-          <RadioMenuItem name="artistEntriesSort" label={t("ALBUM_LABEL")} checked={artistSortMethod === "Album"} on:input={() => artistSortMethod = "Album"} />
-          <RadioMenuItem name="artistEntriesSort" label={t("YEAR_LABEL")} checked={artistSortMethod === "Year"} on:input={() => artistSortMethod = "Year"} />
-          <RadioMenuItem name="artistEntriesSort" label={t("SONG_DURATION_LABEL")} checked={artistSortMethod === "Song Duration"} on:input={() => artistSortMethod = "Song Duration"} />
+          <RadioMenuItem name="artistEntriesSort" label={$t("ALPHABETICAL_LABEL")} checked={artistSortMethod === "Alphabetical"} on:input={() => artistSortMethod = "Alphabetical" } />
+          <RadioMenuItem name="artistEntriesSort" label={$t("ALBUM_LABEL")} checked={artistSortMethod === "Album"} on:input={() => artistSortMethod = "Album"} />
+          <RadioMenuItem name="artistEntriesSort" label={$t("YEAR_LABEL")} checked={artistSortMethod === "Year"} on:input={() => artistSortMethod = "Year"} />
+          <RadioMenuItem name="artistEntriesSort" label={$t("SONG_DURATION_LABEL")} checked={artistSortMethod === "Song Duration"} on:input={() => artistSortMethod = "Song Duration"} />
         </MenuButton>
       </div>
       <SongsList songs={sortedSongs} />
     </div>
     {#if similarArtists && similarArtists?.length > 0}
-      <ArtistCarousel label={t("SIMILAR_ARTISTS_TITLE")} artists={similarArtists} on:click={showAllSimilar} />
+      <ArtistCarousel label={$t("SIMILAR_ARTISTS_TITLE")} artists={similarArtists} on:click={showAllSimilar} />
     {/if}
   </span>
 </DetailsBody>

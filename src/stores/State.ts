@@ -9,7 +9,6 @@ import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type Al
 import { View } from "../types/View";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
 
-export const selectedLanguage = writable("system");
 export const isLoading = writable(true);
 export const shuffle = writable(true);
 export const repeatPlayed = writable(false);

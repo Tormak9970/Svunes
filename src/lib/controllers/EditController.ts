@@ -1,8 +1,8 @@
 import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
 import { get } from "svelte/store";
+import { t as translate } from "../../stores/Locale";
 import { Album } from "../models/Album";
 import { Song } from "../models/Song";
-import t from "../utils/i18n";
 import { AppController } from "./AppController";
 import { QueueController } from "./QueueController";
 import { DialogController } from "./utils/DialogController";
@@ -51,6 +51,7 @@ export class EditController {
    * @param editedFields The edited fields.
    */
   static async editSong(original: Song, editedFields: SongEditFields) {
+    const t = get(translate);
     const changes: Record<string, SongEditFields> = {};
     changes[original.filePath] = editedFields;
     const success = await RustInterop.writeMusicFiles(changes);
@@ -78,6 +79,7 @@ export class EditController {
    * @param changes A dictionary mapping filePath -> edited fields.
    */
   static async bulkEditSongs(songPaths: Record<string, string>, changes: Record<string, SongEditFields>) {
+    const t = get(translate);
     const songIds = Object.keys(songPaths);
 
     const songMap = get(songsMap);
@@ -111,6 +113,7 @@ export class EditController {
    * @param changedAlbumFields The edited album fields.
    */
   static async editAlbum(original: Album, changedAlbumFields: AlbumEditFields) {
+    const t = get(translate);
     return new Promise<void>(async (resolve, reject) => {
       let isRenamedToAnother = false;
 
@@ -193,6 +196,7 @@ export class EditController {
    * @param songIds The ids of the songs to delete.
    */
   static async deleteSongsFromDevice(songIds: string[]) {
+    const t = get(translate);
     const numSongsMessage = `${songIds.length} ${songIds.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")}`;
 
     DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numSongsMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then(async (shouldContinue) => {
@@ -253,6 +257,7 @@ export class EditController {
    * @param albumNames The names of the albums to delete.
    */
   static async deleteAlbumsFromDevice(albumNames: string[]) {
+    const t = get(translate);
     const numSongsMessage = `${albumNames.length} ${albumNames.length === 1 ? t("ALBUM_SINGULAR_VALUE") : t("ALBUM_PLURAL_VALUE")}`;
 
     DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numSongsMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then(async (shouldContinue) => {
@@ -326,6 +331,7 @@ export class EditController {
    * @param playlistIds The ids of the playlists to delete.
    */
   static async deletePlaylistsFromDevice(playlistIds: string[]) {
+    const t = get(translate);
     const numPlaylistMessage = `${playlistIds.length} ${playlistIds.length === 1 ? t("PLAYLIST_SINGULAR_VALUE") : t("PLAYLIST_PLURAL_VALUE")}`;
 
     DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numPlaylistMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then((shouldContinue) => {
@@ -357,6 +363,7 @@ export class EditController {
    * @returns The image path, or undefined if it was undefined.
    */
   static async copyAlbumImage(imagePath: string | undefined, albumName: string): Promise<string | undefined> {
+    const t = get(translate);
     if (!imagePath) return undefined;
     
     const result = await RustInterop.copyAlbumsImage(imagePath, albumName);
@@ -374,6 +381,7 @@ export class EditController {
    * @returns The image path, or undefined if it was undefined.
    */
   static async copyArtistImage(imagePath: string | undefined): Promise<string | undefined> {
+    const t = get(translate);
     if (!imagePath) return undefined;
 
     const result = await RustInterop.copyArtistImage(imagePath);
@@ -391,6 +399,7 @@ export class EditController {
    * @returns The image path, or undefined if it was undefined.
    */
   static async copyPlaylistImage(imagePath: string | undefined): Promise<string | undefined> {
+    const t = get(translate);
     if (!imagePath) return undefined;
 
     const result = await RustInterop.copyPlaylistImage(imagePath);

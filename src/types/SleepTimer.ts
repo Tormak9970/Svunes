@@ -1,4 +1,5 @@
-import t from "../lib/utils/i18n";
+import { get } from "svelte/store";
+import { t as translate } from "../stores/Locale";
 
 export enum SleepTimerOption {
   FIVE_MINUTES,
@@ -15,6 +16,8 @@ export enum SleepTimerOption {
  * @param option The option to get the label for.
  */
 export function getTimeOptionLabel(option: SleepTimerOption): string {
+  const t = get(translate);
+  
   switch (option) {
     case SleepTimerOption.FIVE_MINUTES:
       return t("TIME_OPTION_5m_LABEL");

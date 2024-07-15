@@ -9,18 +9,18 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Close from "@ktibow/iconset-material-symbols/close-rounded";
   import Tune from "@ktibow/iconset-material-symbols/tune-rounded";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { showAdvancedFilters } from "@stores/Modals";
   import { lastView, selectedView } from "@stores/State";
 
   export let highlight: boolean;
 
   const options = [
-    { label: t("SONGS_TITLE"), value: "song" },
-    { label: t("ALBUMS_TITLE"), value: "album" },
-    { label: t("ARTISTS_TITLE"), value: "artist" },
-    { label: t("PLAYLISTS_TITLE"), value: "playlist" },
-    { label: t("GENRES_TITLE"), value: "genre" },
+    { label: $t("SONGS_TITLE"), value: "song" },
+    { label: $t("ALBUMS_TITLE"), value: "album" },
+    { label: $t("ARTISTS_TITLE"), value: "artist" },
+    { label: $t("PLAYLISTS_TITLE"), value: "playlist" },
+    { label: $t("GENRES_TITLE"), value: "genre" },
   ];
 
   function goBack() {
@@ -43,7 +43,7 @@
       </Button>
     </div>
     <div class="search-container">
-      <SearchField placeholder={t("SEARCH_TITLE")} bind:value={$searchQuery} />
+      <SearchField placeholder={$t("SEARCH_TITLE")} bind:value={$searchQuery} />
     </div>
     <div class="right" style:visibility={$searchQuery === "" ? "hidden" : "visible"}>
       <Button type="text" iconType="full" on:click={clearSearch}>

@@ -17,9 +17,9 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Album } from "@lib/models/Album";
   import type { Artist } from "@lib/models/Artist";
-  import t from "@lib/utils/i18n";
   import { shuffleSongs } from "@lib/utils/Shuffle";
   import { getAllArtistNames } from "@lib/utils/Utils";
+  import { t } from "@stores/Locale";
   import { albumsMap, artistsMap, showSuggestions, songs, songsMap } from "@stores/State";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
@@ -72,26 +72,26 @@
       <div class="buttons-container" style:--m3-button-shape="10px" style:--m3-scheme-secondary-container="var(--m3-scheme-surface-container)">
         <Button type="tonal" iconType="left" on:click={() => push("/home/history")}>
           <Icon icon={History} />
-          {t("HISTORY_TITLE")}
+          {$t("HISTORY_TITLE")}
         </Button>
         <Button type="tonal" iconType="left" on:click={() => push("/home/recently-added")}>
           <Icon icon={CalendarAddOn} />
-          {t("RECENTLY_ADDED_TITLE")}
+          {$t("RECENTLY_ADDED_TITLE")}
         </Button>
         <Button type="tonal" iconType="left" on:click={() => push("/home/most-played")}>
           <Icon icon={TrendingUp} />
-          {t("MOST_PLAYED_TITLE")}
+          {$t("MOST_PLAYED_TITLE")}
         </Button>
         <Button type="tonal" iconType="left" on:click={shuffleAllSongs}>
           <Icon icon={Shuffle} />
-          {t("SHUFFLE_TITLE")}
+          {$t("SHUFFLE_TITLE")}
         </Button>
       </div>
       {#if $showSuggestions}
         <Suggestions />
       {/if}
-      <ArtistCarousel label={t("TOP_ARTISTS_TITLE")} artists={artists} on:click={() => push("/home/top-artists")} />
-      <AlbumCarousel label={t("TOP_ALBUMS_TITLE")} albums={albums} on:click={() => push("/home/top-albums")} />
+      <ArtistCarousel label={$t("TOP_ARTISTS_TITLE")} artists={artists} on:click={() => push("/home/top-artists")} />
+      <AlbumCarousel label={$t("TOP_ALBUMS_TITLE")} albums={albums} on:click={() => push("/home/top-albums")} />
     </div>
   </div>
 </ViewContainer>

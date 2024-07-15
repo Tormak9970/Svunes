@@ -1,6 +1,6 @@
 <script lang="ts">
   import RadioInput from "@interactables/radio/RadioInput.svelte";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { showNowPlayingBackground } from "@stores/Modals";
   import { nowPlayingBackgroundType } from "@stores/State";
   import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "../../types/Settings";
@@ -20,7 +20,7 @@
   const backgroundTypes: NowPlayingBackgroundType[] = Object.values(NowPlayingBackgroundType).filter((v) => !isNaN(Number(v))) as NowPlayingBackgroundType[];
 </script>
 
-<SmallModalBody headline={t("NOW_PLAYING_BACKGROUND_TYPE_TITLE")} open={open} on:close={() => open = false} on:closeEnd={() => $showNowPlayingBackground = false}>
+<SmallModalBody headline={$t("NOW_PLAYING_BACKGROUND_TYPE_TITLE")} open={open} on:close={() => open = false} on:closeEnd={() => $showNowPlayingBackground = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each backgroundTypes as backgroundType}

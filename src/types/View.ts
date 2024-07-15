@@ -7,7 +7,8 @@ import MusicNote from "@ktibow/iconset-material-symbols/music-note";
 import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
 import Search from "@ktibow/iconset-material-symbols/search-rounded";
 import Settings from "@ktibow/iconset-material-symbols/settings";
-import t from "../lib/utils/i18n";
+import { get } from "svelte/store";
+import { t as translate } from "../stores/Locale";
 
 export enum View {
   PLAYLISTS,
@@ -36,6 +37,8 @@ export const Views = [
  * @param view The view to get the name of.
  */
 export function getViewName(view: View): string {
+  const t = get(translate);
+  
   switch(view){
     case View.PLAYLISTS:
       return t("PLAYLISTS_TITLE");

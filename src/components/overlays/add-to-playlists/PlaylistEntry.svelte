@@ -4,8 +4,8 @@
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Playlist } from "@lib/models/Playlist";
-  import t from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { t } from "@stores/Locale";
   import PlaylistImage from "@views/playlists/PlaylistImage.svelte";
   import { createEventDispatcher } from "svelte";
 
@@ -29,7 +29,7 @@
               <Icon icon={Keep} width="16px" height="16px" />
             </div>
           {/if}
-          <div>{playlist.songIds.length} {t(playlist.songIds.length === 1 ? "SONG_SINGULAR_VALUE" : "SONG_PLURAL_VALUE")}</div>
+          <div>{playlist.songIds.length} {$t(playlist.songIds.length === 1 ? "SONG_SINGULAR_VALUE" : "SONG_PLURAL_VALUE")}</div>
         </div>
       </div>
     </div>

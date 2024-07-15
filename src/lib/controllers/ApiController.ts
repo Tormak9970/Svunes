@@ -1,3 +1,4 @@
+import { t } from "@stores/Locale";
 import { albumCovers, albumInfos, apiSearchCanceled, availableReleaseGroups, onAlbumInfoDone, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover, showPickAlbumInfo, showSearchingApi } from "@stores/Modals";
 import { fs, path } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
@@ -5,7 +6,6 @@ import { showErrorSnackbar } from "../../stores/State";
 import type { ReleaseGroup } from "../../types/MusicBrainz";
 import { CoverArtApi } from "../models/CoverArtApi";
 import { MusicBrainzApi } from "../models/MusicBrainzApi";
-import t from "../utils/i18n";
 import { compareStrings } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
@@ -78,7 +78,7 @@ export class ApiController {
       if (!(await fs.exists(this.coverCacheDir))) await fs.createDir(this.coverCacheDir);
     } catch(e: any) {
       LogController.error(e.message);
-      get(showErrorSnackbar)({ message: t("ALBUM_CACHE_CREATION_FAILED_MESSAGE") });
+      get(showErrorSnackbar)({ message: get(t)("ALBUM_CACHE_CREATION_FAILED_MESSAGE") });
     }
   }
 
@@ -123,10 +123,10 @@ export class ApiController {
         LogController.log(`Request for ${imageUrl} succeeded.`);
         return localImagePath;
       case "timedOut":
-        showError({ message: t("IMAGE_DOWNLOAD_TIMEOUT_MESSAGE") });
+        showError({ message: get(t)("IMAGE_DOWNLOAD_TIMEOUT_MESSAGE") });
         LogController.warn(`Request for ${imageUrl} timed out after ${this.TIMEOUT / 1000} seconds.`);
       case "failed":
-        showError({ message: t("IMAGE_DOWNLOAD_FAILED_MESSAGE") });
+        showError({ message: get(t)("IMAGE_DOWNLOAD_FAILED_MESSAGE") });
         LogController.warn(`Request for ${imageUrl} failed.`);
     }
     

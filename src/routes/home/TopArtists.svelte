@@ -5,9 +5,9 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import type { Artist } from "@lib/models/Artist";
-  import t from "@lib/utils/i18n";
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { t } from "@stores/Locale";
   import { artistsMap, songs } from "@stores/State";
   import GridEntry from "@views/artists/GridEntry.svelte";
   import { onMount } from "svelte";
@@ -45,7 +45,7 @@
         <Button type="text" iconType="full" on:click={pop}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div style="font-size: 20px;">{t("TOP_ARTISTS_TITLE")}</div>
+        <div style="font-size: 20px;">{$t("TOP_ARTISTS_TITLE")}</div>
       </span>
       <span slot="right" />
     </OverlayHeader>

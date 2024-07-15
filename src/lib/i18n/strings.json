@@ -208,6 +208,7 @@
   "TIME_OPTION_45m_LABEL": "45 minutes",
   "TIME_OPTION_1h_LABEL": "1 hour",
   "TIME_OPTION_EOT_LABEL": "End of Track",
+  "TIMER_SET_MESSAGE": "Timer Set",
 
   "SETTINGS_TITLE": "Settings",
   "SETTINGS_APPEARANCE_PAGE_DESC": "Customize the look of the app",

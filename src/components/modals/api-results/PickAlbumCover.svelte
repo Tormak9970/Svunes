@@ -6,8 +6,8 @@
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
-  import t from "@lib/utils/i18n";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
+  import { t } from "@stores/Locale";
   import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
@@ -90,9 +90,9 @@
 </script>
 
 <div class="image-modal">
-  <ModalBody open={open} headline={t("ALBUM_COVER_RESULTS_TITLE")} loading={showDownloadingSpinner} on:close={cancel} on:closeEnd={close}>
+  <ModalBody open={open} headline={$t("ALBUM_COVER_RESULTS_TITLE")} loading={showDownloadingSpinner} on:close={cancel} on:closeEnd={close}>
     <div class="select-wrapper">
-      <Select name={t("ALBUM_LABEL")} bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
+      <Select name={$t("ALBUM_LABEL")} bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
     </div>
     <div class="content-wrapper">
       {#if coversLoading}
@@ -129,8 +129,8 @@
     <div class="actions" slot="buttons">
       <div class="left" />
       <div class="right">
-        <Button type="text" on:click={cancel}>{t("CANCEL_ACTION")}</Button>
-        <Button type="text" disabled={selectedIndex === -1} on:click={done}>{t("APPLY_ACTION")}</Button>
+        <Button type="text" on:click={cancel}>{$t("CANCEL_ACTION")}</Button>
+        <Button type="text" disabled={selectedIndex === -1} on:click={done}>{$t("APPLY_ACTION")}</Button>
       </div>
     </div>
   </ModalBody>

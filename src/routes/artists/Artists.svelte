@@ -5,9 +5,9 @@
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Artist } from "@lib/models/Artist";
-  import t from "@lib/utils/i18n";
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { stringSort } from "@lib/utils/Sorters";
+  import { t } from "@stores/Locale";
   import { artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "@stores/State";
   import ArtistsHeader from "@views/artists/ArtistsHeader.svelte";
   import GridEntry from "@views/artists/GridEntry.svelte";
@@ -86,7 +86,7 @@
     {:else}
       <div class="message-container">
         <Icon icon={SadFace} width="60px" height="60px" />
-        <div class="message">{t("NO_TYPE_FOUND_MESSAGE").replace("{type}", t("ARTIST_PLURAL_VALUE"))}.</div>
+        <div class="message">{$t("NO_TYPE_FOUND_MESSAGE").replace("{type}", $t("ARTIST_PLURAL_VALUE"))}.</div>
       </div>
     {/if}
   </div>

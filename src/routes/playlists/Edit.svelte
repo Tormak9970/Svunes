@@ -6,9 +6,9 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import t from "@lib/utils/i18n";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { playlists, playlistsMap, showErrorSnackbar } from "@stores/State";
   import { onMount } from "svelte";
@@ -56,7 +56,7 @@
       canSave = false;
       back();
     } else {
-      $showErrorSnackbar({ message: t("NAME_REQUIRED_MESSAGE"), faster: true });
+      $showErrorSnackbar({ message: $t("NAME_REQUIRED_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! A name is required!");
     }
   }
@@ -87,7 +87,7 @@
       </span>
       <span slot="right">
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
-          {t("SAVE_ACTION")}
+          {$t("SAVE_ACTION")}
         </Button>
       </span>
     </OverlayHeader>
@@ -97,7 +97,7 @@
       <DetailsArtPicture artPath={imagePath} clickable on:click={onImageClick} />
     {/key}
     <div class="fields">
-      <TextField name={t("NAME_LABEL")} bind:value={playlistName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("NAME_LABEL")} bind:value={playlistName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
     </div>
   </span>
 </OverlayBody>

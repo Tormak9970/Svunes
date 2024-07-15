@@ -2,7 +2,7 @@
   import BottomSheet from "@layout/BottomSheet.svelte";
   import ListItemButton from "@layout/ListItemButton.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { showSleepTimerSelection } from "@stores/Overlays";
   import { isPaused, shouldPauseOnEnd, showInfoSnackbar } from "@stores/State";
   import { SleepTimerOption, getTimeForOption, getTimeOptionLabel } from "../../types/SleepTimer";
@@ -20,7 +20,7 @@
     }
 
     LogController.log(`Set a ${option} sleep timer.`);
-    $showInfoSnackbar({ message: "Timer set" });
+    $showInfoSnackbar({ message: $t("TIMER_SET_MESSAGE") });
 
     close();
   }
@@ -38,7 +38,7 @@
 <BottomSheet on:close={close}>
   <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
     <div class="header">
-      <div class="header-text">{t("STOP_AUDIO_IN_TITLE")}</div>
+      <div class="header-text">{$t("STOP_AUDIO_IN_TITLE")}</div>
     </div>
     {#each options as option}
       <ListItemButton headline={getTimeOptionLabel(option)} extraOptions={{ style: "width: 100%" }} on:click={() => setTimer(option)} />

@@ -16,7 +16,7 @@
   import Dark from "@ktibow/iconset-material-symbols/dark-mode-rounded";
   import Light from "@ktibow/iconset-material-symbols/light-mode-rounded";
   import Theme from "@ktibow/iconset-material-symbols/palette";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   
   /**
    * Sets the theme's palette.
@@ -37,11 +37,11 @@
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label={t("SETTINGS_APPEARANCE_TITLE")} goBack={pop} />
+    <SettingsHeader label={$t("SETTINGS_APPEARANCE_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
-    <SettingSection label={t("SETTINGS_APPEARANCE_THEME_LABEL")} />
-    <ColorSetting icon={Theme} label={t("SETTINGS_APPEARANCE_APP_THEME_LABEL")} description={t("SETTINGS_APPEARANCE_APP_THEME_DESC")} bind:color={$themePrimaryColor} />
+    <SettingSection label={$t("SETTINGS_APPEARANCE_THEME_LABEL")} />
+    <ColorSetting icon={Theme} label={$t("SETTINGS_APPEARANCE_APP_THEME_LABEL")} description={$t("SETTINGS_APPEARANCE_APP_THEME_DESC")} bind:color={$themePrimaryColor} />
     <div class="color-presets">
       <ColorPreset hex="#51dd28" on:click={() => setThemeColor("#51dd28")} />
       <ColorPreset hex="#dd5527" on:click={() => setThemeColor("#dd5527")} />
@@ -49,13 +49,13 @@
       <ColorPreset hex="#a74bf2" on:click={() => setThemeColor("#a74bf2")} />
       <ColorPreset hex="#ffd28d" on:click={() => setThemeColor("#ffd28d")} />
     </div>
-    <SettingSection label={t("SETTINGS_APPEARANCE_PALETTE_LABEL")} />
-    <MultiButtonSetting label={t("SETTINGS_APPEARANCE_PALETTE_LABEL")} description={t("SETTINGS_APPEARANCE_PALETTE_DESC")}>
-      <MultiButton name="theme-palette" id="auto" icon={Auto} checked={$palette === "Auto"} on:input={() => setPalette("Auto")}>{t("SETTINGS_APPEARANCE_PALETTE_AUTO")}</MultiButton>
-      <MultiButton name="theme-palette" id="dark" icon={Dark} checked={$palette === "Dark"} on:input={() => setPalette("Dark")}>{t("SETTINGS_APPEARANCE_PALETTE_DARK")}</MultiButton>
-      <MultiButton name="theme-palette" id="light" icon={Light} checked={$palette === "Light"} on:input={() => setPalette("Light")}>{t("SETTINGS_APPEARANCE_PALETTE_LIGHT")}</MultiButton>
+    <SettingSection label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} />
+    <MultiButtonSetting label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} description={$t("SETTINGS_APPEARANCE_PALETTE_DESC")}>
+      <MultiButton name="theme-palette" id="auto" icon={Auto} checked={$palette === "Auto"} on:input={() => setPalette("Auto")}>{$t("SETTINGS_APPEARANCE_PALETTE_AUTO")}</MultiButton>
+      <MultiButton name="theme-palette" id="dark" icon={Dark} checked={$palette === "Dark"} on:input={() => setPalette("Dark")}>{$t("SETTINGS_APPEARANCE_PALETTE_DARK")}</MultiButton>
+      <MultiButton name="theme-palette" id="light" icon={Light} checked={$palette === "Light"} on:input={() => setPalette("Light")}>{$t("SETTINGS_APPEARANCE_PALETTE_LIGHT")}</MultiButton>
     </MultiButtonSetting>
-    <ToggleSetting label={t("SETTINGS_APPEARANCE_OLED_LABEL")} description={t("SETTINGS_APPEARANCE_OLED_DESC")} bind:checked={$useOledPalette} />
+    <ToggleSetting label={$t("SETTINGS_APPEARANCE_OLED_LABEL")} description={$t("SETTINGS_APPEARANCE_OLED_DESC")} bind:checked={$useOledPalette} />
   </span>
 </SettingsBody>
 

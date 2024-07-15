@@ -4,8 +4,8 @@
   import CardClickable from "@layout/CardClickable.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Song } from "@lib/models/Song";
-  import t, { renderDate } from "@lib/utils/i18n";
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { songGridSize, songSortOrder } from "@stores/State";
   import { tauri } from "@tauri-apps/api";
@@ -61,17 +61,17 @@
         </div>
         <div class="secondary">
           {#if $songSortOrder === "Alphabetical"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? t("UNKOWN_VALUE")}</div>
+            <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>
           {:else if $songSortOrder === "Album"}
-            <div in:fade={{ duration: 200 }}>{song.album ?? t("UNKOWN_VALUE")}</div>
+            <div in:fade={{ duration: 200 }}>{song.album ?? $t("UNKOWN_VALUE")}</div>
           {:else if $songSortOrder === "Artist"}
-            <div in:fade={{ duration: 200 }}>{song.artist ?? t("UNKOWN_VALUE")}</div>
+            <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>
           {:else if $songSortOrder === "Year"}
-            <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? t("UNKOWN_VALUE") : song.releaseYear}</div>
+            <div in:fade={{ duration: 200 }}>{song.releaseYear === -1 ? $t("UNKOWN_VALUE") : song.releaseYear}</div>
           {:else if $songSortOrder === "Most Played"}
             <div in:fade={{ duration: 200 }}>{song.numTimesPlayed}</div>
           {:else if $songSortOrder === "Last Played"}
-            <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? t("NEVER_VALUE") : renderDate(song.lastPlayedOn)}</div>
+            <div in:fade={{ duration: 200 }}>{song.lastPlayedOn === "Never" ? $t("NEVER_VALUE") : $renderDate(song.lastPlayedOn)}</div>
           {/if}
         </div>
       </div>

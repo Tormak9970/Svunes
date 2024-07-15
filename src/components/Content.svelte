@@ -8,7 +8,7 @@
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
-  import { tauri, window } from "@tauri-apps/api";
+  import { tauri, window as tauriWindow } from "@tauri-apps/api";
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import { exit } from "@tauri-apps/api/process";
   import { onDestroy, onMount } from "svelte";
@@ -16,6 +16,7 @@
   import type { Unsubscriber } from "svelte/store";
   import { AppController } from "../lib/controllers/AppController";
   import { routes } from "../routes";
+  import { systemDefaultLanguage } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
   import Modals from "./modals/Modals.svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
@@ -64,6 +65,10 @@
     handleMediaDeviceChange();
     navigator.mediaDevices.ondevicechange = handleMediaDeviceChange;
 
+    window.onlanguagechange = () => {
+      $systemDefaultLanguage = navigator.language;
+    }
+
     playingSongIdUnsub = playingSongId.subscribe((id) => {
       if (id !== "") {
         const song = $songsMap[id];
@@ -95,7 +100,7 @@
     AppController.init();
     DeviceController.init();
 
-    closeRequestListener = await window.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, () => {
+    closeRequestListener = await tauriWindow.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, () => {
       if (!SettingsController.settingsHaveChanged) exit(0);
 
       SettingsController.save().then(() => {

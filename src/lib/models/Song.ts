@@ -1,8 +1,8 @@
+import { t } from "@stores/Locale";
 import { albumsMap } from "@stores/State";
 import { path } from "@tauri-apps/api";
 import { get } from "svelte/store";
 import { artistIsSingular, formatTime, getGenre, hash64, normalizeString } from "../utils/Utils";
-import t from "../utils/i18n";
 
 /**
  * Class representing a song.
@@ -85,7 +85,7 @@ export class Song {
     } else if (this.trackNumber) {
       return this.trackNumber.toString();
     } else {
-      return t("UNKOWN_VALUE");
+      return get(t)("UNKOWN_VALUE");
     }
   }
 

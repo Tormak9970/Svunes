@@ -1,6 +1,7 @@
+import { get } from "svelte/store";
 import { Playlist } from "../lib/models/Playlist";
-import t from "../lib/utils/i18n";
 import { hash64 } from "../lib/utils/Utils";
+import { t as translate } from "../stores/Locale";
 import type { View } from "./View";
 
 export enum NowPlayingTheme {
@@ -15,6 +16,8 @@ export enum NowPlayingTheme {
  * @param theme The theme to get.
  */
 export function getNowPlayingTheme(theme: NowPlayingTheme): string {
+  const t = get(translate);
+  
   switch (theme) {
     case NowPlayingTheme.NORMAL:
       return t("NOW_PLAYING_THEME_NORMAL");
@@ -38,6 +41,8 @@ export enum NowPlayingBackgroundType {
  * @param type The type to get.
  */
 export function getNowPlayingBackgroundType(type: NowPlayingBackgroundType): string {
+  const t = get(translate);
+  
   switch (type) {
     case NowPlayingBackgroundType.SOLID:
       return t("NOW_PLAYING_BACKGROUND_SOLID");

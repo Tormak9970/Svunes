@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { genres } from "@stores/State";
   import GenreEntry from "@views/genres/GenreEntry.svelte";
   import GenresHeader from "@views/genres/GenresHeader.svelte";
@@ -28,7 +28,7 @@
     {:else}
       <div class="message-container">
         <Icon icon={SadFace} width="60px" height="60px" />
-        <div class="message">{t("NO_TYPE_FOUND_MESSAGE").replace("{type}", t("GENRE_PLURAL_VALUE"))}.</div>
+        <div class="message">{$t("NO_TYPE_FOUND_MESSAGE").replace("{type}", $t("GENRE_PLURAL_VALUE"))}.</div>
       </div>
     {/if}
   </div>

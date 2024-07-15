@@ -5,8 +5,8 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Playlist } from "@lib/models/Playlist";
-  import t, { renderDate } from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
@@ -66,11 +66,11 @@
             </div>
           {/if}
           {#if detailType === "Alphabetical" || detailType === "Song Count"}
-            <div in:fade={{ duration: 200 }}>{playlist.songIds.length} {playlist.songIds.length === 1 ? t("SONG_SINGULAR_VALUE") : t("SONG_PLURAL_VALUE")} • {playlist.displayLength()}</div>
+            <div in:fade={{ duration: 200 }}>{playlist.songIds.length} {playlist.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • {playlist.displayLength()}</div>
           {:else if detailType === "Most Played"}
-            <div in:fade={{ duration: 200 }}>{t("PLAYED_TIMES_MESSAGE").replace("{numTimes}", playlist.numTimesPlayed.toString())}</div>
+            <div in:fade={{ duration: 200 }}>{$t("PLAYED_TIMES_MESSAGE").replace("{numTimes}", playlist.numTimesPlayed.toString())}</div>
           {:else if detailType === "Last Played"}
-            <div in:fade={{ duration: 200 }}>{playlist.lastPlayedOn === "Never" ? t("NEVER_VALUE") : renderDate(playlist.lastPlayedOn)}</div>
+            <div in:fade={{ duration: 200 }}>{playlist.lastPlayedOn === "Never" ? $t("NEVER_VALUE") : $renderDate(playlist.lastPlayedOn)}</div>
           {/if}
         </div>
       </div>

@@ -1,8 +1,8 @@
 <script lang="ts">
   import RadioInput from "@interactables/radio/RadioInput.svelte";
-  import t, { getLanguageName, LANGS } from "@lib/utils/i18n";
+  import { LANGS } from "@lib/utils/i18n";
+  import { getLanguageName, selectedLanguage, t } from "@stores/Locale";
   import { showSelectLanguage } from "@stores/Modals";
-  import { selectedLanguage } from "@stores/State";
   import SmallModalBody from "./utils/SmallModalBody.svelte";
 
   let open = true;
@@ -19,13 +19,13 @@
   const langs: string[] = Object.keys(LANGS);
 </script>
 
-<SmallModalBody open={open} headline={t("LANGUAGE_TITLE")} on:close={() => open = false} on:closeEnd={() => $showSelectLanguage = false}>
+<SmallModalBody open={open} headline={$t("LANGUAGE_TITLE")} on:close={() => open = false} on:closeEnd={() => $showSelectLanguage = false}>
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <div class="content">
     {#each langs as lang}
       <label style="height: 2.5rem;">
         <RadioInput name="appLanguage" checked={$selectedLanguage === lang} on:input={() => setLanguage(lang)} />
-        <div class="radio">{getLanguageName(lang)}</div>
+        <div class="radio">{$getLanguageName(lang)}</div>
       </label>
     {/each}
   </div>

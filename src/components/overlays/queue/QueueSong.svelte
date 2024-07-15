@@ -6,8 +6,8 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { holdEvent } from "@lib/directives/HoldEvent";
   import type { Song } from "@lib/models/Song";
-  import t from "@lib/utils/i18n";
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { tauri } from "@tauri-apps/api";
   import QueueSongOptions from "./QueueSongOptions.svelte";
@@ -78,7 +78,7 @@
           </div>
           <div class="secondary">
             <div class="artist">
-              {song.artist ?? t("UNKOWN_VALUE")}
+              {song.artist ?? $t("UNKOWN_VALUE")}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
+import { t as translate } from "@stores/Locale";
 import { albumsMap, artistsMap, genresMap, history, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import t from "../utils/i18n";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 
@@ -153,6 +153,7 @@ export class QueueController {
    * @param playlistIds The playlist ids to queue.
    */
   static queuePlaylists(playlistIds: string[]) {
+    const t = get(translate);
     const initialLength = playlistIds.length;
     this.playPlaylistIfQueueEmpty(playlistIds);
     
@@ -181,6 +182,7 @@ export class QueueController {
    * @param songIds The song names to queue.
    */
   static queueSongs(songIds: string[]) {
+    const t = get(translate);
     const initialLength = songIds.length;
     this.playSongIfQueueEmpty(songIds);
     
@@ -200,6 +202,7 @@ export class QueueController {
    * @param albumNames The album names to queue.
    */
   static queueAlbums(albumNames: string[]) {
+    const t = get(translate);
     const initialLength = albumNames.length;
     this.playAlbumIfQueueEmpty(albumNames);
     
@@ -228,6 +231,7 @@ export class QueueController {
    * @param artistNames The artists names to queue.
    */
   static queueArtists(artistNames: string[]) {
+    const t = get(translate);
     const initialLength = artistNames.length;
     this.playArtistIfQueueEmpty(artistNames);
     
@@ -250,6 +254,7 @@ export class QueueController {
    * @param genreNames The genre names to queue.
    */
   static queueGenres(genreNames: string[]) {
+    const t = get(translate);
     const initialLength = genreNames.length;
     this.playGenreIfQueueEmpty(genreNames);
     
@@ -285,6 +290,7 @@ export class QueueController {
    * @param playlistIds The playlist ids to queue.
    */
   static playPlaylistsNext(playlistIds: string[]) {
+    const t = get(translate);
     const initialLength = playlistIds.length;
     this.playPlaylistIfQueueEmpty(playlistIds);
     
@@ -313,6 +319,7 @@ export class QueueController {
    * @param songIds The song ids to queue.
    */
   static playSongsNext(songIds: string[]) {
+    const t = get(translate);
     const initialLength = songIds.length;
     this.playSongIfQueueEmpty(songIds);
     
@@ -332,6 +339,7 @@ export class QueueController {
    * @param albumNames The album names to queue.
    */
   static playAlbumsNext(albumNames: string[]) {
+    const t = get(translate);
     const initialLength = albumNames.length;
     this.playAlbumIfQueueEmpty(albumNames);
     
@@ -360,6 +368,7 @@ export class QueueController {
    * @param artistNames The artists names to queue.
    */
   static playArtistsNext(artistNames: string[]) {
+    const t = get(translate);
     const initialLength = artistNames.length;
     this.playArtistIfQueueEmpty(artistNames);
     
@@ -382,6 +391,7 @@ export class QueueController {
    * @param genreNames The genre names to queue.
    */
   static playGenresNext(genreNames: string[]) {
+    const t = get(translate);
     const initialLength = genreNames.length;
     this.playGenreIfQueueEmpty(genreNames);
     

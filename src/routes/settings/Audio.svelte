@@ -8,17 +8,17 @@
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
   import WiredAuto from "@ktibow/iconset-material-symbols/cable-rounded";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
 </script>
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label={t("SETTINGS_AUDIO_TITLE")} goBack={pop} />
+    <SettingsHeader label={$t("SETTINGS_AUDIO_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
     <!-- Gapless playback? -->
-    <SettingSection label={t("SETTINGS_AUTO_PLAY_LABEL")} />
-    <ToggleSetting label={t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
+    <SettingSection label={$t("SETTINGS_AUTO_PLAY_LABEL")} />
+    <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
   </span>
 </SettingsBody>
 

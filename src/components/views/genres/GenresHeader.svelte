@@ -3,7 +3,7 @@
   import Button from "@interactables/Button.svelte";
   import Search from "@ktibow/iconset-material-symbols/search";
   import Settings from "@ktibow/iconset-material-symbols/settings";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { lastView, selectedView } from "@stores/State";
   import { push } from "svelte-spa-router";
@@ -32,7 +32,7 @@
   }
 </script>
 
-<ViewHeader title={t("GENRES_TITLE")} highlight={highlight}>
+<ViewHeader title={$t("GENRES_TITLE")} highlight={highlight}>
   <div slot="left">
     <Button type="text" iconType="full" on:click={openSearch}>
       <Icon icon={Search} width="20px" height="20px" />

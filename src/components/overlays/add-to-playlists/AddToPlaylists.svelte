@@ -2,7 +2,7 @@
   import Button from "@interactables/Button.svelte";
   import BottomSheet from "@layout/BottomSheet.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { albumToAdd, artistToAdd, genreToAdd, playlistToAdd, showAddToPlaylist, showCreatePlaylist, songToAdd, songsForNewPlaylist } from "@stores/Overlays";
   import { selected } from "@stores/Select";
   import { albumsMap, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar } from "@stores/State";
@@ -119,8 +119,8 @@
     close();
 
     if (selectedPlaylists.length > 0) {
-      const numAddedMessage = `${songs.length} ${t(songs.length === 1 ? "SONG_SINGULAR_VALUE" : "SONG_PLURAL_VALUE")}`;
-      $showInfoSnackbar({ message: `${t("ADDED_VALUE")} ${numAddedMessage}` });
+      const numAddedMessage = `${songs.length} ${$t(songs.length === 1 ? "SONG_SINGULAR_VALUE" : "SONG_PLURAL_VALUE")}`;
+      $showInfoSnackbar({ message: `${$t("ADDED_VALUE")} ${numAddedMessage}` });
       LogController.log(`Added ${songs.length} songs to playlist.`);
     }
   }
@@ -167,7 +167,7 @@
 <BottomSheet on:close={close} padding="0 0.5rem">
   <div class="content-wrapper" bind:this={scrollContainer} on:scroll={handleScroll}>
     <div class="content">
-      <Button type="tonal" on:click={setCreateNewPlaylist}>{t("NEW_PLAYLIST_ACTION")}</Button>
+      <Button type="tonal" on:click={setCreateNewPlaylist}>{$t("NEW_PLAYLIST_ACTION")}</Button>
       <div class="playlists">
         {#each playlistToRender as playlist}
           <PlaylistEntry playlist={playlist} checked={false} on:click={() => togglePlaylistInclude(playlist.id)} />
@@ -175,7 +175,7 @@
       </div>
     </div>
     <div class="done-container">
-      <Button type="filled" on:click={addToSelected}>{t("DONE_ACTION")}</Button>
+      <Button type="filled" on:click={addToSelected}>{$t("DONE_ACTION")}</Button>
     </div>
     {#if showShadow}
       <div class="shadow" in:fade={{ duration: 200 }} />

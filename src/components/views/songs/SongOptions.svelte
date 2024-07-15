@@ -4,7 +4,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { playlists, playlistsMap, songIdsToParse } from "@stores/State";
   import { location, push, replace } from "svelte-spa-router";
@@ -120,19 +120,19 @@
 {#if $location.startsWith("/playlists")}
 <MenuItem on:click={removeFromPlaylist}>Remove from Playlist</MenuItem>
 {/if}
-<MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
-<MenuItem on:click={queueSong}>{t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-<MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
+<MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
+<MenuItem on:click={queueSong}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
+<MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
 {#if song?.album}
-  <MenuItem on:click={goToAlbum}>{t("GO_TO_ALBUM_ACTION")}</MenuItem>
+  <MenuItem on:click={goToAlbum}>{$t("GO_TO_ALBUM_ACTION")}</MenuItem>
 {/if}
 {#if song?.artist}
-  <MenuItem on:click={goToArtist}>{t("GO_TO_ARTIST_ACTION")}</MenuItem>
+  <MenuItem on:click={goToArtist}>{$t("GO_TO_ARTIST_ACTION")}</MenuItem>
 {/if}
-<MenuItem on:click={showDetails}>{t("DETAILS_ACTION")}</MenuItem>
+<MenuItem on:click={showDetails}>{$t("DETAILS_ACTION")}</MenuItem>
 {#if !hideEditOption}
-<MenuItem on:click={showSongEdit}>{t("EDIT_ACTION")}</MenuItem>
+<MenuItem on:click={showSongEdit}>{$t("EDIT_ACTION")}</MenuItem>
 {/if}
-<MenuItem on:click={showInfoParser}>{t("INFO_PARSER_ACTION")}</MenuItem>
-<MenuItem on:click={share}>{t("SHARE_ACTION")}</MenuItem>
-<MenuItem on:click={deleteSong}>{t("DELETE_ACTION")}</MenuItem>
+<MenuItem on:click={showInfoParser}>{$t("INFO_PARSER_ACTION")}</MenuItem>
+<MenuItem on:click={share}>{$t("SHARE_ACTION")}</MenuItem>
+<MenuItem on:click={deleteSong}>{$t("DELETE_ACTION")}</MenuItem>

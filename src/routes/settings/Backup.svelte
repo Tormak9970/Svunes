@@ -11,14 +11,14 @@
   import AppShortcut from "@ktibow/iconset-material-symbols/app-shortcut-rounded";
   import Download from "@ktibow/iconset-material-symbols/download-rounded";
   import RestartAlt from "@ktibow/iconset-material-symbols/restart-alt-rounded";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   
   /**
    * Prompts the user to select a backup file.
    */
    async function pickBackup() {
     const path = await dialog.open({
-      title: t("CHOOSE_BACKUP_MESSAGE"),
+      title: $t("CHOOSE_BACKUP_MESSAGE"),
       directory: false,
       multiple: false,
       filters: [
@@ -31,7 +31,7 @@
 
     if (path && path !== "") {
       await SettingsController.applyBackup(path as string);
-      DialogController.message(t("TUNISTIC_RESTART_TITLE"), t("TUNISTIC_RESTART_MESSAGE"), t("OK_ACTION")).then(() => {
+      DialogController.message($t("TUNISTIC_RESTART_TITLE"), $t("TUNISTIC_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
         process.relaunch();
       });
     }
@@ -42,7 +42,7 @@
    */
   async function makeBackup() {
     const path = await dialog.save({
-      title: t("CHOOSE_BACKUP_MESSAGE"),
+      title: $t("CHOOSE_BACKUP_MESSAGE"),
       filters: [
         {
           name: "JSON",
@@ -60,10 +60,10 @@
    * Prompts the user to reset their settings.
    */
   async function resetSettings() {
-    DialogController.ask(t("RESET_CONFIRM_TITLE"), t("RESTART_CONFIRM_MESSAGE"), t("YES_ACTION"), t("NO_ACTION")).then(async (shouldProceed: boolean) => {
+    DialogController.ask($t("RESET_CONFIRM_TITLE"), $t("RESTART_CONFIRM_MESSAGE"), $t("YES_ACTION"), $t("NO_ACTION")).then(async (shouldProceed: boolean) => {
       if (shouldProceed) {
         await SettingsController.resetSettings();
-        DialogController.message(t("TUNISTIC_RESTART_TITLE"), t("TUNISTIC_RESTART_MESSAGE"), t("OK_ACTION")).then(() => {
+        DialogController.message($t("TUNISTIC_RESTART_TITLE"), $t("TUNISTIC_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
           process.relaunch();
         });
       }
@@ -73,12 +73,12 @@
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label={t("SETTINGS_BACKUP_TITLE")} goBack={pop} />
+    <SettingsHeader label={$t("SETTINGS_BACKUP_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
-    <ButtonSetting label={t("SETTINGS_BACKUP_DESC")} description={t("SETTINGS_BACKUP_DESC")} icon={AppShortcut} on:click={makeBackup} />
-    <ButtonSetting label={t("SETTINGS_RESTORE_LABEL")} description={t("SETTINGS_RESTORE_DESC")} icon={Download} on:click={pickBackup} />
-    <ButtonSetting label={t("SETTINGS_RESET_LABEL")} description={t("SETTINGS_RESET_DESC")} icon={RestartAlt} on:click={resetSettings} />
+    <ButtonSetting label={$t("SETTINGS_BACKUP_DESC")} description={$t("SETTINGS_BACKUP_DESC")} icon={AppShortcut} on:click={makeBackup} />
+    <ButtonSetting label={$t("SETTINGS_RESTORE_LABEL")} description={$t("SETTINGS_RESTORE_DESC")} icon={Download} on:click={pickBackup} />
+    <ButtonSetting label={$t("SETTINGS_RESET_LABEL")} description={$t("SETTINGS_RESET_DESC")} icon={RestartAlt} on:click={resetSettings} />
   </span>
 </SettingsBody>
 

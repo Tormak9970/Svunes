@@ -11,9 +11,9 @@
   import { AppController } from "@lib/controllers/AppController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import t from "@lib/utils/i18n";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
   import { albumsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
@@ -67,7 +67,7 @@
    */
   function saveChanges() {
     if (albumName === "") {
-      $showErrorSnackbar({ message: t("ALBUM_NAME_REQUIRED_MESSAGE"), faster: true });
+      $showErrorSnackbar({ message: $t("ALBUM_NAME_REQUIRED_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! A album is required!");
       return;
     }
@@ -93,7 +93,7 @@
    */
   function onAlbumArtClick() {
     if (albumName === "") {
-      $showErrorSnackbar({ message: t("ALBUM_NAME_REQUIRED_MESSAGE") });
+      $showErrorSnackbar({ message: $t("ALBUM_NAME_REQUIRED_MESSAGE") });
       return;
     }
 
@@ -108,12 +108,12 @@
    */
   async function searchImage() {
     if (!AppController.isOnline()) {
-      $showErrorSnackbar({ message: t("COVER_SEARCH_REQUIRES_INTERNET_MESSAGE") });
+      $showErrorSnackbar({ message: $t("COVER_SEARCH_REQUIRES_INTERNET_MESSAGE") });
       return;
     }
 
     if (!albumName) {
-      $showErrorSnackbar({ message: t("ALBUM_NAME_REQUIRED_MESSAGE") });
+      $showErrorSnackbar({ message: $t("ALBUM_NAME_REQUIRED_MESSAGE") });
       return;
     }
 
@@ -129,12 +129,12 @@
    */
   async function searchWeb() {
     if (!AppController.isOnline()) {
-      $showErrorSnackbar({ message: t("INFO_SEARCH_REQUIRES_INTERNET_MESSAGE") });
+      $showErrorSnackbar({ message: $t("INFO_SEARCH_REQUIRES_INTERNET_MESSAGE") });
       return;
     }
 
     if (!albumName) {
-      $showErrorSnackbar({ message: t("ALBUM_NAME_REQUIRED_MESSAGE") });
+      $showErrorSnackbar({ message: $t("ALBUM_NAME_REQUIRED_MESSAGE") });
       return;
     }
 
@@ -146,7 +146,7 @@
         if (albumInfo.genre) genre = albumInfo.genre;
         if (albumInfo.releaseYear) releaseYear = albumInfo.releaseYear;
         
-        $showInfoSnackbar({ message: t("APPLIED_SEARCH_RESULTS_MESSAGE") });
+        $showInfoSnackbar({ message: $t("APPLIED_SEARCH_RESULTS_MESSAGE") });
       }
     });
   }
@@ -172,7 +172,7 @@
           <Icon icon={TravelExplore} />
         </Button>
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
-          {t("SAVE_ACTION")}
+          {$t("SAVE_ACTION")}
         </Button>
       </span>
     </OverlayHeader>
@@ -180,10 +180,10 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
     <div class="fields">
-      <TextField name={t("NAME_LABEL")} bind:value={albumName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <NumberField name={t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} extraOptions={{ type: "number" }} />
+      <TextField name={$t("NAME_LABEL")} bind:value={albumName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <NumberField name={$t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} extraOptions={{ type: "number" }} />
     </div>
   </span>
 </OverlayBody>

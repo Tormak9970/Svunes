@@ -15,23 +15,23 @@
   import Person from "@ktibow/iconset-material-symbols/person-rounded";
   import Star from "@ktibow/iconset-material-symbols/star-rounded";
   import Translate from "@ktibow/iconset-material-symbols/translate-rounded";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
 </script>
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label={t("SETTINGS_ABOUT_TITLE")} goBack={pop} />
+    <SettingsHeader label={$t("SETTINGS_ABOUT_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
     <!-- svelte-ignore missing-declaration -->
-    <TextSetting label={t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={Version} />
-    <TextSetting label={t("SETTINGS_ABOUT_DEV_LABEL")} description="Travis Lane" icon={Person} />
-    <ButtonSetting label={t("SETTINGS_ABOUT_CHANGELOG_LABEL")} description={t("SETTINGS_ABOUT_CHANGELOG_DESC")} icon={EditDocument} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/CHANGELOG.md")} />
-    <ButtonSetting label={t("SETTINGS_ABOUT_GITHUB_LABEL")} description={t("SETTINGS_ABOUT_GITHUB_LABEL")} icon={Star} on:click={() => open("https://github.com/Tormak9970/Tunistic")} />
-    <ButtonSetting label={t("SETTINGS_ABOUT_TRANSLATE_LABEL")} description={t("SETTINGS_ABOUT_TRANSLATE_LABEL")} icon={Translate} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/Translate.md")} />
-    <ButtonSetting label={t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} description={t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} icon={BugReport} on:click={() => open("https://github.com/Tormak9970/Tunistic/issues/new/choose")} />
-    <ButtonSetting label={t("SETTINGS_ABOUT_FAQ_LABEL")} description={t("SETTINGS_ABOUT_FAQ_LABEL")} icon={Help} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/FAQ.md")} />
-    <ButtonSetting label={t("SETTINGS_ABOUT_LICENSING_LABEL")} description={t("SETTINGS_ABOUT_LICENSING_LABEL")} icon={License} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/LICENSE")} />
+    <TextSetting label={$t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={Version} />
+    <TextSetting label={$t("SETTINGS_ABOUT_DEV_LABEL")} description="Travis Lane" icon={Person} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_CHANGELOG_LABEL")} description={$t("SETTINGS_ABOUT_CHANGELOG_DESC")} icon={EditDocument} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/CHANGELOG.md")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_GITHUB_LABEL")} description={$t("SETTINGS_ABOUT_GITHUB_LABEL")} icon={Star} on:click={() => open("https://github.com/Tormak9970/Tunistic")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_TRANSLATE_LABEL")} description={$t("SETTINGS_ABOUT_TRANSLATE_LABEL")} icon={Translate} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/Translate.md")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} description={$t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} icon={BugReport} on:click={() => open("https://github.com/Tormak9970/Tunistic/issues/new/choose")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_FAQ_LABEL")} description={$t("SETTINGS_ABOUT_FAQ_LABEL")} icon={Help} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/FAQ.md")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_LICENSING_LABEL")} description={$t("SETTINGS_ABOUT_LICENSING_LABEL")} icon={License} on:click={() => open("https://github.com/Tormak9970/Tunistic/blob/main/LICENSE")} />
   </span>
 </SettingsBody>
 

@@ -7,9 +7,9 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import t from "@lib/utils/i18n";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { t } from "@stores/Locale";
   import { showWritingChanges } from "@stores/Overlays";
   import { showErrorSnackbar, songsMap } from "@stores/State";
   import { onMount } from "svelte";
@@ -69,7 +69,7 @@
    */
   function saveChanges() {
     if (title === "") {
-      $showErrorSnackbar({ message: t("SONG_TITLE_REQUIRED_MESSAGE"), faster: true });
+      $showErrorSnackbar({ message: $t("SONG_TITLE_REQUIRED_MESSAGE"), faster: true });
       LogController.error("Failed to save changes! A title is required!");
       return;
     }
@@ -108,7 +108,7 @@
       </span>
       <span slot="right" style="display: flex; align-items: center;">
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
-          {t("SAVE_ACTION")}
+          {$t("SAVE_ACTION")}
         </Button>
       </span>
     </OverlayHeader>
@@ -116,15 +116,15 @@
   <span class="content" slot="content">
     <DetailsArtPicture artPath={artPath} />
     <div class="fields">
-      <TextField name={t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("ALBUM_LABEL")} bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("ARTIST_LABEL")} bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("ALBUM_ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("COMPOSER_LABEL")} bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("ALBUM_LABEL")} bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("ARTIST_LABEL")} bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("ALBUM_ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("COMPOSER_LABEL")} bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+      <TextField name={$t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
       <div class="two-wide">
-        <NumberField name="{t("TRACK_LABEL")} #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
-        <NumberField name={t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
+        <NumberField name="{$t("TRACK_LABEL")} #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
+        <NumberField name={$t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
       </div>
     </div>
   </span>

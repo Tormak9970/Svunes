@@ -9,8 +9,8 @@
   import ModalBody from "./utils/ModalBody.svelte";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
-  import t from "@lib/utils/i18n";
   import { clamp, swap } from "@lib/utils/Utils";
+  import { t } from "@stores/Locale";
   import { drag } from "svelte-gesture";
 
   let open = true;
@@ -56,10 +56,10 @@
       const numChecked = viewsList.filter((view) => checkDict[view]).length;
       
       if (numChecked === 3 && !checked) {
-        $showErrorSnackbar({ message: t("MIN_PAGE_COUNT_MESSAGE") });
+        $showErrorSnackbar({ message: $t("MIN_PAGE_COUNT_MESSAGE") });
         reset = !reset;
       } else if (numChecked === 5 && checked) {
-        $showErrorSnackbar({ message: t("MAX_PAGE_COUNT_MESSAGE") });
+        $showErrorSnackbar({ message: $t("MAX_PAGE_COUNT_MESSAGE") });
         reset = !reset;
       } else {
         checkDict[view] = checked;
@@ -79,7 +79,7 @@
   }
 </script>
 
-<ModalBody open={open} headline={t("LIBRARY_ORDER_TITLE")} on:close={() => open = false} on:closeEnd={() => $showEditViewOrder = false}>
+<ModalBody open={open} headline={$t("LIBRARY_ORDER_TITLE")} on:close={() => open = false} on:closeEnd={() => $showEditViewOrder = false}>
   <div>
     {#key reset}
       <div class="drag-container" style:height="{viewsList.length * entryHeight}px">
@@ -107,8 +107,8 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={() => open = false }>{t("CANCEL_ACTION")}</Button>
-      <Button type="text" on:click={done}>{t("DONE_ACTION")}</Button>
+      <Button type="text" on:click={() => open = false }>{$t("CANCEL_ACTION")}</Button>
+      <Button type="text" on:click={done}>{$t("DONE_ACTION")}</Button>
     </div>
   </div>
 </ModalBody>

@@ -5,7 +5,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Playlist } from "@lib/models/Playlist";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { playlists } from "@stores/State";
   import { dialog } from "@tauri-apps/api";
@@ -79,11 +79,11 @@
   async function exportPlaylist() {
     menuIsOpen = false;
     const path = await dialog.save({
-      title: `${t("EXPORT_ACTION")} ${playlist.name}`,
+      title: `${$t("EXPORT_ACTION")} ${playlist.name}`,
       defaultPath: `${playlist.id}.json`,
       filters: [
         {
-          "name": t("PLAYLIST_SINGULAR_VALUE"),
+          "name": $t("PLAYLIST_SINGULAR_VALUE"),
           "extensions": [ "json" ]
         }
       ]
@@ -95,13 +95,13 @@
   }
 </script>
 
-<MenuItem on:click={playPlaylist}>{t("PLAY_ACTION")}</MenuItem>
-<MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
-<MenuItem on:click={queuePlaylist}>{t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-<MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
-<MenuItem on:click={togglePinned}>{t(playlist?.pinned ? "UNPIN_ACTION" : "PIN_ACTION")}</MenuItem>
+<MenuItem on:click={playPlaylist}>{$t("PLAY_ACTION")}</MenuItem>
+<MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
+<MenuItem on:click={queuePlaylist}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
+<MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
+<MenuItem on:click={togglePinned}>{$t(playlist?.pinned ? "UNPIN_ACTION" : "PIN_ACTION")}</MenuItem>
 {#if playlist.isUserPlaylist}
-  <MenuItem on:click={showPlaylistEdit}>{t("EDIT_ACTION")}</MenuItem>
-  <MenuItem on:click={deletePlaylist}>{t("DELETE_ACTION")}</MenuItem>
+  <MenuItem on:click={showPlaylistEdit}>{$t("EDIT_ACTION")}</MenuItem>
+  <MenuItem on:click={deletePlaylist}>{$t("DELETE_ACTION")}</MenuItem>
 {/if}
-<MenuItem on:click={exportPlaylist}>{t("EXPORT_ACTION")}</MenuItem>
+<MenuItem on:click={exportPlaylist}>{$t("EXPORT_ACTION")}</MenuItem>

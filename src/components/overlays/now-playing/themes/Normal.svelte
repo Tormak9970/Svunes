@@ -18,7 +18,7 @@
   import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import ExtraControl from "../ExtraControl.svelte";
   
   let menuIsOpen = false;
@@ -62,7 +62,7 @@
           {label}
         {/if}
       </div>
-      <div class="artist">{song?.artist ?? t("UNKOWN_VALUE")}</div>
+      <div class="artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
       {#if $showExtraSongInfo}
         <div class="extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
       {/if}

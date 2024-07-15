@@ -3,20 +3,20 @@
 
   import Button from "@interactables/Button.svelte";
   import Checkbox from "@interactables/Checkbox.svelte";
-  import t from "@lib/utils/i18n";
+  import { t } from "@stores/Locale";
   import { showOnlyMissingAlbum, showOnlyMissingAlbumArtist, showOnlyMissingArtist, showOnlyMissingCover, showOnlyMissingGenre, showOnlyMissingTitle, showOnlyMissingYear } from "@stores/Search";
   import ModalBody from "./utils/ModalBody.svelte";
 
   let open = true;
 
   const options = [
-    { label: t("FILTER_ONLY_TITLE"), enabled: $showOnlyMissingTitle },
-    { label: t("FILTER_ONLY_COVER"), enabled: $showOnlyMissingCover },
-    { label: t("FILTER_ONLY_ALBUM"), enabled: $showOnlyMissingAlbum },
-    { label: t("FILTER_ONLY_ARTIST"), enabled: $showOnlyMissingArtist },
-    { label: t("FILTER_ONLY_ALBUM_ARTIST"), enabled: $showOnlyMissingAlbumArtist },
-    { label: t("FILTER_ONLY_GENRE"), enabled: $showOnlyMissingGenre },
-    { label: t("FILTER_ONLY_YEAR"), enabled: $showOnlyMissingYear },
+    { label: $t("FILTER_ONLY_TITLE"), enabled: $showOnlyMissingTitle },
+    { label: $t("FILTER_ONLY_COVER"), enabled: $showOnlyMissingCover },
+    { label: $t("FILTER_ONLY_ALBUM"), enabled: $showOnlyMissingAlbum },
+    { label: $t("FILTER_ONLY_ARTIST"), enabled: $showOnlyMissingArtist },
+    { label: $t("FILTER_ONLY_ALBUM_ARTIST"), enabled: $showOnlyMissingAlbumArtist },
+    { label: $t("FILTER_ONLY_GENRE"), enabled: $showOnlyMissingGenre },
+    { label: $t("FILTER_ONLY_YEAR"), enabled: $showOnlyMissingYear },
   ];
 
   function done() {
@@ -32,7 +32,7 @@
   }
 </script>
 
-<ModalBody headline={t("ADVANCED_SONG_FILTERS_TITLE")} open={open} on:close={() => open = false} on:closeEnd={() => $showAdvancedFilters = false }>
+<ModalBody headline={$t("ADVANCED_SONG_FILTERS_TITLE")} open={open} on:close={() => open = false} on:closeEnd={() => $showAdvancedFilters = false }>
   <div style="height: fit-content;">
     {#each options as option, i (option.label + "|" + i)}
       <div class="entry">
@@ -46,7 +46,7 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={done}>{t("DONE_ACTION")}</Button>
+      <Button type="text" on:click={done}>{$t("DONE_ACTION")}</Button>
     </div>
   </div>
 </ModalBody>

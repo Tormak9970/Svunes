@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedLanguage, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
+import { selectedLanguage, t as translate } from "@stores/Locale";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { fs, path } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
 import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
@@ -23,7 +24,6 @@ import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
-import t from "../utils/i18n";
 import { debounce } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
@@ -247,6 +247,7 @@ export class SettingsController {
    * @param filePath The filepath of the backup.
    */
   static async applyBackup(filePath: string) {
+    const t = get(translate);
     const contents = await fs.readTextFile(filePath);
     if (contents === "") {
       get(showInfoSnackbar)({ message: t("BACKUP_FILE_EMPTY_MESSAGE") });
@@ -279,6 +280,7 @@ export class SettingsController {
    * Resets the app's settings.
    */
   static async resetSettings() {
+    const t = get(translate);
     this.settings = structuredClone(DEFAULT_SETTINGS);
     await this.save();
 

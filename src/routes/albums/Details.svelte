@@ -18,9 +18,9 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@lib/models/Song";
-  import t from "@lib/utils/i18n";
   import { nullishNumberSort, stringSort } from "@lib/utils/Sorters";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
+  import { t } from "@stores/Locale";
   import { albumToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artistsMap, isPaused, nowPlayingList, songsMap, useAlbumColors } from "@stores/State";
   import PlayButton from "@views/utils/PlayButton.svelte";
@@ -145,10 +145,10 @@
         </Button>
         <div style="height: 100%; width: 5px;" />
         <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playNext}>{t("PLAY_NEXT_ACTION")}</MenuItem>
-          <MenuItem on:click={queueAlbum}>{t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-          <MenuItem on:click={addToPlaylist}>{t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
-          <MenuItem on:click={deleteAlbum}>{t("DELETE_ACTION")}</MenuItem>
+          <MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
+          <MenuItem on:click={queueAlbum}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
+          <MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
+          <MenuItem on:click={deleteAlbum}>{$t("DELETE_ACTION")}</MenuItem>
         </MenuButton>
       </span>
     </OverlayHeader>
@@ -169,7 +169,7 @@
     </div>
     <div class="songs" style="margin-top: 5px;">
       <div class="section-header">
-        <h3 class="label">{t("SONGS_TITLE")}</h3>
+        <h3 class="label">{$t("SONGS_TITLE")}</h3>
         <MenuButton icon={Filter}>
           <RadioMenuItem name="albumEntriesSort" label="Alphabetical" checked={albumSortMethod === "Alphabetical"} on:input={() => albumSortMethod = "Alphabetical" } />
           <RadioMenuItem name="albumEntriesSort" label="Track Number" checked={albumSortMethod === "Track Number"} on:input={() => albumSortMethod = "Track Number"} />
@@ -179,7 +179,7 @@
       <SongsList songs={sortedSongs} />
     </div>
     {#if album && artist && artist.albumNames.size > 1}
-      <AlbumCarousel label="{t("MORE_FROM_TITLE")} {album?.albumArtist}" albums={artistOtherAlbums} on:click={showAllAlbums} />
+      <AlbumCarousel label="{$t("MORE_FROM_TITLE")} {album?.albumArtist}" albums={artistOtherAlbums} on:click={showAllAlbums} />
     {/if}
   </span>
 </DetailsBody>

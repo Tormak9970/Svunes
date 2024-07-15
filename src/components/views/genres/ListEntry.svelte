@@ -1,8 +1,8 @@
 <script lang="ts">
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Genre } from "@lib/models/Genre";
-  import t from "@lib/utils/i18n";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { t } from "@stores/Locale";
   import { tauri } from "@tauri-apps/api";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
@@ -32,7 +32,7 @@
           {genre.name}
         </div>
         <div class="secondary">
-          <div in:fade={{ duration: 200 }}>{genre.songIds.length} {genre.songIds.length === 1 ? t("TRACKS_SINGULAR_VALUE") : t("TRACKS_PLURAL_VALUE")}</div>
+          <div in:fade={{ duration: 200 }}>{genre.songIds.length} {genre.songIds.length === 1 ? $t("TRACKS_SINGULAR_VALUE") : $t("TRACKS_PLURAL_VALUE")}</div>
         </div>
       </div>
     </div>
