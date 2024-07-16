@@ -36,10 +36,11 @@
     $playlists = [ ...$playlists ];
   }
 
-  onMount(async () => {
+  onMount(() => {
     if (album && topBackgroundColor === "var(--m3-scheme-surface-container-low)") {
-      await album.setBackgroundFromImage();
-      topBackgroundColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
+      album.setBackgroundFromImage().then(() => {
+        topBackgroundColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
+      });
     }
   });
 </script>

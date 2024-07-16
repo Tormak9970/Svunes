@@ -284,7 +284,7 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
         PixelFilter::White);
 
       let colors: Vec<Value> = color_palette.iter().map(| color | {
-        return Value::String(color_to_rgb(color))
+        return Value::String(color_to_rgb(color));
       }).collect();
       
       return serde_json::to_string(&colors).expect("Couldn't serialize json!");
