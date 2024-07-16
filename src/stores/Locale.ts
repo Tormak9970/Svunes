@@ -2,7 +2,7 @@ import { derived, get, writable, type Readable } from "svelte/store";
 import { LANGS } from "../lib/utils/i18n";
 import { showHelpTranslate } from "./Modals";
 
-export const HELP_TRANSLATE_LINK = "https://github.com/Tormak9970/Tunistic/blob/main/Translate.md";
+export const HELP_TRANSLATE_LINK = "https://crowdin.com/project/tunistic";
 
 export const selectedLanguage = writable("system");
 export const systemDefaultLanguage = writable(navigator.language);
