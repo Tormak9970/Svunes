@@ -107,6 +107,8 @@ export type Settings = {
   musicDirectories: string[];
   selectedView: View;
 
+  hasShownHelpTranslate: boolean,
+
   nowPlaying: {
     layout: NowPlayingTheme;
     backgroundType: NowPlayingBackgroundType;
@@ -184,6 +186,8 @@ export const DEFAULT_SETTINGS: Settings = {
   "themePrimaryColor": "#a74bf2",
   "musicDirectories": [],
   "selectedView": 0,
+
+  "hasShownHelpTranslate": false,
 
   "nowPlaying": {
     "layout": NowPlayingTheme.NORMAL,

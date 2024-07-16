@@ -1,5 +1,5 @@
 <script>
-  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSavingSettings, showSearchingApi, showSelectLanguage, showSongSortOrder } from "@stores/Modals";
+  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showHelpTranslate, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSavingSettings, showSearchingApi, showSelectLanguage, showSongSortOrder, showTranslationCredits } from "@stores/Modals";
   import AdvancedSearchFilters from "./AdvancedSearchFilters.svelte";
   import PickAlbumCover from "./api-results/PickAlbumCover.svelte";
   import PickAlbumInfo from "./api-results/PickAlbumInfo.svelte";
@@ -8,12 +8,14 @@
   import Controlled from "./Controlled.svelte";
   import EditMusicFolders from "./EditMusicFolders.svelte";
   import EditViewOrder from "./EditViewOrder.svelte";
+  import HelpTranslate from "./HelpTranslate.svelte";
   import LanguageSelect from "./LanguageSelect.svelte";
   import NowPlayingBackground from "./NowPlayingBackground.svelte";
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
   import ParserVariables from "./ParserVariables.svelte";
   import SavingSettings from "./SavingSettings.svelte";
   import SearchingApi from "./SearchingApi.svelte";
+  import TranslationCredits from "./TranslationCredits.svelte";
   import AlbumSortOrder from "./view-settings/AlbumSortOrder.svelte";
   import ArtistSortOrder from "./view-settings/ArtistSortOrder.svelte";
   import GridSize from "./view-settings/GridSize.svelte";
@@ -84,4 +86,10 @@
 {/if}
 {#if $showParserVariables}
   <ParserVariables />
+{/if}
+{#if $showTranslationCredits}
+  <TranslationCredits />
+{/if}
+{#if $showHelpTranslate}
+  <HelpTranslate />
 {/if}

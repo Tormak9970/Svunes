@@ -7,7 +7,7 @@
   import { showSavingSettings } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
-  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
+  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { tauri, window as tauriWindow } from "@tauri-apps/api";
   import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
   import { exit } from "@tauri-apps/api/process";
@@ -15,8 +15,9 @@
   import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
   import { AppController } from "../lib/controllers/AppController";
+  import { hash64 } from "../lib/utils/Utils";
   import { routes } from "../routes";
-  import { systemDefaultLanguage } from "../stores/Locale";
+  import { systemDefaultLanguage, t } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
   import Modals from "./modals/Modals.svelte";
   import ViewNav from "./navigation/ViewNav.svelte";
@@ -29,6 +30,7 @@
   let loadingUnsub: Unsubscriber;
   let isPausedUnsub: Unsubscriber;
   let playingSongIdUnsub: Unsubscriber;
+  let translateUnsub: Unsubscriber;
   let closeRequestListener: UnlistenFn;
 
   let audioPlayer: HTMLAudioElement;
@@ -99,6 +101,14 @@
     await SettingsController.init();
     AppController.init();
     DeviceController.init();
+    
+    translateUnsub = t.subscribe((translate) => {
+      const favoritesId = hash64("Favorites");
+      const favoritesPlaylist = $playlists.find((playlist) => playlist.id === favoritesId)!;
+      favoritesPlaylist.name = translate("FAVORITES_PLAYLIST_TITLE");
+
+      $playlists = [ ...$playlists ];
+    });
 
     closeRequestListener = await tauriWindow.appWindow.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, () => {
       if (!SettingsController.settingsHaveChanged) exit(0);
@@ -117,6 +127,7 @@
 
     await ApiController.destroy();
 
+    if (translateUnsub) translateUnsub();
     if (loadingUnsub) loadingUnsub();
     if (isPausedUnsub) isPausedUnsub();
     if (playingSongIdUnsub) playingSongIdUnsub();

@@ -31,6 +31,7 @@ APIs Used:
 Resources / References used:
  - [Metro](https://github.com/MuntashirAkon/Metro) - Inspired the UI scheme and the project as a whole.
  - [Svelte Md3](https://ktibow.github.io/m3-svelte/) - Many of the base components are heavily modified version of components from Svelte Md3.
+ - [Material Icons](https://fonts.google.com/icons) - All of the app's icons came from here.
 
 ## License
  - This program is licensed under the [GNU General Public License Version 3](https://www.gnu.org/licenses/#GPL)

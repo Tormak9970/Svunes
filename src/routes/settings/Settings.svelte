@@ -11,6 +11,7 @@
   import About from "@ktibow/iconset-material-symbols/info-outline-rounded";
   import Palette from "@ktibow/iconset-material-symbols/palette";
   import NowPlaying from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
+  import Translate from "@ktibow/iconset-material-symbols/translate-rounded";
   import Other from "@ktibow/iconset-material-symbols/tune-rounded";
   import Audio from "@ktibow/iconset-material-symbols/volume-up-rounded";
   import { t } from "@stores/Locale";
@@ -34,8 +35,9 @@
     <SettingsNavButton label={$t("SETTINGS_NOW_PLAYING_TITLE")} description={$t("SETTINGS_NOW_PLAYING_PAGE_DESC")} route="/settings/now-playing" icon={NowPlaying} color="#ef5350" />
     <SettingsNavButton label={$t("SETTINGS_PERSONALIZE_TITLE")} description={$t("SETTINGS_PERSONALIZE_PAGE_DESC")} route="/settings/personalize" icon={Personalize} color="#66bb6a" />
     <SettingsNavButton label={$t("SETTINGS_AUDIO_TITLE")} description={$t("SETTINGS_AUDIO_PAGE_DESC")} route="/settings/audio" icon={Audio} color="#7e57c2" />
-    <SettingsNavButton label={$t("SETTINGS_OTHER_TITLE")} description={$t("SETTINGS_OTHER_PAGE_DESC")} route="/settings/other" icon={Other} color="#FFA726" />
-    <SettingsNavButton label={$t("SETTINGS_BACKUP_TITLE")} description={$t("SETTINGS_BACKUP_PAGE_DESC")} route="/settings/backup" icon={Backup} color="#26C6DA" />
+    <SettingsNavButton label={$t("SETTINGS_SONG_FILTERING_TITLE")} description={$t("SETTINGS_SONG_FILTERING_PAGE_DESC")} route="/settings/song-filtering" icon={Other} color="#FFA726" />
+    <SettingsNavButton label={$t("SETTINGS_LANGUAGE_TITLE")} description={$t("SETTINGS_LANGUAGE_PAGE_DESC")} route="/settings/language" icon={Translate} color="#26C6DA" />
+    <SettingsNavButton label={$t("SETTINGS_BACKUP_TITLE")} description={$t("SETTINGS_BACKUP_PAGE_DESC")} route="/settings/backup" icon={Backup} color="#57c292" />
     <SettingsNavButton label={$t("SETTINGS_ABOUT_TITLE")} description={$t("SETTINGS_ABOUT_PAGE_DESC")} route="/settings/about" icon={About} color="#D4E157" />
   </span>
 </SettingsBody>

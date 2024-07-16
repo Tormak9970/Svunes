@@ -25,10 +25,11 @@ import AboutSettings from "./routes/settings/About.svelte";
 import AppearanceSettings from "./routes/settings/Appearance.svelte";
 import AudioSettings from "./routes/settings/Audio.svelte";
 import BackupSettings from "./routes/settings/Backup.svelte";
+import LanguageSettings from "./routes/settings/Language.svelte";
 import NowPlayingSettings from "./routes/settings/NowPlaying.svelte";
-import OtherSettings from "./routes/settings/Other.svelte";
 import PersonalizeSettings from "./routes/settings/Personalize.svelte";
 import Settings from "./routes/settings/Settings.svelte";
+import SongFilteringSettings from "./routes/settings/SongFiltering.svelte";
 import BulkEdit from "./routes/songs/BulkEdit.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import SongEditor from "./routes/songs/Edit.svelte";
@@ -83,7 +84,8 @@ export const routes = {
   "/settings/now-playing": NowPlayingSettings,
   "/settings/audio": AudioSettings,
   "/settings/personalize": PersonalizeSettings,
-  "/settings/other": OtherSettings,
+  "/settings/song-filtering": SongFilteringSettings,
+  "/settings/language": LanguageSettings,
   "/settings/backup": BackupSettings,
   "/settings/about": AboutSettings,
 

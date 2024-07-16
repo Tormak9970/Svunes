@@ -17,6 +17,8 @@ export const showNowPlayingTheme = writable(false);
 export const showNowPlayingBackground = writable(false);
 
 export const showSelectLanguage = writable(false);
+export const showHelpTranslate = writable(false);
+export const showTranslationCredits = writable(false);
 
 export const showEditViewOrder = writable(false);
 

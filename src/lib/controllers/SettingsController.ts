@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
-import { selectedLanguage, t as translate } from "@stores/Locale";
+import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { fs, path } from "@tauri-apps/api";
 import { get, type Unsubscriber } from "svelte/store";
@@ -67,6 +67,8 @@ export class SettingsController {
   private static paletteUnsub: Unsubscriber;
   private static useOledPaletteUnsub: Unsubscriber;
   private static themePrimaryColorUnsub: Unsubscriber;
+
+  private static hasShownHelpTranslateUnsub: Unsubscriber;
 
   private static musicDirectoriesUnsub: Unsubscriber;
   private static selectedViewUnsub: Unsubscriber;
@@ -296,6 +298,8 @@ export class SettingsController {
     useOledPalette.set(this.settings.useOledPalette);
     themePrimaryColor.set(this.settings.themePrimaryColor);
 
+    hasShownHelpTranslate.set(this.settings.hasShownHelpTranslate);
+
     const existencePromises = this.settings.musicDirectories.map((dir) => {
       return RustInterop.addPathToScope(dir).then((success: boolean) => {
         return success && fs.exists(dir);
@@ -390,6 +394,8 @@ export class SettingsController {
     this.paletteUnsub = palette.subscribe(this.updateStoreIfChanged<Palette>("palette"));
     this.useOledPaletteUnsub = useOledPalette.subscribe(this.updateStoreIfChanged<boolean>("useOledPalette"));
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
+
+    this.hasShownHelpTranslateUnsub = hasShownHelpTranslate.subscribe(this.updateStoreIfChanged<boolean>("hasShownHelpTranslate"));
 
     this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
     this.selectedViewUnsub = selectedView.subscribe((view: View) => {
