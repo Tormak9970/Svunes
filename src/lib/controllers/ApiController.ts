@@ -1,6 +1,7 @@
 import { t } from "@stores/Locale";
 import { albumCovers, albumInfos, apiSearchCanceled, availableReleaseGroups, onAlbumInfoDone, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover, showPickAlbumInfo, showSearchingApi } from "@stores/Modals";
-import { fs, path } from "@tauri-apps/api";
+import { path } from "@tauri-apps/api";
+import { create, exists, remove } from "@tauri-apps/plugin-fs";
 import { get, type Unsubscriber } from "svelte/store";
 import { showErrorSnackbar } from "../../stores/State";
 import type { ReleaseGroup } from "../../types/MusicBrainz";
@@ -75,7 +76,8 @@ export class ApiController {
     this.coverCacheDir = await path.join(appCacheDir, "downloaded-covers");
     
     try {
-      if (!(await fs.exists(this.coverCacheDir))) await fs.createDir(this.coverCacheDir);
+      const cacheDirExists = await exists(this.coverCacheDir);
+      if (!cacheDirExists) await create(this.coverCacheDir);
     } catch(e: any) {
       LogController.error(e.message);
       get(showErrorSnackbar)({ message: get(t)("ALBUM_CACHE_CREATION_FAILED_MESSAGE") });
@@ -87,8 +89,7 @@ export class ApiController {
    * ? Logging complete.
    */
   private static async invalidateCache(): Promise<void> {
-    // LogController.log("Clearing cache...");
-    await fs.removeDir(this.coverCacheDir, { recursive: true });
+    await remove(this.coverCacheDir, { recursive: true });
     LogController.log("Cleared cache.");
   }
   
@@ -111,7 +112,7 @@ export class ApiController {
     const fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
     const localImagePath = await path.join(this.coverCacheDir, fileName);
 
-    if (await fs.exists(localImagePath)) {
+    if (await exists(localImagePath)) {
       LogController.log("Cache found. Fetching album cover from local file system.");
       return localImagePath;
     }

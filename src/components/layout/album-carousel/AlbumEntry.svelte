@@ -4,14 +4,14 @@
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import type { Album } from "@lib/models/Album";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { location, push } from "svelte-spa-router";
 
   export let album: Album;
 
   let size = 150;
 
-  $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
+  $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
 
   /**
    * Handles when the user clicks on the entry.

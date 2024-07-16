@@ -4,14 +4,14 @@
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { inSelectMode, selected } from "@stores/Select";
   import { artistGridSize } from "@stores/State";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";
   import { GridSize } from "../../../types/Settings";
   import ViewImage from "../../utils/ViewImage.svelte";
 
   export let artist: Artist;
 
-  $: convertedPath = artist.imagePath ? tauri.convertFileSrc(artist.imagePath) : "";
+  $: convertedPath = artist.imagePath ? convertFileSrc(artist.imagePath) : "";
   $: highlighted = $selected.includes(artist.name);
   $: size = $artistGridSize === GridSize.MEDIUM ? 40 : 60;
 

@@ -3,7 +3,7 @@
   import ListItemButton from "@layout/ListItemButton.svelte";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
-  import { dialog } from "@tauri-apps/api";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import ListModalBody from "./utils/ListModalBody.svelte";
 
   let open = true;
@@ -12,7 +12,7 @@
    * Prompts the user to select an image.
    */
   async function pickImage() {
-    const path = await dialog.open({
+    const file = await dialog.open({
       title: $t("CHOOSE_IMAGE_MESSAGE"),
       directory: false,
       multiple: false,
@@ -24,8 +24,8 @@
       ]
     });
 
-    if (path && path !== "") {
-      $onArtOptionsDone(path as string);
+    if (file && file.path !== "") {
+      $onArtOptionsDone(file.path);
       $onArtOptionsDone = () => {};
       open = false;
     }

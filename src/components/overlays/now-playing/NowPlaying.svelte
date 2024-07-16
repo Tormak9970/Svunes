@@ -1,7 +1,7 @@
 <script lang="ts">
   import { hash64 } from "@lib/utils/Utils";
   import { albumsMap, nowPlayingTheme, playingSongId, playlists, songsMap } from "@stores/State";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { onMount } from "svelte";
   import Card from "./themes/Card.svelte";
   import Full from "./themes/Full.svelte";
@@ -18,7 +18,7 @@
   $: favoritesPlaylist = $playlists.find((playlist) => playlist.id === hash64("Favorites"));
   $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
   
-  $: convertedPath = song?.artPath ? tauri.convertFileSrc(song?.artPath) : "";
+  $: convertedPath = song?.artPath ? convertFileSrc(song?.artPath) : "";
 
   $: isMp3 = song?.fileName.toLocaleLowerCase().endsWith("mp3");
 

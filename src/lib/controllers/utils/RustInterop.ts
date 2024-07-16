@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 /**
  * The available logging levels.
@@ -51,14 +51,6 @@ export class RustInterop {
    */
   static async logToFile(message: string, level: LogLevel): Promise<void> {
     await invoke("log_to_file", { message: message, level: level });
-  }
-
-  /**
-   * Toggles the window dev tools on/off.
-   * @param enable Whether to enable or disable the window dev tools.
-   */
-  static async toggleDevTools(enable: boolean): Promise<void> {
-    await invoke("toggle_dev_tools", { enable: enable });
   }
 
   /**

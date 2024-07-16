@@ -2,12 +2,12 @@
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { createEventDispatcher } from "svelte";
 
   export let artPath: string | undefined;
   export let failValue = "";
-  $: convertedPath = artPath && artPath !== failValue ? tauri.convertFileSrc(artPath) : "";
+  $: convertedPath = artPath && artPath !== failValue ? convertFileSrc(artPath) : "";
   
   export let imageSize = 370;
   export let clickable = false;

@@ -55,7 +55,7 @@ export class Song {
     this.trackNumber = trackNumber;
     this.totalTracks = totalTracks;
 
-    const fileNameStart = this.filePath.lastIndexOf(path.sep);
+    const fileNameStart = this.filePath.lastIndexOf(path.sep());
     this.fileName = this.filePath.substring(fileNameStart+1);
     this.folderPath = this.filePath.substring(0, fileNameStart);
 

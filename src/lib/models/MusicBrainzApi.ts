@@ -1,5 +1,4 @@
-import { http } from "@tauri-apps/api";
-import { ResponseType, type HttpVerb } from "@tauri-apps/api/http";
+import { fetch } from "@tauri-apps/plugin-http";
 import type { Release, ReleaseGroup, ReleaseGroupResponse } from "../../types/MusicBrainz";
 import { LogController } from "../controllers/utils/LogController";
 import { RequestError } from "./TauriResponse";
@@ -47,25 +46,22 @@ export class MusicBrainzApi {
 
   /**
    * Makes a request and returns the result.
-   * @param method The method of the request.
    * @param url The url endpoint.
    */
-  private async makeRequest<T>(method: HttpVerb, url: string): Promise<T | Error> {
+  private async makeRequest<T>(url: string): Promise<T | Error> {
     const options = {
       timeout: this.timeout,
-      method: method,
-      responseType: ResponseType.JSON,
       headers: {
         'User-Agent': this.userAgent
       }
     }
 
-    let response = await http.fetch<any>(`${this.BASE_URL}${url}`, options);
+    let response = await fetch(`${this.BASE_URL}${url}`, options);
 
     if (response.ok) {
-      return response.data;
+      return await response.json();
     } else {
-      throw new RequestError(response.data?.error ?? "MusicBrainz error.", response);
+      throw new RequestError(response.statusText ?? "MusicBrainz error.", response);
     }
   }
 
@@ -76,7 +72,7 @@ export class MusicBrainzApi {
    */
   async getReleaseInfo(releaseId: string): Promise<MBAlbumInfo | undefined> {
     try {
-      const results = await this.makeRequest<Release>("GET", `release/${releaseId}?${this.extraOptions}&inc=tags%2Bartist-credits%2Brecordings`);
+      const results = await this.makeRequest<Release>(`release/${releaseId}?${this.extraOptions}&inc=tags%2Bartist-credits%2Brecordings`);
       const release = (results as Release);
 
       const artists = release["artist-credit"];
@@ -103,7 +99,7 @@ export class MusicBrainzApi {
     const query = this.escapeLuceneChars(albumName);
 
     try {
-      const results = await this.makeRequest<ReleaseGroupResponse>("GET", `release-group/?${this.extraOptions}&query=releasegroup:${query}`);
+      const results = await this.makeRequest<ReleaseGroupResponse>(`release-group/?${this.extraOptions}&query=releasegroup:${query}`);
       return (results as ReleaseGroupResponse)["release-groups"];
     } catch (e: any) {
       LogController.error(e.message);

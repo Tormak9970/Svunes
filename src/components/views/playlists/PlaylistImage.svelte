@@ -5,14 +5,14 @@
   import type { Playlist } from "@lib/models/Playlist";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { albumsMap, songsMap } from "@stores/State";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import PlaylistGrid from "./PlaylistGrid.svelte";
 
   export let playlist: Playlist;
   export let height: number;
   export let width: number;
 
-  $: chosenImagePath = playlist?.imagePath ? tauri.convertFileSrc(playlist.imagePath) : undefined;
+  $: chosenImagePath = playlist?.imagePath ? convertFileSrc(playlist.imagePath) : undefined;
 
   let albumArtLUT: Record<string, number> = {};
 
@@ -33,7 +33,7 @@
   $: albumKeys = Object.keys(albumArtLUT);
   $: images = albumKeys.map((albumName) => $albumsMap[albumName].artPath);
   
-  $: convertedPath = images[0] ? tauri.convertFileSrc(images[0]) : "";
+  $: convertedPath = images[0] ? convertFileSrc(images[0]) : "";
   
   $: gap = 0.05 * width;
   $: gridSize = 0.4 * width;

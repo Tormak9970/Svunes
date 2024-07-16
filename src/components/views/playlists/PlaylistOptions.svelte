@@ -8,7 +8,7 @@
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { playlists } from "@stores/State";
-  import { dialog } from "@tauri-apps/api";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import { location, push, replace } from "svelte-spa-router";
 
   export let menuIsOpen: boolean;

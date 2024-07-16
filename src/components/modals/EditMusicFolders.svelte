@@ -3,7 +3,7 @@
   import { t } from "@stores/Locale";
   import { showEditMusicFolders } from "@stores/Modals";
   import { musicDirectories } from "@stores/State";
-  import { dialog } from "@tauri-apps/api";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import { location } from "svelte-spa-router";
   import FolderEntry from "./utils/FolderEntry.svelte";
   import ModalBody from "./utils/ModalBody.svelte";

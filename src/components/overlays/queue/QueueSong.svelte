@@ -9,14 +9,14 @@
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import QueueSongOptions from "./QueueSongOptions.svelte";
 
   export let song: Song;
   export let index: number;
   export let isDragging: boolean;
 
-  $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
+  $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
 
   /**

@@ -8,7 +8,7 @@
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { songGridSize, songSortOrder } from "@stores/State";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { fade } from "svelte/transition";
   import { GridSize } from "../../../types/Settings";
   import ViewImage from "../../utils/ViewImage.svelte";
@@ -16,7 +16,7 @@
 
   export let song: Song;
 
-  $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
+  $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
   $: size = $songGridSize === GridSize.MEDIUM ? 40 : 60;
 

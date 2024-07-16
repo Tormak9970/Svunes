@@ -16,7 +16,8 @@
  */
 import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
-import { fs, path } from "@tauri-apps/api";
+import { path } from "@tauri-apps/api";
+import { create, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { get, type Unsubscriber } from "svelte/store";
 import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
 import { View } from "../../types/View";
@@ -126,16 +127,17 @@ export class SettingsController {
    */
   static async init() {
     const appDir = await path.appConfigDir();
-    if (!(await fs.exists(appDir))) await fs.createDir(appDir);
+    if (!(await exists(appDir))) await create(appDir);
 
     const setsPath = await path.join(appDir, "settings.json");
-    if (!(await fs.exists(setsPath))) {
-      await fs.writeTextFile(setsPath, JSON.stringify(DEFAULT_SETTINGS, null, "\t"));
+    if (!(await exists(setsPath))) {
+      await writeTextFile(setsPath, JSON.stringify(DEFAULT_SETTINGS, null, "\t"));
     }
 
     this.settingsPath = setsPath;
     
     this.settings = await this.loadSettingsFromDevice();
+    await this.save();
     await this.setStores();
 
     LogController.log("Initialized Settings.");
@@ -218,7 +220,7 @@ export class SettingsController {
    * Loads the settings from the device.
    */
   private static async loadSettingsFromDevice(): Promise<Settings> {
-    const contents = await fs.readTextFile(this.settingsPath);
+    const contents = await readTextFile(this.settingsPath);
     let currentSettings: any;
 
     try {
@@ -237,8 +239,6 @@ export class SettingsController {
 
     settings.version = APP_VERSION;
 
-    await this.save();
-
     LogController.log("Finished checking settings for new app version and/or migration.");
 
     return settings;
@@ -250,7 +250,7 @@ export class SettingsController {
    */
   static async applyBackup(filePath: string) {
     const t = get(translate);
-    const contents = await fs.readTextFile(filePath);
+    const contents = await readTextFile(filePath);
     if (contents === "") {
       get(showInfoSnackbar)({ message: t("BACKUP_FILE_EMPTY_MESSAGE") });
       LogController.error("Backup was empty.");
@@ -302,7 +302,7 @@ export class SettingsController {
 
     const existencePromises = this.settings.musicDirectories.map((dir) => {
       return RustInterop.addPathToScope(dir).then((success: boolean) => {
-        return success && fs.exists(dir);
+        return success && exists(dir);
       });
     });
     await Promise.all(existencePromises).then((exists: boolean[]) => {
@@ -496,10 +496,10 @@ export class SettingsController {
 
   private static saveCallback = (value?: unknown) => {};
   private static async saveSettingsToDevice() {
-    await fs.writeFile({
-      path: this.settingsPath,
-      contents: JSON.stringify(this.settings),
-    }).then(SettingsController.saveCallback.bind(this));
+    await writeTextFile(
+      this.settingsPath,
+      JSON.stringify(this.settings)
+    ).then(SettingsController.saveCallback.bind(this));
   }
   private static debouncedSave = debounce(SettingsController.saveSettingsToDevice.bind(SettingsController), 500);
 
@@ -522,10 +522,7 @@ export class SettingsController {
    * @param filePath The path to save to.
    */
   static async saveSettingsToFile(filePath: string) {
-    await fs.writeFile({
-      path: filePath,
-      contents: JSON.stringify(this.settings),
-    });
+    await writeTextFile(filePath, JSON.stringify(this.settings));
   }
 
   /**

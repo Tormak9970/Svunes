@@ -2,7 +2,7 @@ import { t } from "@stores/Locale";
 import { showEditMusicFolders } from "@stores/Modals";
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
 import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, playlists, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
-import { fs } from "@tauri-apps/api";
+import * as fs from "@tauri-apps/plugin-fs";
 import { get, type Unsubscriber } from "svelte/store";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
 import { Album } from "../models/Album";
@@ -331,10 +331,7 @@ export class AppController {
 
     playlistJSON.songFileNames = playlist.songIds.map((id) => songMap[id].fileName);
 
-    await fs.writeFile({
-      path: playlistPath,
-      contents: JSON.stringify(playlistJSON),
-    });
+    await fs.writeTextFile(playlistPath, JSON.stringify(playlistJSON));
 
     LogController.log(`Exported ${playlist.name}.`);
   }

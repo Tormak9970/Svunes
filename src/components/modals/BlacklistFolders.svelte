@@ -3,7 +3,7 @@
   import { t } from "@stores/Locale";
   import { showBlacklistFolders } from "@stores/Modals";
   import { blacklistedFolders } from "@stores/State";
-  import { dialog } from "@tauri-apps/api";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import FolderEntry from "./utils/FolderEntry.svelte";
   import ModalBody from "./utils/ModalBody.svelte";
 

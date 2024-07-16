@@ -8,7 +8,7 @@
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { fade } from "svelte/transition";
   import type { SongSortOrder } from "../../../types/Settings";
   import SongOptions from "./SongOptions.svelte";
@@ -17,7 +17,7 @@
   export let detailType: SongSortOrder;
   export let isSelectable = true;
 
-  $: convertedPath = song.artPath ? tauri.convertFileSrc(song.artPath) : "";
+  $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
 
   /**

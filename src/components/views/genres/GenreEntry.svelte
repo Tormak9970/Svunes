@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
 
@@ -14,7 +14,7 @@
   
 
   export let genre: Genre;
-  $: convertedPath = genre.imagePreviewPath ? tauri.convertFileSrc(genre.imagePreviewPath) : "";
+  $: convertedPath = genre.imagePreviewPath ? convertFileSrc(genre.imagePreviewPath) : "";
 
   $: backgroundColor = genre.backgroundColor ?? "var(--m3-scheme-on-primary)";
   $: textColor = genre.textColor ?? "var(--m3-scheme-primary)";

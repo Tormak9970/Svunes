@@ -3,14 +3,14 @@
   import type { Artist } from "@lib/models/Artist";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { inSelectMode, selected } from "@stores/Select";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";
   import ViewImage from "../../utils/ViewImage.svelte";
 
   export let artist: Artist;
   export let isSelectable = true;
 
-  $: convertedPath = artist.imagePath ? tauri.convertFileSrc(artist.imagePath) : "";
+  $: convertedPath = artist.imagePath ? convertFileSrc(artist.imagePath) : "";
   $: highlighted = $selected.includes(artist.name);
 
   /**

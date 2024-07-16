@@ -5,7 +5,7 @@
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { albumGridSize, albumSortOrder } from "@stores/State";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import { GridSize } from "../../../types/Settings";
@@ -13,7 +13,7 @@
 
   export let album: Album;
 
-  $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
+  $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
   $: size = $albumGridSize === GridSize.MEDIUM ? 40 : 60;
 

@@ -12,7 +12,7 @@
   import { showCreatePlaylist } from "@stores/Overlays";
   import { selectedChips } from "@stores/Search";
   import { lastView, selectedView } from "@stores/State";
-  import { dialog } from "@tauri-apps/api";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import { push } from "svelte-spa-router";
   import { View } from "../../../types/View";
   import ViewHeader from "../utils/ViewHeader.svelte";
@@ -42,7 +42,7 @@
    * Prompts the user to import a playlist.
    */
   async function importPlaylist() {
-    const path = await dialog.open({
+    const file = await dialog.open({
       title: $t("CHOOSE_PLAYLIST_MESSAGE"),
       directory: false,
       multiple: false,
@@ -54,8 +54,8 @@
       ]
     });
 
-    if (path && path !== "") {
-      AppController.importPlaylist(path as string);
+    if (file && file.path !== "") {
+      AppController.importPlaylist(file.path);
     }
   }
 

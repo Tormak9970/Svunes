@@ -2,7 +2,7 @@
   import Button from "@interactables/Button.svelte";
   import { HELP_TRANSLATE_LINK, t } from "@stores/Locale";
   import { showParserVariables } from "@stores/Modals";
-  import { shell } from "@tauri-apps/api";
+  import * as shell from "@tauri-apps/plugin-shell";
   import ModalBody from "./utils/ModalBody.svelte";
 
   let modalOpen = true;

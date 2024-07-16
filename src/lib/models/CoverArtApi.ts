@@ -1,5 +1,4 @@
-import { http } from "@tauri-apps/api";
-import { ResponseType, type HttpVerb } from "@tauri-apps/api/http";
+import { fetch } from "@tauri-apps/plugin-http";
 import { LogController } from "../controllers/utils/LogController";
 import { RequestError } from "./TauriResponse";
 
@@ -45,29 +44,23 @@ export class CoverArtApi {
 
   /**
    * Makes a request and returns the result.
-   * @param method The method of the request.
    * @param url The url endpoint.
    */
-  private async makeRequest<T>(method: HttpVerb, url: string): Promise<T | Error> {
+  private async makeRequest<T>(url: string): Promise<T | Error> {
     const options = {
       timeout: this.timeout,
-      method: method,
-      responseType: ResponseType.JSON,
       headers: {
         'User-Agent': this.userAgent,
         'Accept': `application/json`
       }
     }
 
-    let response = await http.fetch<any>(`${this.BASE_URL}${url}`, options);
+    let response = await fetch(`${this.BASE_URL}${url}`, options);
 
     if (response.ok) {
-      return response.data;
-    } else if (response.status === 404) {
-      const errorMessage = response.data.substring(response.data.indexOf("<p>") + 3, response.data.indexOf("</p>"));
-      throw new RequestError(errorMessage, response);
+      return await response.json();
     } else {
-      throw new RequestError(response.data?.error ?? "CoverartArchive error.", response);
+      throw new RequestError(response.statusText ?? "CoverartArchive error.", response);
     }
   }
 
@@ -77,7 +70,7 @@ export class CoverArtApi {
    */
   async getAlbumCovers(releaseId: string): Promise<string[]> {
     try {
-      const results = await this.makeRequest<CoverResponse>("GET", `release/${releaseId}`);
+      const results = await this.makeRequest<CoverResponse>(`releases/${releaseId}`);
       const images = (results as CoverResponse).images;
 
       return images.map((image) => image.image);

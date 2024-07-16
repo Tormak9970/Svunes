@@ -8,7 +8,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { showMiniPlayer, showNowPlaying, showQueue } from "@stores/Overlays";
   import { isPaused, playingSongId, songProgress, songsMap } from "@stores/State";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { onDestroy } from "svelte";
 
   export let clampedHeight: number;
@@ -16,7 +16,7 @@
 
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
 
-  $: covertedPath = song?.artPath ? tauri.convertFileSrc(song.artPath) : ""; 
+  $: covertedPath = song?.artPath ? convertFileSrc(song.artPath) : ""; 
 
   $: progressWidth = song ? $songProgress / song.length * 100 : 0;
 

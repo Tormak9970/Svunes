@@ -5,7 +5,7 @@
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import type { AlbumSortOrder } from "../../../types/Settings";
@@ -14,7 +14,7 @@
   export let detailType: AlbumSortOrder;
   export let isSelectable = true;
 
-  $: convertedPath = album.artPath ? tauri.convertFileSrc(album.artPath) : "";
+  $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
 
   /**

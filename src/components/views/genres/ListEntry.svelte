@@ -3,14 +3,14 @@
   import type { Genre } from "@lib/models/Genre";
   import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import ViewImage from "../../utils/ViewImage.svelte";
 
   export let genre: Genre;
 
-  $: convertedPath = genre.imagePreviewPath ? tauri.convertFileSrc(genre.imagePreviewPath) : "";
+  $: convertedPath = genre.imagePreviewPath ? convertFileSrc(genre.imagePreviewPath) : "";
   
 
   /**

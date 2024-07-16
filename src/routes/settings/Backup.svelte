@@ -1,7 +1,8 @@
 <script lang="ts">
   import { SettingsController } from "@lib/controllers/SettingsController";
   import { DialogController } from "@lib/controllers/utils/DialogController";
-  import { dialog, process } from "@tauri-apps/api";
+  import * as dialog from "@tauri-apps/plugin-dialog";
+  import * as process from "@tauri-apps/plugin-process";
   import { pop } from "svelte-spa-router";
 
   import SettingsBody from "@views/settings/SettingsBody.svelte";
@@ -17,7 +18,7 @@
    * Prompts the user to select a backup file.
    */
    async function pickBackup() {
-    const path = await dialog.open({
+    const file = await dialog.open({
       title: $t("CHOOSE_BACKUP_MESSAGE"),
       directory: false,
       multiple: false,
@@ -29,8 +30,8 @@
       ]
     });
 
-    if (path && path !== "") {
-      await SettingsController.applyBackup(path as string);
+    if (file && file.path !== "") {
+      await SettingsController.applyBackup(file.path);
       DialogController.message($t("TUNISTIC_RESTART_TITLE"), $t("TUNISTIC_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
         process.relaunch();
       });

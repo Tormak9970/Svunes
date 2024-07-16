@@ -4,7 +4,7 @@ use std::{fs::{create_dir_all, read_dir, DirEntry, File}, io::{Error, Write}, pa
 use serde_json::{Map, Value};
 use symphonia::{core::{codecs::CodecRegistry, formats::{FormatOptions, FormatReader}, io::MediaSourceStream, meta::{MetadataOptions, Visual}, probe::{Hint, Probe}, units::TimeBase}, default::{formats::FlacReader, register_enabled_codecs}};
 use symphonia_metadata::id3v2::Id3v2Reader;
-use tauri::{api::path::cache_dir, AppHandle};
+use tauri::{AppHandle, Manager};
 
 use crate::{logger, mpa_reader::MpaReader};
 
@@ -17,9 +17,9 @@ pub fn format_album_name_for_image(album_title: String) -> String {
 
 /// Writes the album visual to the cache folder and returns the path
 fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: String) -> String {
-  let bundle_id: String = app_handle.config().tauri.bundle.identifier.to_owned();
+  let bundle_id: String = app_handle.config().identifier.to_owned();
   
-  let app_cache_dir = cache_dir().expect("Couldn't resolve app cache dir.");
+  let app_cache_dir = app_handle.path().cache_dir().expect("Couldn't resolve app cache dir.");
   let mut file_path = app_cache_dir.join(&bundle_id).join("albums");
 
   if !file_path.exists() {

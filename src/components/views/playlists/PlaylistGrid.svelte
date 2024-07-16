@@ -2,7 +2,7 @@
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
-  import { tauri } from "@tauri-apps/api";
+  import { convertFileSrc } from "@tauri-apps/api/core";
 
   export let images: (string | undefined)[];
   export let size: number;
@@ -29,7 +29,7 @@
     }
   }
 
-  $: converted = imagesToRender.map((image) => image ? tauri.convertFileSrc(image) : image);
+  $: converted = imagesToRender.map((image) => image ? convertFileSrc(image) : image);
 </script>
 
 <div class="grid-container" style:--gap={gap + "px"}>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { shell } from "@tauri-apps/api";
+  import * as shell from "@tauri-apps/plugin-shell";
   import { pop } from "svelte-spa-router";
 
   import SettingsBody from "@views/settings/SettingsBody.svelte";
