@@ -41,15 +41,13 @@ export class LogController {
    * @param message Message to log.
    */
   static async log(message:string): Promise<void> {
-    if (IS_DEBUG) {
-      console.log(
-        `%c ${LogController.APP_NAME} %c INFO %c`,
-        `background: ${LogController.APP_THEME_COLOR}; color: white;`,
-        `background: ${LogController.APP_INFO_COLOR}; color: black;`,
-        "background: transparent;",
-        message
-      );
-    }
+    console.log(
+      `%c ${LogController.APP_NAME} %c INFO %c`,
+      `background: ${LogController.APP_THEME_COLOR}; color: white;`,
+      `background: ${LogController.APP_INFO_COLOR}; color: black;`,
+      "background: transparent;",
+      message
+    );
 
     await RustInterop.logToFile(message, LogLevel.INFO);
   }
@@ -59,15 +57,13 @@ export class LogController {
    * @param message Message to log.
    */
   static async warn(message:string): Promise<void> {
-    if (IS_DEBUG) {
-      console.warn(
-        `%c ${LogController.APP_NAME} %c WARNING %c`,
-        `background: ${LogController.APP_THEME_COLOR}; color: white;`,
-        `background: ${LogController.APP_WARN_COLOR}; color: black;`,
-        "background: transparent;",
-        message
-      );
-    }
+    console.warn(
+      `%c ${LogController.APP_NAME} %c WARNING %c`,
+      `background: ${LogController.APP_THEME_COLOR}; color: white;`,
+      `background: ${LogController.APP_WARN_COLOR}; color: black;`,
+      "background: transparent;",
+      message
+    );
 
     await RustInterop.logToFile(message, LogLevel.WARN);
   }
@@ -77,15 +73,13 @@ export class LogController {
    * @param message Message to log.
    */
   static async error(message:string): Promise<void> {
-    if (IS_DEBUG) {
-      console.error(
-        `%c ${LogController.APP_NAME} %c ERROR %c`,
-        `background: ${LogController.APP_THEME_COLOR}; color: white;`,
-        `background: ${LogController.APP_ERROR_COLOR}; color: black;`,
-        "background: transparent;",
-        message
-      );
-    }
+    console.error(
+      `%c ${LogController.APP_NAME} %c ERROR %c`,
+      `background: ${LogController.APP_THEME_COLOR}; color: white;`,
+      `background: ${LogController.APP_ERROR_COLOR}; color: black;`,
+      "background: transparent;",
+      message
+    );
 
     await RustInterop.logToFile(message, LogLevel.ERROR);
   }

@@ -1,5 +1,5 @@
 <script>
-  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showHelpTranslate, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSavingSettings, showSearchingApi, showSelectLanguage, showSongSortOrder, showTranslationCredits } from "@stores/Modals";
+  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showHelpTranslate, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSearchingApi, showSelectLanguage, showSongSortOrder, showTranslationCredits } from "@stores/Modals";
   import AdvancedSearchFilters from "./AdvancedSearchFilters.svelte";
   import PickAlbumCover from "./api-results/PickAlbumCover.svelte";
   import PickAlbumInfo from "./api-results/PickAlbumInfo.svelte";
@@ -13,7 +13,6 @@
   import NowPlayingBackground from "./NowPlayingBackground.svelte";
   import NowPlayingTheme from "./NowPlayingTheme.svelte";
   import ParserVariables from "./ParserVariables.svelte";
-  import SavingSettings from "./SavingSettings.svelte";
   import SearchingApi from "./SearchingApi.svelte";
   import TranslationCredits from "./TranslationCredits.svelte";
   import AlbumSortOrder from "./view-settings/AlbumSortOrder.svelte";
@@ -58,9 +57,6 @@
 {/if}
 {#if $showNowPlayingBackground}
   <NowPlayingBackground />
-{/if}
-{#if $showSavingSettings}
-  <SavingSettings />
 {/if}
 
 <!-- ? Api searching -->

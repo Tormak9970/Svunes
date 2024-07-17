@@ -170,7 +170,8 @@
                 "https://coverartarchive.org/*",
                 "https://*.archive.org/*"
               ]
-            }
+            },
+            "store:default"
           ]
         }
       ],

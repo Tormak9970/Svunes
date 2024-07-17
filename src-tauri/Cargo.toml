@@ -6,7 +6,7 @@ authors = ["you"]
 license = ""
 repository = ""
 edition = "2021"
-rust-version = "1.57"
+rust-version = "1.79"
 
 [lib]
 name = "app_lib"
@@ -37,6 +37,7 @@ symphonia = { version = "0.5.4", features = [ "flac" ] }
 symphonia-metadata = "0.5.4"
 metaflac = "0.2.7"
 id3 = "1.13.1"
+tauri-plugin-store = "2.0.0-beta.10"
 
 [features]
 # by default Tauri runs in production mode

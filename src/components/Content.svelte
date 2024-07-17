@@ -4,14 +4,10 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
-  import { showSavingSettings } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { TauriEvent, type UnlistenFn } from "@tauri-apps/api/event";
-  import { getCurrentWindow } from "@tauri-apps/api/window";
-  import { exit } from '@tauri-apps/plugin-process';
   import { onDestroy, onMount } from "svelte";
   import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
@@ -32,7 +28,6 @@
   let isPausedUnsub: Unsubscriber;
   let playingSongIdUnsub: Unsubscriber;
   let translateUnsub: Unsubscriber;
-  let closeRequestListener: UnlistenFn;
 
   let audioPlayer: HTMLAudioElement;
 
@@ -110,15 +105,6 @@
 
       $playlists = [ ...$playlists ];
     });
-
-    closeRequestListener = await getCurrentWindow().listen(TauriEvent.WINDOW_CLOSE_REQUESTED, () => {
-      if (!SettingsController.settingsHaveChanged) exit(0);
-
-      SettingsController.save().then(() => {
-        $showSavingSettings = true;
-        exit(0);
-      });
-    });
   });
 
   onDestroy(async () => {
@@ -132,7 +118,6 @@
     if (loadingUnsub) loadingUnsub();
     if (isPausedUnsub) isPausedUnsub();
     if (playingSongIdUnsub) playingSongIdUnsub();
-    if (closeRequestListener) closeRequestListener();
   });
 </script>
 

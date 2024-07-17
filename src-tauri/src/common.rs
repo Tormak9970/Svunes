@@ -83,6 +83,7 @@ pub enum Emphasis {
 
 /// A MPEG 1, 2, or 2.5 audio frame header.
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct FrameHeader {
     pub version: MpegVersion,
     pub layer: MpegLayer,
@@ -180,6 +181,7 @@ impl FrameHeader {
     }
 }
 
+#[allow(dead_code)]
 pub trait Layer {
     fn decode(
         &mut self,

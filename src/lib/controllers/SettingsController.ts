@@ -16,8 +16,8 @@
  */
 import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
-import { path } from "@tauri-apps/api";
-import { create, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { Store } from '@tauri-apps/plugin-store';
 import { get, type Unsubscriber } from "svelte/store";
 import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
 import { View } from "../../types/View";
@@ -25,7 +25,6 @@ import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
-import { debounce } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
 
@@ -61,8 +60,8 @@ function setIfNotExist(object: any, defaults: any): any {
  * The controller for settings.
  */
 export class SettingsController {
-  static settingsHaveChanged = false;
-  private static settingsPath = "";
+  private static readonly STORE_NAME = "settings.dat";
+  private static store: Store;
   private static settings: Settings;
 
   private static paletteUnsub: Unsubscriber;
@@ -122,22 +121,52 @@ export class SettingsController {
   private static artistSortOrderUnsub: Unsubscriber;
   private static useArtistColorsUnsub: Unsubscriber;
 
+  private static async loadSettings(): Promise<Settings> {
+    const defaultEntries = Object.entries(DEFAULT_SETTINGS);
+
+    const storeEntries = await this.store.entries<any>();
+    const currentSettings = Object.fromEntries(storeEntries);
+
+    let settings = {} as Settings;
+
+    for (const [key, value] of defaultEntries) {
+      let currentValue = currentSettings[key];
+
+      if (!currentValue) {
+        currentValue = value;
+      } else if (typeof currentValue === "object") {
+        currentValue = setIfNotExist(currentValue, value);
+      }
+      
+      // @ts-expect-error key will always index settings because DEFAULT_SETTINGS is of type Settings.
+      settings[key] = currentValue;
+    }
+
+    settings = this.migrateSettingsStructure(settings);
+    settings.version = APP_VERSION;
+
+    LogController.log("Finished checking settings for new app version and/or migration.");
+
+    return settings;
+  }
+
+  private static async save() {
+    const entries = Object.entries(this.settings);
+    const savePromises = entries.map(async ([key, value]) => {
+      return await this.store.set(key, value);
+    });
+
+    await Promise.all(savePromises);
+    await this.store.save();
+  }
+
   /**
    * Initializes the SettingsController.
    */
   static async init() {
-    const appDir = await path.appConfigDir();
-    if (!(await exists(appDir))) await create(appDir);
+    this.store = new Store(this.STORE_NAME);
+    this.settings = await this.loadSettings();
 
-    const setsPath = await path.join(appDir, "settings.json");
-    if (!(await exists(setsPath))) {
-      await writeTextFile(setsPath, JSON.stringify(DEFAULT_SETTINGS, null, "\t"));
-    }
-
-    this.settingsPath = setsPath;
-    
-    this.settings = await this.loadSettingsFromDevice();
-    await this.save();
     await this.setStores();
 
     LogController.log("Initialized Settings.");
@@ -180,8 +209,9 @@ export class SettingsController {
    * Updates the given settings field with the provided data.
    * @param field The setting to update.
    * @param val The new value.
+   * @param shouldSaveImmediately Whether the change should be saved immediately.
    */
-  private static updateSetting<T>(field: string, val: T): void {
+  private static updateSetting<T>(field: string, val: T, shouldSaveImmediately = false): void {
     const settings = structuredClone(this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
@@ -195,7 +225,7 @@ export class SettingsController {
     parentObject[fieldPath[fieldPath.length - 1]] = val;
 
     this.settings = settings;
-    this.save()
+    if (shouldSaveImmediately) this.save();
 
     const stringified = JSON.stringify(val);
     LogController.log(stringified.length < 200 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
@@ -204,44 +234,17 @@ export class SettingsController {
   /**
    * Returns a function that updates the given setting if the value has changed.
    * @param field The setting to update.
+   * @param shouldSaveImmediately Whether the change should be saved immediately.
    * @returns A function that updates the given setting if the value has changed.
    */
-  private static updateStoreIfChanged<T>(field: string): (val: T) => void {
+  private static updateStoreIfChanged<T>(field: string, shouldSaveImmediately = false): (val: T) => void {
     return (val: T) => {
       const original = this.getSetting<T>(field);
 
       if (original !== val) {
-        this.updateSetting(field, val);
+        this.updateSetting(field, val, shouldSaveImmediately);
       }
     }
-  }
-
-  /**
-   * Loads the settings from the device.
-   */
-  private static async loadSettingsFromDevice(): Promise<Settings> {
-    const contents = await readTextFile(this.settingsPath);
-    let currentSettings: any;
-
-    try {
-      currentSettings = contents !== "" ? JSON.parse(contents) : structuredClone(DEFAULT_SETTINGS);
-    } catch(e) {
-      currentSettings = structuredClone(DEFAULT_SETTINGS);
-      LogController.error("Settings were corrupted.");
-    }
-
-    let settings: Settings = structuredClone(currentSettings);
-    
-    const defaultSettings = structuredClone(DEFAULT_SETTINGS);
-
-    settings = setIfNotExist(settings, defaultSettings);
-    settings = this.migrateSettingsStructure(settings);
-
-    settings.version = APP_VERSION;
-
-    LogController.log("Finished checking settings for new app version and/or migration.");
-
-    return settings;
   }
 
   /**
@@ -300,10 +303,8 @@ export class SettingsController {
 
     hasShownHelpTranslate.set(this.settings.hasShownHelpTranslate);
 
-    const existencePromises = this.settings.musicDirectories.map((dir) => {
-      return RustInterop.addPathToScope(dir).then((success: boolean) => {
-        return success && exists(dir);
-      });
+    const existencePromises = this.settings.musicDirectories.map(async (dir: string) => {
+      return await RustInterop.addPathToScope(dir).then(async (success: boolean) => success && await exists(dir));
     });
     await Promise.all(existencePromises).then((exists: boolean[]) => {
       this.settings.musicDirectories = this.settings.musicDirectories.filter((_, i) => exists[i]);
@@ -440,7 +441,7 @@ export class SettingsController {
       })));
     });
     this.songsUnsub = songs.subscribe((newSongs) => {
-      this.updateSetting<number>("cache.numSongs", newSongs.length);
+      this.updateSetting<number>("cache.numSongs", newSongs.length, false);
       this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", Object.fromEntries(newSongs.map((song) => {
         return [
           song.id,
@@ -465,7 +466,6 @@ export class SettingsController {
 
     this.songProgressUnsub = songProgress.subscribe((progress) => {
       this.settings.cache.songProgress = progress;
-      this.settingsHaveChanged = true;
     });
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
@@ -494,35 +494,12 @@ export class SettingsController {
     this.useArtistColorsUnsub = useArtistColors.subscribe(this.updateStoreIfChanged<boolean>("artistsView.useArtistColors"));
   }
 
-  private static saveCallback = (value?: unknown) => {};
-  private static async saveSettingsToDevice() {
-    await writeTextFile(
-      this.settingsPath,
-      JSON.stringify(this.settings)
-    ).then(SettingsController.saveCallback.bind(this));
-  }
-  private static debouncedSave = debounce(SettingsController.saveSettingsToDevice.bind(SettingsController), 500);
-
-  /**
-   * Saves the settings object.
-   */
-  static async save() {
-    this.settingsHaveChanged = true;
-    return new Promise<void>((resolve, reject) => {
-      this.saveCallback = () => {
-        this.settingsHaveChanged = false;
-        resolve();
-      };
-      this.debouncedSave();
-    })
-  }
-
   /**
    * Writes the app's settings to a file.
    * @param filePath The path to save to.
    */
-  static async saveSettingsToFile(filePath: string) {
-    await writeTextFile(filePath, JSON.stringify(this.settings));
+  static async saveSettingsToFile(filePath: string): Promise<void> {
+    return await writeTextFile(filePath, JSON.stringify(this.settings));
   }
 
   /**
@@ -575,6 +552,8 @@ export class SettingsController {
     if (this.paletteUnsub) this.paletteUnsub();
     if (this.useOledPaletteUnsub) this.useOledPaletteUnsub();
     if (this.themePrimaryColorUnsub) this.themePrimaryColorUnsub();
+
+    if (this.hasShownHelpTranslateUnsub) this.hasShownHelpTranslateUnsub();
     
     if (this.musicDirectoriesUnsub) this.musicDirectoriesUnsub();
     if (this.selectedViewUnsub) this.selectedViewUnsub();

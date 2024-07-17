@@ -2,5 +2,5 @@
 
 /// This app's main function.
 fn main() {
-  app_lib::run();
+    app_lib::run();
 }

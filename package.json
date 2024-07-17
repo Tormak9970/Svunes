@@ -48,6 +48,7 @@
     "@tauri-apps/plugin-http": "2.0.0-beta.8",
     "@tauri-apps/plugin-process": "2.0.0-beta.7",
     "@tauri-apps/plugin-shell": "2.0.0-beta.8",
+    "@tauri-apps/plugin-store": "2.0.0-beta.7",
     "svelte-gesture": "^0.1.4",
     "svelte-preprocess": "^5.1.4",
     "svelte-spa-router": "^4.0.1"

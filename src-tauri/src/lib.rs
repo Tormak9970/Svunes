@@ -257,11 +257,13 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
     if image_res.is_ok() {
       let img = image_res.ok().unwrap();
 
-      let color_palette = get_palette_with_options(img.as_bytes(),
+      let color_palette = get_palette_with_options(
+        img.as_bytes(),
         PixelEncoding::Rgb,
         Quality::new(5),
         MaxColors::new(5),
-        PixelFilter::White);
+        PixelFilter::White
+      );
 
       let colors: Vec<Value> = color_palette.iter().map(| color | {
         return Value::String(color_to_rgb(color));
@@ -314,6 +316,7 @@ async fn download_image(app_handle: AppHandle, image_url: String, dest_path: Str
 /// This app's main function.
 pub fn run() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_store::Builder::new().build())
     .invoke_handler(tauri::generate_handler![
       logger::clean_out_log,
       logger::log_to_file,
@@ -332,6 +335,7 @@ pub fn run() {
     .plugin(tauri_plugin_dialog::init())
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
+    .plugin(tauri_plugin_store::Builder::new().build())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
 
