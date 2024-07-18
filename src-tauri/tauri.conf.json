@@ -1,80 +1,12 @@
 {
-  "build": {
-    "beforeDevCommand": "pnpm run dev",
-    "beforeBuildCommand": "pnpm run build",
-    "frontendDist": "../dist",
-    "devUrl": "http://localhost:1420"
-  },
-  "bundle": {
-    "active": true,
-    "category": "Utility",
-    "copyright": "Copyright Travis Lane 2024",
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": "",
-      "webviewInstallMode": {
-        "type": "offlineInstaller"
-      },
-      "wix": {
-        "language": {
-          "en-US": {
-            "localePath": "wix/locales/en-US.wxl"
-          }
-        },
-        "dialogImagePath": "wix/dialogImage.jpg",
-        "bannerPath": "wix/bannerImage.jpg"
-      }
-    },
-    "externalBin": [],
-    "icon": [
-      "icons/32x32.png",
-      "icons/64x64.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/256x256.png",
-      "icons/icon.icns",
-      "icons/icon.ico",
-      "icons/icon.png"
-    ],
-    "longDescription": "A robust, offline first Material Design music player.",
-    "resources": [],
-    "shortDescription": "A robust, offline first Material Design music player.",
-    "targets": [
-      "msi"
-    ],
-    "licenseFile": "wix/short-license.txt",
-    "createUpdaterArtifacts": "v1Compatible"
-  },
   "productName": "Tunistic",
   "version": "../package.json",
   "identifier": "dev.travislane.tunistic",
-  "plugins": {
-    "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIxRjcwRDQ0QzczMjAzMUMKUldRY0F6TEhSQTMzc2F0VWxEOUJyTTBQVUY2Ui94dkNXUGVBZW1PZ0RZTmVPUlhFcXFpb1djM1MK",
-      "endpoints": [
-        "https://raw.githubusercontent.com/Tormak9970/Tunistic/release/latest.json"
-      ]
-    },
-    "fs": {
-      "scope": {
-        "allow": [
-          "$APPCONFIG",
-          "/var/home/*/.config/dev.travislane.tunistic",
-          "$APPCONFIG/**",
-          "/var/home/*/.config/dev.travislane.tunistic/**",
-          "$Home/**",
-          "/var/home/*/**",
-          "$APPLOG",
-          "$APPLOG/**",
-          "$APPCACHE",
-          "/var/home/*/.cache/dev.travislane.tunistic",
-          "$APPCACHE/**",
-          "/var/home/*/.cache/dev.travislane.tunistic/**"
-        ],
-        "requireLiteralLeadingDot": false
-      }
-    }
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
   "app": {
     "withGlobalTauri": false,
@@ -180,5 +112,73 @@
       ],
       "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; media-src 'self' asset: https://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost"
     }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIxRjcwRDQ0QzczMjAzMUMKUldRY0F6TEhSQTMzc2F0VWxEOUJyTTBQVUY2Ui94dkNXUGVBZW1PZ0RZTmVPUlhFcXFpb1djM1MK",
+      "endpoints": [
+        "https://raw.githubusercontent.com/Tormak9970/Tunistic/release/latest.json"
+      ]
+    },
+    "fs": {
+      "scope": {
+        "allow": [
+          "$APPCONFIG",
+          "/var/home/*/.config/dev.travislane.tunistic",
+          "$APPCONFIG/**",
+          "/var/home/*/.config/dev.travislane.tunistic/**",
+          "$Home/**",
+          "/var/home/*/**",
+          "$APPLOG",
+          "$APPLOG/**",
+          "$APPCACHE",
+          "/var/home/*/.cache/dev.travislane.tunistic",
+          "$APPCACHE/**",
+          "/var/home/*/.cache/dev.travislane.tunistic/**"
+        ],
+        "requireLiteralLeadingDot": false
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "category": "Utility",
+    "copyright": "Copyright Travis Lane 2024",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "webviewInstallMode": {
+        "type": "offlineInstaller"
+      },
+      "wix": {
+        "language": {
+          "en-US": {
+            "localePath": "wix/locales/en-US.wxl"
+          }
+        },
+        "dialogImagePath": "wix/dialogImage.jpg",
+        "bannerPath": "wix/bannerImage.jpg"
+      }
+    },
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/64x64.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/256x256.png",
+      "icons/icon.icns",
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "longDescription": "A robust, offline first Material Design music player.",
+    "resources": [],
+    "shortDescription": "A robust, offline first Material Design music player.",
+    "targets": [
+      "msi"
+    ],
+    "licenseFile": "wix/short-license.txt",
+    "createUpdaterArtifacts": "v1Compatible"
   }
 }

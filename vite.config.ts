@@ -1,8 +1,12 @@
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { rmdirSync } from "fs";
+import { internalIpV4 } from "internal-ip";
 import { resolve } from "path";
 import sveltePreprocess from "svelte-preprocess";
 import { defineConfig } from "vite";
+
+// @ts-expect-error process is a nodejs global
+const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
 
 type ExcludeOptions = {
   directories: string[]
@@ -68,6 +72,18 @@ export default defineConfig({
   server: {
     port: 1420,
     strictPort: true,
+    host: mobile ? "0.0.0.0" : false,
+    hmr: mobile
+      ? {
+          protocol: "ws",
+          host: await internalIpV4(),
+          port: 1421,
+        }
+      : undefined,
+    watch: {
+      // 3. tell vite to ignore watching `src-tauri`
+      ignored: ["**/src-tauri/**"],
+    },
   },
   // to make use of `TAURI_DEBUG` and other env variables
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand

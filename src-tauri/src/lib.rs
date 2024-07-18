@@ -8,6 +8,7 @@ mod mpa_reader;
 
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_fs::FsExt;
+use tauri_plugin_http::reqwest::Client;
 
 use std::{fs::{self, create_dir_all, File}, io::Write, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel, time::Duration};
 
@@ -15,11 +16,10 @@ use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use rayon::iter::IntoParallelRefIterator;
-use reqwest::Client;
 use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
-use tauri::{self, AppHandle, Emitter, Manager};
+use tauri::{self, AppHandle, Manager};
 
 use image::{imageops::FilterType, io::Reader as ImageReader};
 use rayon::prelude::*;
@@ -284,8 +284,8 @@ async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> Str
 /// Downloads a file from a url.
 async fn download_image(app_handle: AppHandle, image_url: String, dest_path: String, timeout: u64) -> String {
   logger::log_to_file(app_handle.to_owned(), format!("Downloading image from {} to {}", image_url, dest_path).as_str(), 0);
-  
-  let http_client_res = reqwest::Client::builder().timeout(Duration::from_secs(timeout)).build();
+
+  let http_client_res = Client::builder().timeout(Duration::from_secs(timeout)).build();
   let http_client: Client = http_client_res.expect("Should have been able to successfully make the reqwest client.");
 
   let response_res = http_client.get(image_url.clone()).send().await;
@@ -316,7 +316,6 @@ async fn download_image(app_handle: AppHandle, image_url: String, dest_path: Str
 /// This app's main function.
 pub fn run() {
   tauri::Builder::default()
-    .plugin(tauri_plugin_store::Builder::new().build())
     .invoke_handler(tauri::generate_handler![
       logger::clean_out_log,
       logger::log_to_file,
@@ -336,11 +335,10 @@ pub fn run() {
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_store::Builder::new().build())
-    .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-      println!("{}, {argv:?}, {cwd}", app.package_info().name);
-
-      app.emit("single-instance", Payload { args: argv, cwd }).unwrap();
-    }))
+    // .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+    //   println!("{}, {argv:?}, {cwd}", app.package_info().name);
+    //   app.emit("single-instance", Payload { args: argv, cwd }).unwrap();
+    // }))
     .setup(| app | {
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
