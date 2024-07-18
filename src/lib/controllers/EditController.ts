@@ -128,10 +128,10 @@ export class EditController {
       const songMap = get(songsMap);
       const changes: Record<string, SongEditFields> = {};
 
-      const matchingAlbum = albumsList.find((album) => album.name === changedAlbumFields.name);
+      const matchingAlbum = albumsList.find((album) => album.name === changedAlbumFields.name && album.name !== original.name);
       if (matchingAlbum) {
         albumToEdit = matchingAlbum;
-        changedAlbumFields.artist = albumToEdit.albumArtist;
+        changedAlbumFields.albumArtist = albumToEdit.albumArtist;
         isRenamedToAnother = true;
       }
 
@@ -142,7 +142,7 @@ export class EditController {
           "title": song.title,
           "album": changedAlbumFields.name,
           "composer": song.composer,
-          "albumArtist": changedAlbumFields.artist,
+          "albumArtist": changedAlbumFields.albumArtist,
           "artist": song.artist,
           "releaseYear": changedAlbumFields.releaseYear,
           "genre": changedAlbumFields.genre,

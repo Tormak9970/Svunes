@@ -45,7 +45,7 @@ type SongEditFields = {
 type AlbumEditFields = {
   artPath: string | undefined;
   name: string;
-  artist: string | undefined;
+  albumArtist: string | undefined;
   releaseYear: number | undefined;
   genre: string | undefined;
 }

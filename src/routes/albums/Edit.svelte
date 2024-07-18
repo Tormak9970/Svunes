@@ -75,7 +75,7 @@
     const editFields: AlbumEditFields = {
       "artPath": artPath,
       "name": albumName,
-      "artist": albumArtist,
+      "albumArtist": albumArtist,
       "releaseYear": releaseYear ? parseInt(releaseYear) : undefined,
       "genre": genre
     }
