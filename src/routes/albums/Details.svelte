@@ -160,7 +160,7 @@
         <Marquee speed={50} gap={100}>
           <h3 class="name">{album?.name}</h3>
         </Marquee>
-        <div class="other"><div class="album-artist">{album?.albumArtist ?? ""}</div>{album?.albumArtist ? " • " : ""}{album?.releaseYear !== -1 ? album?.releaseYear : ""}{album?.releaseYear !== -1 ? " • " : ""}{album?.displayAlbumLength()}</div>
+        <div class="other"><div class="album-artist">{album?.albumArtist ? album?.albumArtist : ""}</div>&nbsp;{album?.releaseYear !== -1 ? "• " + album?.releaseYear : ""}{" • " + album?.displayAlbumLength()}</div>
       </div>
       <div class="buttons" style="{backgroundColor ? `--m3-scheme-primary: ${backgroundColor};` : ""}">
         <ToggleShuffleButton />
@@ -253,7 +253,7 @@
   }
 
   .album-artist {
-    max-width: 80%;
+    max-width: 70%;
     overflow: hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
