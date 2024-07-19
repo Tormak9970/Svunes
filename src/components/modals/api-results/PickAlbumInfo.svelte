@@ -74,7 +74,7 @@
   });
 </script>
 
-<div class="image-modal">
+<div class="info-modal">
   <ModalBody open={open} headline={$t("ALBUM_INFO_RESULTS_TITLE")} on:close={cancel} on:closeEnd={close}>
     <div class="select-wrapper">
       <Select name={$t("ALBUM_LABEL")} bind:value={$selectedReleaseGroupId} options={releaseGroupOptions} disabled={releaseGroupOptions.length === 1} />
@@ -88,7 +88,7 @@
           <LoadingSpinner />
         </div>
       {:else}
-        <div class="content">
+        <div class="content font-label">
           <div class="field">
             <b>{$t("TITLE_LABEL")}:</b> {selectedInfo.title}
           </div>
@@ -99,7 +99,7 @@
             <Select name={$t("GENRE_LABEL")} bind:value={genreIndex} options={genreOptions} disabled={genreOptions.length === 1} />
           </div>
           <div class="field">
-            <b>{$t("RELEASE_YEAR_LABEL")}:</b> {selectedInfo.releaseYear ?? $t("UNKOWN_VALUE")}
+            <b>{$t("YEAR_LABEL")}:</b> {selectedInfo.releaseYear ?? $t("UNKOWN_VALUE")}
           </div>
         </div>
       {/if}
@@ -115,21 +115,21 @@
 </div>
 
 <style>
-  .image-modal :global(dialog) {
+  .info-modal :global(dialog) {
     width: 21rem;
   }
-  .image-modal :global(dialog > .m3-container) {
+  .info-modal :global(dialog > .m3-container) {
     padding: 1.5rem 0px;
     overflow: hidden;
     position: relative;
   }
-  .image-modal :global(.m3-container > .content) {
+  .info-modal :global(.m3-container > .content) {
     margin-bottom: 0.5rem;
   }
-  .image-modal :global(.buttons) {
+  .info-modal :global(.buttons) {
     padding: 0px 1rem;
   }
-  .image-modal :global(.headline) {
+  .info-modal :global(.headline) {
     padding: 0px 1rem;
   }
 
@@ -171,8 +171,6 @@
 
   .field {
     width: 100%;
-
-    font-size: 18px;
   }
 
 

@@ -52,7 +52,7 @@
     <div class="text-container">
       {#key label}
         <Marquee speed={40} gap={100}>
-          <p class="m3-font-body-medium">{label}</p>
+          <p class="m3-font-body-medium font-label">{label}</p>
         </Marquee>
       {/key}
     </div>

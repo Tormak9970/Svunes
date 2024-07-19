@@ -81,7 +81,7 @@
     <div class="themes-container" style:left="{20 + $dragOffset}px" use:drag on:drag={handleDrag}>
       {#each themesConfig as config}
         <div class="theme">
-          <div class="label">{config.label}</div>
+          <div class="font-label label">{config.label}</div>
           <div class="preview">
             <Lazy height={400} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
               <!-- svelte-ignore a11y-missing-attribute -->
@@ -137,7 +137,6 @@
   }
 
   .label {
-    font-size: 20px;
     margin-bottom: 10px;
   }
 

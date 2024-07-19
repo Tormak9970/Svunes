@@ -165,7 +165,7 @@
   .m3-container.focus label,
   .m3-container:not(.empty) label {
     top: calc(var(--m3-font-body-small-height, 1rem) * -0.5);
-    font-size: var(--m3-font-body-small-size, 0.75rem);
+    font-size: var(--m3-font-body-small-size, 0.85rem);
     line-height: var(--m3-font-body-small-height, 1rem);
     letter-spacing: var(--m3-font-body-small-tracking, 0.4);
   }

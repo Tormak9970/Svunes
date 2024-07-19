@@ -27,7 +27,7 @@
     flex-direction: column;
     gap: 10px;
 
-    font-size: 16px;
+    font-size: 1rem;
 
     max-width: 20rem;
   }

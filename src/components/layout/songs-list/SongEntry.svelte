@@ -65,10 +65,10 @@
         {/if}
       </div>
       <div class="info">
-        <div class="name">
+        <div class="font-label name">
           {song.title ?? song.fileName}
         </div>
-        <div class="secondary">
+        <div class="font-body secondary">
           <div class="artist">
             {song.artist ?? $t("UNKOWN_VALUE")}
           </div>
@@ -113,7 +113,6 @@
 
   .secondary {
     color: rgb(var(--m3-scheme-outline));
-    font-size: 14px;
     
     display: flex;
     align-items: center;

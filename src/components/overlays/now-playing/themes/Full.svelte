@@ -60,7 +60,7 @@
         </Button>
       </div>
       <div class="song-info">
-        <div class="title">
+        <div class="font-headline-small title">
           {#if label && label.length > 28}
             <div style="margin-left: 4%;">
               <Marquee speed={40} gap={100}>{label}</Marquee>
@@ -69,7 +69,7 @@
             {label}
           {/if}
         </div>
-        <div class="artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+        <div class="font-body artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
       </div>
       <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
         <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} showQueueOption />
@@ -79,7 +79,7 @@
     <PlayerControls useTextColor />
     <VolumeControls useTextColor />
     {#if $showExtraSongInfo}
-      <div class="extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
+      <div class="font-body-medium extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
     {/if}
   </div>
 </div>
@@ -141,7 +141,7 @@
     z-index: 3;
   }
 
-  .extra-info { font-size: 14px; opacity: 0.8; }
+  .extra-info { opacity: 0.8; }
 
   .options {
     width: calc(100% - 10px);
@@ -172,12 +172,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    /* width: 50%; */
 
-    font-size: 18px;
-
-    gap: 10px;
+    gap: 6px;
 
     overflow: hidden;
   }
@@ -186,10 +182,8 @@
     font-weight: bold;
     max-width: 100%;
     text-wrap: nowrap;
-    font-size: 20px;
   }
   .artist {
-    font-size: 14px;
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

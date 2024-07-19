@@ -52,12 +52,12 @@
         <Icon icon={KeyboardArrowDown} />
       </Button>
       <div class="song-info">
-        <div class="title">
+        <div class="font-label-large title">
           {#key label}
             <Marquee speed={35} gap={100}>{label}</Marquee>
           {/key}
         </div>
-        <div class="artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+        <div class="font-body-medium artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
       </div>
     </div>
     <div class="options-side" style="justify-content: flex-end; margin-right: 5px;">
@@ -85,7 +85,7 @@
     <PlayerControls useTextColor />
     <ProgressControls songLength={songLength} useTextColor />
     {#if $showExtraSongInfo}
-      <div class="extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
+      <div class="font-body-medium">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
     {/if}
   </div>
 </div>
@@ -151,8 +151,6 @@
     z-index: 3;
   }
 
-  .extra-info { font-size: 14px; }
-
   .options {
     width: 100%;
 
@@ -180,8 +178,6 @@
     
     width: calc(100% - 53px);
 
-    font-size: 18px;
-
     margin-left: 5px;
   }
 
@@ -191,7 +187,6 @@
     text-wrap: nowrap;
   }
   .artist {
-    font-size: 14px;
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

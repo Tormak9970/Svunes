@@ -92,7 +92,7 @@
         {#if item.icon}
           <Icon icon={item.icon} />
         {/if}
-        <span class="m3-font-title-small">{item.label}</span>
+        <span class="m3-font-title-small font-label">{item.label}</span>
       </label>
     {/each}
     <div class="bar" />

@@ -14,7 +14,7 @@
     <Button type="text" iconType="full" on:click={goBack}>
       <Icon icon={BackArrow} width="20px" height="20px" />
     </Button>
-    <div style="margin-left: 10px; font-size: 20px;">{label}</div>
+    <div class="font-headline" style="margin-left: 10px;">{label}</div>
   </span>
   <span slot="right" />
 </OverlayHeader>

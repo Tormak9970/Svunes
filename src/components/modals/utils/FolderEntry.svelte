@@ -9,7 +9,7 @@
 </script>
 
 <div class="folder-entry">
-  <div class="path">{folderPath}</div>
+  <div class="font-label path">{folderPath}</div>
   <Button type="text" iconType="full" size="2rem" on:click={() => onDelete(index)}>
     <Icon icon={Close} />
   </Button>
@@ -27,7 +27,7 @@
   }
 
   .path {
-    max-width: 200px;
+    max-width: 240px;
     text-overflow: ellipsis;
     overflow: hidden;
   }

@@ -41,8 +41,8 @@
 
 <BottomSheet on:close={close}>
   <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
-    <div class="message">{$t("NAME_PLAYLIST_TITLE")}</div>
-    <TextField name="Playlist Name" bind:value={newPlaylistName} extraWrapperOptions={{ style: "width: 80%; margin-bottom: 20px;" }} />
+    <div class="font-label message">{$t("NAME_PLAYLIST_TITLE")}</div>
+    <TextField name={$t("PLAYLIST_NAME_TITLE")} bind:value={newPlaylistName} extraWrapperOptions={{ style: "width: 80%; margin-bottom: 20px;" }} />
     <Button type="tonal" disabled={newPlaylistName === ""} on:click={createPlaylist}>{$t("CREATE_ACTION")}</Button>
   </div>
 </BottomSheet>

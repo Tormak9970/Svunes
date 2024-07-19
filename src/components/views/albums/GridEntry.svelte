@@ -51,10 +51,10 @@
     <ViewImage src={convertedPath} width={GRID_IMAGE_DIMENSIONS[$albumGridSize].width} height={GRID_IMAGE_DIMENSIONS[$albumGridSize].height} iconSize={size} />
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$albumGridSize].infoHeight}px;">
       <div class="info">
-        <div class="name">
+        <div class="font-label name">
           {album.name}
         </div>
-        <div class="secondary">
+        <div class="font-body secondary">
           {#if $albumSortOrder === "Alphabetical"}
             <div in:fade={{ duration: 200 }}>{album.albumArtist ?? $t("UNKOWN_VALUE")}</div>
           {:else if $albumSortOrder === "Artist"}
@@ -105,7 +105,6 @@
   }
 
   .secondary > div {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;

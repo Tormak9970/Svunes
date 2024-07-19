@@ -46,7 +46,7 @@
 </script>
 
 <ModalBody open={open} headline={$t("MUSIC_FOLDERS_TITLE")} canClose={$location.startsWith("/settings")} on:close={() => open = false} on:closeEnd={() => $showEditMusicFolders = false}>
-  <div>
+  <div style="width: 18rem;">
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
     {:else}

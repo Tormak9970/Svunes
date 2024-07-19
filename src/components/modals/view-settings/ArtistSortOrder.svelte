@@ -23,15 +23,15 @@
   <div class="content">
     <label style="height: 2.5rem;">
       <RadioInput name="artistSortOrder" checked={$artistSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
-      <div class="radio">{$t("ALPHABETICAL_LABEL")}</div>
+      <div class="radio font-label">{$t("ALPHABETICAL_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="artistSortOrder" checked={$artistSortOrder === "Album Count"} on:input={() => sortOrderChange("Album Count")} />
-      <div class="radio">{$t("ALBUM_COUNT_LABEL")}</div>
+      <div class="radio font-label">{$t("ALBUM_COUNT_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="artistSortOrder" checked={$artistSortOrder === "Track Count"} on:input={() => sortOrderChange("Track Count")} />
-      <div class="radio">{$t("TRACK_COUNT_LABEL")}</div>
+      <div class="radio font-label">{$t("TRACK_COUNT_LABEL")}</div>
     </label>
   </div>
 </SmallModalBody>
@@ -48,7 +48,6 @@
   }
 
   .radio {
-    margin-left: 15px;
-    font-size: 16px;
+    margin-left: 5px;
   }
 </style>

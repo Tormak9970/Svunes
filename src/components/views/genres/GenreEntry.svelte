@@ -38,8 +38,8 @@
 <CardClickable type="transparent" on:click={goToGenre} extraOptions={{ style: "width: calc(50% - 1px); max-width: 300px; height: 100px; padding: 5px;" }}>
   <div class="genre-entry" style:--background-color={backgroundColor} style:--text-color={textColor}>
     <div class="info-container">
-      <div class="name">{genre.name}</div>
-      <div class="song-count">{genre.songIds.length} {genre.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")}</div>
+      <div class="font-label name">{genre.name}</div>
+      <div class="font-body">{genre.songIds.length} {genre.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")}</div>
     </div>
     <div class="cover" style="width: {TILTED_DIMENSIONS.width}px; height: {TILTED_DIMENSIONS.height}px;">
       {#if convertedPath !== ""}
@@ -82,10 +82,6 @@
     font-size: 16px;
     text-wrap: wrap;
     font-weight: bold;
-  }
-
-  .song-count {
-    font-size: 14px;
   }
 
   .cover {

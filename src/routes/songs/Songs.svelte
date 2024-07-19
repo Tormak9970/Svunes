@@ -91,7 +91,7 @@
     {:else}
       <div class="message-container">
         <Icon icon={SadFace} width="60px" height="60px" />
-        <div class="message">{$t("NO_TYPE_FOUND_MESSAGE").replace("{type}", $t("SONG_PLURAL_VALUE"))}.</div>
+        <div class="font-label message">{$t("NO_TYPE_FOUND_MESSAGE").replace("{type}", $t("SONG_PLURAL_VALUE"))}.</div>
       </div>
     {/if}
   </div>
@@ -108,7 +108,6 @@
 
   .message {
     max-width: 300px;
-    font-size: 18px;
     text-align: center;
   }
 </style>

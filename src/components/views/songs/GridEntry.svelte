@@ -56,10 +56,10 @@
     <ViewImage src={convertedPath} width={GRID_IMAGE_DIMENSIONS[$songGridSize].width} height={GRID_IMAGE_DIMENSIONS[$songGridSize].height} iconSize={size} />
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$songGridSize].infoHeight}px;" class:expand={$songGridSize !== GridSize.LARGE}>
       <div class="info">
-        <div class="name">
+        <div class="font-label name">
           {song.title ?? song.fileName}
         </div>
-        <div class="secondary">
+        <div class="font-body secondary">
           {#if $songSortOrder === "Alphabetical"}
             <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>
           {:else if $songSortOrder === "Album"}
@@ -121,7 +121,6 @@
   }
 
   .secondary {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;

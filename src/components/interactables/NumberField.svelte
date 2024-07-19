@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import Icon from "../utils/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
+  import Icon from "../utils/Icon.svelte";
 
   export let display = "inline-flex";
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
@@ -128,7 +128,7 @@
   input:focus ~ label,
   input:not(:placeholder-shown) ~ label {
     top: calc(var(--m3-font-body-small-height, 1rem) * -0.5);
-    font-size: var(--m3-font-body-small-size, 0.75rem);
+    font-size: var(--m3-font-body-small-size, 0.85rem);
     line-height: var(--m3-font-body-small-height, 1rem);
     letter-spacing: var(--m3-font-body-small-tracking, 0.4);
   }

@@ -23,19 +23,19 @@
   <div class="content">
     <label style="height: 2.5rem;">
       <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Alphabetical"} on:input={() => sortOrderChange("Alphabetical")} />
-      <div class="radio">{$t("ALPHABETICAL_LABEL")}</div>
+      <div class="radio font-label">{$t("ALPHABETICAL_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Song Count"} on:input={() => sortOrderChange("Song Count")} />
-      <div class="radio">{$t("TRACK_COUNT_LABEL")}</div>
+      <div class="radio font-label">{$t("TRACK_COUNT_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Most Played"} on:input={() => sortOrderChange("Most Played")} />
-      <div class="radio">{$t("MOST_PLAYED_LABEL")}</div>
+      <div class="radio font-label">{$t("MOST_PLAYED_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="playlistSortOrder" checked={$playlistSortOrder === "Last Played"} on:input={() => sortOrderChange("Last Played")} />
-      <div class="radio">{$t("LAST_PLAYED_LABEL")}</div>
+      <div class="radio font-label">{$t("LAST_PLAYED_LABEL")}</div>
     </label>
   </div>
 </SmallModalBody>
@@ -52,7 +52,6 @@
   }
 
   .radio {
-    margin-left: 15px;
-    font-size: 16px;
+    margin-left: 5px;
   }
 </style>

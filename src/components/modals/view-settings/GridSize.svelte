@@ -43,15 +43,15 @@
   <div class="content">
     <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LARGE} on:input={() => gridSizeChange(GridSize.LARGE)} />
-      <div class="radio">{$t("LARGE_LABEL")}</div>
+      <div class="radio font-label">{$t("LARGE_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.MEDIUM} on:input={() => gridSizeChange(GridSize.MEDIUM)} />
-      <div class="radio">{$t("LARGE_LABEL")}</div>
+      <div class="radio font-label">{$t("MEDIUM_LABEL")}</div>
     </label>
     <label style="height: 2.5rem;">
       <RadioInput name="gridSize" checked={gridSize === GridSize.LIST} on:input={() => gridSizeChange(GridSize.LIST)} />
-      <div class="radio">{$t("LARGE_LABEL")}</div>
+      <div class="radio font-label">{$t("LIST_LABEL")}</div>
     </label>
   </div>
 </SmallModalBody>
@@ -68,7 +68,6 @@
   }
 
   .radio {
-    margin-left: 15px;
-    font-size: 16px;
+    margin-left: 5px;
   }
 </style>

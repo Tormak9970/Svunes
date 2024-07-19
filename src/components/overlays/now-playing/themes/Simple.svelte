@@ -48,14 +48,14 @@
   </div>
   <div class="content">
     <div class="song-info">
-      <div class="title">
+      <div class="font-headline-large title">
         {#if label && label.length > 28}
           <Marquee speed={40} gap={100}>{label}</Marquee>
         {:else}
           {label}
         {/if}
       </div>
-      <div class="artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+      <div class="font-label-large">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
     </div>
     <div class="progress">
       <div class="side">{formatTime($songProgress)}</div> / <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
@@ -128,7 +128,6 @@
   }
 
   .title { font-weight: bold; max-width: 100%; }
-  .artist { font-size: 18px; }
 
   .progress {
     margin-top: 10px;

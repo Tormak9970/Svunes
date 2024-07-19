@@ -6,7 +6,7 @@
   export let disabled = false;
 </script>
 
-<button class="item m3-font-label-large" {disabled} on:click>
+<button class="item m3-font-label-large font-body" {disabled} on:click>
   {#if icon == "space"}
     <span class="icon" />
   {:else if icon}

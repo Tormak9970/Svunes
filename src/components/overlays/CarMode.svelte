@@ -56,7 +56,7 @@
 <div class="container" transition:sharedAxisTransition={{ direction: "Z", leaving: false }}>
   <div class="options">
     <div class="left" />
-    <div class="center">{$t("CAR_MODE_TITLE")}</div>
+    <div class="center font-label-large">{$t("CAR_MODE_TITLE")}</div>
     <div class="right">
       <Button type="text" iconType="full" size="3.5rem" iconSize="2rem" on:click={() => $showCarMode = false}>
         <Icon icon={Close} />
@@ -64,7 +64,7 @@
     </div>
   </div>
   <div class="song-info">
-    <div class="title">
+    <div class="font-headline-large title">
       {#if label && label.length > 28}
         <div style="margin-left: 4%;">
           <Marquee speed={50} gap={100}>{label}</Marquee>
@@ -73,7 +73,7 @@
         {label}
       {/if}
     </div>
-    <div class="artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+    <div class="font-headline">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
   </div>
   <ProgressControls songLength={songLength} />
   <div class="player-controls">
@@ -145,7 +145,6 @@
   }
 
   .title { font-weight: bold; max-width: 100%; }
-  .artist { font-size: 22px; }
 
   .player-controls {
     width: 100%;
@@ -171,7 +170,6 @@
   }
 
   .center {
-    font-size: 18px;
     font-weight: bold;
   }
 

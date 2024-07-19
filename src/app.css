@@ -212,3 +212,37 @@ or for very small text in the content body, such as captions. */
 a.m3-container {
   text-decoration: none;
 }
+
+
+.font-headline-large {
+  font-size: 1.4rem;
+}
+.font-headline {
+  font-size: 1.35rem;
+}
+.font-headline-small {
+  font-size: 1.2rem;
+}
+
+.font-label-large {
+  font-size: 1.1rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.00625rem;
+  font-weight: 500;
+}
+.font-label {
+  font-size: 1rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.00625rem;
+  font-weight: 500;
+}
+.font-label-subtitle {
+  font-size: 0.9rem;
+}
+
+.font-body {
+  font-size: 0.95rem;
+}
+.font-body-medium {
+  font-size: 0.85rem;
+}

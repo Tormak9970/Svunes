@@ -74,6 +74,6 @@
     align-items: center;
     gap: 10px;
 
-    height: 25px;
+    height: 30px;
   }
 </style>

@@ -120,7 +120,7 @@
           <Marquee speed={50} gap={100}>
             <h3 class="name">{playlist?.name}</h3>
           </Marquee>
-          <div class="other">
+          <div class="font-body other">
             <div>{playlist?.songIds?.length} {playlist?.songIds?.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • {playlist?.displayLength()}</div>
           </div>
         </div>
@@ -152,7 +152,6 @@
 
   .name {
     margin: 0px;
-    margin-bottom: 5px;
 
     text-overflow: ellipsis;
     text-wrap: nowrap;
@@ -160,7 +159,6 @@
   }
 
   .other {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
 
     display: flex;

@@ -49,13 +49,13 @@
     "%year%": "year",
   }
   const groupNameLUT = {
-    "%title%": "Title",
-    "%album%": "Album",
-    "%track%": "Track",
-    "%artist%": "Artist",
-    "%albumartist%": "Album Artist",
-    "%genre%": "Genre",
-    "%year%": "Year",
+    "%title%": $t("TITLE_LABEL"),
+    "%album%": $t("ALBUM_LABEL"),
+    "%track%": $t("TRACK_LABEL"),
+    "%artist%": $t("ARTIST_LABEL"),
+    "%albumartist%": $t("ALBUM_ARTIST_LABEL"),
+    "%genre%": $t("GENRE_LABEL"),
+    "%year%": $t("YEAR_LABEL"),
   }
   const templateSplitter = /(%title%|%album%|%track%|%artist%|%albumartist%|%genre%|%year%|%dummy%)+/;
 
@@ -201,7 +201,7 @@
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div style="font-size: 20px;">{$t("METADATA_PARSER_TITLE")}</div>
+        <div class="font-headline">{$t("METADATA_PARSER_TITLE")}</div>
       </span>
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
         <Button type="text" iconType="full" on:click={parse}>
@@ -223,11 +223,11 @@
     <div class="preview">
       {#if results.length === 0 && parserWasRun}
         <div class="message-container">
-          <div class="message">{$t("NO_PARSER_RESULTS_MESSAGE")}.</div>
+          <div class="font-label">{$t("NO_PARSER_RESULTS_MESSAGE")}.</div>
         </div>
       {:else if results.length === 0}
         <div class="message-container">
-          <div class="message">{$t("RUN_PARSER_MESSAGE")}.</div>
+          <div class="font-label">{$t("RUN_PARSER_MESSAGE")}.</div>
         </div>
       {:else}
         <ParsePreview results={results} tabsUsed={tabsUsed} bind:tab={tab} />
@@ -251,10 +251,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .message {
-    font-size: 20px;
   }
 
   .pattern-container {

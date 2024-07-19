@@ -12,7 +12,7 @@
 <button
   on:click|stopPropagation
   {disabled}
-  class="m3-container m3-font-label-large {type} icon-{iconType}"
+  class="m3-container m3-font-label-large font-label {type} icon-{iconType}"
   style:--size={size}
   style:--icon-size={iconSize}
   style="display: {display};"

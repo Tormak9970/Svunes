@@ -16,8 +16,8 @@
  <div class="content">
     {#each langs as lang, i}
       <div class="entry">
-        <div class="lang">{$getLanguageName(lang)}</div>
-        <div class="credits">{credits[i].length === 0 ? $t("NONE_VALUE") : credits[i].join(", ")}</div>
+        <div class="font-label lang">{$getLanguageName(lang)}</div>
+        <div class="font-body">{credits[i].length === 0 ? $t("NONE_VALUE") : credits[i].join(", ")}</div>
       </div>
     {/each}
   </div>
@@ -38,7 +38,6 @@
 
   .lang {
     font-weight: bold;
-    font-size: 16px;
   }
   
   .actions {

@@ -48,7 +48,7 @@
   <div class="content" class:highlight={highlighted}>
     <ViewImage src={convertedPath} width={GRID_IMAGE_DIMENSIONS[$artistGridSize].width} height={GRID_IMAGE_DIMENSIONS[$artistGridSize].height} iconSize={size} borderRadius="50%" />
     <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[$artistGridSize].infoHeight}px;">
-      <div class="info">{artist.name}</div>
+      <div class="font-label info">{artist.name}</div>
     </div>
   </div>
 </CardClickable>

@@ -3,11 +3,10 @@
 
   export let display = "flex";
   export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
-  export let overline = "";
   export let headline = "";
   export let supporting = "";
   export let lines: number | undefined = undefined;
-  $: _lines = lines || (overline && supporting ? 3 : overline || supporting ? 2 : 1);
+  $: _lines = lines || (supporting ? 2 : 1);
 </script>
 
 <div class="m3-container lines-{_lines}" style="display: {display}" {...extraOptions}>
@@ -17,19 +16,11 @@
     </div>
   {/if}
   <div class="body">
-    {#if overline}
-      <p class="overline m3-font-label-small">{overline}</p>
-    {/if}
     <p class="headline m3-font-body-large">{headline}</p>
     {#if supporting}
       <p class="supporting m3-font-body-medium">{supporting}</p>
     {/if}
   </div>
-  {#if $$slots.trailing}
-    <div class="trailing m3-font-label-small">
-      <slot name="trailing" />
-    </div>
-  {/if}
 </div>
 
 <style>

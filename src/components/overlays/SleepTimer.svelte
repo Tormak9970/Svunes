@@ -38,7 +38,7 @@
 <BottomSheet on:close={close}>
   <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
     <div class="header">
-      <div class="header-text">{$t("STOP_AUDIO_IN_TITLE")}</div>
+      <div class="header-text font-label">{$t("STOP_AUDIO_IN_TITLE")}</div>
     </div>
     {#each options as option}
       <ListItemButton headline={getTimeOptionLabel(option)} extraOptions={{ style: "width: 100%" }} on:click={() => setTimer(option)} />
@@ -71,5 +71,6 @@
   .header-text {
     margin-top: 5px;
     margin-bottom: 10px;
+    font-weight: bold;
   }
 </style>

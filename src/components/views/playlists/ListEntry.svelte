@@ -56,10 +56,10 @@
     <div class="left">
       <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} />
       <div class="info">
-        <div class="name">
+        <div class="font-label name">
           {playlist.name}
         </div>
-        <div class="secondary">
+        <div class="font-body secondary">
           {#if playlist.pinned}
             <div class="pinned-container">
               <Icon icon={Keep} width="16px" height="16px" />
@@ -118,7 +118,6 @@
   }
 
   .secondary > div {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;

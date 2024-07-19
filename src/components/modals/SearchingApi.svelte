@@ -13,7 +13,7 @@
 
 <ModalBody open headline="" canClose={false}>
   <div style="display: flex; width: 100%; align-items: center; gap: 20px">
-    <LoadingSpinner /> <div style="font-size: 20px;">{$t("SEARCHING_MESSAGE")}...</div>
+    <LoadingSpinner /> <div class="font-headline-small">{$t("SEARCHING_MESSAGE")}...</div>
   </div>
   <div class="actions" slot="buttons">
     <div class="left" />

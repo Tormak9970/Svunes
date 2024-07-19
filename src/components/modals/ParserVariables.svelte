@@ -33,7 +33,7 @@
     flex-direction: column;
     gap: 10px;
 
-    font-size: 16px;
+    font-size: 1rem;
   }
   .actions {
     width: 100%;

@@ -20,7 +20,7 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <label>
     <RadioInput name={name} checked={checked} on:input={onInput} />
-    <div class="radio">{label}</div>
+    <div class="radio font-label">{label}</div>
   </label>
 </button>
 
@@ -47,6 +47,5 @@
   
   .radio {
     margin-left: 15px;
-    font-size: 16px;
   }
 </style>

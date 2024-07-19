@@ -161,7 +161,7 @@
         <Marquee speed={50} gap={100}>
           <h3 class="name">{artist?.name}</h3>
         </Marquee>
-        <div class="other">{`${artist?.albumNames.size} ${artist?.albumNames.size === 1 ? $t("ALBUM_SINGULAR_VALUE") : $t("ALBUM_PLURAL_VALUE")} • `}{`${artist?.songIds.length} ${artist?.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • `}{artist?.displayArtistSongLength()}</div>
+        <div class="font-body other">{`${artist?.albumNames.size} ${artist?.albumNames.size === 1 ? $t("ALBUM_SINGULAR_VALUE") : $t("ALBUM_PLURAL_VALUE")} • `}{`${artist?.songIds.length} ${artist?.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • `}{artist?.displayArtistSongLength()}</div>
       </div>
       {#key rerenderArt}
         <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
@@ -213,7 +213,6 @@
 
   .name {
     margin: 0px;
-    margin-bottom: 5px;
 
     text-overflow: ellipsis;
     text-wrap: nowrap;
@@ -221,7 +220,6 @@
   }
 
   .other {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
   }
 

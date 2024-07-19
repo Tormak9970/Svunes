@@ -43,7 +43,7 @@
       {/if}
     </div>
     <div class="bottom" style="height: {50}px;">
-      <div class="info">{artist.name}</div>
+      <div class="font-label info">{artist.name}</div>
     </div>
   </div>
 </CardClickable>

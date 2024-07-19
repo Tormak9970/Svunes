@@ -70,7 +70,7 @@ export class CoverArtApi {
    */
   async getAlbumCovers(releaseId: string): Promise<string[]> {
     try {
-      const results = await this.makeRequest<CoverResponse>(`releases/${releaseId}`);
+      const results = await this.makeRequest<CoverResponse>(`release/${releaseId}`);
       const images = (results as CoverResponse).images;
 
       return images.map((image) => image.image);

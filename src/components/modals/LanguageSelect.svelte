@@ -25,7 +25,7 @@
     {#each langs as lang}
       <label style="height: 2.5rem;">
         <RadioInput name="appLanguage" checked={$selectedLanguage === lang} on:input={() => setLanguage(lang)} />
-        <div class="radio">{$getLanguageName(lang)}</div>
+        <div class="radio font-label">{$getLanguageName(lang)}</div>
       </label>
     {/each}
   </div>
@@ -43,7 +43,6 @@
   }
 
   .radio {
-    margin-left: 15px;
-    font-size: 16px;
+    margin-left: 5px;
   }
 </style>

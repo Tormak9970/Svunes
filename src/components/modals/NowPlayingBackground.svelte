@@ -26,7 +26,7 @@
     {#each backgroundTypes as backgroundType}
       <label style="height: 2.5rem;">
         <RadioInput name="nowPlayingBackground" checked={$nowPlayingBackgroundType === backgroundType} on:input={() => setBackgroundType(backgroundType)} />
-        <div class="radio">{getNowPlayingBackgroundType(backgroundType)}</div>
+        <div class="radio font-label">{getNowPlayingBackgroundType(backgroundType)}</div>
       </label>
     {/each}
   </div>
@@ -44,7 +44,6 @@
   }
 
   .radio {
-    margin-left: 15px;
-    font-size: 16px;
+    margin-left: 5px;
   }
 </style>

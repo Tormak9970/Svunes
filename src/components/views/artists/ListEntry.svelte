@@ -46,7 +46,7 @@
   <div class="content">
     <div class="left">
       <ViewImage src={convertedPath} width={LIST_IMAGE_DIMENSIONS.width} height={LIST_IMAGE_DIMENSIONS.height} borderRadius="4px" marginLeft="10px" />
-      <div class="info">{artist.name}</div>
+      <div class="font-label info">{artist.name}</div>
     </div>
   </div>
 </CardClickable>

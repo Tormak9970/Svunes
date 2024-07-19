@@ -93,7 +93,7 @@
               <div class="checkbox-container">
                 <Checkbox checked={checkDict[view]} on:input={checkboxHandler(view)} />
               </div>
-              <div>{getViewName(view)}</div>
+              <div class="font-label">{getViewName(view)}</div>
             </div>
             <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div class="handle" use:drag on:drag={getDragHandler(i)}>

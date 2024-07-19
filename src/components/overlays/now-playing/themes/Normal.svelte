@@ -53,7 +53,7 @@
   <div class="content">
     <ProgressControls songLength={songLength} />
     <div class="song-info">
-      <div class="title">
+      <div class="font-headline-large title">
         {#if label && label.length > 28}
           <div style="margin-left: 4%;">
             <Marquee speed={50} gap={100}>{label}</Marquee>
@@ -62,9 +62,9 @@
           {label}
         {/if}
       </div>
-      <div class="artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+      <div class="font-label-large">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
       {#if $showExtraSongInfo}
-        <div class="extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
+        <div class="font-body-medium extra-info">{isMp3 ? "MP3" : "FLAC"} • {song?.displayFrequency()}</div>
       {/if}
     </div>
     <PlayerControls />
@@ -135,8 +135,7 @@
   }
 
   .title { font-weight: bold; max-width: 100%; }
-  .artist { font-size: 18px; }
-  .extra-info { font-size: 14px; opacity: 0.8; }
+  .extra-info { opacity: 0.8; }
 
   .options {
     width: calc(100% - 30px);

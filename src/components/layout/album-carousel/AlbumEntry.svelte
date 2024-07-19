@@ -43,7 +43,7 @@
       {/if}
     </div>
     <div class="bottom" style="height: {50}px;">
-      <div class="info">
+      <div class="font-label info">
         {album.name}
       </div>
     </div>

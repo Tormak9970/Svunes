@@ -56,10 +56,10 @@
     <div class="left">
       <ViewImage src={convertedPath} width={LIST_IMAGE_DIMENSIONS.width} height={LIST_IMAGE_DIMENSIONS.height} borderRadius="4px" marginLeft="10px" />
       <div class="info">
-        <div class="name">
+        <div class="font-label name">
           {song.title ?? song.fileName}
         </div>
-        <div class="secondary">
+        <div class="font-body secondary">
           {#if detailType === "Alphabetical"}
             <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>
           {:else if detailType === "Album"}
@@ -115,7 +115,6 @@
   }
 
   .secondary {
-    font-size: 14px;
     color: rgb(var(--m3-scheme-outline));
     text-wrap: nowrap;
     text-overflow: ellipsis;

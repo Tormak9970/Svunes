@@ -27,7 +27,7 @@
   .small-modal :global(.headline) {
     margin-bottom: 0.5rem;
 
-    font-size: 16px;
+    font-size: 1rem;
   }
   .small-modal :global(.content) {
     margin-bottom: 0.5rem;

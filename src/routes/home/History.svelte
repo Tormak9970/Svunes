@@ -61,7 +61,7 @@
         <Button type="text" iconType="full" on:click={pop}>
           <Icon icon={BackArrow} width="20px" height="20px" />
         </Button>
-        <div style="font-size: 20px;">{$t("HISTORY_TITLE")}</div>
+        <div class="font-headline">{$t("HISTORY_TITLE")}</div>
       </span>
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
         <PlayButton type="text" name="recently-added" on:click={playSongs} />
@@ -79,7 +79,7 @@
     {:else}
       <div class="message-container">
         <Icon icon={SadFace} width="60px" height="60px" />
-        <div class="message">{$t("NO_SONGS_PLAYED_MESSAGE")}.</div>
+        <div class="font-label">{$t("NO_SONGS_PLAYED_MESSAGE")}.</div>
       </div>
     {/if}
   </span>

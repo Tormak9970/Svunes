@@ -33,8 +33,8 @@
             <Icon icon={BackArrow} width="20px" height="20px" />
           </Button>
           <div class="info">
-            <div class="title">{$t("QUEUE_TITLE")}</div>
-            <div class="sub-title">{$t("UP_NEXT_MESSAGE")} • {formatTime(queueLength)}</div>
+            <div class="font-headline-small">{$t("QUEUE_TITLE")}</div>
+            <div class="font-label-subtitle">{$t("UP_NEXT_MESSAGE")} • {formatTime(queueLength)}</div>
           </div>
         </span>
         <span slot="right">
@@ -65,14 +65,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  .sub-title {
-    font-size: 14px;
   }
 
   .content {

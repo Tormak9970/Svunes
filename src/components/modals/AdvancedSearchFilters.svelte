@@ -39,7 +39,7 @@
         <div class="checkbox-container">
           <Checkbox bind:checked={option.enabled} />
         </div>
-        <div>{option.label}</div>
+        <div class="font-label">{option.label}</div>
       </div>
     {/each}
   </div>

@@ -8,7 +8,7 @@
   <div class="left">
     <slot name="left" />
   </div>
-  <div class="title">
+  <div class="font-headline">
     {title}
   </div>
   <div class="right">
@@ -28,10 +28,6 @@
 
   .highlight {
     background-color: var(--highlight-color);
-  }
-
-  .title {
-    font-size: 20px;
   }
 
   .left {

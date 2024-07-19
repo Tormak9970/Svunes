@@ -2,11 +2,10 @@
   export let label: string;
 </script>
 
-<div class="section-header">{label.toLocaleUpperCase()}</div>
+<div class="font-body-medium section-header">{label.toLocaleUpperCase()}</div>
 
 <style>
   .section-header {
-    font-size: 13px;
     color: rgb(var(--m3-scheme-primary));
 
     width: calc(100% - 65px);

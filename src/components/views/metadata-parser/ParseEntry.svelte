@@ -15,10 +15,10 @@
 </script>
 
 <div class="parse-entry">
-  <div class="filename">
+  <div class="filename font-label">
     {result.fileName}
   </div>
-  <div class="parsed-value">
+  <div class="parsed-value font-label">
     <Icon icon={SubdirectoryArrowRight} />
     <div class="field">{tab}</div>
     <Icon icon={ArrowForward} />
