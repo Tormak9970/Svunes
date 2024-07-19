@@ -32,13 +32,14 @@
     showOnlyMissingGenre,
     showOnlyMissingYear
   ], ([$chips, $songs, $albums, $artists, $playlists, $genres, $query, $title, $cover, $album, $artist, $albumArtist, $genre, $year]) => {
+    const queryValue = $query.toLowerCase();
     const results: (string | Song | Album | Artist | Playlist | Genre)[] = [];
 
     if ($query.length === 0 && !($title || $cover || $album || $artist || $albumArtist || $genre || $year)) return results;
 
     if (($chips.length === 0 || $chips.includes("song"))) {
       const songResults = $songs.filter((song) => {
-        return (song.title ?? song.fileName).includes($query) &&
+        return (song.title ?? song.fileName).toLowerCase().includes(queryValue) &&
           (!$title || ($title && !song.title)) &&
           (!$cover || ($cover && !song.artPath)) &&
           (!$album || ($album && !song.album)) &&
@@ -52,7 +53,7 @@
 
     if (($chips.length === 0 || $chips.includes("album")) && !($title || $album || $artist)) {
       const albumResults = $albums.filter((album) => {
-        return album.name.includes($query) &&
+        return album.name.toLowerCase().includes(queryValue) &&
           (!$cover || ($cover && !album.artPath)) &&
           (!$albumArtist || ($albumArtist && album.albumArtist)) &&
           (!$genre || ($genre && !album.genre)) &&
@@ -64,17 +65,17 @@
     const onlyShowIsDisabled = !($title || $cover || $album || $artist || $albumArtist || $genre || $year);
 
     if (($chips.length === 0 || $chips.includes("artist")) && onlyShowIsDisabled) {
-      const artistsResults = $artists.filter((artist) => artist.name.includes($query));
+      const artistsResults = $artists.filter((artist) => artist.name.toLowerCase().includes(queryValue));
       if (artistsResults.length > 0) results.push($t("ARTISTS_TITLE"), ...artistsResults);
     }
 
     if (($chips.length === 0 || $chips.includes("playlist")) && onlyShowIsDisabled) {
-      const playlistsResults = $playlists.filter((playlist) => playlist.name.includes($query));
+      const playlistsResults = $playlists.filter((playlist) => playlist.name.toLowerCase().includes(queryValue));
       if (playlistsResults.length > 0) results.push($t("PLAYLISTS_TITLE"), ...playlistsResults);
     }
     
     if (($chips.length === 0 || $chips.includes("genre")) && onlyShowIsDisabled) {
-      const genreResults = $genres.filter((genre) => genre.name.includes($query));
+      const genreResults = $genres.filter((genre) => genre.name.toLowerCase().includes(queryValue));
       if (genreResults.length > 0) results.push($t("GENRES_TITLE"), ...genreResults);
     }
 
