@@ -9,8 +9,8 @@
   import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { t } from "@stores/Locale";
   import { albumGridSize, albumSortOrder, albums, albumsIsAtTop } from "@stores/State";
+  import AlbumGridEntry from "@views/albums/AlbumGridEntry.svelte";
   import AlbumsHeader from "@views/albums/AlbumsHeader.svelte";
-  import GridEntry from "@views/albums/GridEntry.svelte";
   import ListEntry from "@views/albums/ListEntry.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
@@ -89,7 +89,7 @@
             bind:isAtTop={$albumsIsAtTop}
             let:entry
           >
-            <GridEntry album={entry} />
+            <AlbumGridEntry album={entry} />
           </VirtualGrid>
         {/if}
       {/key}

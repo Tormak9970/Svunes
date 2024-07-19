@@ -9,7 +9,7 @@
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { artistsMap, songs } from "@stores/State";
-  import GridEntry from "@views/artists/GridEntry.svelte";
+  import ArtistGridEntry from "@views/artists/ArtistGridEntry.svelte";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
   import { getAllArtistNames } from "../../lib/utils/Utils";
@@ -52,7 +52,7 @@
   </span>
   <span slot="content">
     <VirtualGrid name="topArtists" saveState={false} itemHeight={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height + GRID_IMAGE_DIMENSIONS[GridSize.LARGE].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].gap} columnGap={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].gap} items={artists} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-      <GridEntry artist={entry} />
+      <ArtistGridEntry artist={entry} />
     </VirtualGrid>
   </span>
 </DetailsBody>

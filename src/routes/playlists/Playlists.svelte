@@ -6,8 +6,8 @@
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { playlistGridSize, playlists, playlistsIsAtTop, playlistSortOrder } from "@stores/State";
-  import GridEntry from "@views/playlists/GridEntry.svelte";
   import ListEntry from "@views/playlists/ListEntry.svelte";
+  import PlaylistGridEntry from "@views/playlists/PlaylistGridEntry.svelte";
   import PlaylistsHeader from "@views/playlists/PlaylistsHeader.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
@@ -85,7 +85,7 @@
           bind:isAtTop={$playlistsIsAtTop}
           let:entry
         >
-          <GridEntry playlist={entry} />
+          <PlaylistGridEntry playlist={entry} />
         </VirtualGrid>
       {/if}
     {/if}

@@ -9,8 +9,8 @@
   import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { t } from "@stores/Locale";
   import { songGridSize, songs, songsIsAtTop, songSortOrder } from "@stores/State";
-  import GridEntry from "@views/songs/GridEntry.svelte";
   import ListEntry from "@views/songs/ListEntry.svelte";
+  import SongGridEntry from "@views/songs/SongGridEntry.svelte";
   import SongsHeader from "@views/songs/SongsHeader.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
@@ -85,7 +85,7 @@
           bind:isAtTop={$songsIsAtTop}
           let:entry
         >
-          <GridEntry song={entry} />
+          <SongGridEntry song={entry} />
         </VirtualGrid>
       {/if}
     {:else}
