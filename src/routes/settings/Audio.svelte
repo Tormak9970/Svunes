@@ -2,7 +2,7 @@
   import { autoPlayOnConnect } from "@stores/State";
   import { pop } from "svelte-spa-router";
 
-  import SettingSection from "@views/settings/SettingSection.svelte";
+  import SectionLabel from "@layout/SectionLabel.svelte";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
@@ -17,7 +17,7 @@
   </span>
   <span class="content" slot="content">
     <!-- Gapless playback? -->
-    <SettingSection label={$t("SETTINGS_AUTO_PLAY_LABEL")} />
+    <SectionLabel label={$t("SETTINGS_AUTO_PLAY_LABEL")} />
     <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
   </span>
 </SettingsBody>

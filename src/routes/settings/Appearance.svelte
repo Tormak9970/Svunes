@@ -5,7 +5,6 @@
 
   import MultiButton from "@interactables/multi-button/MultiButton.svelte";
   import ColorPreset from "@views/settings/ColorPreset.svelte";
-  import SettingSection from "@views/settings/SettingSection.svelte";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ColorSetting from "@views/settings/entries/ColorSetting.svelte";
@@ -16,6 +15,7 @@
   import Dark from "@ktibow/iconset-material-symbols/dark-mode-rounded";
   import Light from "@ktibow/iconset-material-symbols/light-mode-rounded";
   import Theme from "@ktibow/iconset-material-symbols/palette";
+  import SectionLabel from "@layout/SectionLabel.svelte";
   import { t } from "@stores/Locale";
   
   /**
@@ -40,7 +40,7 @@
     <SettingsHeader label={$t("SETTINGS_APPEARANCE_TITLE")} goBack={pop} />
   </span>
   <span class="content" slot="content">
-    <SettingSection label={$t("SETTINGS_APPEARANCE_THEME_LABEL")} />
+    <SectionLabel label={$t("SETTINGS_APPEARANCE_THEME_LABEL")} />
     <ColorSetting icon={Theme} label={$t("SETTINGS_APPEARANCE_APP_THEME_LABEL")} description={$t("SETTINGS_APPEARANCE_APP_THEME_DESC")} bind:color={$themePrimaryColor} />
     <div class="color-presets">
       <ColorPreset hex="#51dd28" on:click={() => setThemeColor("#51dd28")} />
@@ -49,7 +49,7 @@
       <ColorPreset hex="#a74bf2" on:click={() => setThemeColor("#a74bf2")} />
       <ColorPreset hex="#ffd28d" on:click={() => setThemeColor("#ffd28d")} />
     </div>
-    <SettingSection label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} />
+    <SectionLabel label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} />
     <MultiButtonSetting label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} description={$t("SETTINGS_APPEARANCE_PALETTE_DESC")}>
       <MultiButton name="theme-palette" id="auto" icon={Auto} checked={$palette === "Auto"} on:input={() => setPalette("Auto")}>{$t("SETTINGS_APPEARANCE_PALETTE_AUTO")}</MultiButton>
       <MultiButton name="theme-palette" id="dark" icon={Dark} checked={$palette === "Dark"} on:input={() => setPalette("Dark")}>{$t("SETTINGS_APPEARANCE_PALETTE_DARK")}</MultiButton>

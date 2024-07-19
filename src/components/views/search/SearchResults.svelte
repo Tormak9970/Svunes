@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SectionLabel from "@layout/SectionLabel.svelte";
   import type { Album } from "@lib/models/Album";
   import type { Artist } from "@lib/models/Artist";
   import type { Genre } from "@lib/models/Genre";
@@ -13,7 +14,6 @@
   import GenreListEntry from "../genres/GenreListEntry.svelte";
   import PlaylistListEntry from "../playlists/PlaylistListEntry.svelte";
   import SongListEntry from "../songs/SongListEntry.svelte";
-  import SearchSection from "./SearchSection.svelte";
   import VirtualizedResults from "./VirtualizedResults.svelte";
 
   const searchResults = derived([
@@ -87,7 +87,7 @@
     {#key $searchResults.length}
       <VirtualizedResults items={$searchResults} keyFunction={(entry) => entry.data.id ?? entry.data.name ?? entry.data} let:entry>
         {#if typeof entry === "string"}
-          <SearchSection label={entry} />
+          <SectionLabel marginLeft="0.5rem" label={entry} />
         {:else if !!entry.fileName}
           <SongListEntry song={entry} detailType="Alphabetical" />
         {:else if !!entry.artists && !!entry.releaseYear}
@@ -103,7 +103,7 @@
     {/key}
   {:else}
     <div class="message-container">
-      <div class="message">{$t("NO_SEARCH_RESULTS_MESSAGE")}</div>
+      <div class="font-label message">{$t("NO_SEARCH_RESULTS_MESSAGE")}</div>
     </div>
   {/if}
 </div>
@@ -129,7 +129,6 @@
 
   .message {
     max-width: 300px;
-    font-size: 18px;
     text-align: center;
   }
 </style>

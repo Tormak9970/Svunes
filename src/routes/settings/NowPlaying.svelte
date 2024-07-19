@@ -5,7 +5,6 @@
   import { getNowPlayingBackgroundType, getNowPlayingTheme, type NowPlayingExtraControl } from "../../types/Settings";
 
   import MultiButton from "@interactables/multi-button/MultiButton.svelte";
-  import SettingSection from "@views/settings/SettingSection.svelte";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
@@ -20,6 +19,7 @@
   import PlayCircle from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
   import SwipeDownAlt from "@ktibow/iconset-material-symbols/swipe-down-alt-rounded";
   import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
+  import SectionLabel from "@layout/SectionLabel.svelte";
   import { t } from "@stores/Locale";
 
   function setAdditionalControl(control: NowPlayingExtraControl) {
@@ -36,7 +36,7 @@
     <ButtonSetting label={$t("SETTINGS_NOW_PLAYING_BACKGROUND_LABEL")} description={getNowPlayingBackgroundType($nowPlayingBackgroundType)} icon={Imagesmode} on:click={() => $showNowPlayingBackground = true} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_EXTRA_INFO_LABEL")} description={$t("SETTINGS_NOW_PLAYING_EXTRA_INFO_DESC")} bind:checked={$showExtraSongInfo} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_AUTO_CAR_LABEL")} icon={MinorCrash} description={$t("SETTINGS_NOW_PLAYING_AUTO_CAR_DESC")} bind:checked={$autoDetectCarMode} />
-    <SettingSection label={$t("SETTINGS_NOW_PLAYING_CONTROLS_LABEL")} />
+    <SectionLabel label={$t("SETTINGS_NOW_PLAYING_CONTROLS_LABEL")} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_SWIPE_DOWN_LABEL")} description={$t("SETTINGS_NOW_PLAYING_SWIPE_DOWN_DESC")} icon={SwipeDownAlt} bind:checked={$dismissMiniPlayerWithSwipe} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_VOLUME_LABEL")} description={$t("SETTINGS_NOW_PLAYING_VOLUME_DESC")} icon={VolumeUp} bind:checked={$showVolumeControls} />
     <MultiButtonSetting label={$t("SETTINGS_NOW_PLAYING_ADDITIONAL_LABEL")} description={$t("SETTINGS_NOW_PLAYING_ADDITIONAL_DESC")}>
