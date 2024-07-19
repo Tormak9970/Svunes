@@ -12,7 +12,7 @@
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { isPaused, nowPlayingList, songs, songsMap } from "@stores/State";
-  import ListEntry from "@views/songs/ListEntry.svelte";
+  import SongListEntry from "@views/songs/SongListEntry.svelte";
   import PlayButton from "@views/utils/PlayButton.svelte";
   import { pop } from "svelte-spa-router";
 
@@ -72,7 +72,7 @@
   </span>
   <span class="content" slot="content">
     <VirtualList name="mostPlayed" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-      <ListEntry song={entry} detailType="Alphabetical" />
+      <SongListEntry song={entry} detailType="Alphabetical" />
     </VirtualList>
   </span>
 </DetailsBody>

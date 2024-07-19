@@ -14,7 +14,7 @@
   import { t } from "@stores/Locale";
   import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { genresMap, isPaused, nowPlayingList, songsMap } from "@stores/State";
-  import ListEntry from "@views/songs/ListEntry.svelte";
+  import SongListEntry from "@views/songs/SongListEntry.svelte";
   import PlayButton from "@views/utils/PlayButton.svelte";
   import { pop } from "svelte-spa-router";
 
@@ -92,7 +92,7 @@
   </span>
   <span class="content" slot="content">
     <VirtualList name="genreDetails" saveState={false} itemHeight={60} items={genreSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
-      <ListEntry song={entry} detailType="Alphabetical" />
+      <SongListEntry song={entry} detailType="Alphabetical" />
     </VirtualList>
   </span>
 </DetailsBody>

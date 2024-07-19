@@ -8,11 +8,11 @@
   import { searchQuery, selectedChips, showOnlyMissingAlbum, showOnlyMissingAlbumArtist, showOnlyMissingArtist, showOnlyMissingCover, showOnlyMissingGenre, showOnlyMissingTitle, showOnlyMissingYear } from "@stores/Search";
   import { albums, artists, genres, playlists, songs } from "@stores/State";
   import { derived } from "svelte/store";
-  import AlbumListEntry from "../albums/ListEntry.svelte";
-  import ArtistListEntry from "../artists/ListEntry.svelte";
-  import GenreListEntry from "../genres/ListEntry.svelte";
-  import PlaylistListEntry from "../playlists/ListEntry.svelte";
-  import SongListEntry from "../songs/ListEntry.svelte";
+  import AlbumListEntry from "../albums/AlbumListEntry.svelte";
+  import ArtistListEntry from "../artists/ArtistListEntry.svelte";
+  import GenreListEntry from "../genres/GenreListEntry.svelte";
+  import PlaylistListEntry from "../playlists/PlaylistListEntry.svelte";
+  import SongListEntry from "../songs/SongListEntry.svelte";
   import SearchSection from "./SearchSection.svelte";
   import VirtualizedResults from "./VirtualizedResults.svelte";
 

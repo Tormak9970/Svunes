@@ -10,8 +10,8 @@
   import { t } from "@stores/Locale";
   import { artistGridSize, artists, artistsIsAtTop, artistSortOrder } from "@stores/State";
   import ArtistGridEntry from "@views/artists/ArtistGridEntry.svelte";
+  import ArtistListEntry from "@views/artists/ArtistListEntry.svelte";
   import ArtistsHeader from "@views/artists/ArtistsHeader.svelte";
-  import ListEntry from "@views/artists/ListEntry.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
   import { GridSize, type ArtistSortOrder } from "../../types/Settings";
@@ -66,7 +66,7 @@
           bind:isAtTop={$artistsIsAtTop}
           let:entry
         >
-          <ListEntry artist={entry} />
+          <ArtistListEntry artist={entry} />
         </VirtualList>
       {:else}
         <VirtualGrid

@@ -3,18 +3,20 @@
   import MenuButton from "@interactables/MenuButton.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import GridEntry from "@layout/entries/GridEntry.svelte";
   import type { Playlist } from "@lib/models/Playlist";
-  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
+  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
-  import { playlistGridSize, playlistSortOrder } from "@stores/State";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
+  import type { PlaylistSortOrder } from "../../../types/Settings";
+  import ListEntry from "../../layout/entries/ListEntry.svelte";
   import PlaylistImage from "./PlaylistImage.svelte";
   import PlaylistOptions from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
+  export let detailType: PlaylistSortOrder;
+  export let isSelectable = true;
 
   $: highlighted = $selected.includes(playlist.id);
 
@@ -39,17 +41,16 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
+    if (!$inSelectMode && isSelectable) {
       $selected = [ ...$selected, playlist.id ];
     }
   }
   
   let menuIsOpen = false;
 </script>
-
-<GridEntry label={playlist.name} {highlighted} gridSize={$playlistGridSize} convertedPath={""} on:click={onClick} on:hold={select}>
-  <span slot="playlistImage">
-    <PlaylistImage playlist={playlist} height={GRID_IMAGE_DIMENSIONS[$playlistGridSize].height} width={GRID_IMAGE_DIMENSIONS[$playlistGridSize].width} />
+<ListEntry label={playlist.name} convertedPath={""} highlighted={highlighted} on:click={onClick} on:hold={select}>
+  <span slot="playlistImage" style="margin-left: 10px;">
+    <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} />
   </span>
   <span slot="details">
     {#if playlist.pinned}
@@ -57,11 +58,11 @@
         <Icon icon={Keep} width="16px" height="16px" />
       </div>
     {/if}
-    {#if $playlistSortOrder === "Alphabetical" || $playlistSortOrder === "Song Count"}
+    {#if detailType === "Alphabetical" || detailType === "Song Count"}
       <div in:fade={{ duration: 200 }}>{playlist.songIds.length} {playlist.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • {playlist.displayLength()}</div>
-    {:else if $playlistSortOrder === "Most Played"}
+    {:else if detailType === "Most Played"}
       <div in:fade={{ duration: 200 }}>{$t("PLAYED_TIMES_MESSAGE").replace("{numTimes}", playlist.numTimesPlayed.toString())}</div>
-    {:else if $playlistSortOrder === "Last Played"}
+    {:else if detailType === "Last Played"}
       <div in:fade={{ duration: 200 }}>{playlist.lastPlayedOn === "Never" ? $t("NEVER_VALUE") : $renderDate(playlist.lastPlayedOn)}</div>
     {/if}
   </span>
@@ -70,7 +71,7 @@
       <PlaylistOptions bind:menuIsOpen={menuIsOpen} playlist={playlist} />
     </MenuButton>
   </span>
-</GridEntry>
+</ListEntry>
 
 <style>
   span[slot="details"] {
