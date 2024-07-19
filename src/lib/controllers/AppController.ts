@@ -86,6 +86,15 @@ export class AppController {
     }
 
     const newAlbumsList = Array.from(albumMap.values());
+
+    for (const album of newAlbumsList) {
+      if (!album._albumArtist && album.albumArtist) {
+        for (const id of album.songIds) {
+          songs.find((song) => song.id === id)!.albumArtist = album.albumArtist;
+        }
+      }
+    }
+
     albums.set(newAlbumsList);
     
     LogController.log(`Loaded ${newAlbumsList.length} albums.`);
@@ -232,13 +241,14 @@ export class AppController {
       
       if (SettingsController.getSetting<number>("cache.numSongs") !== loadedSongs.length) PlaybackController.resetNowPlaying();
 
+      this.loadAlbumsFromSongs(loadedSongs);
+
       songs.set(loadedSongs);
       LogController.log(`Loaded ${loadedSongs.length} songs.`);
       
       const songId = SettingsController.getSetting<string>("cache.playingSongId");
       if (songId !== "") playingSongId.set(songId);
 
-      this.loadAlbumsFromSongs(loadedSongs);
       this.loadGenresFromSongs(loadedSongs);
       this.loadArtistsFromSongs(loadedSongs);
     }
