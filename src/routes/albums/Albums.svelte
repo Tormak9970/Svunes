@@ -1,6 +1,12 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import ViewHeader from "@layout/ViewHeader.svelte";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
@@ -8,17 +14,40 @@
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { t } from "@stores/Locale";
-  import { albumGridSize, albumSortOrder, albums, albumsIsAtTop } from "@stores/State";
+  import { showAlbumSortOrder, showGridSize } from "@stores/Modals";
+  import { selectedChips } from "@stores/Search";
+  import { albumGridSize, albumSortOrder, albums, albumsIsAtTop, lastView, selectedView } from "@stores/State";
   import AlbumGridEntry from "@views/albums/AlbumGridEntry.svelte";
   import AlbumListEntry from "@views/albums/AlbumListEntry.svelte";
-  import AlbumsHeader from "@views/albums/AlbumsHeader.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
+  import { push } from "svelte-spa-router";
   import { GridSize, type AlbumSortOrder } from "../../types/Settings";
+  import { View } from "../../types/View";
 
   const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 
   let gridSize = $albumGridSize;
+  let menuIsOpen = false;
+
+  /**
+   * Navigates to the settings view.
+   */
+   function goToSettings() {
+    $lastView = $selectedView;
+    $selectedView = View.SETTINGS;
+    push("/settings");
+  }
+
+  /**
+   * Navigates to the search view.
+   */
+  function openSearch() {
+    $lastView = $selectedView;
+    $selectedView = View.SEARCH;
+    $selectedChips = [ "album" ];
+    push("/search");
+  }
 
   /**
    * Sorts the albums.
@@ -61,7 +90,20 @@
 
 <ViewContainer>
   <div slot="header">
-    <AlbumsHeader highlight={!$albumsIsAtTop} />
+    <ViewHeader title={$t("ALBUMS_TITLE")} highlight={!$albumsIsAtTop}>
+      <div slot="left">
+        <Button type="text" iconType="full" on:click={openSearch}>
+          <Icon icon={Search} width="20px" height="20px" />
+        </Button>
+      </div>
+      <div slot="right">
+        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
+          <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>{$t("GRID_SIZE_ACTION")}</MenuItem>
+          <MenuItem on:click={() => { $showAlbumSortOrder = true; menuIsOpen = false; }}>{$t("SORT_BY_ACTION")}</MenuItem>
+          <MenuItem on:click={goToSettings}>{$t("SETTINGS_ACTION")}</MenuItem>
+        </MenuButton>
+      </div>
+    </ViewHeader>
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
     {#if sortedAlbums.length > 0}

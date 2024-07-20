@@ -1,6 +1,12 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import MenuButton from "@interactables/MenuButton.svelte";
+  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
+  import MenuItem from "@layout/MenuItem.svelte";
+  import ViewHeader from "@layout/ViewHeader.svelte";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
@@ -8,17 +14,40 @@
   import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { t } from "@stores/Locale";
-  import { songGridSize, songs, songsIsAtTop, songSortOrder } from "@stores/State";
+  import { showGridSize, showSongSortOrder } from "@stores/Modals";
+  import { selectedChips } from "@stores/Search";
+  import { lastView, selectedView, songGridSize, songs, songsIsAtTop, songSortOrder } from "@stores/State";
   import SongGridEntry from "@views/songs/SongGridEntry.svelte";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
-  import SongsHeader from "@views/songs/SongsHeader.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
+  import { push } from "svelte-spa-router";
   import { type SongSortOrder, GridSize } from "../../types/Settings";
+  import { View } from "../../types/View";
 
   const keyFunction = (entry: { data: Song }) => entry.data.filePath;
 
   let gridSize = $songGridSize;
+  let menuIsOpen = false;
+
+  /**
+   * Navigates to the settings view.
+   */
+   function goToSettings() {
+    $lastView = $selectedView;
+    $selectedView = View.SETTINGS;
+    push("/settings");
+  }
+
+  /**
+   * Navigates to the search view.
+   */
+  function openSearch() {
+    $lastView = $selectedView;
+    $selectedView = View.SEARCH;
+    $selectedChips = [ "song" ];
+    push("/search");
+  }
 
   /**
    * Sorts the songs.
@@ -59,7 +88,20 @@
 
 <ViewContainer>
   <div slot="header">
-    <SongsHeader highlight={!$songsIsAtTop} />
+    <ViewHeader title={$t("SONGS_TITLE")} highlight={!$songsIsAtTop}>
+      <div slot="left">
+        <Button type="text" iconType="full" on:click={openSearch}>
+          <Icon icon={Search} width="20px" height="20px" />
+        </Button>
+      </div>
+      <div slot="right">
+        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
+          <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>{$t("GRID_SIZE_ACTION")}</MenuItem>
+          <MenuItem on:click={() => { $showSongSortOrder = true; menuIsOpen = false; }}>{$t("SORT_BY_ACTION")}</MenuItem>
+          <MenuItem on:click={goToSettings}>{$t("SETTINGS_ACTION")}</MenuItem>
+        </MenuButton>
+      </div>
+    </ViewHeader>
   </div>
   <div slot="content" style="height: 100%; width: 100%;">
     {#if sortedSongs.length > 0}

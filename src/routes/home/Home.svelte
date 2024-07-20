@@ -1,6 +1,5 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
-  import HomeHeader from "@views/home/HomeHeader.svelte";
   import Suggestions from "@views/home/Suggestions.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
   
@@ -8,11 +7,14 @@
 
   import CalendarAddOn from "@ktibow/iconset-material-symbols/calendar-add-on-rounded";
   import History from "@ktibow/iconset-material-symbols/history-rounded";
+  import Search from "@ktibow/iconset-material-symbols/search";
+  import Settings from "@ktibow/iconset-material-symbols/settings";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import TrendingUp from "@ktibow/iconset-material-symbols/trending-up-rounded";
   
   import AlbumCarousel from "@layout/album-carousel/AlbumCarousel.svelte";
   import ArtistCarousel from "@layout/artist-carousel/ArtistCarousel.svelte";
+  import ViewHeader from "@layout/ViewHeader.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Album } from "@lib/models/Album";
@@ -20,14 +22,35 @@
   import { shuffleSongs } from "@lib/utils/Shuffle";
   import { getAllArtistNames } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
-  import { albumsMap, artistsMap, showSuggestions, songs, songsMap } from "@stores/State";
+  import { selectedChips } from "@stores/Search";
+  import { albumsMap, artistsMap, lastView, selectedView, showSuggestions, songs, songsMap } from "@stores/State";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
+  import { View } from "../../types/View";
 
   let isAtTop = true;
 
   let artists: Artist[] = [];
   let albums: Album[] = [];
+  
+  /**
+   * Navigates to the settings view.
+   */
+  function goToSettings() {
+    $lastView = $selectedView;
+    $selectedView = View.SETTINGS;
+    push("/settings");
+  }
+
+  /**
+   * Navigates to the search view.
+   */
+  function openSearch() {
+    $lastView = $selectedView;
+    $selectedView = View.SEARCH;
+    $selectedChips = [];
+    push("/search");
+  }
 
   function scrollHandler(e: Event) {
     const element = e.currentTarget as HTMLDivElement;
@@ -65,7 +88,18 @@
 
 <ViewContainer>
   <div slot="header">
-    <HomeHeader highlight={!isAtTop} />
+    <ViewHeader title="Tunistic" highlight={!isAtTop}>
+      <div slot="left">
+        <Button type="text" iconType="full" on:click={openSearch}>
+          <Icon icon={Search} width="20px" height="20px" />
+        </Button>
+      </div>
+      <div slot="right">
+        <Button type="text" iconType="full" on:click={goToSettings}>
+          <Icon icon={Settings} width="20px" height="20px" />
+        </Button>
+      </div>
+    </ViewHeader>
   </div>
   <div slot="content" class="content" style="overflow: scroll;" on:scroll={scrollHandler}>
     <div class="inner-content">

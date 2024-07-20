@@ -1,13 +1,38 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import Button from "@interactables/Button.svelte";
+  import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
+  import Settings from "@ktibow/iconset-material-symbols/settings";
+  import ViewHeader from "@layout/ViewHeader.svelte";
   import { t } from "@stores/Locale";
-  import { genres } from "@stores/State";
+  import { selectedChips } from "@stores/Search";
+  import { genres, lastView, selectedView } from "@stores/State";
   import GenreEntry from "@views/genres/GenreEntry.svelte";
-  import GenresHeader from "@views/genres/GenresHeader.svelte";
   import ViewContainer from "@views/utils/ViewContainer.svelte";
+  import { push } from "svelte-spa-router";
+  import { View } from "../../types/View";
   
   let isAtTop = true;
+  
+  /**
+   * Navigates to the settings view.
+   */
+  function goToSettings() {
+    $lastView = $selectedView;
+    $selectedView = View.SETTINGS;
+    push("/settings");
+  }
+
+  /**
+   * Navigates to the search view.
+   */
+  function openSearch() {
+    $lastView = $selectedView;
+    $selectedView = View.SEARCH;
+    $selectedChips = [ "genre" ];
+    push("/search");
+  }
 
   function scrollHandler(e: Event) {
     const element = e.currentTarget as HTMLDivElement;
@@ -17,7 +42,18 @@
 
 <ViewContainer>
   <div slot="header">
-    <GenresHeader highlight={!isAtTop} />
+    <ViewHeader title={$t("GENRES_TITLE")} highlight={!isAtTop}>
+      <div slot="left">
+        <Button type="text" iconType="full" on:click={openSearch}>
+          <Icon icon={Search} width="20px" height="20px" />
+        </Button>
+      </div>
+      <div slot="right">
+        <Button type="text" iconType="full" on:click={goToSettings}>
+          <Icon icon={Settings} width="20px" height="20px" />
+        </Button>
+      </div>
+    </ViewHeader>
   </div>
   <div slot="content" class="content" on:scroll={scrollHandler}>
     {#if $genres.length > 0}
