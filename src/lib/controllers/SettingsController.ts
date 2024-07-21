@@ -25,6 +25,7 @@ import type { Album } from "../models/Album";
 import type { Artist } from "../models/Artist";
 import { Playlist } from "../models/Playlist";
 import { Song } from "../models/Song";
+import { debounce } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
 
@@ -150,7 +151,7 @@ export class SettingsController {
     return settings;
   }
 
-  private static async save() {
+  private static async saveSettings() {
     const entries = Object.entries(this.settings);
     const savePromises = entries.map(async ([key, value]) => {
       return await this.store.set(key, value);
@@ -158,6 +159,11 @@ export class SettingsController {
 
     await Promise.all(savePromises);
     await this.store.save();
+  }
+  private static debouncedSave = debounce(this.saveSettings.bind(this), 1000) as () => Promise<void>;
+
+  private static async save() {
+    await this.debouncedSave();
   }
 
   /**
@@ -209,9 +215,8 @@ export class SettingsController {
    * Updates the given settings field with the provided data.
    * @param field The setting to update.
    * @param val The new value.
-   * @param shouldSaveImmediately Whether the change should be saved immediately.
    */
-  private static updateSetting<T>(field: string, val: T, shouldSaveImmediately = false): void {
+  private static updateSetting<T>(field: string, val: T): void {
     const settings = structuredClone(this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
@@ -225,24 +230,23 @@ export class SettingsController {
     parentObject[fieldPath[fieldPath.length - 1]] = val;
 
     this.settings = settings;
-    if (shouldSaveImmediately) this.save();
+    this.save();
 
     const stringified = JSON.stringify(val);
-    LogController.log(stringified.length < 200 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
+    LogController.log(stringified.length < 100 ? `Updated setting ${field} to ${stringified}.` : `Updated setting ${field}.`);
   }
 
   /**
    * Returns a function that updates the given setting if the value has changed.
    * @param field The setting to update.
-   * @param shouldSaveImmediately Whether the change should be saved immediately.
    * @returns A function that updates the given setting if the value has changed.
    */
-  private static updateStoreIfChanged<T>(field: string, shouldSaveImmediately = false): (val: T) => void {
+  private static updateStoreIfChanged<T>(field: string): (val: T) => void {
     return (val: T) => {
       const original = this.getSetting<T>(field);
 
       if (original !== val) {
-        this.updateSetting(field, val, shouldSaveImmediately);
+        this.updateSetting(field, val);
       }
     }
   }
@@ -441,7 +445,7 @@ export class SettingsController {
       })));
     });
     this.songsUnsub = songs.subscribe((newSongs) => {
-      this.updateSetting<number>("cache.numSongs", newSongs.length, false);
+      this.updateSetting<number>("cache.numSongs", newSongs.length);
       this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", Object.fromEntries(newSongs.map((song) => {
         return [
           song.id,
