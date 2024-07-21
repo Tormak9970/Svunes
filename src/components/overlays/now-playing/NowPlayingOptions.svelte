@@ -8,6 +8,7 @@
   import { push } from "svelte-spa-router";
 
   export let showQueueOption = false;
+  export let showBothExtras = false;
   export let menuIsOpen: boolean;
   export let song: Song | undefined;
 
@@ -100,10 +101,10 @@
 {#if showQueueOption}
   <MenuItem on:click={goToQueue}>{$t("QUEUE_ACTION")}</MenuItem>
 {/if}
-{#if $extraControl === "Sleep Timer" ||  $extraControl === "None"}
+{#if $extraControl === "Sleep Timer" ||  $extraControl === "None" || showBothExtras}
   <MenuItem on:click={goToCarMode}>{$t("CAR_MODE_ACTION")}</MenuItem>
 {/if}
-{#if $extraControl === "Car Mode" ||  $extraControl === "None"}
+{#if $extraControl === "Car Mode" ||  $extraControl === "None" || showBothExtras}
   <MenuItem on:click={goToSleepTimer}>{$t("SLEEP_TIMER_ACTION")}</MenuItem>
 {/if}
 {#if song?.album}

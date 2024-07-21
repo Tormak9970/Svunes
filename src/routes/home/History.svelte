@@ -20,6 +20,7 @@
   const keyFunction = (entry: { data: Song }) => entry.data.filePath;
 
   $: lastPlayedSongs = [ ...$songs ].filter((song) => song.lastPlayedOn !== "Never").sort((a, b) => Date.parse(b.lastPlayedOn) - Date.parse(a.lastPlayedOn));
+  $: console.log([ ...$songs ].filter((song) => song.lastPlayedOn !== "Never"));
   $: limited = lastPlayedSongs.length > 100 ? lastPlayedSongs.slice(0, 100) : lastPlayedSongs;
 
   let isAtTop = true;

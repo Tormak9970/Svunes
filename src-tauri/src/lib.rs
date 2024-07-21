@@ -16,7 +16,7 @@ use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use rayon::iter::IntoParallelRefIterator;
-use serde;
+// use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
 use tauri::{self, AppHandle, Manager};
@@ -24,11 +24,11 @@ use tauri::{self, AppHandle, Manager};
 use image::{imageops::FilterType, io::Reader as ImageReader};
 use rayon::prelude::*;
 
-#[derive(Clone, serde::Serialize)]
-struct Payload {
-  args: Vec<String>,
-  cwd: String,
-}
+// #[derive(Clone, serde::Serialize)]
+// struct Payload {
+//   args: Vec<String>,
+//   cwd: String,
+// }
 
 fn color_to_rgb(color: &Color) -> String {
   return format!("{} {} {}", color.r, color.g, color.b);

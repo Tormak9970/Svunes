@@ -5,7 +5,7 @@
   import Marquee from "@layout/Marquee.svelte";
   import type { Song } from "@lib/models/Song";
   import { formatTime } from "@lib/utils/Utils";
-  import { showMiniPlayer, showQueue } from "@stores/Overlays";
+  import { showMiniPlayer } from "@stores/Overlays";
   import { nowPlayingBackgroundType, songProgress } from "@stores/State";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
@@ -17,9 +17,7 @@
   import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
   import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import { t } from "@stores/Locale";
-  import ExtraControl from "../ExtraControl.svelte";
   
   let menuIsOpen = false;
   
@@ -60,14 +58,13 @@
     <div class="progress">
       <div class="side">{formatTime($songProgress)}</div> / <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
     </div>
-    <PlayerControls />
+    <PlayerControls showExtraControls={false} />
     <VolumeControls />
     <div class="options">
       <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showMiniPlayer = true}>
         <Icon icon={KeyboardArrowDown} />
       </Button>
       <div class="right">
-        <ExtraControl size="3rem" iconSize="1.75rem" />
         <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={toggleFavorite}>
           {#if !isFavorited}
             <Icon icon={FavoriteOff} />
@@ -75,11 +72,8 @@
             <Icon icon={FavoriteOn} />
           {/if}
         </Button>
-        <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => { $showQueue = true; $showMiniPlayer = true; }}>
-          <Icon icon={QueueMusic} />
-        </Button>
         <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
-          <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} />
+          <NowPlayingOptions song={song} showQueueOption showBothExtras bind:menuIsOpen={menuIsOpen} />
         </MenuButton>
       </div>
     </div>

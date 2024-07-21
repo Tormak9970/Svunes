@@ -23,40 +23,51 @@ An offline-first music player for your music library. Allows you to make playlis
 ## Fast Load Times
 Tunistic leverages the performance of Rust and multi-threading to quickly load libraries with thousands of songs.
 
-## A Variety of Views
-<!-- makes browsing library easier -->
-<!-- mention sorting -->
+## Intuitive Navigation
+You can browse by your albums, genres, artists, songs or search all of them. Its easy to customize the order of the navigation bar, as well as which pages are displayed.
+| <img src="public/readme-images/home.png" width="200"/>	|<img src="public/readme-images/playlists.png" width="200"/>|   <img src="public/readme-images/search.png" width="200"/>  	|    <img src="public/readme-images/songs.png" width="200"/> 	|
+|:-----:|   :-----:   | :-----:	|:-----:|
+| Home 	| Playlists 	| Search 	| Songs |
 
-## Custom Playlists
-<!-- mention favorites -->
-<!-- mention ability to pin -->
-<!-- mention import/export -->
-
-## App Theme
-
+| <img src="public/readme-images/albums.png" width="200"/>	|<img src="public/readme-images/artists.png" width="200"/>|   <img src="public/readme-images/genres.png" width="200"/>  	|    <img src="public/readme-images/settings.png" width="200"/> 	|
+|:-----: | :-----:	| :-----:	| :-----:	  |
+| Albums | Artists 	| Genres 	| Settings 	|
 
 ## Now Playing Themes
+There are four different Now Playing Themes to pick from, as well as whether to use a solid, gradient, or blurred background.
+| <img src="public/readme-images/np_normal_blurr.png" width="200"/>	|<img src="public/readme-images/np_card_gradient.png" width="200"/>|   <img src="public/readme-images/np_simple_solid.png" width="200"/>  	|    <img src="public/readme-images/np_full_solid.png" width="200"/> 	|
+| :-----: |      :-----:      |    :-----:     |:-----: |
+| Normal (Blurr) 	| Card (Gradient) 	| Simple (Solid) | Full 	|
 
+## Other Features
+ - Customize the look of Tunistic by choosing the app's primary color
+ - AMOLED Dark Theme
 
-## Apple CarPlay / Android Auto Support
+ - Apple CarPlay / Android Auto Support
+ - Bulk Share your songs
 
+ - Personalized Home screen
 
-## Editing
+ - Driving Mode (with an option to start/stop automatically)
+ - Sleep Timer
+ - Volume Controls
 
-### Tag Editing
+ - Create your own playlists
+ - Import/Export playlists
 
-
-### Bulk Editing
-
-
-### Filename Info Parser
-
-
-### Album Info and Cover Art Lookup
+ - Tag Editing for Songs and Albums
+ - Bulk Tag Editing
+ - Filename -> Metadata Parser
+ - Album Info and Cover Art Lookup (requires an internet connection)
 
 
 # Frequently Asked Questions
 
+**Q: Does Tunistic report metrics or track anaylitics?**
+No, everything stays on your device. The only tracking the app does is when songs have been played (for the History feature). This can be disabled in settings if you don't like it.
+
+**Q: It says this is an offline music player, why does it need wifi for some features?**
+The Album Info and Cover lookup require internet by nature, and are useful when trying to edit albums/songs.
 
 # Translations
 If you're native language (or a language you speak) is not currently supported, please consider contributing to Tunistic's translations! You can help by heading to [https://crowdin.com/project/tunistic](https://crowdin.com/project/tunistic) and submitting translations. If a language is not listed there, please submit a GitHub issue and I will add it asap.
@@ -67,6 +78,7 @@ APIs Used:
  - [MetaBrainz](https://beta.musicbrainz.org/doc/About) - Used for automatic song/album information lookup and covers.
 
 Resources & References:
+ - [How Spotify's Shuffle Works](https://engineering.atspotify.com/2014/02/how-to-shuffle-songs/) - An explanation of how pseudo-randomness can make shuffling feel more random.
  - [Metro](https://github.com/MuntashirAkon/Metro) - Inspired the UI scheme and the project as a whole.
  - [Svelte Md3](https://ktibow.github.io/m3-svelte/) - Many of the base components are heavily modified version of components from Svelte Md3.
  - [Material Icons](https://fonts.google.com/icons) - All of the app's icons came from here.
