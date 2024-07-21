@@ -16,19 +16,12 @@ use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
 use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use rayon::iter::IntoParallelRefIterator;
-// use serde;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
 use tauri::{self, AppHandle, Manager};
 
 use image::{imageops::FilterType, io::Reader as ImageReader};
 use rayon::prelude::*;
-
-// #[derive(Clone, serde::Serialize)]
-// struct Payload {
-//   args: Vec<String>,
-//   cwd: String,
-// }
 
 fn color_to_rgb(color: &Color) -> String {
   return format!("{} {} {}", color.r, color.g, color.b);
@@ -335,10 +328,6 @@ pub fn run() {
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_store::Builder::new().build())
-    // .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-    //   println!("{}, {argv:?}, {cwd}", app.package_info().name);
-    //   app.emit("single-instance", Payload { args: argv, cwd }).unwrap();
-    // }))
     .setup(| app | {
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
