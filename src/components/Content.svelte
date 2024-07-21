@@ -127,7 +127,7 @@
 {#if $showViewNav}
   <ViewNav />
 {/if}
-{#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $selectedView !== View.SEARCH && $showNowPlaying}
+{#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying}
   <NowPlayingContainer />
 {/if}
 <ErrorSnackbar bind:show={$showErrorSnackbar} />
