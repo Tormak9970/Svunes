@@ -50,7 +50,7 @@
     {#each folders as directory, i}
       <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
     {:else}
-      <div>{$t("NO_MUSIC_FOLDERS_MESSAGE")}</div>
+      <div class="font-label">{$t("NO_MUSIC_FOLDERS_MESSAGE")}</div>
     {/each}
   </div>
   <div class="actions" slot="buttons">

@@ -1,10 +1,15 @@
-![Version Badge](https://img.shields.io/github/v/release/Tormak9970/Tunistic?label=version&style=flat-square)
-![Downloads Badge](https://img.shields.io/github/downloads/Tormak9970/Tunistic/total?style=flat-square)
-![License Badge](https://img.shields.io/github/license/Tormak9970/Tunistic?style=flat-square)
-[![Static Badge](https://img.shields.io/badge/-translate-brightgreen?style=flat-square&logo=Crowdin)](https://crowdin.com/project/tunistic)
+<h1 align="center">
+  <a name="logo" href="https://tunistic.org/"><img src="./public/github-banner.png" /></a>
+</h1>
 
-
-<!-- TODO: logo -->
+<p align="center">
+  <a href="https://github.com/Tormak9970/tunistic/releases"><img src="https://img.shields.io/github/v/release/Tormak9970/Tunistic?label=version&style=flat-square" /></a>
+  <img src="https://img.shields.io/github/downloads/Tormak9970/Tunistic/total?style=flat-square" />
+  <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/github/license/Tormak9970/Tunistic?style=flat-square" /></a>
+  <a href="https://crowdin.com/project/tunistic"><img src="https://img.shields.io/badge/-translate-brightgreen?style=flat-square&logo=Crowdin" /></a>
+  <br>
+  <br>
+</p>
 
 # Tunistic
 
@@ -77,11 +82,14 @@ If you're native language (or a language you speak) is not currently supported, 
 APIs Used:
  - [MetaBrainz](https://beta.musicbrainz.org/doc/About) - Used for automatic song/album information lookup and covers.
 
-Resources & References:
+References:
  - [How Spotify's Shuffle Works](https://engineering.atspotify.com/2014/02/how-to-shuffle-songs/) - An explanation of how pseudo-randomness can make shuffling feel more random.
  - [Metro](https://github.com/MuntashirAkon/Metro) - Inspired the UI scheme and the project as a whole.
  - [Svelte Md3](https://ktibow.github.io/m3-svelte/) - Many of the base components are heavily modified version of components from Svelte Md3.
+
+Libraries:
  - [Material Icons](https://fonts.google.com/icons) - All of the app's icons came from here.
+ - [Fontawesome Icons](https://fontawesome.com/) - The app's logo uses one of fontawesome's icons.
 
 # License
  - This program is licensed under the [GNU General Public License Version 3](https://www.gnu.org/licenses/#GPL)

@@ -20,8 +20,18 @@ use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
 use tauri::{self, AppHandle, Manager};
 
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
+use tauri::Emitter;
+
 use image::{imageops::FilterType, io::Reader as ImageReader};
 use rayon::prelude::*;
+
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+  args: Vec<String>,
+  cwd: String,
+}
 
 fn color_to_rgb(color: &Color) -> String {
   return format!("{} {} {}", color.r, color.g, color.b);
@@ -306,9 +316,10 @@ async fn download_image(app_handle: AppHandle, image_url: String, dest_path: Str
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
+#[allow(unused_mut)]
 /// This app's main function.
 pub fn run() {
-  tauri::Builder::default()
+  let mut builder = tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       logger::clean_out_log,
       logger::log_to_file,
@@ -327,8 +338,18 @@ pub fn run() {
     .plugin(tauri_plugin_dialog::init())
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
-    .plugin(tauri_plugin_store::Builder::new().build())
-    .setup(| app | {
+    .plugin(tauri_plugin_store::Builder::new().build());
+
+    
+  #[cfg(not(any(target_os = "ios", target_os = "android")))]
+  {
+    builder = builder.plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+      println!("{}, {argv:?}, {cwd}", app.package_info().name);
+      app.emit("single-instance", Payload { args: argv, cwd }).unwrap();
+    }));
+  }
+
+  builder.setup(| app | {
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
       

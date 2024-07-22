@@ -90,6 +90,7 @@ dependencies = [
  "tauri-plugin-http",
  "tauri-plugin-process",
  "tauri-plugin-shell",
+ "tauri-plugin-single-instance",
  "tauri-plugin-store",
 ]
 
@@ -155,6 +156,30 @@ dependencies = [
  "event-listener-strategy",
  "futures-core",
  "pin-project-lite",
+]
+
+[[package]]
+name = "async-executor"
+version = "1.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d7ebdfa2ebdab6b1760375fa7d6f382b9f486eac35fc994625a00e89280bdbb7"
+dependencies = [
+ "async-task",
+ "concurrent-queue",
+ "fastrand",
+ "futures-lite",
+ "slab",
+]
+
+[[package]]
+name = "async-fs"
+version = "2.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ebcd09b382f40fcd159c2d695175b2ae620ffa5f3bd6f664131efff4e8b9e04a"
+dependencies = [
+ "async-lock",
+ "blocking",
+ "futures-lite",
 ]
 
 [[package]]
@@ -4481,8 +4506,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-dialog"
 version = "2.0.0-beta.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8860dd73c96969eb14813f9f04d8665f2853342670456fb6619d637137ef0d09"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v2#490d4208d7ca9c2892cc7af67f1ec089e42a6cf6"
 dependencies = [
  "dunce",
  "log",
@@ -4499,8 +4523,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-fs"
 version = "2.0.0-beta.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "461853268fe115ca19ee21e5986d505944f0b826048fe1bd726d74753fdf1df6"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v2#490d4208d7ca9c2892cc7af67f1ec089e42a6cf6"
 dependencies = [
  "anyhow",
  "glob",
@@ -4518,8 +4541,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-http"
 version = "2.0.0-beta.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b804bdf8fcb469951380221001c4037528df9b75e15b179f78710c7db906017"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v2#490d4208d7ca9c2892cc7af67f1ec089e42a6cf6"
 dependencies = [
  "data-url",
  "http",
@@ -4566,6 +4588,21 @@ dependencies = [
  "tauri-plugin",
  "thiserror",
  "tokio",
+]
+
+[[package]]
+name = "tauri-plugin-single-instance"
+version = "2.0.0-beta.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b21866e185e2f9c5d40afb851441e3292a4f94f4a26af6ae0dff6e7e5ba03f42"
+dependencies = [
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
+ "windows-sys 0.52.0",
+ "zbus",
 ]
 
 [[package]]
@@ -5843,9 +5880,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7b8e3d6ae3342792a6cc2340e4394334c7402f3d793b390d2c5494a4032b3030"
 dependencies = [
  "async-broadcast",
+ "async-executor",
+ "async-fs",
+ "async-io",
+ "async-lock",
  "async-process",
  "async-recursion",
+ "async-task",
  "async-trait",
+ "blocking",
  "derivative",
  "enumflags2",
  "event-listener",
