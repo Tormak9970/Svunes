@@ -1,6 +1,6 @@
 <script lang="ts">
   import { showNowPlayingBackground, showNowPlayingTheme } from "@stores/Modals";
-  import { autoDetectCarMode, dismissMiniPlayerWithSwipe, extraControl, nowPlayingBackgroundType, nowPlayingTheme, showExtraSongInfo, showVolumeControls } from "@stores/State";
+  import { dismissMiniPlayerWithSwipe, extraControl, nowPlayingBackgroundType, nowPlayingTheme, showExtraSongInfo, showVolumeControls } from "@stores/State";
   import { pop } from "svelte-spa-router";
   import { getNowPlayingBackgroundType, getNowPlayingTheme, type NowPlayingExtraControl } from "../../types/Settings";
 
@@ -15,7 +15,6 @@
   import DirectionsCar from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
   import HideSource from "@ktibow/iconset-material-symbols/hide-source-outline-rounded";
   import Imagesmode from "@ktibow/iconset-material-symbols/imagesmode-outline-rounded";
-  import MinorCrash from "@ktibow/iconset-material-symbols/minor-crash-rounded";
   import PlayCircle from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
   import SwipeDownAlt from "@ktibow/iconset-material-symbols/swipe-down-alt-rounded";
   import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
@@ -35,7 +34,6 @@
     <ButtonSetting label={$t("SETTINGS_NOW_PLAYING_THEME_LABEL")} description={getNowPlayingTheme($nowPlayingTheme)} icon={PlayCircle} on:click={() => $showNowPlayingTheme = true} />
     <ButtonSetting label={$t("SETTINGS_NOW_PLAYING_BACKGROUND_LABEL")} description={getNowPlayingBackgroundType($nowPlayingBackgroundType)} icon={Imagesmode} on:click={() => $showNowPlayingBackground = true} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_EXTRA_INFO_LABEL")} description={$t("SETTINGS_NOW_PLAYING_EXTRA_INFO_DESC")} bind:checked={$showExtraSongInfo} />
-    <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_AUTO_CAR_LABEL")} icon={MinorCrash} description={$t("SETTINGS_NOW_PLAYING_AUTO_CAR_DESC")} bind:checked={$autoDetectCarMode} />
     <SectionLabel label={$t("SETTINGS_NOW_PLAYING_CONTROLS_LABEL")} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_SWIPE_DOWN_LABEL")} description={$t("SETTINGS_NOW_PLAYING_SWIPE_DOWN_DESC")} icon={SwipeDownAlt} bind:checked={$dismissMiniPlayerWithSwipe} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_VOLUME_LABEL")} description={$t("SETTINGS_NOW_PLAYING_VOLUME_DESC")} icon={VolumeUp} bind:checked={$showVolumeControls} />

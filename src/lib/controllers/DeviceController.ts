@@ -1,7 +1,4 @@
-import { autoDetectCarMode } from "@stores/State";
-import { listen, type Event, type UnlistenFn } from "@tauri-apps/api/event";
-import { get } from "svelte/store";
-import { showCarMode } from "../../stores/Overlays";
+import { type Event, type UnlistenFn } from "@tauri-apps/api/event";
 
 /**
  * Handles interacting with the device apis.
@@ -20,7 +17,7 @@ export class DeviceController {
    * Registers the device related listeners.
    */
   private static async registerListeners() {
-    this.drivingUnsub = await listen<boolean>("user-driving-state-change", this.handleIsDriving);
+    // this.drivingUnsub = await listen<boolean>("user-driving-state-change", this.handleIsDriving);
   }
 
   /**
@@ -30,15 +27,6 @@ export class DeviceController {
   private static handleIsDriving(isDrivingEvent: Event<boolean>) {
     const isDriving = isDrivingEvent.payload;
 
-    if (get(autoDetectCarMode)) {
-      const isInCarMode = get(showCarMode);
-
-      if (isDriving && !isInCarMode) {
-        showCarMode.set(true);
-      } else if (!isDriving && isInCarMode) {
-        showCarMode.set(false);
-      }
-    }
   }
 
   /**

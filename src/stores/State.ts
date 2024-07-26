@@ -24,7 +24,7 @@ export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = wri
 // * View stores
 export const musicDirectories: Writable<string[]> = writable([]);
 export const selectedView: Writable<View> = writable(-1 as View);
-export const showViewNav: Readable<boolean> = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([$location, $showQueue, $showNowPlaying, $showMiniPlayer]) => {
+export const showNav: Readable<boolean> = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([$location, $showQueue, $showNowPlaying, $showMiniPlayer]) => {
   return $location.lastIndexOf("/") === 0 && $location !== "/settings" && $location !== "/search" && $location !== "/metadata-parser" &&
     !$showQueue &&
     !($showNowPlaying && !$showMiniPlayer);
@@ -73,7 +73,6 @@ export const nowPlayingTheme = writable(NowPlayingTheme.NORMAL);
 export const dismissMiniPlayerWithSwipe = writable(true);
 export const showVolumeControls = writable(true);
 export const extraControl: Writable<NowPlayingExtraControl> = writable("Car Mode");
-export const autoDetectCarMode = writable(true);
 
 export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIENT);
 

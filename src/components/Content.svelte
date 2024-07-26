@@ -6,7 +6,7 @@
   import { SettingsController } from "@lib/controllers/SettingsController";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
-  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showViewNav, songProgress, songsMap, volumeLevel } from "@stores/State";
+  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { onDestroy, onMount } from "svelte";
   import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
@@ -17,7 +17,7 @@
   import { systemDefaultLanguage, t } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
   import Modals from "./modals/Modals.svelte";
-  import ViewNav from "./navigation/ViewNav.svelte";
+  import MobileNav from "./navigation/MobileNav.svelte";
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
   import Overlays from "./overlays/Overlays.svelte";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
@@ -124,8 +124,8 @@
 <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} bind:volume={$volumeLevel} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
-{#if $showViewNav}
-  <ViewNav />
+{#if $showNav}
+  <MobileNav />
 {/if}
 {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying}
   <NowPlayingContainer />
@@ -133,7 +133,7 @@
 <ErrorSnackbar bind:show={$showErrorSnackbar} />
 <InfoSnackbar bind:show={$showInfoSnackbar} />
 
-<div class="content" style="height: {$showViewNav ? "calc(100% - 56px)" : "100%"};">
+<div class="content" style="height: {$showNav ? "calc(100% - 56px)" : "100%"};">
   {#if $inSelectMode}
     <SelectHeader />
   {/if}

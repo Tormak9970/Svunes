@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoDetectCarMode, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { Store } from '@tauri-apps/plugin-store';
 import { get, type Unsubscriber } from "svelte/store";
@@ -84,7 +84,6 @@ export class SettingsController {
   private static dismissMiniPlayerWithSwipeUnsub: Unsubscriber;
   private static showVolumeControlsUnsub: Unsubscriber;
   private static extraControlUnsub: Unsubscriber;
-  private static autoDetectCarModeUnsub: Unsubscriber;
 
   private static autoPlayOnConnectUnsub: Unsubscriber;
 
@@ -322,7 +321,6 @@ export class SettingsController {
     showExtraSongInfo.set(nowPlaying.songInfo);
     nowPlayingTheme.set(nowPlaying.layout);
     nowPlayingBackgroundType.set(nowPlaying.backgroundType);
-    autoDetectCarMode.set(nowPlaying.autoDetectCarMode);
 
     const controls = nowPlaying.controls;
     dismissMiniPlayerWithSwipe.set(controls.dismissMiniWithSwipe);
@@ -413,8 +411,7 @@ export class SettingsController {
     this.showExtraSongInfoUnsub = showExtraSongInfo.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.songInfo"));
     this.nowPlayingThemeUnsub = nowPlayingTheme.subscribe(this.updateStoreIfChanged<NowPlayingTheme>("nowPlaying.layout"));
     this.nowPlayingBackgroundTypeUnsub = nowPlayingBackgroundType.subscribe(this.updateStoreIfChanged<NowPlayingBackgroundType>("nowPlaying.backgroundType"));
-    this.autoDetectCarModeUnsub = autoDetectCarMode.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.autoDetectCarMode"));
-
+    
     this.dismissMiniPlayerWithSwipeUnsub = dismissMiniPlayerWithSwipe.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.dismissMiniWithSwipe"));
     this.showVolumeControlsUnsub = showVolumeControls.subscribe(this.updateStoreIfChanged<boolean>("nowPlaying.controls.volumeControls"));
     this.extraControlUnsub = extraControl.subscribe(this.updateStoreIfChanged<NowPlayingExtraControl>("nowPlaying.controls.extraControl"));
@@ -565,7 +562,6 @@ export class SettingsController {
     if (this.showExtraSongInfoUnsub) this.showExtraSongInfoUnsub();
     if (this.nowPlayingThemeUnsub) this.nowPlayingThemeUnsub();
     if (this.nowPlayingBackgroundTypeUnsub) this.nowPlayingBackgroundTypeUnsub();
-    if (this.autoDetectCarModeUnsub) this.autoDetectCarModeUnsub();
 
     if (this.dismissMiniPlayerWithSwipeUnsub) this.dismissMiniPlayerWithSwipeUnsub();
     if (this.showVolumeControlsUnsub) this.showVolumeControlsUnsub();

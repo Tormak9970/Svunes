@@ -1,6 +1,6 @@
 <script lang="ts">
   import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
-  import { dismissMiniPlayerWithSwipe, showViewNav } from "@stores/State";
+  import { dismissMiniPlayerWithSwipe, showNav } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
   import { spring, tweened } from "svelte/motion";
@@ -14,7 +14,7 @@
 
   let hasMounted = false;
   let hasDragged = false;
-  let bottom = tweened(window.innerHeight - ($showViewNav ? 115 : 60), { duration: 200 });
+  let bottom = tweened(window.innerHeight - ($showNav ? 115 : 60), { duration: 200 });
   const dragHeight = spring(0, {});
 
   const openThreshold = -20;
@@ -54,7 +54,7 @@
 	}
   
   onMount(() => {
-    showViewNavUnsub = showViewNav.subscribe((show) => {
+    showViewNavUnsub = showNav.subscribe((show) => {
       if ($showMiniPlayer) $bottom = window.innerHeight - (show ? 115 : 60);
     });
     showMiniPlayerUnsub = showMiniPlayer.subscribe((show) => {
@@ -63,9 +63,9 @@
         dragHeight.set(0, { hard: true });
         $bottom = 0;
       } else if (show && hasMounted) {
-        bottom = tweened(window.innerHeight - ($showViewNav ? 115 : 60) - 30, { duration: 200 });
+        bottom = tweened(window.innerHeight - ($showNav ? 115 : 60) - 30, { duration: 200 });
         dragHeight.set(0, { hard: true });
-        $bottom = window.innerHeight - ($showViewNav ? 115 : 60);
+        $bottom = window.innerHeight - ($showNav ? 115 : 60);
       }
     });
     hasMounted = true;

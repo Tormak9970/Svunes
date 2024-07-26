@@ -118,7 +118,6 @@ export type Settings = {
       volumeControls: boolean;
       extralControl: NowPlayingExtraControl;
     };
-    autoDetectCarMode: boolean;
   };
 
   audio: {
@@ -198,7 +197,6 @@ export const DEFAULT_SETTINGS: Settings = {
       "volumeControls": true,
       "extralControl": "Car Mode",
     },
-    "autoDetectCarMode": true,
   },
 
   "audio": {
