@@ -60,7 +60,6 @@
   .view-container {
     position: absolute;
     top: 0;
-    background-color: rgb(var(--m3-scheme-background));
 
     width: 100%;
     height: 100%;

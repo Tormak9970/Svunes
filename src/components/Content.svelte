@@ -17,6 +17,7 @@
   import { systemDefaultLanguage, t } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
   import Modals from "./modals/Modals.svelte";
+  import DesktopViewWrapper from "./navigation/DesktopViewWrapper.svelte";
   import MobileNav from "./navigation/MobileNav.svelte";
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
   import Overlays from "./overlays/Overlays.svelte";
@@ -124,27 +125,30 @@
 <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} bind:volume={$volumeLevel} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
-{#if $showNav}
-  <MobileNav />
-{/if}
-{#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying}
-  <NowPlayingContainer />
-{/if}
+
 <ErrorSnackbar bind:show={$showErrorSnackbar} />
 <InfoSnackbar bind:show={$showInfoSnackbar} />
 
-<div class="content" style="height: {$showNav ? "calc(100% - 56px)" : "100%"};">
-  {#if $inSelectMode}
-    <SelectHeader />
+<DesktopViewWrapper>
+  <!-- svelte-ignore missing-declaration -->
+  {#if $showNav && IS_MOBILE}
+    <MobileNav />
   {/if}
-  <Router {routes} restoreScrollState={true} on:conditionsFailed={conditionsFailed} />
-</div>
+  {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying}
+    <NowPlayingContainer />
+  {/if}
+
+  <!-- svelte-ignore missing-declaration -->
+  <div class="content" style:height={($showNav && IS_MOBILE) ? "calc(100% - 56px)" : "100%"}>
+    {#if $inSelectMode}
+      <SelectHeader />
+    {/if}
+    <Router {routes} restoreScrollState={true} on:conditionsFailed={conditionsFailed} />
+  </div>
+</DesktopViewWrapper>
 
 <style>
   .content {
     width: 100%;
-    
-    position: absolute;
-    top: 0;
   }
 </style>

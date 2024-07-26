@@ -26,11 +26,14 @@
 
 <div class="view-nav" class:rounded={!$showMiniPlayer} transition:fly={{ duration: 200, y: 60 }}>
   <NavList type="bar" extraOptions={{ style: "padding: 0.75rem 0.5rem; height: 56px;" }}>
-    <div class="items">
-      {#each $viewsToRender.sort((a, b) => $viewIndices[a] - $viewIndices[b]) as view}
-        <NavListButton type="auto" on:click={() => setSelectedView(view)} selected={view === $selectedView} icon={getViewIcon(view)} />
-      {/each}
-    </div>
+    {#each $viewsToRender.sort((a, b) => $viewIndices[a] - $viewIndices[b]) as view}
+      <NavListButton
+        type="bar"
+        icon={getViewIcon(view)}
+        selected={view === $selectedView}
+        on:click={() => setSelectedView(view)}
+      />
+    {/each}
   </NavList>
 </div>
 
@@ -47,12 +50,5 @@
 
   .rounded {
     border-radius: 10px 10px 0px 0px;
-  }
-
-  .items {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
   }
 </style>

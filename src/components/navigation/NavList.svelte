@@ -2,17 +2,17 @@
   import type { HTMLAttributes } from "svelte/elements";
 
   // Both a nav rail and a nav bar.
-  export let display = "flex";
   export let extraOptions: HTMLAttributes<HTMLElement> = {};
-  export let type: "rail" | "bar" | "auto";
+  export let type: "rail" | "bar";
 </script>
 
-<nav class="m3-container type-{type}" style="display: {display};" {...extraOptions}>
+<nav class="m3-container type-{type}" {...extraOptions}>
   <slot />
 </nav>
 
 <style>
   .m3-container {
+    display: flex;
     position: relative;
     flex-grow: 1;
     background-color: rgb(var(--m3-scheme-surface-container));
@@ -22,21 +22,17 @@
   }
 
   .type-rail {
-    background-color: rgb(var(--m3-scheme-surface));
+    background-color: transparent;
     flex-direction: column;
-    width: 5rem;
-    padding: 3.5rem 0;
+    padding: 0;
     justify-content: flex-start;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
-  @media (min-width: 37.5rem) {
-    .type-auto {
-      background-color: rgb(var(--m3-scheme-surface));
-      flex-direction: column;
-      width: 5rem;
-      padding: 3.5rem 0;
-      justify-content: flex-start;
-      gap: 0.75rem;
-    }
+
+  .type-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
 </style>

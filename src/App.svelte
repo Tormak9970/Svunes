@@ -1,7 +1,7 @@
 <script lang="ts">
-  import "./lib/md-defs";
-  import Theme from "./components/theme/Theme.svelte";
   import Content from "./components/Content.svelte";
+  import Theme from "./components/theme/Theme.svelte";
+  import "./lib/md-defs";
   
   /**
    * Prevents undesired keypresses.

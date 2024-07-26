@@ -36,6 +36,58 @@ import SongEditor from "./routes/songs/Edit.svelte";
 import Songs from "./routes/songs/Songs.svelte";
 import { albumsMap } from "./stores/State";
 
+export const sidePanelPrefix = "/side";
+export const sidePanelRoutes = {
+  "/playlists/:id": PlaylistDetails,
+  "/playlists/:id/edit": PlaylistEditor,
+
+  "/albums/:key": wrap({
+    component: AblumDetails,
+    userData: {
+      reason: "key-dne"
+    },
+    conditions: [
+      (detail) => {
+        const key = detail.params!.key;
+        const album = get(albumsMap)[key]
+        return !!album;
+      }
+    ]
+  }),
+  "/albums/:key/alt": AblumDetails,
+  "/albums/:key/edit": AlbumEditor,
+  "/albums/:key/albums-by-artist": AlbumsByArtist,
+
+  "/songs/bulk-edit": BulkEdit,
+  "/songs/:id": SongDetails,
+  "/songs/:id/edit": SongEditor,
+
+  "/artists/:key": ArtistDetails,
+  "/artists/:key/alt": ArtistDetails,
+  "/artists/:key/similar": SimilarArtists,
+
+  "/genres/:key": GenreDetails,
+
+  "/search": Search,
+
+  "/settings": Settings,
+  "/settings/appearance": AppearanceSettings,
+  "/settings/now-playing": NowPlayingSettings,
+  "/settings/audio": AudioSettings,
+  "/settings/personalize": PersonalizeSettings,
+  "/settings/song-filtering": SongFilteringSettings,
+  "/settings/language": LanguageSettings,
+  "/settings/backup": BackupSettings,
+  "/settings/about": AboutSettings,
+
+  "/home": Home,
+  "/home/history": History,
+  "/home/most-played": MostPlayed,
+  "/home/recently-added": RecentlyAdded,
+  "/home/top-artists": TopArtists,
+  "/home/top-albums": TopAlbums,
+}
+
 /**
  * The app's routes.
  */
