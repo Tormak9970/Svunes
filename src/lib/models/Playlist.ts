@@ -1,4 +1,4 @@
-import { songsMap } from "@stores/State";
+import { queue, songsMap } from "@stores/State";
 import { get } from "svelte/store";
 import { formatTime, hash64 } from "../utils/Utils";
 import type { Song } from "./Song";
@@ -79,6 +79,13 @@ export class Playlist {
    */
   removeSong(songId: string) {
     this.songIds.splice(this.songIds.indexOf(songId), 1);
+    
+    const songQueue = get(queue);
+    const index = songQueue.indexOf(songId);
+    if (index !== -1) {
+      songQueue.splice(index, 1);
+      queue.set(songQueue);
+    }
   }
 
   /**
