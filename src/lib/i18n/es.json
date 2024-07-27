@@ -81,6 +81,7 @@
   "INFO_PARSER_ACTION": "Info Parser",
   "DELETE_FROM_DEVICE_ACTION": "Delete from Device",
   "SELECT_ALL_ACTION": "Select All",
+  "CLEAR_QUEUE_ACTION": "Clear Queue",
   "ALBUM_COVER_RESULTS_TITLE": "Album Cover Results",
   "ALBUM_INFO_RESULTS_TITLE": "Album Info Results",
   "SORT_ORDER_TITLE": "Sort Order",
