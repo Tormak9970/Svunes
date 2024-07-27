@@ -11,10 +11,10 @@
   import { showNowPlaying } from "@stores/Overlays";
   import { lastView, selectedView } from "@stores/State";
   import { push } from "svelte-spa-router";
-  import { fly } from "svelte/transition";
   import { View } from "../../types/View";
   import DesktopNav from "../navigation/DesktopNav.svelte";
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
+  import SidePanelRouter from "./SidePanelRouter.svelte";
 
   let menuIsOpen = false;
 
@@ -49,8 +49,6 @@
     }
     menuIsOpen = false;
   }
-
-  let showingSidePanel = true; // ! this'll need to be a store
 </script>
 
 <!-- svelte-ignore missing-declaration -->
@@ -71,19 +69,21 @@
           {/if}
         </div>
       </div>
-      <div class="view-panel" style:width={showingSidePanel ? "calc(100% - 10rem - 1rem - 20rem)" : "calc(100% - 10rem - 0.5rem)"}>
+      <div class="view-panel">
         <slot />
       </div>
-      {#if $desktopSidePanel !== SidePanels.NONE}
-        <div class="details-panel" transition:fly={{ duration: 0.2, x: 200 }}>
-          
-        </div>
-      {/if}
+      <div class="side-panel-wrapper" style:width={$desktopSidePanel !== SidePanels.NONE ? "20.5rem" : "0rem"}>
+        {#if $desktopSidePanel !== SidePanels.NONE}
+          <SidePanelRouter />
+        {/if}
+      </div>
     </div>
     <!-- svelte-ignore missing-declaration -->
-    {#if $showNowPlaying}
-      <NowPlayingDesktop />
-    {/if}
+    <div class="now-playing-wrapper" style:height={$showNowPlaying ? "5.5rem" : "0rem"}>
+      {#if $showNowPlaying}
+        <NowPlayingDesktop />
+      {/if}
+    </div>
   </div>
 {:else}
   <slot />
@@ -117,10 +117,10 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
-    gap: 0.5rem;
   }
 
   .view-panel {
+    margin-left: 0.5rem;
     height: 100%;
     border-radius: 10px;
     overflow: hidden;
@@ -129,16 +129,15 @@
     position: relative;
 
     background-color: rgb(var(--m3-scheme-surface-container-low));
-
-    /* transition: width 0.2s ease-in-out; */
   }
 
-  .details-panel {
+  .side-panel-wrapper {
     height: 100%;
-    width: 20rem;
-    border-radius: 10px;
-    overflow: hidden;
+    transition: width 0.2s ease-in-out;
+  }
 
-    background-color: rgb(var(--m3-scheme-surface-container-low));
+  .now-playing-wrapper {
+    width: 100%;
+    transition: height 0.2s ease-in-out;
   }
 </style>

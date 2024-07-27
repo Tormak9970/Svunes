@@ -9,3 +9,4 @@ export enum SidePanels {
 }
 
 export const desktopSidePanel: Writable<SidePanels> = writable(SidePanels.NONE);
+export const sidePanelProps: Writable<any> = writable({});

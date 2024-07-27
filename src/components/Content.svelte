@@ -4,7 +4,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
-  import { desktopSidePanel } from "@stores/Desktop";
+  import { desktopSidePanel, sidePanelProps } from "@stores/Desktop";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
@@ -43,6 +43,7 @@
       replace("/albums");
     } else if (userData?.reason === 'needs-side') {
       userData.reason = "none";
+      $sidePanelProps = event.detail.params;
       $desktopSidePanel = userData!.sidePanel;
       pop();
     } else {

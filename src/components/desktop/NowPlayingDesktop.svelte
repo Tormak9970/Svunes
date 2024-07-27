@@ -17,7 +17,6 @@
   import { tooltip } from "@svelte-plugins/tooltips";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
-  import { fly } from "svelte/transition";
   import PlayerControls from "../overlays/now-playing/PlayerControls.svelte";
   import ProgressControls from "../overlays/now-playing/ProgressControls.svelte";
   import DesktopVolumeControls from "./DesktopVolumeControls.svelte";
@@ -85,7 +84,7 @@
   });
 </script>
 
-<div class="now-playing-desktop" transition:fly={{ duration: 0.2, y: 100 }}>
+<div class="now-playing-desktop">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="song-info-container" on:click={goToSong}>
