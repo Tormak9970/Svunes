@@ -5,7 +5,7 @@
   import type { Album } from "@lib/models/Album";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { location, push } from "svelte-spa-router";
+  import { push } from "svelte-spa-router";
 
   export let album: Album;
 
@@ -17,11 +17,7 @@
    * Handles when the user clicks on the entry.
    */
   function onClick() {
-    if ($location.endsWith("alt")) {
-      push(`/albums/${album.name}`);
-    } else {
-      push(`/albums/${album.name}/alt`);
-    }
+    push(`/albums/${album.name}`);
   }
 </script>
 

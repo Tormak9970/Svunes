@@ -5,7 +5,7 @@
   import type { Artist } from "@lib/models/Artist";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { location, push } from "svelte-spa-router";
+  import { push } from "svelte-spa-router";
 
   export let artist: Artist;
 
@@ -17,11 +17,7 @@
    * Handles when the user clicks on the entry.
    */
   function onClick() {
-    if ($location.endsWith("alt")) {
-      push(`/artists/${artist.name}`);
-    } else {
-      push(`/artists/${artist.name}/alt`);
-    }
+    push(`/artists/${artist.name}`);
   }
 </script>
 

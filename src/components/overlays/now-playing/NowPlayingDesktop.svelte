@@ -15,7 +15,7 @@
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";
   import { onMount } from "svelte";
-  import { location, push } from "svelte-spa-router";
+  import { push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
   import Tooltip from "../../layout/Tooltip.svelte";
   import PlayerControls from "./PlayerControls.svelte";
@@ -68,11 +68,7 @@
   }
 
   function goToSong() {
-    if ($location.endsWith("/alt")) {
-      push(`/songs/${song!.id}`);
-    } else {
-      push(`/songs/${song!.id}/alt`);
-    }
+    push(`/songs/${song!.id}`);
   }
 
   onMount(() => {

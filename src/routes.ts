@@ -1,5 +1,3 @@
-import type { ComponentType } from "svelte";
-import { location, type RoutePrecondition, type WrappedComponent } from "svelte-spa-router";
 import wrap from "svelte-spa-router/wrap";
 import { get } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
@@ -43,26 +41,29 @@ export const sidePanelRoutes = {
   "/playlists/:id": PlaylistDetails,
   "/playlists/:id/edit": PlaylistEditor,
 
-  "/albums/:key": handleAltRoute(AblumDetails, [
-    (detail) => {
-      const key = detail.params!.key;
-      const album = get(albumsMap)[key];
-      // @ts-expect-error reason does exist.
-      detail.userData!.reason = "album-key-dne";
-      return !!album;
-    }
-  ]),
-  "/albums/:key/alt": handleAltRoute(AblumDetails),
+  "/albums/:key": wrap({
+    component: AblumDetails,
+    userData: {
+      reason: "none"
+    },
+    conditions: [
+      (detail) => {
+        const key = detail.params!.key;
+        const album = get(albumsMap)[key];
+        // @ts-expect-error reason does exist.
+        detail.userData!.reason = "album-key-dne";
+        return !!album;
+      }
+    ]
+  }),
   "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs/bulk-edit": BulkEdit,
-  "/songs/:id": handleAltRoute(SongDetails),
-  "/songs/:id/alt": handleAltRoute(SongDetails),
+  "/songs/:id": SongDetails,
   "/songs/:id/edit": SongEditor,
 
-  "/artists/:key": handleAltRoute(ArtistDetails),
-  "/artists/:key/alt": handleAltRoute(ArtistDetails),
+  "/artists/:key": ArtistDetails,
   "/artists/:key/similar": SimilarArtists,
 
   "/genres/:key": GenreDetails,
@@ -83,24 +84,6 @@ export const sidePanelRoutes = {
 //   });
 // }
 
-function handleAltRoute(component: ComponentType, conditions: RoutePrecondition[] = []): WrappedComponent {
-  return wrap({
-    component: component,
-    userData: {
-      reason: "none"
-    },
-    conditions: [
-      (detail) => {
-        console.log(get(location));
-        console.log(detail.location);
-        console.log(history.state);
-        return true;
-      },
-      ...conditions
-    ]
-  });
-}
-
 /**
  * The app's routes.
  */
@@ -112,28 +95,31 @@ export const routes = {
   "/playlists/:id/edit": PlaylistEditor,
 
   "/albums": Albums,
-  "/albums/:key": handleAltRoute(AblumDetails, [
-    (detail) => {
-      const key = detail.params!.key;
-      const album = get(albumsMap)[key];
-      // @ts-expect-error reason does exist.
-      detail.userData!.reason = "album-key-dne";
-      return !!album;
-    }
-  ]),
-  "/albums/:key/alt": handleAltRoute(AblumDetails),
+  "/albums/:key": wrap({
+    component: AblumDetails,
+    userData: {
+      reason: "none"
+    },
+    conditions: [
+      (detail) => {
+        const key = detail.params!.key;
+        const album = get(albumsMap)[key];
+        // @ts-expect-error reason does exist.
+        detail.userData!.reason = "album-key-dne";
+        return !!album;
+      }
+    ]
+  }),
   "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
   "/songs/bulk-edit": BulkEdit,
-  "/songs/:id": handleAltRoute(SongDetails),
-  "/songs/:id/alt": handleAltRoute(SongDetails),
+  "/songs/:id": SongDetails,
   "/songs/:id/edit": SongEditor,
 
   "/artists": Artists,
-  "/artists/:key": handleAltRoute(ArtistDetails),
-  "/artists/:key/alt": handleAltRoute(ArtistDetails),
+  "/artists/:key": ArtistDetails,
   "/artists/:key/similar": SimilarArtists,
 
   "/genres": Genres,
