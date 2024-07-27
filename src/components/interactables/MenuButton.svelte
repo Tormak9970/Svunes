@@ -44,7 +44,7 @@
   <Button type="text" iconType="full" size={size} iconSize={iconSize} on:click={onClick} extraOptions={extraOptions}>
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
-  <md-menu bind:this={menuElement} positioning="popover">
+  <md-menu bind:this={menuElement} anchor-corner={"end-end"} menu-corner={"start-end"} positioning="popover">
     <slot />
   </md-menu>
 </div>

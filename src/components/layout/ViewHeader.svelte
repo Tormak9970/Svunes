@@ -32,11 +32,15 @@
 
   .left {
     height: 100%;
+    min-width: 1px;
+    min-height: 2.5rem;
     margin-left: 10px;
   }
 
   .right {
     height: 100%;
+    min-width: 1px;
+    min-height: 2.5rem;
     margin-right: 10px;
   }
 </style>

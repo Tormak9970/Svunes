@@ -30,7 +30,7 @@
         borderRadius={borderRadius}
       />
     {/if}
-    <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[gridSize].infoHeight}px;" class:expand={$inSelectMode || gridSize !== GridSize.LARGE}>
+    <div class="bottom" style="height: {GRID_IMAGE_DIMENSIONS[gridSize].infoHeight}px;" class:expand={$inSelectMode || gridSize !== GridSize.LARGE || !$$slots.options}>
       <div class="info" class:center-label={centerLabel}>
         <div class="font-label name">
           {label}

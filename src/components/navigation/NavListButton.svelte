@@ -22,7 +22,7 @@
     <Icon {icon} />
   </div>
   {#if type === "rail"}
-    <p class="m3-font-label-medium">
+    <p class="m3-font-label-medium font-body-medium">
       <slot />
     </p>
   {/if}

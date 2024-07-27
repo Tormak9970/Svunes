@@ -27,9 +27,10 @@
   }
 </script>
 
-<div class="player-controls" class:use-text-color={useTextColor}>
+<!-- svelte-ignore missing-declaration -->
+<div class="player-controls" style:margin-top={IS_MOBILE ? "10px" : "0px"} class:use-text-color={useTextColor}>
   {#if showExtraControls}
-    <Button type="text" iconType="full" size="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
+    <Button type="text" iconType="full" size={IS_MOBILE ? "3rem" : "2rem"} iconSize={IS_MOBILE ? undefined : "1.4rem"} on:click={() => $repeatPlayed = !$repeatPlayed }>
       <div class="button-icon-wrapper" style:color={$repeatPlayed ? enabledColor : disabledColor}>
         <Icon icon={Repeat} />
       </div>
@@ -37,13 +38,13 @@
   {:else}
     <div style="width: 3rem; height: 3rem;" />
   {/if}
-  <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skipBack}>
+  <Button type="text" iconType="full" size={IS_MOBILE ? "4rem" : "2.5rem"} iconSize={IS_MOBILE ? "2.5rem" : "2rem"} on:click={QueueController.skipBack}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipPrevious} />
     </div>
   </Button>
   <span class:change-play-color={useTextColor}>
-    <Button type="filled" iconType="full" size="4rem" iconSize="2.5rem" on:click={handlePlay}>
+    <Button type="filled" iconType="full" size={IS_MOBILE ? "4rem" : "2.5rem"} iconSize={IS_MOBILE ? "2.5rem" : "2rem"} on:click={handlePlay}>
       {#if !$isPaused}
         <Icon icon={Pause} />
       {:else}
@@ -51,13 +52,13 @@
       {/if}
     </Button>
   </span>
-  <Button type="text" iconType="full" size="4rem" iconSize="2.5rem" on:click={QueueController.skip}>
+  <Button type="text" iconType="full" size={IS_MOBILE ? "4rem" : "2.5rem"} iconSize={IS_MOBILE ? "2.5rem" : "2rem"} on:click={QueueController.skip}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipNext} />
     </div>
   </Button>
   {#if showExtraControls}
-    <Button type="text" iconType="full" size="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
+    <Button type="text" iconType="full" size={IS_MOBILE ? "3rem" : "2rem"} iconSize={IS_MOBILE ? undefined : "1.4rem"} extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
       <div class="button-icon-wrapper" style:color={$shuffle ? enabledColor : disabledColor}>
         <Icon icon={Shuffle} />
       </div>
@@ -70,7 +71,6 @@
 <style>
   .player-controls {
     width: 100%;
-    margin-top: 10px;
 
     display: flex;
     align-items: center;

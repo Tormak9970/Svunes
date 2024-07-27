@@ -90,14 +90,20 @@
   <div slot="header">
     <ViewHeader title="Tunistic" highlight={!isAtTop}>
       <div slot="left">
-        <Button type="text" iconType="full" on:click={openSearch}>
-          <Icon icon={Search} width="20px" height="20px" />
-        </Button>
+        <!-- svelte-ignore missing-declaration -->
+        {#if IS_MOBILE}
+          <Button type="text" iconType="full" on:click={openSearch}>
+            <Icon icon={Search} width="20px" height="20px" />
+          </Button>
+        {/if}
       </div>
       <div slot="right">
-        <Button type="text" iconType="full" on:click={goToSettings}>
-          <Icon icon={Settings} width="20px" height="20px" />
-        </Button>
+        <!-- svelte-ignore missing-declaration -->
+        {#if IS_MOBILE}
+          <Button type="text" iconType="full" on:click={goToSettings}>
+            <Icon icon={Settings} width="20px" height="20px" />
+          </Button>
+        {/if}
       </div>
     </ViewHeader>
   </div>
@@ -121,7 +127,8 @@
           {$t("SHUFFLE_TITLE")}
         </Button>
       </div>
-      {#if $showSuggestions}
+      <!-- svelte-ignore missing-declaration -->
+      {#if $showSuggestions && IS_MOBILE}
         <Suggestions />
       {/if}
       <ArtistCarousel label={$t("TOP_ARTISTS_TITLE")} artists={artists} on:click={() => push("/home/top-artists")} />

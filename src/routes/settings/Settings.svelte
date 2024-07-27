@@ -32,7 +32,10 @@
   </span>
   <span class="content" slot="content">
     <SettingsNavButton label={$t("SETTINGS_APPEARANCE_TITLE")} description={$t("SETTINGS_APPEARANCE_PAGE_DESC")} route="/settings/appearance" icon={Palette} color="#42a5f5" />
-    <SettingsNavButton label={$t("SETTINGS_NOW_PLAYING_TITLE")} description={$t("SETTINGS_NOW_PLAYING_PAGE_DESC")} route="/settings/now-playing" icon={NowPlaying} color="#ef5350" />
+    <!-- svelte-ignore missing-declaration -->
+    {#if IS_MOBILE}
+      <SettingsNavButton label={$t("SETTINGS_NOW_PLAYING_TITLE")} description={$t("SETTINGS_NOW_PLAYING_PAGE_DESC")} route="/settings/now-playing" icon={NowPlaying} color="#ef5350" />
+    {/if}
     <SettingsNavButton label={$t("SETTINGS_PERSONALIZE_TITLE")} description={$t("SETTINGS_PERSONALIZE_PAGE_DESC")} route="/settings/personalize" icon={Personalize} color="#66bb6a" />
     <SettingsNavButton label={$t("SETTINGS_AUDIO_TITLE")} description={$t("SETTINGS_AUDIO_PAGE_DESC")} route="/settings/audio" icon={Audio} color="#7e57c2" />
     <SettingsNavButton label={$t("SETTINGS_SONG_FILTERING_TITLE")} description={$t("SETTINGS_SONG_FILTERING_PAGE_DESC")} route="/settings/song-filtering" icon={Other} color="#FFA726" />

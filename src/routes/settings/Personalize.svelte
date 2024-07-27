@@ -20,7 +20,10 @@
   </span>
   <span class="content" slot="content">
     <SectionLabel label={$t("SETTINGS_PERSONALIZE_HOME_LABEL")} />
-    <ToggleSetting label={$t("SETTINGS_PERSONALIZE_SUGGESTIONS_LABEL")} description={$t("SETTINGS_PERSONALIZE_SUGGESTIONS_DESC")} bind:checked={$showSuggestions} />
+    <!-- svelte-ignore missing-declaration -->
+    {#if IS_MOBILE}
+      <ToggleSetting label={$t("SETTINGS_PERSONALIZE_SUGGESTIONS_LABEL")} description={$t("SETTINGS_PERSONALIZE_SUGGESTIONS_DESC")} bind:checked={$showSuggestions} />
+    {/if}
     <ToggleSetting label={$t("SETTINGS_PERSONALIZE_TRACK_HISTORY_LABEL")} description={$t("SETTINGS_PERSONALIZE_TRACK_HISTORY_DESC")} icon={History} bind:checked={$trackHistory} />
     <SectionLabel label={$t("SETTINGS_PERSONALIZE_LIBRARY_LABEL")} />
     <ButtonSetting label={$t("SETTINGS_PERSONALIZE_CATEGORIES_LABEL")} description={$t("SETTINGS_PERSONALIZE_CATEGORIES_DESC")} icon={LibraryMusic} on:click={() => $showEditViewOrder = true} />

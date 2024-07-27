@@ -1,3 +1,5 @@
+import type { ComponentType } from "svelte";
+import { location, type RoutePrecondition, type WrappedComponent } from "svelte-spa-router";
 import wrap from "svelte-spa-router/wrap";
 import { get } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
@@ -41,51 +43,62 @@ export const sidePanelRoutes = {
   "/playlists/:id": PlaylistDetails,
   "/playlists/:id/edit": PlaylistEditor,
 
-  "/albums/:key": wrap({
-    component: AblumDetails,
-    userData: {
-      reason: "key-dne"
-    },
-    conditions: [
-      (detail) => {
-        const key = detail.params!.key;
-        const album = get(albumsMap)[key]
-        return !!album;
-      }
-    ]
-  }),
-  "/albums/:key/alt": AblumDetails,
+  "/albums/:key": handleAltRoute(AblumDetails, [
+    (detail) => {
+      const key = detail.params!.key;
+      const album = get(albumsMap)[key];
+      // @ts-expect-error reason does exist.
+      detail.userData!.reason = "album-key-dne";
+      return !!album;
+    }
+  ]),
+  "/albums/:key/alt": handleAltRoute(AblumDetails),
   "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs/bulk-edit": BulkEdit,
-  "/songs/:id": SongDetails,
+  "/songs/:id": handleAltRoute(SongDetails),
+  "/songs/:id/alt": handleAltRoute(SongDetails),
   "/songs/:id/edit": SongEditor,
 
-  "/artists/:key": ArtistDetails,
-  "/artists/:key/alt": ArtistDetails,
+  "/artists/:key": handleAltRoute(ArtistDetails),
+  "/artists/:key/alt": handleAltRoute(ArtistDetails),
   "/artists/:key/similar": SimilarArtists,
 
   "/genres/:key": GenreDetails,
+}
 
-  "/search": Search,
+// function handleSideRoute(component: ComponentType, conditions: RoutePrecondition[] = []): WrappedComponent {
+//   return wrap({
+//     component: component,
+//     userData: {
+//       reason: "none"
+//     },
+//     conditions: [
+//       (detail) => {
+        
+//       },
+//       ...conditions
+//     ]
+//   });
+// }
 
-  "/settings": Settings,
-  "/settings/appearance": AppearanceSettings,
-  "/settings/now-playing": NowPlayingSettings,
-  "/settings/audio": AudioSettings,
-  "/settings/personalize": PersonalizeSettings,
-  "/settings/song-filtering": SongFilteringSettings,
-  "/settings/language": LanguageSettings,
-  "/settings/backup": BackupSettings,
-  "/settings/about": AboutSettings,
-
-  "/home": Home,
-  "/home/history": History,
-  "/home/most-played": MostPlayed,
-  "/home/recently-added": RecentlyAdded,
-  "/home/top-artists": TopArtists,
-  "/home/top-albums": TopAlbums,
+function handleAltRoute(component: ComponentType, conditions: RoutePrecondition[] = []): WrappedComponent {
+  return wrap({
+    component: component,
+    userData: {
+      reason: "none"
+    },
+    conditions: [
+      (detail) => {
+        console.log(get(location));
+        console.log(detail.location);
+        console.log(history.state);
+        return true;
+      },
+      ...conditions
+    ]
+  });
 }
 
 /**
@@ -99,31 +112,28 @@ export const routes = {
   "/playlists/:id/edit": PlaylistEditor,
 
   "/albums": Albums,
-  "/albums/:key": wrap({
-    component: AblumDetails,
-    userData: {
-      reason: "key-dne"
-    },
-    conditions: [
-      (detail) => {
-        const key = detail.params!.key;
-        const album = get(albumsMap)[key]
-        return !!album;
-      }
-    ]
-  }),
-  "/albums/:key/alt": AblumDetails,
+  "/albums/:key": handleAltRoute(AblumDetails, [
+    (detail) => {
+      const key = detail.params!.key;
+      const album = get(albumsMap)[key];
+      // @ts-expect-error reason does exist.
+      detail.userData!.reason = "album-key-dne";
+      return !!album;
+    }
+  ]),
+  "/albums/:key/alt": handleAltRoute(AblumDetails),
   "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
   "/songs/bulk-edit": BulkEdit,
-  "/songs/:id": SongDetails,
+  "/songs/:id": handleAltRoute(SongDetails),
+  "/songs/:id/alt": handleAltRoute(SongDetails),
   "/songs/:id/edit": SongEditor,
 
   "/artists": Artists,
-  "/artists/:key": ArtistDetails,
-  "/artists/:key/alt": ArtistDetails,
+  "/artists/:key": handleAltRoute(ArtistDetails),
+  "/artists/:key/alt": handleAltRoute(ArtistDetails),
   "/artists/:key/similar": SimilarArtists,
 
   "/genres": Genres,

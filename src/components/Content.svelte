@@ -35,7 +35,8 @@
   let oldNumAudioDevices: number;
 
   function conditionsFailed(event: ConditionsFailedEvent) {
-    if ((event.detail.userData as any)?.reason === 'key-dne') {
+    if ((event.detail.userData as any)?.reason === 'album-key-dne') {
+      (event.detail.userData as any).reason = "none";
       replace('/albums');
     } else {
       console.error('conditionsFailed event', event.detail);
@@ -134,7 +135,8 @@
   {#if $showNav && IS_MOBILE}
     <MobileNav />
   {/if}
-  {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying}
+  <!-- svelte-ignore missing-declaration -->
+  {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying && IS_MOBILE}
     <NowPlayingContainer />
   {/if}
 

@@ -2,7 +2,10 @@
   import { isSwitchingView, lastView, selectedView, viewsToRender } from "@stores/State";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import { View } from "../../../types/View";
   import { sharedAxisTransition } from "../../utils/animations/animations";
+
+  let showHeader = IS_MOBILE || $selectedView === View.HOME || $selectedView === View.SEARCH;
 
   function determineViewTransitionIn(node: Element) {
     if (!$lastView) {
@@ -48,10 +51,11 @@
 </script>
 
 <div class="view-container" in:determineViewTransitionIn out:determineViewTransitionOut>
-  <div class="header">
+  <!-- svelte-ignore missing-declaration -->
+  <div class="header" style:display={showHeader ? "block" : "none"}>
     <slot name="header" />
   </div>
-  <div class="content">
+  <div class="content" style:height={showHeader ? "calc(100% - 50px)" : "100%"}>
     <slot name="content" />
   </div>
 </div>
@@ -65,7 +69,6 @@
     height: 100%;
   }
   .content {
-    height: calc(100% - 50px);
     overflow: hidden;
   }
 </style>

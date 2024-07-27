@@ -177,7 +177,7 @@ export type Settings = {
 
 const FAVORITES_PLAYLIST = new Playlist(hash64("Favorites"), false, "Favorites", "", [], false, undefined, undefined, 0);
 
-export const DEFAULT_SETTINGS: Settings = {
+const DEFAULT_SETTINGS_MOBILE: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
   "version": "",
   "palette": "Auto",
@@ -264,3 +264,91 @@ export const DEFAULT_SETTINGS: Settings = {
     "useArtistColors": true
   }
 };
+const DEFAULT_SETTINGS_DESKTOP: Settings = {
+  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
+  "version": "",
+  "palette": "Auto",
+  "useOledPalette": false,
+  "themePrimaryColor": "#a74bf2",
+  "musicDirectories": [],
+  "selectedView": 0,
+
+  "hasShownHelpTranslate": false,
+
+  "nowPlaying": {
+    "layout": NowPlayingTheme.NORMAL,
+    "backgroundType": NowPlayingBackgroundType.GRADIENT,
+    "songInfo": true,
+    "controls": {
+      "dismissMiniWithSwipe": false,
+      "volumeControls": true,
+      "extralControl": "None",
+    },
+  },
+
+  "audio": {
+    "autoPlay": false
+  },
+
+  "personalization": {
+    "viewsToRender": [0, 1, 2, 3, 5, 6, 7],
+    "viewIndices": {
+      0: 2,
+      1: 3,
+      2: 0,
+      3: 4,
+      4: 7,
+      5: 5,
+      6: 6,
+      7: 1
+    },
+    "showSuggestions": true,
+    "trackHistory": true,
+    "showAlbumOnLockScreen": true
+  },
+
+  "playlists": [
+    FAVORITES_PLAYLIST
+  ],
+
+  "queue": [],
+
+  "blacklistedFolders": [],
+  "filterSongDuration": 30,
+  "selectedLanguage": "system",
+
+  "cache": {
+    "artistsMetadata": {},
+    "albumsMetadata": {},
+    "numSongs": 0,
+    "songsMetadata": {},
+    "songProgress": 0,
+    "playingSongId": "",
+    "shuffle": true,
+    "repeat": true,
+    "volume": 1,
+    "nowPlayingList": "",
+    "nowPlayingType": "Song"
+  },
+
+  "playlistsView": {
+    "gridSize": GridSize.LARGE,
+    "sortOrder": "Alphabetical"
+  },
+  "albumsView": {
+    "gridSize": GridSize.LARGE,
+    "sortOrder": "Alphabetical",
+    "useAlbumColors": true
+  },
+  "songsView": {
+    "gridSize": GridSize.LIST,
+    "sortOrder": "Alphabetical"
+  },
+  "artistsView": {
+    "gridSize": GridSize.LARGE,
+    "gridStyle": GridStyle.CIRCULAR,
+    "sortOrder": "Alphabetical",
+    "useArtistColors": true
+  }
+};
+export const DEFAULT_SETTINGS = IS_MOBILE ? DEFAULT_SETTINGS_MOBILE : DEFAULT_SETTINGS_DESKTOP;

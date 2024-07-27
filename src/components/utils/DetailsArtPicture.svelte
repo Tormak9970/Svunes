@@ -7,6 +7,7 @@
 
   export let artPath: string | undefined;
   export let failValue = "";
+  export let borderRadius = "10px";
   $: convertedPath = artPath && artPath !== failValue ? convertFileSrc(artPath) : "";
   
   export let imageSize = 370;
@@ -17,7 +18,7 @@
 
 </script>
 
-<div class="album-picture" style:margin-top={marginTop ? "2px" : "0"} style="max-width: {imageSize}px; max-height: {imageSize}px;">
+<div class="album-picture" style:--border-radius={borderRadius} style:margin-top={marginTop ? "2px" : "0"} style="max-width: {imageSize}px; max-height: {imageSize}px;">
   {#key artPath ?? ""}
     <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} {clickable} on:click={() => dispatch("click")} let:onError>
       <!-- svelte-ignore missing-declaration -->
@@ -32,7 +33,7 @@
 
 <style>
   .album-picture {
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     overflow: hidden;
   }
 </style>

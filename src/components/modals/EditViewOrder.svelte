@@ -58,7 +58,7 @@
       if (numChecked === 3 && !checked) {
         $showErrorSnackbar({ message: $t("MIN_PAGE_COUNT_MESSAGE") });
         reset = !reset;
-      } else if (numChecked === 5 && checked) {
+      } else if (numChecked === 5 && checked && IS_MOBILE) {
         $showErrorSnackbar({ message: $t("MAX_PAGE_COUNT_MESSAGE") });
         reset = !reset;
       } else {
@@ -84,22 +84,25 @@
     {#key reset}
       <div class="drag-container" style:height="{viewsList.length * entryHeight}px">
         {#each viewsList as view, i (view)}
-          <div
-            class="entry"
-            class:being-dragged={draggingIndex === i}
-            style:top="{draggingIndex === i ? i * entryHeight + dragHeight : newOrder.indexOf(i) * entryHeight}px"
-          >
-            <div class="left">
-              <div class="checkbox-container">
-                <Checkbox checked={checkDict[view]} on:input={checkboxHandler(view)} />
+          <!-- svelte-ignore missing-declaration -->
+          {#if IS_MOBILE || view !== View.SETTINGS}
+            <div
+              class="entry"
+              class:being-dragged={draggingIndex === i}
+              style:top="{draggingIndex === i ? i * entryHeight + dragHeight : newOrder.indexOf(i) * entryHeight}px"
+            >
+              <div class="left">
+                <div class="checkbox-container">
+                  <Checkbox checked={checkDict[view]} on:input={checkboxHandler(view)} />
+                </div>
+                <div class="font-label">{getViewName(view)}</div>
               </div>
-              <div class="font-label">{getViewName(view)}</div>
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <div class="handle" use:drag on:drag={getDragHandler(i)}>
+                <Icon icon={DragIndicator} height="30px" width="24px" />
+              </div>
             </div>
-            <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div class="handle" use:drag on:drag={getDragHandler(i)}>
-              <Icon icon={DragIndicator} height="30px" width="24px" />
-            </div>
-          </div>
+          {/if}
         {/each}
       </div>
     {/key}
