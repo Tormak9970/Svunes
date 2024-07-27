@@ -20,7 +20,7 @@
   }
 
   // @ts-expect-error we're binding context to ensure that the slider's value gets set, but ts won't be happy
-  const debouncedSet = debounce(setValue.bind(this), 500);
+  const debouncedSet = debounce(setValue.bind(this), 100);
 
   export const valueDisplayed = spring(value, { stiffness: 0.3, damping: 1 });
 
@@ -36,7 +36,7 @@
   let range: number, percent: number;
   $: {
     range = max - min;
-    percent = (value - min) / range;
+    percent = ($valueDisplayed - min) / range;
   }
 </script>
 
