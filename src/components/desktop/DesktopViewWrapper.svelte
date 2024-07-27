@@ -2,11 +2,10 @@
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
-  import Toggle from "@interactables/Toggle.svelte";
   import GridView from "@ktibow/iconset-material-symbols/grid-view";
   import Settings from "@ktibow/iconset-material-symbols/settings";
   import MenuItem from "@layout/MenuItem.svelte";
-  import NowPlayingDesktop from "@overlays/now-playing/NowPlayingDesktop.svelte";
+  import { desktopSidePanel, SidePanels } from "@stores/Desktop";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
@@ -14,7 +13,8 @@
   import { push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
   import { View } from "../../types/View";
-  import DesktopNav from "./DesktopNav.svelte";
+  import DesktopNav from "../navigation/DesktopNav.svelte";
+  import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
 
   let menuIsOpen = false;
 
@@ -59,9 +59,6 @@
     <div class="panels">
       <div class="nav">
         <DesktopNav />
-        <label>
-          <Toggle bind:checked={showingSidePanel} />
-        </label>
         <div class="buttons-container">
           <Button type="text" iconType="full" on:click={goToSettings}>
             <Icon icon={Settings} width="20px" height="20px" />
@@ -77,9 +74,9 @@
       <div class="view-panel" style:width={showingSidePanel ? "calc(100% - 10rem - 1rem - 20rem)" : "calc(100% - 10rem - 0.5rem)"}>
         <slot />
       </div>
-      {#if showingSidePanel}
+      {#if $desktopSidePanel !== SidePanels.NONE}
         <div class="details-panel" transition:fly={{ duration: 0.2, x: 200 }}>
-          text
+          
         </div>
       {/if}
     </div>

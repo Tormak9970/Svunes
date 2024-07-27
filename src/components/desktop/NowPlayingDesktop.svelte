@@ -14,12 +14,13 @@
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";
+  import { tooltip } from "@svelte-plugins/tooltips";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
-  import Tooltip from "../../layout/Tooltip.svelte";
-  import PlayerControls from "./PlayerControls.svelte";
-  import ProgressControls from "./ProgressControls.svelte";
+  import PlayerControls from "../overlays/now-playing/PlayerControls.svelte";
+  import ProgressControls from "../overlays/now-playing/ProgressControls.svelte";
+  import DesktopVolumeControls from "./DesktopVolumeControls.svelte";
 
   let menuIsOpen = false;
   
@@ -71,6 +72,10 @@
     push(`/songs/${song!.id}`);
   }
 
+  function handleVolumeShow(e: Event) {
+    (e.target as HTMLButtonElement).parentElement?.click();
+  }
+
   onMount(() => {
     if (album && highlightColor === "var(--m3-scheme-surface-container-low)") {
       album.setBackgroundFromImage().then(() => {
@@ -107,11 +112,19 @@
     <Button type="text" iconType="full" on:click={() => { $showQueue = true; }}>
       <Icon icon={QueueMusic} width="20px" height="20px" />
     </Button>
-    <Tooltip content="Volume">
-      <Button type="text" iconType="full" on:click={() => { $showQueue = true; }}>
+    <span
+      use:tooltip={{
+        content: { component: DesktopVolumeControls },
+        hideOnClickOutside: true,
+        action: "click",
+        theme: "volume-tooltip-theme",
+        arrow: false
+      }}
+    >
+      <Button type="text" iconType="full" on:click={handleVolumeShow}>
         <Icon icon={VolumeDown} width="20px" height="20px" />
       </Button>
-    </Tooltip>
+    </span>
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
       <MenuItem on:click={() => { $showAddToPlaylist = true; menuIsOpen = false; }}>{$t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
       {#if song?.album}

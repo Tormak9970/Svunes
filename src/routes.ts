@@ -1,3 +1,5 @@
+import type { ComponentType } from "svelte";
+import type { WrappedComponent } from "svelte-spa-router";
 import wrap from "svelte-spa-router/wrap";
 import { get } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
@@ -34,55 +36,25 @@ import BulkEdit from "./routes/songs/BulkEdit.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import SongEditor from "./routes/songs/Edit.svelte";
 import Songs from "./routes/songs/Songs.svelte";
+import { SidePanels } from "./stores/Desktop";
 import { albumsMap } from "./stores/State";
 
-export const sidePanelPrefix = "/side";
-export const sidePanelRoutes = {
-  "/playlists/:id": PlaylistDetails,
-  "/playlists/:id/edit": PlaylistEditor,
-
-  "/albums/:key": wrap({
-    component: AblumDetails,
+function handleSideRoute(component: ComponentType, sidePanel: SidePanels): WrappedComponent {
+  return wrap({
+    component: component,
     userData: {
-      reason: "none"
+      reason: "none",
+      sidePanel: sidePanel
     },
     conditions: [
       (detail) => {
-        const key = detail.params!.key;
-        const album = get(albumsMap)[key];
-        // @ts-expect-error reason does exist.
-        detail.userData!.reason = "album-key-dne";
-        return !!album;
+        // @ts-expect-error reason will always be a property of userData.
+        detail.userData!.reason = IS_MOBILE ? "none" : "needs-side";
+        return IS_MOBILE;
       }
     ]
-  }),
-  "/albums/:key/edit": AlbumEditor,
-  "/albums/:key/albums-by-artist": AlbumsByArtist,
-
-  "/songs/bulk-edit": BulkEdit,
-  "/songs/:id": SongDetails,
-  "/songs/:id/edit": SongEditor,
-
-  "/artists/:key": ArtistDetails,
-  "/artists/:key/similar": SimilarArtists,
-
-  "/genres/:key": GenreDetails,
+  });
 }
-
-// function handleSideRoute(component: ComponentType, conditions: RoutePrecondition[] = []): WrappedComponent {
-//   return wrap({
-//     component: component,
-//     userData: {
-//       reason: "none"
-//     },
-//     conditions: [
-//       (detail) => {
-        
-//       },
-//       ...conditions
-//     ]
-//   });
-// }
 
 /**
  * The app's routes.
@@ -91,6 +63,7 @@ export const routes = {
   "/": HomeLoadingAnimation,
 
   "/playlists": Playlists,
+  "/side/playlists/*": Playlists,
   "/playlists/:id": PlaylistDetails,
   "/playlists/:id/edit": PlaylistEditor,
 
@@ -110,13 +83,13 @@ export const routes = {
       }
     ]
   }),
-  "/albums/:key/edit": AlbumEditor,
+  "/albums/:key/edit": handleSideRoute(AlbumEditor, SidePanels.ALBUM_EDIT),
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
-  "/songs/bulk-edit": BulkEdit,
-  "/songs/:id": SongDetails,
-  "/songs/:id/edit": SongEditor,
+  "/songs/bulk-edit": handleSideRoute(BulkEdit, SidePanels.SONG_BULK_EDIT),
+  "/songs/:id": handleSideRoute(SongDetails, SidePanels.SONG_DETAILS),
+  "/songs/:id/edit": handleSideRoute(SongEditor, SidePanels.SONG_EDIT),
 
   "/artists": Artists,
   "/artists/:key": ArtistDetails,

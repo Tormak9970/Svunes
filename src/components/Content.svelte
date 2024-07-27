@@ -4,20 +4,21 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
+  import { desktopSidePanel } from "@stores/Desktop";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { onDestroy, onMount } from "svelte";
-  import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
+  import Router, { location, pop, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
   import { AppController } from "../lib/controllers/AppController";
   import { hash64 } from "../lib/utils/Utils";
   import { routes } from "../routes";
   import { systemDefaultLanguage, t } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
+  import DesktopViewWrapper from "./desktop/DesktopViewWrapper.svelte";
   import Modals from "./modals/Modals.svelte";
-  import DesktopViewWrapper from "./navigation/DesktopViewWrapper.svelte";
   import MobileNav from "./navigation/MobileNav.svelte";
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
   import Overlays from "./overlays/Overlays.svelte";
@@ -35,11 +36,17 @@
   let oldNumAudioDevices: number;
 
   function conditionsFailed(event: ConditionsFailedEvent) {
-    if ((event.detail.userData as any)?.reason === 'album-key-dne') {
-      (event.detail.userData as any).reason = "none";
-      replace('/albums');
+    const userData = event.detail.userData as any;
+    
+    if (userData?.reason === 'album-key-dne') {
+      userData.reason = "none";
+      replace("/albums");
+    } else if (userData?.reason === 'needs-side') {
+      userData.reason = "none";
+      $desktopSidePanel = userData!.sidePanel;
+      pop();
     } else {
-      console.error('conditionsFailed event', event.detail);
+      console.error("conditionsFailed event:", event.detail);
     }
   }
 
