@@ -35,7 +35,7 @@
   });
 </script>
 
-<CardClickable type="transparent" on:click={goToGenre} extraOptions={{ style: "width: calc(50% - 1px); max-width: 300px; height: 100px; padding: 5px;" }}>
+<CardClickable type="transparent" on:click={goToGenre} extraOptions={{ style: "width: 100%; max-width: 200px; height: 100px; padding: 5px;" }}>
   <div class="genre-entry" style:--background-color={backgroundColor} style:--text-color={textColor}>
     <div class="info-container">
       <div class="font-label name">{genre.name}</div>
@@ -63,9 +63,9 @@
     color: rgb(var(--text-color));
 
     width: 100%;
-    height: 90px;
+    height: 100%;
 
-    padding: 10px 0px 0px 10px;
+    padding: 10px;
 
     border-radius: 10px;
 

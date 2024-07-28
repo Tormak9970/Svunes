@@ -75,10 +75,20 @@
     height: 100%;
     width: 100%;
 
-    display: flex;
+    /* display: flex;
     align-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
     overflow: scroll;
+
+    display: grid;
+    
+    grid-template-columns: repeat(auto-fill, 200px);
+
+    grid-auto-flow: row;
+    grid-auto-rows: 100px;
+
+    justify-content: center;
+    
     gap: 2px;
   }
 
