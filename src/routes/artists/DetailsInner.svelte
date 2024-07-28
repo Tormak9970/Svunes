@@ -4,7 +4,9 @@
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
+  import PlayButton from "@interactables/PlayButton.svelte";
   import RadioMenuItem from "@interactables/radio/RadioMenuItem.svelte";
+  import ToggleShuffleButton from "@interactables/ToggleShuffleButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
@@ -26,8 +28,6 @@
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { artistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, songsMap, useArtistColors } from "@stores/State";
-  import PlayButton from "@views/utils/PlayButton.svelte";
-  import ToggleShuffleButton from "@views/utils/ToggleShuffleButton.svelte";
   import { pop, push } from "svelte-spa-router";
   import type { ArtistEntriesSortOrder } from "../../types/Settings";
 

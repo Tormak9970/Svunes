@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import ViewContainer from "@component-utils/ViewContainer.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import Add from "@ktibow/iconset-material-symbols/add-rounded";
@@ -22,7 +23,6 @@
   import * as dialog from "@tauri-apps/plugin-dialog";
   import PlaylistGridEntry from "@views/playlists/PlaylistGridEntry.svelte";
   import PlaylistListEntry from "@views/playlists/PlaylistListEntry.svelte";
-  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
   import { type PlaylistSortOrder, GridSize } from "../../types/Settings";

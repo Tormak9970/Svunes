@@ -3,6 +3,7 @@
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
+  import PlayButton from "@interactables/PlayButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import MenuItem from "@layout/MenuItem.svelte";
@@ -15,7 +16,6 @@
   import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { genresMap, isPaused, nowPlayingList, songsMap } from "@stores/State";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
-  import PlayButton from "@views/utils/PlayButton.svelte";
   import { pop } from "svelte-spa-router";
 
   const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;

@@ -2,8 +2,8 @@
   import { isSwitchingView, lastView, selectedView, viewsToRender } from "@stores/State";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-  import { View } from "../../../types/View";
-  import { sharedAxisTransition } from "../../utils/animations/animations";
+  import { View } from "../../types/View";
+  import { sharedAxisTransition } from "./animations/animations";
 
   let showHeader = IS_MOBILE || $selectedView === View.HOME || $selectedView === View.SEARCH;
 

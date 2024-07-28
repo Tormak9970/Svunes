@@ -2,9 +2,10 @@
   import DetailsInner from './DetailsInner.svelte';
   
   export let params: { key?: string } = {};
+  $: key = params.key;
 </script>
 
-{#key params.key}
+{#key key}
   <DetailsInner {params} />
 {/key}
 

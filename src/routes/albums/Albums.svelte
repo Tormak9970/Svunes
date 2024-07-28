@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import ViewContainer from "@component-utils/ViewContainer.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
@@ -19,7 +20,6 @@
   import { albumGridSize, albumSortOrder, albums, albumsIsAtTop, lastView, selectedView } from "@stores/State";
   import AlbumGridEntry from "@views/albums/AlbumGridEntry.svelte";
   import AlbumListEntry from "@views/albums/AlbumListEntry.svelte";
-  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
   import { GridSize, type AlbumSortOrder } from "../../types/Settings";

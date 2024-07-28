@@ -1,7 +1,7 @@
 <script lang="ts">
+  import ViewContainer from "@component-utils/ViewContainer.svelte";
   import Button from "@interactables/Button.svelte";
   import Suggestions from "@views/home/Suggestions.svelte";
-  import ViewContainer from "@views/utils/ViewContainer.svelte";
   
   import Icon from "@component-utils/Icon.svelte";
 

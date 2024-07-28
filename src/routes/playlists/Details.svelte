@@ -3,6 +3,8 @@
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
+  import PlayButton from "@interactables/PlayButton.svelte";
+  import ToggleShuffleButton from "@interactables/ToggleShuffleButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
@@ -16,8 +18,6 @@
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { isPaused, nowPlayingList, playlistsMap } from "@stores/State";
   import PlaylistImage from "@views/playlists/PlaylistImage.svelte";
-  import PlayButton from "@views/utils/PlayButton.svelte";
-  import ToggleShuffleButton from "@views/utils/ToggleShuffleButton.svelte";
   import { pop, push } from "svelte-spa-router";
   import PlaylistSongs from "./PlaylistSongs.svelte";
 

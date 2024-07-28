@@ -2,6 +2,7 @@
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
   import Button from "@interactables/Button.svelte";
+  import PlayButton from "@interactables/PlayButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
@@ -14,7 +15,6 @@
   import { t } from "@stores/Locale";
   import { isPaused, nowPlayingList, songs, songsMap } from "@stores/State";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
-  import PlayButton from "@views/utils/PlayButton.svelte";
   import { pop } from "svelte-spa-router";
 
   const keyFunction = (entry: { data: Song }) => entry.data.filePath;

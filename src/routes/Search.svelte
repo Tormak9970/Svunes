@@ -1,7 +1,7 @@
 <script lang="ts">
+  import ViewContainer from "@component-utils/ViewContainer.svelte";
   import SearchHeader from "@views/search/SearchHeader.svelte";
   import SearchResults from "@views/search/SearchResults.svelte";
-  import ViewContainer from "@views/utils/ViewContainer.svelte";
 
   let isAtTop = true;
   

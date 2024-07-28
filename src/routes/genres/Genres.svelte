@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import ViewContainer from "@component-utils/ViewContainer.svelte";
   import Button from "@interactables/Button.svelte";
   import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
@@ -9,7 +10,6 @@
   import { selectedChips } from "@stores/Search";
   import { genres, lastView, selectedView } from "@stores/State";
   import GenreEntry from "@views/genres/GenreEntry.svelte";
-  import ViewContainer from "@views/utils/ViewContainer.svelte";
   import { push } from "svelte-spa-router";
   import { View } from "../../types/View";
   
