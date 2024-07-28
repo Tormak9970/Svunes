@@ -14,7 +14,12 @@
   }
 </script>
 
-<div class="full-screen-overlay" transition:sharedAxisTransition={{ direction: "Z", leaving: false }}>
+<!-- svelte-ignore missing-declaration -->
+<div
+  class="full-screen-overlay"
+  style:--background-color={IS_MOBILE ? "var(--m3-scheme-background)" : "var(--m3-scheme-surface-container)"}
+  transition:sharedAxisTransition|global={{ direction: "Z", leaving: false }}
+>
   <div class="headline">
     <slot name="header" />
   </div>
@@ -30,6 +35,8 @@
 
     width: 100%;
     height: 100%;
+
+    background-color: rgb(var(--background-color));
 
     z-index: 2;
   }
