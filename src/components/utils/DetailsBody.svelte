@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { isLandscape } from "@stores/Layout";
   import { sharedAxisTransition } from "./animations/animations";
 
   export let isAtTop = true;
@@ -14,10 +15,9 @@
   }
 </script>
 
-<!-- svelte-ignore missing-declaration -->
 <div
   class="full-screen-overlay"
-  style:--background-color={IS_MOBILE ? "var(--m3-scheme-background)" : "var(--m3-scheme-surface-container)"}
+  style:--background-color={!$isLandscape ? "var(--m3-scheme-background)" : "var(--m3-scheme-surface-container)"}
   transition:sharedAxisTransition|global={{ direction: "Z", leaving: false }}
 >
   <div class="headline">

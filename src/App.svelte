@@ -1,7 +1,11 @@
 <script lang="ts">
   import Content from "./components/Content.svelte";
   import Theme from "./components/theme/Theme.svelte";
+  import MediaQuery from "./components/utils/MediaQuery.svelte";
   import "./lib/md-defs";
+  import { isLandscape } from "./stores/Layout";
+
+  $: console.log($isLandscape);
   
   /**
    * Prevents undesired keypresses.
@@ -47,6 +51,7 @@
 
 <svelte:document on:keydown={preventKeyPresses} on:contextmenu|preventDefault />
 
+<MediaQuery query="(orientation:landscape)" bind:matches={$isLandscape} />
 <Theme>
   <Content />
 </Theme>

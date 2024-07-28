@@ -1,5 +1,6 @@
 <script lang="ts">
   import Close from "@ktibow/iconset-material-symbols/close";
+  import { isLandscape } from "@stores/Layout";
   import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
   import { showNav } from "../../stores/State";
@@ -34,8 +35,7 @@
 </script>
 
 {#if snackbar}
-  <!-- svelte-ignore missing-declaration -->
-  <dialog class="holder" open style:--m3-util-bottom-offset="{($showNav && IS_MOBILE) ? 56 : 0}px" style:padding-bottom="{($showNav && IS_MOBILE) ? 0.7 : 1}rem" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
+  <dialog class="holder" open style:--m3-util-bottom-offset="{($showNav && !$isLandscape) ? 56 : 0}px" style:padding-bottom="{($showNav && !$isLandscape) ? 0.7 : 1}rem" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
     <div class="m3-container" style:--background-color={backgroundColor} style:--text-color={textColor}>
       <p class="m3-font-body-medium">{snackbar.message}</p>
       {#if snackbar.closable}

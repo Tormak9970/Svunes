@@ -1,11 +1,12 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import MediaQuery from "@component-utils/MediaQuery.svelte";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import GridView from "@ktibow/iconset-material-symbols/grid-view";
   import Settings from "@ktibow/iconset-material-symbols/settings";
   import MenuItem from "@layout/MenuItem.svelte";
-  import { desktopSidePanel, SidePanels } from "@stores/Desktop";
+  import { desktopSidePanel, isLandscape, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
@@ -16,6 +17,7 @@
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
   import SidePanelRouter from "./SidePanelRouter.svelte";
 
+  let condenseNav = false;
   let menuIsOpen = false;
 
   /**
@@ -51,13 +53,13 @@
   }
 </script>
 
-<!-- svelte-ignore missing-declaration -->
-{#if !IS_MOBILE}
+<MediaQuery query="(max-width: 1100px)" bind:matches={condenseNav} />
+{#if $isLandscape}
   <div class="desktop-container">
     <div class="panels">
-      <div class="nav">
-        <DesktopNav />
-        <div class="buttons-container">
+      <div class="nav" style:width={condenseNav ? "3.5rem" : "10rem"}>
+        <DesktopNav condenseNav={condenseNav} />
+        <div class="buttons-container" style:flex-direction={condenseNav ? "column-reverse" : "row"}>
           <Button type="text" iconType="full" on:click={goToSettings}>
             <Icon icon={Settings} width="20px" height="20px" />
           </Button>
@@ -102,11 +104,12 @@
     height: 100%;
     border-radius: 10px;
     overflow: hidden;
-    width: 10rem;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
+    transition: width 0.2s ease-in-out;
   }
 
   .buttons-container {

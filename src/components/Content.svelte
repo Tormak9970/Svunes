@@ -14,6 +14,7 @@
   import { AppController } from "../lib/controllers/AppController";
   import { hash64 } from "../lib/utils/Utils";
   import { routes } from "../routes";
+  import { isLandscape } from "../stores/Layout";
   import { systemDefaultLanguage, t } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
   import DesktopViewWrapper from "./desktop/DesktopViewWrapper.svelte";
@@ -134,16 +135,16 @@
 
 <DesktopViewWrapper>
   <!-- svelte-ignore missing-declaration -->
-  {#if $showNav && IS_MOBILE}
+  {#if $showNav && !$isLandscape}
     <MobileNav />
   {/if}
   <!-- svelte-ignore missing-declaration -->
-  {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying && IS_MOBILE}
+  {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying && !$isLandscape}
     <NowPlayingContainer />
   {/if}
 
   <!-- svelte-ignore missing-declaration -->
-  <div class="content" style:height={($showNav && IS_MOBILE) ? "calc(100% - 56px)" : "100%"}>
+  <div class="content" style:height={($showNav && !$isLandscape) ? "calc(100% - 56px)" : "100%"}>
     {#if $inSelectMode}
       <SelectHeader />
     {/if}

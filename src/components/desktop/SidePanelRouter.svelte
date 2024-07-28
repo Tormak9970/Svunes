@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Desktop";
+  import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
   import type { ComponentType } from "svelte";
   import AlbumEdit from "../../routes/albums/Edit.svelte";
   import SongBulkEdit from "../../routes/songs/BulkEdit.svelte";

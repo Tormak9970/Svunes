@@ -174,10 +174,12 @@
   }
 
   .player-controls {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 28rem;
+    max-width: 28rem;
+    margin: 0 0.5rem;
     height: 4.5rem;
   }
 

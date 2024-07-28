@@ -8,5 +8,6 @@ export enum SidePanels {
   ALBUM_EDIT
 }
 
+export const isLandscape: Writable<boolean> = writable(!IS_MOBILE);
 export const desktopSidePanel: Writable<SidePanels> = writable(SidePanels.NONE);
 export const sidePanelProps: Writable<any> = writable({});

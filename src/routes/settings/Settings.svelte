@@ -14,6 +14,7 @@
   import Translate from "@ktibow/iconset-material-symbols/translate-rounded";
   import Other from "@ktibow/iconset-material-symbols/tune-rounded";
   import Audio from "@ktibow/iconset-material-symbols/volume-up-rounded";
+  import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
 
   function goBack() {
@@ -33,7 +34,7 @@
   <span class="content" slot="content">
     <SettingsNavButton label={$t("SETTINGS_APPEARANCE_TITLE")} description={$t("SETTINGS_APPEARANCE_PAGE_DESC")} route="/settings/appearance" icon={Palette} color="#42a5f5" />
     <!-- svelte-ignore missing-declaration -->
-    {#if IS_MOBILE}
+    {#if !$isLandscape}
       <SettingsNavButton label={$t("SETTINGS_NOW_PLAYING_TITLE")} description={$t("SETTINGS_NOW_PLAYING_PAGE_DESC")} route="/settings/now-playing" icon={NowPlaying} color="#ef5350" />
     {/if}
     <SettingsNavButton label={$t("SETTINGS_PERSONALIZE_TITLE")} description={$t("SETTINGS_PERSONALIZE_PAGE_DESC")} route="/settings/personalize" icon={Personalize} color="#66bb6a" />

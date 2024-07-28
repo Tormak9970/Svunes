@@ -1,4 +1,4 @@
-import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Desktop";
+import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
 import { push } from "svelte-spa-router";
 
 /**

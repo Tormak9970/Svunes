@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { isLandscape } from "@stores/Layout";
   import { isSwitchingView, lastView, selectedView, viewsToRender } from "@stores/State";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { View } from "../../types/View";
   import { sharedAxisTransition } from "./animations/animations";
 
-  let showHeader = IS_MOBILE || $selectedView === View.HOME || $selectedView === View.SEARCH;
+  let showHeader = !$isLandscape || $selectedView === View.HOME || $selectedView === View.SEARCH;
 
   function determineViewTransitionIn(node: Element) {
     if (!$lastView) {

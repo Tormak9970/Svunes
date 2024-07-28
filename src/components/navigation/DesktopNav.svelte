@@ -6,6 +6,8 @@
   import NavList from "./NavList.svelte";
   import NavListButton from "./NavListButton.svelte";
 
+  export let condenseNav = false;
+
   /**
    * Sets the selected view to the provided view.
    * @param view The selected view.
@@ -30,7 +32,9 @@
       selected={view === $selectedView}
       on:click={() => setSelectedView(view)}
     >
-      {getViewName(view)}
+      {#if !condenseNav}
+        {getViewName(view)}
+      {/if}
     </NavListButton>
   {/each}
 </NavList>
