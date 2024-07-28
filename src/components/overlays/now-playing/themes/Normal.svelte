@@ -109,6 +109,7 @@
 
   .content {
     width: calc(100% - 30px);
+    max-width: 370px;
     padding: 0px 15px;
 
     display: flex;
@@ -139,6 +140,7 @@
 
   .options {
     width: calc(100% - 30px);
+    max-width: 370px;
     padding: 0px 15px;
 
     display: flex;

@@ -60,22 +60,22 @@
     </div>
     <PlayerControls showExtraControls={false} />
     <VolumeControls />
-    <div class="options">
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showMiniPlayer = true}>
-        <Icon icon={KeyboardArrowDown} />
+  </div>
+  <div class="options">
+    <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => $showMiniPlayer = true}>
+      <Icon icon={KeyboardArrowDown} />
+    </Button>
+    <div class="right">
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={toggleFavorite}>
+        {#if !isFavorited}
+          <Icon icon={FavoriteOff} />
+        {:else}
+          <Icon icon={FavoriteOn} />
+        {/if}
       </Button>
-      <div class="right">
-        <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={toggleFavorite}>
-          {#if !isFavorited}
-            <Icon icon={FavoriteOff} />
-          {:else}
-            <Icon icon={FavoriteOn} />
-          {/if}
-        </Button>
-        <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
-          <NowPlayingOptions song={song} showQueueOption showBothExtras bind:menuIsOpen={menuIsOpen} />
-        </MenuButton>
-      </div>
+      <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
+        <NowPlayingOptions song={song} showQueueOption showBothExtras bind:menuIsOpen={menuIsOpen} />
+      </MenuButton>
     </div>
   </div>
 </div>
@@ -96,13 +96,13 @@
 
   .content {
     width: calc(100% - 30px);
+    max-width: 370px;
     padding: 0px 15px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    position: absolute;
     bottom: 15px;
 
     z-index: 2;
@@ -137,13 +137,16 @@
   }
 
   .options {
-    width: 100%;
+    width: calc(100% - 30px);
+    max-width: 370px;
+    padding: 0px 15px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    margin-top: 15px;
+    position: absolute;
+    bottom: 15px;
   }
 
   .right {

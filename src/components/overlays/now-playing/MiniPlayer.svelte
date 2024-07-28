@@ -77,10 +77,13 @@
     padding: 0;
 
     position: absolute;
+    left: 50%;
+    translate: -50% 0;
     top: 0;
 
     margin: 0px 8px;
     width: calc(100% - 16px);
+    max-width: 30rem;
     height: fit-content;
 
     overflow: hidden;

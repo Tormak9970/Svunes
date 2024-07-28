@@ -137,6 +137,7 @@
 
   .content {
     width: calc(100% - 60px);
+    max-width: 370px;
     height: 219px;
     padding: 0px 30px;
 
