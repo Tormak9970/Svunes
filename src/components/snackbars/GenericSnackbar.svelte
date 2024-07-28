@@ -34,7 +34,8 @@
 </script>
 
 {#if snackbar}
-  <dialog class="holder" open style:--m3-util-bottom-offset="{$showNav ? 56 : 0}px" style:padding-bottom="{$showNav ? 0.7 : 1}rem" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
+  <!-- svelte-ignore missing-declaration -->
+  <dialog class="holder" open style:--m3-util-bottom-offset="{($showNav && IS_MOBILE) ? 56 : 0}px" style:padding-bottom="{($showNav && IS_MOBILE) ? 0.7 : 1}rem" in:fly={{ y: 100, duration: 300 }} out:fly={{ y: 100, duration: 400 }}>
     <div class="m3-container" style:--background-color={backgroundColor} style:--text-color={textColor}>
       <p class="m3-font-body-medium">{snackbar.message}</p>
       {#if snackbar.closable}
@@ -56,6 +57,7 @@
     padding: 0;
 
     width: calc(100% - 2rem);
+    max-width: 30rem;
 
     position: absolute;
     left: 50%;
