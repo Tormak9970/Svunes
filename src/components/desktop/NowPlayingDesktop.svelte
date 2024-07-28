@@ -10,6 +10,7 @@
   import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
   import MenuItem from "@layout/MenuItem.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
+  import { goToSongDetails } from "@lib/utils/Navigation";
   import { hash64 } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
@@ -68,7 +69,7 @@
   }
 
   function goToSong() {
-    push(`/songs/${song!.id}`);
+    goToSongDetails(song!.id);
   }
 
   function handleVolumeShow(e: Event) {

@@ -4,6 +4,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
+  import { goToSongDetails, goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { playlists, playlistsMap, songIdsToParse } from "@stores/State";
@@ -78,7 +79,7 @@
    * Shows the song details overlay.
    */
   function showDetails() {
-    push(`/songs/${song!.id}`);
+    goToSongDetails(song!.id);
     closeOptions();
   }
 
@@ -86,7 +87,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    push(`/songs/${song!.id}/edit`);
+    goToSongEdit(song!.id);
     closeOptions();
   }
 

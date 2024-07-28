@@ -1,5 +1,3 @@
-import type { ComponentType } from "svelte";
-import type { WrappedComponent } from "svelte-spa-router";
 import wrap from "svelte-spa-router/wrap";
 import { get } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
@@ -36,25 +34,7 @@ import BulkEdit from "./routes/songs/BulkEdit.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import SongEditor from "./routes/songs/Edit.svelte";
 import Songs from "./routes/songs/Songs.svelte";
-import { SidePanels } from "./stores/Desktop";
 import { albumsMap } from "./stores/State";
-
-function handleSideRoute(component: ComponentType, sidePanel: SidePanels): WrappedComponent {
-  return wrap({
-    component: component,
-    userData: {
-      reason: "none",
-      sidePanel: sidePanel
-    },
-    conditions: [
-      (detail) => {
-        // @ts-expect-error reason will always be a property of userData.
-        detail.userData!.reason = IS_MOBILE ? "none" : "needs-side";
-        return IS_MOBILE;
-      }
-    ]
-  });
-}
 
 /**
  * The app's routes.
@@ -83,13 +63,13 @@ export const routes = {
       }
     ]
   }),
-  "/albums/:key/edit": handleSideRoute(AlbumEditor, SidePanels.ALBUM_EDIT),
+  "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
   "/songs": Songs,
-  "/songs/bulk-edit": handleSideRoute(BulkEdit, SidePanels.SONG_BULK_EDIT),
-  "/songs/:id": handleSideRoute(SongDetails, SidePanels.SONG_DETAILS),
-  "/songs/:id/edit": handleSideRoute(SongEditor, SidePanels.SONG_EDIT),
+  "/songs/bulk-edit": BulkEdit,
+  "/songs/:id": SongDetails,
+  "/songs/:id/edit": SongEditor,
 
   "/artists": Artists,
   "/artists/:key": ArtistDetails,

@@ -4,13 +4,12 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
-  import { desktopSidePanel, sidePanelProps } from "@stores/Desktop";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { onDestroy, onMount } from "svelte";
-  import Router, { location, pop, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
+  import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
   import { AppController } from "../lib/controllers/AppController";
   import { hash64 } from "../lib/utils/Utils";
@@ -41,11 +40,6 @@
     if (userData?.reason === 'album-key-dne') {
       userData.reason = "none";
       replace("/albums");
-    } else if (userData?.reason === 'needs-side') {
-      userData.reason = "none";
-      $sidePanelProps = event.detail.params;
-      $desktopSidePanel = userData!.sidePanel;
-      pop();
     } else {
       console.error("conditionsFailed event:", event.detail);
     }

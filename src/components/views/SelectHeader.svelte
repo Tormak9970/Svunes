@@ -332,7 +332,7 @@
    */
   function goToBulkEdit() {
     $bulkEditSongIds = getSongsFromSelected();
-    push("/songs/bulk-edit");
+    goToBulkEdit();
     menuIsOpen = false;
     back();
   }

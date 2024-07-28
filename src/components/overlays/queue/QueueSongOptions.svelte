@@ -2,6 +2,7 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import type { Song } from "@lib/models/Song";
+  import { goToSongDetails, goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showQueue, songToAdd } from "@stores/Overlays";
   import { queue } from "@stores/State";
@@ -59,7 +60,7 @@
    * Shows the song details overlay.
    */
   function showDetails() {
-    push(`/songs/${song!.id}`);
+    goToSongDetails(song!.id);
     $showQueue = false;
     closeOptions();
   }
@@ -68,7 +69,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    push(`/songs/${song!.id}/edit`);
+    goToSongEdit(song!.id);
     $showQueue = false;
     closeOptions();
   }

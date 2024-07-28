@@ -21,9 +21,10 @@
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
   import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
+  import { goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import SongOptions from "@views/songs/SongOptions.svelte";
-  import { pop, push } from "svelte-spa-router";
+  import { pop } from "svelte-spa-router";
   
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
@@ -42,7 +43,7 @@
    * Shows the edit song overlay.
    */
   function showSongEdit() {
-    push(`/songs/${song!.id}/edit`);
+    goToSongEdit(song!.id);
   }
 </script>
 

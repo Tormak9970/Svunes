@@ -18,6 +18,7 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@lib/models/Song";
+  import { goToAlbumEdit } from "@lib/utils/Navigation";
   import { nullishNumberSort, stringSort } from "@lib/utils/Sorters";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
@@ -91,7 +92,7 @@
    * Shows the edit song overlay.
    */
   function showAlbumEdit() {
-    push(`/albums/${params!.key!}/edit`);
+    goToAlbumEdit(params!.key!);
   }
 
   /**

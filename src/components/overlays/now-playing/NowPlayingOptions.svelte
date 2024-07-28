@@ -2,6 +2,7 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import type { Song } from "@lib/models/Song";
+  import { goToSongDetails, goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showCarMode, showMiniPlayer, showQueue, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
@@ -76,7 +77,7 @@
    */
   function showDetails() {
     $showMiniPlayer = true;
-    push(`/songs/${song!.id}`);
+    goToSongDetails(song!.id);
     closeOptions();
   }
 
@@ -85,7 +86,7 @@
    */
   function showSongEdit() {
     $showMiniPlayer = true;
-    push(`/songs/${song!.id}/edit`);
+    goToSongEdit(song!.id);
     closeOptions();
   }
 
