@@ -54,61 +54,63 @@
 </script>
 
 <div class="container" transition:sharedAxisTransition={{ direction: "Z", leaving: false }}>
-  <div class="options">
-    <div class="left" />
-    <div class="center font-label-large">{$t("CAR_MODE_TITLE")}</div>
-    <div class="right">
-      <Button type="text" iconType="full" size="3.5rem" iconSize="2rem" on:click={() => $showCarMode = false}>
-        <Icon icon={Close} />
+  <div class="content">
+    <div class="options">
+      <div class="left" />
+      <div class="center font-label-large">{$t("CAR_MODE_TITLE")}</div>
+      <div class="right">
+        <Button type="text" iconType="full" size="3.5rem" iconSize="2rem" on:click={() => $showCarMode = false}>
+          <Icon icon={Close} />
+        </Button>
+      </div>
+    </div>
+    <div class="song-info">
+      <div class="font-headline-large title">
+        {#if label && label.length > 28}
+          <div style="margin-left: 4%;">
+            <Marquee speed={50} gap={100}>{label}</Marquee>
+          </div>
+        {:else}
+          {label}
+        {/if}
+      </div>
+      <div class="font-headline">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+    </div>
+    <ProgressControls songLength={songLength} />
+    <div class="player-controls">
+      <Button type="text" iconType="full" size="6rem" iconSize="4rem" on:click={QueueController.skipBack}>
+        <Icon icon={SkipPrevious} />
+      </Button>
+      <Button type="filled" iconType="full" size="6rem" iconSize="4rem" on:click={handlePlay}>
+        {#if !$isPaused}
+          <Icon icon={Pause} />
+        {:else}
+          <Icon icon={Play} />
+        {/if}
+      </Button>
+      <Button type="text" iconType="full" size="6rem" iconSize="4rem" on:click={QueueController.skip}>
+        <Icon icon={SkipNext} />
       </Button>
     </div>
-  </div>
-  <div class="song-info">
-    <div class="font-headline-large title">
-      {#if label && label.length > 28}
-        <div style="margin-left: 4%;">
-          <Marquee speed={50} gap={100}>{label}</Marquee>
+    <div class="player-controls">
+      <Button type="text" iconType="full" size="5rem" iconSize="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
+        <div class="button-icon-wrapper" style:color={$repeatPlayed ? enabledColor : disabledColor}>
+          <Icon icon={Repeat} />
         </div>
-      {:else}
-        {label}
-      {/if}
+      </Button>
+      <Button type="text" iconType="full" size="5rem" iconSize="3rem" on:click={toggleFavorite}>
+        {#if !isFavorited}
+          <Icon icon={FavoriteOff} />
+        {:else}
+          <Icon icon={FavoriteOn} />
+        {/if}
+      </Button>
+      <Button type="text" iconType="full" size="5rem" iconSize="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
+        <div class="button-icon-wrapper" style:color={$shuffle ? enabledColor : disabledColor}>
+          <Icon icon={Shuffle} />
+        </div>
+      </Button>
     </div>
-    <div class="font-headline">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
-  </div>
-  <ProgressControls songLength={songLength} />
-  <div class="player-controls">
-    <Button type="text" iconType="full" size="6rem" iconSize="4rem" on:click={QueueController.skipBack}>
-      <Icon icon={SkipPrevious} />
-    </Button>
-    <Button type="filled" iconType="full" size="6rem" iconSize="4rem" on:click={handlePlay}>
-      {#if !$isPaused}
-        <Icon icon={Pause} />
-      {:else}
-        <Icon icon={Play} />
-      {/if}
-    </Button>
-    <Button type="text" iconType="full" size="6rem" iconSize="4rem" on:click={QueueController.skip}>
-      <Icon icon={SkipNext} />
-    </Button>
-  </div>
-  <div class="player-controls">
-    <Button type="text" iconType="full" size="5rem" iconSize="3rem" on:click={() => $repeatPlayed = !$repeatPlayed }>
-      <div class="button-icon-wrapper" style:color={$repeatPlayed ? enabledColor : disabledColor}>
-        <Icon icon={Repeat} />
-      </div>
-    </Button>
-    <Button type="text" iconType="full" size="5rem" iconSize="3rem" on:click={toggleFavorite}>
-      {#if !isFavorited}
-        <Icon icon={FavoriteOff} />
-      {:else}
-        <Icon icon={FavoriteOn} />
-      {/if}
-    </Button>
-    <Button type="text" iconType="full" size="5rem" iconSize="3rem" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
-      <div class="button-icon-wrapper" style:color={$shuffle ? enabledColor : disabledColor}>
-        <Icon icon={Shuffle} />
-      </div>
-    </Button>
   </div>
 </div>
 
@@ -122,13 +124,23 @@
     flex-direction: column;
     align-items: center;
 
-    position: relative;
+    position: absolute;
 
     color: rgb(var(--m3-scheme-on-background));
     
     background: rgb(var(--m3-scheme-background));
 
     z-index: 10;
+  }
+
+  .content {
+    width: 100%;
+    max-width: 370px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .song-info {
