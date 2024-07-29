@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
   import ViewContainer from "@component-utils/ViewContainer.svelte";
+  import { LogController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
@@ -10,7 +11,6 @@
   import ViewHeader from "@layout/ViewHeader.svelte";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
-  import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { showGridSize, showSongSortOrder } from "@stores/Modals";

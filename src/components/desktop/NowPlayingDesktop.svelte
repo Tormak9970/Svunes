@@ -1,6 +1,7 @@
 <script lang="ts">
   import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { PlaybackController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
@@ -9,7 +10,6 @@
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
   import MenuItem from "@layout/MenuItem.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";

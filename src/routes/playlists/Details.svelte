@@ -1,6 +1,7 @@
 <script lang="ts">
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { EditController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
@@ -11,9 +12,6 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Marquee from "@layout/Marquee.svelte";
   import MenuItem from "@layout/MenuItem.svelte";
-  import { EditController } from "@lib/controllers/EditController";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";

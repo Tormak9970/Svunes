@@ -1,8 +1,7 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import { PlaybackController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
   import { isPaused, repeatPlayed, shuffle } from "@stores/State";
 
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";

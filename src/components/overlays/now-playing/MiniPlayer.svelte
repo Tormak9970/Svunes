@@ -1,11 +1,11 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
   import ViewImage from "@component-utils/ViewImage.svelte";
+  import { PlaybackController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
   import PlayArrow from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Marquee from "@layout/Marquee.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { showMiniPlayer, showNowPlaying, showQueue } from "@stores/Overlays";
   import { isPaused, playingSongId, songProgress, songsMap } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";

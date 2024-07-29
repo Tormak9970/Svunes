@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { PlaybackController } from "@controllers";
   import Favorites from "@layout/placeholders/Favorites.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { t } from "@stores/Locale";
   import { playlists, showErrorSnackbar } from "@stores/State";
   import { hash64 } from "@utils";

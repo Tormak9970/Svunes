@@ -1,10 +1,5 @@
 <script lang="ts">
-  import { ApiController } from "@lib/controllers/ApiController";
-  import { AppController } from "@lib/controllers/AppController";
-  import { DeviceController } from "@lib/controllers/DeviceController";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
-  import { SettingsController } from "@lib/controllers/SettingsController";
+  import { ApiController, AppController, DeviceController, PlaybackController, QueueController, SettingsController } from "@controllers";
   import { isLandscape } from "@stores/Layout";
   import { systemDefaultLanguage, t } from "@stores/Locale";
   import { showNowPlaying } from "@stores/Overlays";

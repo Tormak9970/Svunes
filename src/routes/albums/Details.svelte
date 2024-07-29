@@ -2,6 +2,7 @@
   import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { EditController, LogController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
@@ -16,10 +17,6 @@
   import Marquee from "@layout/Marquee.svelte";
   import MenuItem from "@layout/MenuItem.svelte";
   import SongsList from "@layout/songs-list/SongsList.svelte";
-  import { EditController } from "@lib/controllers/EditController";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
-  import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@models";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";

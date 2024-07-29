@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { PlaybackController } from "@controllers";
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Album } from "@models";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { IMAGE_FADE_OPTIONS } from "@utils";

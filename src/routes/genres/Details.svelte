@@ -1,6 +1,7 @@
 <script lang="ts">
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { PlaybackController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import PlayButton from "@interactables/PlayButton.svelte";
@@ -8,8 +9,6 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import MenuItem from "@layout/MenuItem.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@models";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";

@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { PlaybackController } from "@controllers";
   import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Song } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";

@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
+  import { AppController, EditController, LogController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import QueueAdd from "@ktibow/iconset-material-symbols/add-to-queue-outline-rounded";
@@ -9,10 +10,6 @@
   import PlaylistRemove from "@ktibow/iconset-material-symbols/playlist-remove-rounded";
   import QueueRemove from "@ktibow/iconset-material-symbols/remove-from-queue-outline-rounded";
   import MenuItem from "@layout/MenuItem.svelte";
-  import { AppController } from "@lib/controllers/AppController";
-  import { EditController } from "@lib/controllers/EditController";
-  import { QueueController } from "@lib/controllers/QueueController";
-  import { LogController } from "@lib/controllers/utils/LogController";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { bulkEditSongIds, selected } from "@stores/Select";

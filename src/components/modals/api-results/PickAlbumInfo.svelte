@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { ApiController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import Select from "@interactables/select/Select.svelte";
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
-  import { ApiController } from "@lib/controllers/ApiController";
   import { t } from "@stores/Locale";
   import { albumInfos, availableReleaseGroups, onAlbumInfoDone, selectedReleaseGroupId, showPickAlbumInfo } from "@stores/Modals";
   import { onDestroy, onMount } from "svelte";

@@ -15,8 +15,7 @@
   import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
   import { showCarMode } from "@stores/Overlays";
   
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
+  import { PlaybackController, QueueController } from "@controllers";
   import { t } from "@stores/Locale";
   import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songsMap } from "@stores/State";
   import { hash64 } from "@utils";

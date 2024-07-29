@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { PlaybackController } from "@controllers";
   import { holdEvent } from "@directives";
   import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";

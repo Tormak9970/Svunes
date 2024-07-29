@@ -1,4 +1,4 @@
-import type { AlbumInfo, SelectedAlbum } from "@lib/controllers/ApiController";
+import type { AlbumInfo, SelectedAlbum } from "@controllers";
 import { writable, type Writable } from "svelte/store";
 import type { ReleaseGroup } from "../types/MusicBrainz";
 

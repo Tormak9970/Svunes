@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { SettingsController } from "@lib/controllers/SettingsController";
-  import { DialogController } from "@lib/controllers/utils/DialogController";
+  import { DialogController, SettingsController } from "@controllers";
   import * as dialog from "@tauri-apps/plugin-dialog";
   import * as process from "@tauri-apps/plugin-process";
   import { pop } from "svelte-spa-router";

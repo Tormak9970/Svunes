@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
 
-  import { RustInterop } from "@lib/controllers/utils/RustInterop";
+  import { RustInterop } from "@controllers";
   import type { Genre } from "@models";
   import { IMAGE_FADE_OPTIONS, TILTED_DIMENSIONS } from "@utils";
 

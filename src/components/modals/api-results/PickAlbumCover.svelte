@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ApiController } from "@controllers";
   import { scrollShadow } from "@directives";
   import Button from "@interactables/Button.svelte";
   import Select from "@interactables/select/Select.svelte";
@@ -6,7 +7,6 @@
   import Lazy from "@layout/Lazy.svelte";
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
-  import { ApiController } from "@lib/controllers/ApiController";
   import { t } from "@stores/Locale";
   import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";
   import { IMAGE_FADE_OPTIONS } from "@utils";

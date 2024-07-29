@@ -1,13 +1,12 @@
 <script lang="ts">
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { PlaybackController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import PlayButton from "@interactables/PlayButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import VirtualList from "@layout/VirtualList.svelte";
-  import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@models";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";

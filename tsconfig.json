@@ -21,9 +21,10 @@
       "@views/*": ["./src/components/views/*"],
       "@overlays/*": ["./src/components/overlays/*"],
       "@component-utils/*": ["./src/components/utils/*"],
-      "@lib/*": ["./src/lib/*"],
       "@stores/*": ["./src/stores/*"],
       "@routes/*": ["./src/routes/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@controllers": ["./src/lib/controllers"],
       "@models": ["./src/lib/models"],
       "@directives": ["./src/lib/directives"],
       "@utils": ["./src/lib/utils"]

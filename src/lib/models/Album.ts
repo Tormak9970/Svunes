@@ -1,7 +1,7 @@
+import { RustInterop } from "@controllers";
 import { songsMap } from "@stores/State";
 import { checkChannels, checkGreyness, formatTime, sumColorString } from "@utils";
 import { get } from "svelte/store";
-import { RustInterop } from "../controllers/utils/RustInterop";
 
 /**
  * Represents an album.
