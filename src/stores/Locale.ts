@@ -1,5 +1,5 @@
+import { LANGS } from "@utils";
 import { derived, get, writable, type Readable } from "svelte/store";
-import { LANGS } from "../lib/utils/i18n";
 import { showHelpTranslate } from "./Modals";
 
 export const HELP_TRANSLATE_LINK = "https://crowdin.com/project/tunistic";

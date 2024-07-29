@@ -1,8 +1,8 @@
 import { t } from "@stores/Locale";
 import { albumsMap } from "@stores/State";
 import { path } from "@tauri-apps/api";
+import { artistIsSingular, formatTime, getGenre, hash64, normalizeString } from "@utils";
 import { get } from "svelte/store";
-import { artistIsSingular, formatTime, getGenre, hash64, normalizeString } from "../utils/Utils";
 
 /**
  * Class representing a song.

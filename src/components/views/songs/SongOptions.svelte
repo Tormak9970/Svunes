@@ -4,10 +4,10 @@
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
-  import { goToSongDetails, goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { playlists, playlistsMap, songIdsToParse } from "@stores/State";
+  import { goToSongDetails, goToSongEdit } from "@utils";
   import { location, push, replace } from "svelte-spa-router";
 
   export let menuIsOpen: boolean;

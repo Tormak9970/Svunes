@@ -2,10 +2,10 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import type { Song } from "@lib/models/Song";
-  import { goToSongDetails, goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showCarMode, showMiniPlayer, showQueue, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
+  import { goToSongDetails, goToSongEdit } from "@utils";
   import { push } from "svelte-spa-router";
 
   export let showQueueOption = false;

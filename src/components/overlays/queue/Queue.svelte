@@ -5,11 +5,11 @@
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
-  import { formatTime } from "@lib/utils/Utils";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { queue, songsMap } from "@stores/State";
+  import { formatTime } from "@utils";
   import QueueSongs from "./QueueSongs.svelte";
 
   let highlight = true;

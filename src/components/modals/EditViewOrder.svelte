@@ -9,8 +9,8 @@
   import ModalBody from "./utils/ModalBody.svelte";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
-  import { clamp, swap } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
+  import { clamp, swap } from "@utils";
   import { drag } from "svelte-gesture";
 
   let open = true;

@@ -31,7 +31,7 @@
 </script>
 
 <script lang="ts">
-	import { debounce } from "@lib/utils/Utils";
+	import { debounce } from "@utils";
 	import { onMount, tick } from "svelte";
 
 	// * Component Props.

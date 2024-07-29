@@ -1,7 +1,7 @@
+import { Playlist } from "@lib/models/Playlist";
+import { t as translate } from "@stores/Locale";
+import { hash64 } from "@utils";
 import { get } from "svelte/store";
-import { Playlist } from "../lib/models/Playlist";
-import { hash64 } from "../lib/utils/Utils";
-import { t as translate } from "../stores/Locale";
 import type { View } from "./View";
 
 export enum NowPlayingTheme {

@@ -1,6 +1,6 @@
 import { queue, songsMap } from "@stores/State";
+import { formatTime, hash64 } from "@utils";
 import { get } from "svelte/store";
-import { formatTime, hash64 } from "../utils/Utils";
 import type { Song } from "./Song";
 
 /**

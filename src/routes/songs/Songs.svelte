@@ -12,12 +12,11 @@
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@lib/models/Song";
-  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
-  import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { t } from "@stores/Locale";
   import { showGridSize, showSongSortOrder } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
   import { lastView, selectedView, songGridSize, songs, songsIsScrolled, songSortOrder } from "@stores/State";
+  import { dateSort, GRID_IMAGE_DIMENSIONS, stringSort } from "@utils";
   import SongGridEntry from "@views/songs/SongGridEntry.svelte";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
   import { afterUpdate } from "svelte";

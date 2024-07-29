@@ -22,8 +22,8 @@
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
   import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
-  import { goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
+  import { goToSongEdit } from "@utils";
   import SongOptions from "@views/songs/SongOptions.svelte";
   import { pop } from "svelte-spa-router";
   

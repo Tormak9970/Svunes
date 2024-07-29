@@ -5,10 +5,10 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import GridEntry from "@layout/entries/GridEntry.svelte";
   import type { Playlist } from "@lib/models/Playlist";
-  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { playlistGridSize, playlistSortOrder } from "@stores/State";
+  import { GRID_IMAGE_DIMENSIONS } from "@utils";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import PlaylistImage from "./PlaylistImage.svelte";

@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { debounce } from "@utils";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
   import { spring } from "svelte/motion";
-  import { debounce } from "../../lib/utils/Utils";
 
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
   export let extraOptions: HTMLInputAttributes = {};

@@ -20,11 +20,10 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Album } from "@lib/models/Album";
   import type { Artist } from "@lib/models/Artist";
-  import { shuffleSongs } from "@lib/utils/Shuffle";
-  import { getAllArtistNames } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { albumsMap, artistsMap, lastView, selectedView, showSuggestions, songs, songsMap } from "@stores/State";
+  import { getAllArtistNames, shuffleSongs } from "@utils";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
   import { View } from "../../types/View";

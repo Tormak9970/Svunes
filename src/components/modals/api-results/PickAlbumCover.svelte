@@ -7,9 +7,9 @@
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
-  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
   import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";
+  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
   import ModalBody from "../utils/ModalBody.svelte";

@@ -4,8 +4,8 @@
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Playlist } from "@lib/models/Playlist";
-  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
+  import { LIST_IMAGE_DIMENSIONS } from "@utils";
   import PlaylistImage from "@views/playlists/PlaylistImage.svelte";
   import { createEventDispatcher } from "svelte";
 

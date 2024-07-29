@@ -22,13 +22,12 @@
   import { LogController } from "@lib/controllers/utils/LogController";
   import { Artist } from "@lib/models/Artist";
   import type { Song } from "@lib/models/Song";
-  import { stringSort } from "@lib/utils/Sorters";
-  import { getRandomElements } from "@lib/utils/Utils";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { artistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, songsMap, useArtistColors } from "@stores/State";
+  import { getRandomElements, stringSort } from "@utils";
   import { pop, push } from "svelte-spa-router";
   import type { ArtistEntriesSortOrder } from "../../types/Settings";
 

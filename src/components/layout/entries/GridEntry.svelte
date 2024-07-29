@@ -1,8 +1,8 @@
 <script lang="ts">
   import ViewImage from "@component-utils/ViewImage.svelte";
   import CardClickable from "@layout/CardClickable.svelte";
-  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { inSelectMode } from "@stores/Select";
+  import { GRID_IMAGE_DIMENSIONS } from "@utils";
   import { GridSize } from "../../../types/Settings";
 
   export let label: string;

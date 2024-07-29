@@ -4,8 +4,8 @@
   
   import Icon from "@component-utils/Icon.svelte";
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
-  import { clamp, swap } from "@lib/utils/Utils";
   import { inSelectMode } from "@stores/Select";
+  import { clamp, swap } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
   import type { Unsubscriber } from "svelte/store";

@@ -1,10 +1,10 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
   import Lazy from "@layout/Lazy.svelte";
-  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
   import { showNowPlayingTheme } from "@stores/Modals";
   import { nowPlayingTheme } from "@stores/State";
+  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
   import { spring } from "svelte/motion";

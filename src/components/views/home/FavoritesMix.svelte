@@ -1,9 +1,9 @@
 <script lang="ts">
   import Favorites from "@layout/placeholders/Favorites.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { hash64 } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
   import { playlists, showErrorSnackbar } from "@stores/State";
+  import { hash64 } from "@utils";
 
   export let size = 146;
 

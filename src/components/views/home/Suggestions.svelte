@@ -5,7 +5,7 @@
   import Refresh from "@ktibow/iconset-material-symbols/refresh-rounded";
   import { t } from "@stores/Locale";
   import { albums } from "@stores/State";
-  import { shuffle } from "../../../lib/utils/Shuffle";
+  import { shuffle } from "@utils";
   import FavoritesMix from "./FavoritesMix.svelte";
   import SuggestionEntry from "./SuggestionEntry.svelte";
 

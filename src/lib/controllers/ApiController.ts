@@ -1,13 +1,13 @@
 import { t } from "@stores/Locale";
 import { albumCovers, albumInfos, apiSearchCanceled, availableReleaseGroups, onAlbumInfoDone, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover, showPickAlbumInfo, showSearchingApi } from "@stores/Modals";
+import { showErrorSnackbar } from "@stores/State";
 import { path } from "@tauri-apps/api";
 import { create, exists, remove } from "@tauri-apps/plugin-fs";
+import { compareStrings } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
-import { showErrorSnackbar } from "../../stores/State";
 import type { ReleaseGroup } from "../../types/MusicBrainz";
 import { CoverArtApi } from "../models/CoverArtApi";
 import { MusicBrainzApi } from "../models/MusicBrainzApi";
-import { compareStrings } from "../utils/Utils";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
 

@@ -13,14 +13,13 @@
   import { AppController } from "@lib/controllers/AppController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Playlist } from "@lib/models/Playlist";
-  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
-  import { dateSort, stringSort } from "@lib/utils/Sorters";
   import { t } from "@stores/Locale";
   import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";
   import { showCreatePlaylist } from "@stores/Overlays";
   import { selectedChips } from "@stores/Search";
   import { lastView, playlistGridSize, playlists, playlistsIsScrolled, playlistSortOrder, selectedView } from "@stores/State";
   import * as dialog from "@tauri-apps/plugin-dialog";
+  import { dateSort, GRID_IMAGE_DIMENSIONS, stringSort } from "@utils";
   import PlaylistGridEntry from "@views/playlists/PlaylistGridEntry.svelte";
   import PlaylistListEntry from "@views/playlists/PlaylistListEntry.svelte";
   import { afterUpdate } from "svelte";

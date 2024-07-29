@@ -4,9 +4,9 @@
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import type { Playlist } from "@lib/models/Playlist";
-  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
+  import { LIST_IMAGE_DIMENSIONS } from "@utils";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import type { PlaylistSortOrder } from "../../../types/Settings";

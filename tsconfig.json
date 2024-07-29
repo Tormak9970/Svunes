@@ -24,7 +24,8 @@
       "@lib/*": ["./src/lib/*"],
       "@stores/*": ["./src/stores/*"],
       "@routes/*": ["./src/routes/*"],
-      "@directives": ["./src/lib/directives"]
+      "@directives": ["./src/lib/directives"],
+      "@utils": ["./src/lib/utils"]
     }
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],

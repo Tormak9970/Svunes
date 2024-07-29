@@ -1,8 +1,8 @@
 <script lang="ts">
   import RadioInput from "@interactables/radio/RadioInput.svelte";
-  import { LANGS } from "@lib/utils/i18n";
   import { getLanguageName, selectedLanguage, t } from "@stores/Locale";
   import { showSelectLanguage } from "@stores/Modals";
+  import { LANGS } from "@utils";
   import SmallModalBody from "./utils/SmallModalBody.svelte";
 
   let open = true;

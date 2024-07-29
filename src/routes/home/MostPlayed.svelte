@@ -9,10 +9,10 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import type { Song } from "@lib/models/Song";
-  import { shuffleSongs } from "@lib/utils/Shuffle";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { isPaused, nowPlayingList, songs, songsMap } from "@stores/State";
+  import { shuffleSongs } from "@utils";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
   import { pop } from "svelte-spa-router";
 

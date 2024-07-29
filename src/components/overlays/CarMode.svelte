@@ -17,9 +17,9 @@
   
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
-  import { hash64 } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
   import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songsMap } from "@stores/State";
+  import { hash64 } from "@utils";
   import { sharedAxisTransition } from "../utils/animations/animations";
   
   $: song = $playingSongId !== "" ? $songsMap[$playingSongId] : null;

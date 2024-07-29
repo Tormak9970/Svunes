@@ -6,10 +6,10 @@
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import type { Song } from "@lib/models/Song";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@utils";
   import QueueSongOptions from "./QueueSongOptions.svelte";
 
   export let song: Song;

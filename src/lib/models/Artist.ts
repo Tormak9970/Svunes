@@ -1,8 +1,7 @@
 import { artistsMap, genresMap, songsMap } from "@stores/State";
+import { checkChannels, checkGreyness, formatTime, sumColorString } from "@utils";
 import { get } from "svelte/store";
 import { RustInterop } from "../controllers/utils/RustInterop";
-import { checkChannels, checkGreyness, sumColorString } from "../utils/Colors";
-import { formatTime } from "../utils/Utils";
 
 /**
  * Represents an Artist.

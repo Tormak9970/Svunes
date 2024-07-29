@@ -1,9 +1,9 @@
 <script lang="ts">
   import { scrollShadow } from "@directives";
   import Button from "@interactables/Button.svelte";
-  import { LANGS } from "@lib/utils/i18n";
   import { getCredits, getLanguageName, t } from "@stores/Locale";
   import { showTranslationCredits } from "@stores/Modals";
+  import { LANGS } from "@utils";
   import ModalBody from "./utils/ModalBody.svelte";
 
   let open = true;

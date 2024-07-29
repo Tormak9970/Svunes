@@ -4,9 +4,9 @@
   import MenuButton from "@interactables/MenuButton.svelte";
   import Marquee from "@layout/Marquee.svelte";
   import type { Song } from "@lib/models/Song";
-  import { formatTime } from "@lib/utils/Utils";
   import { showMiniPlayer } from "@stores/Overlays";
   import { nowPlayingBackgroundType, songProgress } from "@stores/State";
+  import { formatTime } from "@utils";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";

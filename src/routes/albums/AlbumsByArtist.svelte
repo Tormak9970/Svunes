@@ -5,10 +5,10 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import type { Album } from "@lib/models/Album";
-  import { GRID_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { albumsMap, artistsMap } from "@stores/State";
+  import { GRID_IMAGE_DIMENSIONS } from "@utils";
   import AlbumGridEntry from "@views/albums/AlbumGridEntry.svelte";
   import { pop } from "svelte-spa-router";
   import { GridSize } from "../../types/Settings";

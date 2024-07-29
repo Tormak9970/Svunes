@@ -1,8 +1,8 @@
 <script lang="ts">
   import ViewImage from "@component-utils/ViewImage.svelte";
   import CardClickable from "@layout/CardClickable.svelte";
-  import { LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { inSelectMode } from "@stores/Select";
+  import { LIST_IMAGE_DIMENSIONS } from "@utils";
 
   export let label: string;
   export let convertedPath: string;

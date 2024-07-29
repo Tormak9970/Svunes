@@ -4,10 +4,10 @@
   import BottomSheet from "@layout/BottomSheet.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
   import { Playlist } from "@lib/models/Playlist";
-  import { hash64 } from "@lib/utils/Utils";
   import { t } from "@stores/Locale";
   import { showCreatePlaylist, songsForNewPlaylist } from "@stores/Overlays";
   import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
+  import { hash64 } from "@utils";
 
   let newPlaylistName = "";
 

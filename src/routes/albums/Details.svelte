@@ -21,12 +21,11 @@
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
   import type { Song } from "@lib/models/Song";
-  import { goToAlbumEdit } from "@lib/utils/Navigation";
-  import { nullishNumberSort, stringSort } from "@lib/utils/Sorters";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { albumToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artistsMap, isPaused, nowPlayingList, songsMap, useAlbumColors } from "@stores/State";
+  import { goToAlbumEdit, nullishNumberSort, stringSort } from "@utils";
   import { pop, push, replace } from "svelte-spa-router";
   import type { AlbumEntriesSortOrder } from "../../types/Settings";
 

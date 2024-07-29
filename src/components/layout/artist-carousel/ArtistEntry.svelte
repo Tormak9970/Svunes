@@ -3,8 +3,8 @@
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import type { Artist } from "@lib/models/Artist";
-  import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { push } from "svelte-spa-router";
 
   export let artist: Artist;

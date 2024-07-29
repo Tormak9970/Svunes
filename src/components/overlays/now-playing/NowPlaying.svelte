@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { hash64 } from "@lib/utils/Utils";
   import { albumsMap, nowPlayingTheme, playingSongId, playlists, songsMap } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { hash64 } from "@utils";
   import { onMount } from "svelte";
   import Card from "./themes/Card.svelte";
   import Full from "./themes/Full.svelte";

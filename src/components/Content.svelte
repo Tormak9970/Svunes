@@ -1,21 +1,21 @@
 <script lang="ts">
   import { ApiController } from "@lib/controllers/ApiController";
+  import { AppController } from "@lib/controllers/AppController";
   import { DeviceController } from "@lib/controllers/DeviceController";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { SettingsController } from "@lib/controllers/SettingsController";
+  import { isLandscape } from "@stores/Layout";
+  import { systemDefaultLanguage, t } from "@stores/Locale";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { hash64 } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
-  import { AppController } from "../lib/controllers/AppController";
-  import { hash64 } from "../lib/utils/Utils";
   import { routes } from "../routes";
-  import { isLandscape } from "../stores/Layout";
-  import { systemDefaultLanguage, t } from "../stores/Locale";
   import { getViewRoute, View } from "../types/View";
   import DesktopViewWrapper from "./desktop/DesktopViewWrapper.svelte";
   import Modals from "./modals/Modals.svelte";
