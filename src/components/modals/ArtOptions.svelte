@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ListModalBody } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import ListItemButton from "@layout/ListItemButton.svelte";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";

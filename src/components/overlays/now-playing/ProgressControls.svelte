@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Slider from "@interactables/Slider.svelte";
+  import { Slider } from "@interactables";
   import { isLandscape } from "@stores/Layout";
   import { songProgress } from "@stores/State";
   import { formatTime } from "@utils";

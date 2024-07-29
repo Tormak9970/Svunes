@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import Close from "@ktibow/iconset-material-symbols/close-rounded";
   import Icon from "../Icon.svelte";
   

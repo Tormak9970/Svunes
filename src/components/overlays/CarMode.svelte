@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import Marquee from "@layout/Marquee.svelte";
   import ProgressControls from "./now-playing/ProgressControls.svelte";
   

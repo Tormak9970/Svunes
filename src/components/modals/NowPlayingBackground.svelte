@@ -1,6 +1,6 @@
 <script lang="ts">
   import { SmallModalBody } from "@component-utils";
-  import RadioInput from "@interactables/radio/RadioInput.svelte";
+  import { RadioInput } from "@interactables";
   import { t } from "@stores/Locale";
   import { showNowPlayingBackground } from "@stores/Modals";
   import { nowPlayingBackgroundType } from "@stores/State";

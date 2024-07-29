@@ -1,11 +1,9 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
-  import SearchField from "@interactables/SearchField.svelte";
+  import { Button, ChipChooser, SearchField } from "@interactables";
   import { searchQuery, selectedChips } from "@stores/Search";
   import { pop } from "svelte-spa-router";
-  
-  import ChipChooser from "@interactables/chip/ChipChooser.svelte";
+
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Close from "@ktibow/iconset-material-symbols/close-rounded";
   import Tune from "@ktibow/iconset-material-symbols/tune-rounded";

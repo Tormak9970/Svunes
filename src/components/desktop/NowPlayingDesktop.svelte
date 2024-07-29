@@ -1,8 +1,7 @@
 <script lang="ts">
   import { DetailsArtPicture, Icon } from "@component-utils";
   import { PlaybackController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { Button, MenuButton } from "@interactables";
   import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
   import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";

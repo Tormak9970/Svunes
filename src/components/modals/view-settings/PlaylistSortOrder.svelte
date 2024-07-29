@@ -1,6 +1,6 @@
 <script lang="ts">
   import { SmallModalBody } from "@component-utils";
-  import RadioInput from "@interactables/radio/RadioInput.svelte";
+  import { RadioInput } from "@interactables";
   import { t } from "@stores/Locale";
   import { showPlaylistSortOrder } from "@stores/Modals";
   import { playlistSortOrder } from "@stores/State";

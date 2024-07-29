@@ -1,7 +1,7 @@
 <script lang="ts">
   import { FolderEntry, ModalBody } from "@component-utils";
   import { scrollShadow } from "@directives";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import { t } from "@stores/Locale";
   import { showEditMusicFolders } from "@stores/Modals";
   import { musicDirectories } from "@stores/State";

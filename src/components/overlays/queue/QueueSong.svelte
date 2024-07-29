@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
   import { holdEvent } from "@directives";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { MenuButton } from "@interactables";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
 
   import Refresh from "@ktibow/iconset-material-symbols/refresh-rounded";
   import { t } from "@stores/Locale";

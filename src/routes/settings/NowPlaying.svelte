@@ -4,7 +4,7 @@
   import { getNowPlayingBackgroundType, getNowPlayingTheme, type NowPlayingExtraControl } from "@types";
   import { pop } from "svelte-spa-router";
 
-  import MultiButton from "@interactables/multi-button/MultiButton.svelte";
+  import { MultiButton } from "@interactables";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";

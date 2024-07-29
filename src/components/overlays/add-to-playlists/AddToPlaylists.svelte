@@ -1,6 +1,6 @@
 <script lang="ts">
   import { LogController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import BottomSheet from "@layout/BottomSheet.svelte";
   import { t } from "@stores/Locale";
   import { albumToAdd, artistToAdd, genreToAdd, playlistToAdd, showAddToPlaylist, showCreatePlaylist, songToAdd, songsForNewPlaylist } from "@stores/Overlays";

@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Icon, ViewContainer } from "@component-utils";
   import { LogController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { Button, MenuButton } from "@interactables";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";

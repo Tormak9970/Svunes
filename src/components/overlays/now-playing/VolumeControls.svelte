@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Slider from "@interactables/Slider.svelte";
+  import { Slider } from "@interactables";
   import { showVolumeControls, volumeLevel } from "@stores/State";
 
   import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";

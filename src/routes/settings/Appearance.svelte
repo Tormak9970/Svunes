@@ -3,7 +3,7 @@
   import type { Palette } from "@types";
   import { pop } from "svelte-spa-router";
 
-  import MultiButton from "@interactables/multi-button/MultiButton.svelte";
+  import { MultiButton } from "@interactables";
   import ColorPreset from "@views/settings/ColorPreset.svelte";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";

@@ -1,8 +1,7 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { PlaybackController, QueueController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
-  import PlayButton from "@interactables/PlayButton.svelte";
+  import { Button, PlayButton } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";

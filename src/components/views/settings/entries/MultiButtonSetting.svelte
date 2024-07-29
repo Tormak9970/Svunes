@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
-  import MultiButtonContainer from "@interactables/multi-button/MultiButtonContainer.svelte";
+  import { MultiButtonContainer } from "@interactables";
   import Card from "@layout/Card.svelte";
 
   export let label: string;

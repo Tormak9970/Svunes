@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Checkbox from "@interactables/Checkbox.svelte";
+  import { Checkbox } from "@interactables";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import CardClickable from "@layout/CardClickable.svelte";
   import type { Playlist } from "@models";

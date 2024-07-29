@@ -2,8 +2,7 @@
   import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
-  import Button from "@interactables/Button.svelte";
-  import TextField from "@interactables/TextField.svelte";
+  import { Button, TextField } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";

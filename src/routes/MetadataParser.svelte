@@ -1,11 +1,10 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button, TextField } from "@interactables";
   import { showErrorSnackbar, songIdsToParse, songsMap } from "@stores/State";
   import { pop } from "svelte-spa-router";
   
   import { EditController } from "@controllers";
-  import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import CheckCircle from "@ktibow/iconset-material-symbols/check-circle-rounded";
   import Help from "@ktibow/iconset-material-symbols/help-rounded";

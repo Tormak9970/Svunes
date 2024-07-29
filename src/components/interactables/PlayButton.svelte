@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
   import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import { isPaused, nowPlayingList } from "@stores/State";
+  import Button from "./Button.svelte";
 
   export let name: string | undefined;
   export let type: "filled" | "text" = "filled";

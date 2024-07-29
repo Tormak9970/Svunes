@@ -1,7 +1,6 @@
 <script lang="ts">
   import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { Button, MenuButton } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";

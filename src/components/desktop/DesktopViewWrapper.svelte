@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Icon, MediaQuery } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { Button, MenuButton } from "@interactables";
   import GridView from "@ktibow/iconset-material-symbols/grid-view";
   import Settings from "@ktibow/iconset-material-symbols/settings";
   import MenuItem from "@layout/MenuItem.svelte";

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import AlbumCarouselList from "./AlbumCarouselList.svelte";
 
   import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";

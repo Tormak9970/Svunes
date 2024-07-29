@@ -2,8 +2,7 @@
   import { ModalBody } from "@component-utils";
   import { ApiController } from "@controllers";
   import { scrollShadow } from "@directives";
-  import Button from "@interactables/Button.svelte";
-  import Select from "@interactables/select/Select.svelte";
+  import { Button, Select } from "@interactables";
   import CardClickable from "@layout/CardClickable.svelte";
   import Lazy from "@layout/Lazy.svelte";
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";

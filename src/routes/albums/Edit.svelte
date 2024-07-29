@@ -2,9 +2,7 @@
   import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { ApiController, AppController, EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
-  import Button from "@interactables/Button.svelte";
-  import NumberField from "@interactables/NumberField.svelte";
-  import TextField from "@interactables/TextField.svelte";
+  import { Button, NumberField, TextField } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import PageViewOutlined from "@ktibow/iconset-material-symbols/pageview-outline-rounded";
   import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";

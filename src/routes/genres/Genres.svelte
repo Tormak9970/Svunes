@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon, ViewContainer } from "@component-utils";
   import { isScrolled } from "@directives";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Settings from "@ktibow/iconset-material-symbols/settings";

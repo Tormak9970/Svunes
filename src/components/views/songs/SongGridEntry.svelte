@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { MenuButton } from "@interactables";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import GridEntry from "@layout/entries/GridEntry.svelte";
   import type { Song } from "@models";

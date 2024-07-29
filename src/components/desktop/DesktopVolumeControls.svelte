@@ -1,7 +1,7 @@
 <script lang="ts">
   import { volumeLevel } from "@stores/State";
 
-  import VerticalSlider from "@interactables/VerticalSlider.svelte";
+  import { VerticalSlider } from "@interactables";
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

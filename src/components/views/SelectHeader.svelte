@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { AppController, EditController, LogController, QueueController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
-  import MenuButton from "@interactables/MenuButton.svelte";
+  import { Button, MenuButton } from "@interactables";
   import QueueAdd from "@ktibow/iconset-material-symbols/add-to-queue-outline-rounded";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";

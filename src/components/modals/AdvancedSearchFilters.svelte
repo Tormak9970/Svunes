@@ -2,8 +2,7 @@
   import { showAdvancedFilters } from "@stores/Modals";
 
   import { ModalBody } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
-  import Checkbox from "@interactables/Checkbox.svelte";
+  import { Button, Checkbox } from "@interactables";
   import { t } from "@stores/Locale";
   import { showOnlyMissingAlbum, showOnlyMissingAlbumArtist, showOnlyMissingArtist, showOnlyMissingCover, showOnlyMissingGenre, showOnlyMissingTitle, showOnlyMissingYear } from "@stores/Search";
 

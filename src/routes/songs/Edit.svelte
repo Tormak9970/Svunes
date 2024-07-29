@@ -2,9 +2,7 @@
   import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
-  import Button from "@interactables/Button.svelte";
-  import NumberField from "@interactables/NumberField.svelte";
-  import TextField from "@interactables/TextField.svelte";
+  import { Button, NumberField, TextField } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { t } from "@stores/Locale";
   import { showWritingChanges } from "@stores/Overlays";

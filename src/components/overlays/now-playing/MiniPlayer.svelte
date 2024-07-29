@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon, ViewImage } from "@component-utils";
   import { PlaybackController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
   import PlayArrow from "@ktibow/iconset-material-symbols/play-arrow-rounded";
   import Marquee from "@layout/Marquee.svelte";

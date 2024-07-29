@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ModalBody } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import { HELP_TRANSLATE_LINK, t } from "@stores/Locale";
   import { showParserVariables } from "@stores/Modals";
   import * as shell from "@tauri-apps/plugin-shell";

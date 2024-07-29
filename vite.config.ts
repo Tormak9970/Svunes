@@ -57,7 +57,6 @@ export default defineConfig({
       "@interactables": resolve(__dirname, "./src/components/interactables"),
       "@layout": resolve(__dirname, "./src/components/layout"),
       "@views": resolve(__dirname, "./src/components/views"),
-      "@overlays": resolve(__dirname, "./src/components/overlays"),
       "@component-utils": resolve(__dirname, "./src/components/utils"),
       "@stores": resolve(__dirname, "./src/stores"),
       "@routes": resolve(__dirname, "./src/routes"),

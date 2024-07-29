@@ -1,8 +1,7 @@
 <script lang="ts">
   import { ModalBody } from "@component-utils";
   import { ApiController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
-  import Select from "@interactables/select/Select.svelte";
+  import { Button, Select } from "@interactables";
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import { t } from "@stores/Locale";
   import { albumInfos, availableReleaseGroups, onAlbumInfoDone, selectedReleaseGroupId, showPickAlbumInfo } from "@stores/Modals";

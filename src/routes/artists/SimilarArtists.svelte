@@ -1,6 +1,6 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import type { Artist } from "@models";

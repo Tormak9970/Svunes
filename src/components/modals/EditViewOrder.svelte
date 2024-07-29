@@ -4,8 +4,7 @@
   import { View, Views, getViewName } from "@types";
 
   import { Icon, ModalBody } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
-  import Checkbox from "@interactables/Checkbox.svelte";
+  import { Button, Checkbox } from "@interactables";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
   import { t } from "@stores/Locale";

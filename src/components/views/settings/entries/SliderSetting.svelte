@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
-  import Slider from "@interactables/Slider.svelte";
+  import { Slider } from "@interactables";
   import Card from "@layout/Card.svelte";
   import type { Spring } from "svelte/motion";
 

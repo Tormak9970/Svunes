@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
-  import ColorPicker from "@interactables/color-picker/ColorPicker.svelte";
+  import { ColorPicker } from "@interactables";
   import Card from "@layout/Card.svelte";
 
   export let label: string;

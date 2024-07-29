@@ -1,9 +1,7 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { PlaybackController, QueueController } from "@controllers";
-  import Button from "@interactables/Button.svelte";
-  import MenuButton from "@interactables/MenuButton.svelte";
-  import PlayButton from "@interactables/PlayButton.svelte";
+  import { Button, MenuButton, PlayButton } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import MenuItem from "@layout/MenuItem.svelte";

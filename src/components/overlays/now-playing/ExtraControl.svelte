@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import { showCarMode, showSleepTimerSelection } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
 

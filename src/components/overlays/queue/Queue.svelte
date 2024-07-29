@@ -1,7 +1,7 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { isScrolled } from "@directives";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
   import { t } from "@stores/Locale";

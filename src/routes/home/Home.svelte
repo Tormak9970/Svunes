@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon, ViewContainer } from "@component-utils";
-  import Button from "@interactables/Button.svelte";
+  import { Button } from "@interactables";
   import Suggestions from "@views/home/Suggestions.svelte";
 
   import CalendarAddOn from "@ktibow/iconset-material-symbols/calendar-add-on-rounded";
