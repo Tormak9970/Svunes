@@ -1,5 +1,5 @@
 <script>
-  import LoadingSpinner from "../layout/loading-animations/LoadingSpinner.svelte";
+  import { LoadingSpinner } from "@layout";
 </script>
 
 <div class="writing-changes-dialog">

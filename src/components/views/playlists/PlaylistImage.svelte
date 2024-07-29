@@ -1,7 +1,5 @@
 <script lang="ts">
-  import Lazy from "@layout/Lazy.svelte";
-  import AlbumPlaceholder from "@layout/placeholders/AlbumPlaceholder.svelte";
-  import Favorites from "@layout/placeholders/Favorites.svelte";
+  import { AlbumPlaceholder, Favorites, Lazy } from "@layout";
   import type { Playlist } from "@models";
   import { albumsMap, songsMap } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";

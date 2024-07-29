@@ -12,9 +12,7 @@
   
   import { PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
-  import AlbumCarousel from "@layout/album-carousel/AlbumCarousel.svelte";
-  import ArtistCarousel from "@layout/artist-carousel/ArtistCarousel.svelte";
-  import ViewHeader from "@layout/ViewHeader.svelte";
+  import { AlbumCarousel, ArtistCarousel, ViewHeader } from "@layout";
   import type { Album, Artist } from "@models";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";

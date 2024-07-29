@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { IconifyIcon } from "@iconify/types";
-  import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
+  import { LoadingSpinner } from "@layout";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
   import Icon from "../Icon.svelte";

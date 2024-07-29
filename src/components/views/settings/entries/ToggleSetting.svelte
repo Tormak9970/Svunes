@@ -2,7 +2,7 @@
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import { Toggle } from "@interactables";
-  import Card from "@layout/Card.svelte";
+  import { Card } from "@layout";
 
   export let label: string;
   export let description: string;

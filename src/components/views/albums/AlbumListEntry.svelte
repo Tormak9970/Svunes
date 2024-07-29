@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ListEntry from "@layout/entries/ListEntry.svelte";
+  import { ListEntry } from "@layout";
   import type { Album } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";

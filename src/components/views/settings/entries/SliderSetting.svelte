@@ -2,7 +2,7 @@
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import { Slider } from "@interactables";
-  import Card from "@layout/Card.svelte";
+  import { Card } from "@layout";
   import type { Spring } from "svelte/motion";
 
   export let label: string;

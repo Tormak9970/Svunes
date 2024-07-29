@@ -4,8 +4,7 @@
   import { Button, MenuButton, PlayButton } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import MenuItem from "@layout/MenuItem.svelte";
-  import VirtualList from "@layout/VirtualList.svelte";
+  import { MenuItem, VirtualList } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";

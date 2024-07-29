@@ -1,7 +1,6 @@
 <script lang="ts">
   import { LogController } from "@controllers";
-  import BottomSheet from "@layout/BottomSheet.svelte";
-  import ListItemButton from "@layout/ListItemButton.svelte";
+  import { BottomSheet, ListItemButton } from "@layout";
   import { t } from "@stores/Locale";
   import { showSleepTimerSelection } from "@stores/Overlays";
   import { isPaused, shouldPauseOnEnd, showInfoSnackbar } from "@stores/State";

@@ -10,7 +10,7 @@
   
   import FolderOpen from "@ktibow/iconset-material-symbols/folder-open-rounded";
   import VisibilityOff from "@ktibow/iconset-material-symbols/visibility-off-rounded";
-  import SectionLabel from "@layout/SectionLabel.svelte";
+  import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
 </script>
 

@@ -5,7 +5,7 @@
   import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Settings from "@ktibow/iconset-material-symbols/settings";
-  import ViewHeader from "@layout/ViewHeader.svelte";
+  import { ViewHeader } from "@layout";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { genres, lastView, selectedView } from "@stores/State";

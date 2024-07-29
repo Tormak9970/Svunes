@@ -1,6 +1,6 @@
 <script lang="ts">
   import { AppController, EditController, PlaybackController, QueueController } from "@controllers";
-  import MenuItem from "@layout/MenuItem.svelte";
+  import { MenuItem } from "@layout";
   import type { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";

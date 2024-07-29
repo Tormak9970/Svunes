@@ -3,7 +3,7 @@
   import { Button, MenuButton } from "@interactables";
   import GridView from "@ktibow/iconset-material-symbols/grid-view";
   import Settings from "@ktibow/iconset-material-symbols/settings";
-  import MenuItem from "@layout/MenuItem.svelte";
+  import { MenuItem } from "@layout";
   import { desktopSidePanel, isLandscape, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";

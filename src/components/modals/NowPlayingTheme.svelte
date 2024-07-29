@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ModalBody } from "@component-utils";
   import { Button } from "@interactables";
-  import Lazy from "@layout/Lazy.svelte";
+  import { Lazy } from "@layout";
   import { t } from "@stores/Locale";
   import { showNowPlayingTheme } from "@stores/Modals";
   import { nowPlayingTheme } from "@stores/State";

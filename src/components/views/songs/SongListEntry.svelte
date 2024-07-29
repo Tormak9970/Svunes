@@ -2,13 +2,13 @@
   import { PlaybackController } from "@controllers";
   import { MenuButton } from "@interactables";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import { ListEntry } from "@layout";
   import type { Song } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import type { SongSortOrder } from "@types";
   import { fade } from "svelte/transition";
-  import ListEntry from "../../layout/entries/ListEntry.svelte";
   import SongOptions from "./SongOptions.svelte";
 
   export let song: Song;

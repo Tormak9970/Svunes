@@ -3,6 +3,7 @@
   import { MenuButton } from "@interactables";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import { ListEntry } from "@layout";
   import type { Playlist } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
@@ -10,7 +11,6 @@
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import ListEntry from "../../layout/entries/ListEntry.svelte";
   import PlaylistImage from "./PlaylistImage.svelte";
   import PlaylistOptions from "./PlaylistOptions.svelte";
 

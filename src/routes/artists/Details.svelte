@@ -6,11 +6,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
-  import AlbumCarouselList from "@layout/album-carousel/AlbumCarouselList.svelte";
-  import ArtistCarousel from "@layout/artist-carousel/ArtistCarousel.svelte";
-  import Marquee from "@layout/Marquee.svelte";
-  import MenuItem from "@layout/MenuItem.svelte";
-  import SongsList from "@layout/songs-list/SongsList.svelte";
+  import { AlbumCarouselList, ArtistCarousel, Marquee, MenuItem, SongsList } from "@layout";
   import { Artist, type Song } from "@models";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";

@@ -5,10 +5,7 @@
   import Add from "@ktibow/iconset-material-symbols/add-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Search from "@ktibow/iconset-material-symbols/search";
-  import MenuItem from "@layout/MenuItem.svelte";
-  import ViewHeader from "@layout/ViewHeader.svelte";
-  import VirtualGrid from "@layout/VirtualGrid.svelte";
-  import VirtualList from "@layout/VirtualList.svelte";
+  import { MenuItem, ViewHeader, VirtualGrid, VirtualList } from "@layout";
   import type { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";

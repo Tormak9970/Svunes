@@ -10,7 +10,7 @@
   
   import History from "@ktibow/iconset-material-symbols/history-rounded";
   import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
-  import SectionLabel from "@layout/SectionLabel.svelte";
+  import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
 </script>
 

@@ -9,7 +9,7 @@
   import CheckCircle from "@ktibow/iconset-material-symbols/check-circle-rounded";
   import Help from "@ktibow/iconset-material-symbols/help-rounded";
   import TextRotationNone from "@ktibow/iconset-material-symbols/text-rotation-none-rounded";
-  import type { TabItem } from "@layout/TabsHeader.svelte";
+  import { type TabItem } from "@layout";
   import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showParserVariables } from "@stores/Modals";

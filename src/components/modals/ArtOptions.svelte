@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ListModalBody } from "@component-utils";
   import { Button } from "@interactables";
-  import ListItemButton from "@layout/ListItemButton.svelte";
+  import { ListItemButton } from "@layout";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import * as dialog from "@tauri-apps/plugin-dialog";

@@ -7,7 +7,7 @@
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
   import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
-  import MenuItem from "@layout/MenuItem.svelte";
+  import { MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";

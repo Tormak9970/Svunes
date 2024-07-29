@@ -3,8 +3,7 @@
   import { holdEvent } from "@directives";
   import { MenuButton } from "@interactables";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Lazy from "@layout/Lazy.svelte";
-  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
+  import { Lazy, MusicNotePlaceholder } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ListEntry from "@layout/entries/ListEntry.svelte";
+  import { ListEntry } from "@layout";
   import type { Artist } from "@models";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";

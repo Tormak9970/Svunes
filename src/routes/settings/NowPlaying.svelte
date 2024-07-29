@@ -18,7 +18,7 @@
   import PlayCircle from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
   import SwipeDownAlt from "@ktibow/iconset-material-symbols/swipe-down-alt-rounded";
   import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
-  import SectionLabel from "@layout/SectionLabel.svelte";
+  import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
 
   function setAdditionalControl(control: NowPlayingExtraControl) {

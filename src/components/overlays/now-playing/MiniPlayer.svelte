@@ -4,7 +4,7 @@
   import { Button } from "@interactables";
   import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
   import PlayArrow from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import Marquee from "@layout/Marquee.svelte";
+  import { Marquee } from "@layout";
   import { showMiniPlayer, showNowPlaying, showQueue } from "@stores/Overlays";
   import { isPaused, playingSongId, songProgress, songsMap } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";

@@ -17,7 +17,7 @@
     "types": ["svelte-gesture/globals"],
     "paths": {
       "@interactables": ["./src/components/interactables"],
-      "@layout/*": ["./src/components/layout/*"],
+      "@layout": ["./src/components/layout"],
       "@views/*": ["./src/components/views/*"],
       "@component-utils": ["./src/components/utils"],
       "@stores/*": ["./src/stores/*"],

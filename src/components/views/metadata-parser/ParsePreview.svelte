@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TabsHeader, { type TabItem } from "@layout/TabsHeader.svelte";
+  import { TabsHeader, type TabItem } from "@layout";
   import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showInfoSnackbar } from "@stores/State";

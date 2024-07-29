@@ -1,5 +1,5 @@
 <script lang="ts">
-  import GridEntry from "@layout/entries/GridEntry.svelte";
+  import { GridEntry } from "@layout";
   import type { Artist } from "@models";
   import { inSelectMode, selected } from "@stores/Select";
   import { artistGridSize } from "@stores/State";

@@ -6,8 +6,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Marquee from "@layout/Marquee.svelte";
-  import MenuItem from "@layout/MenuItem.svelte";
+  import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { isPaused, nowPlayingList, playlistsMap } from "@stores/State";

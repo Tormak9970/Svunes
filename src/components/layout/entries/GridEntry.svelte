@@ -1,9 +1,9 @@
 <script lang="ts">
   import { ViewImage } from "@component-utils";
-  import CardClickable from "@layout/CardClickable.svelte";
   import { inSelectMode } from "@stores/Select";
   import { GridSize } from "@types";
   import { GRID_IMAGE_DIMENSIONS } from "@utils";
+  import CardClickable from "../CardClickable.svelte";
 
   export let label: string;
   export let gridSize: GridSize;

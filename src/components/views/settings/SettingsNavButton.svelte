@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
-  import CardClickable from "@layout/CardClickable.svelte";
+  import { CardClickable } from "@layout";
   import { push } from "svelte-spa-router";
 
   export let label: string;

@@ -8,7 +8,7 @@
   import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
   import PlaylistRemove from "@ktibow/iconset-material-symbols/playlist-remove-rounded";
   import QueueRemove from "@ktibow/iconset-material-symbols/remove-from-queue-outline-rounded";
-  import MenuItem from "@layout/MenuItem.svelte";
+  import { MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { bulkEditSongIds, selected } from "@stores/Select";

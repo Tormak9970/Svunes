@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ListEntry from "@layout/entries/ListEntry.svelte";
+  import { ListEntry } from "@layout";
   import type { Genre } from "@models";
   import { t } from "@stores/Locale";
   import { convertFileSrc } from "@tauri-apps/api/core";

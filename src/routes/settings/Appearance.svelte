@@ -15,7 +15,7 @@
   import Dark from "@ktibow/iconset-material-symbols/dark-mode-rounded";
   import Light from "@ktibow/iconset-material-symbols/light-mode-rounded";
   import Theme from "@ktibow/iconset-material-symbols/palette";
-  import SectionLabel from "@layout/SectionLabel.svelte";
+  import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
   
   /**

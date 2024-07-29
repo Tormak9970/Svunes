@@ -1,7 +1,7 @@
 <script lang="ts">
   import { LogController } from "@controllers";
   import { Button, TextField } from "@interactables";
-  import BottomSheet from "@layout/BottomSheet.svelte";
+  import { BottomSheet } from "@layout";
   import { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { showCreatePlaylist, songsForNewPlaylist } from "@stores/Overlays";

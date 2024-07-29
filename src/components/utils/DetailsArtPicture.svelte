@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Lazy from "@layout/Lazy.svelte";
-  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
+  import { Lazy, MusicNotePlaceholder } from "@layout";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { IMAGE_FADE_OPTIONS } from "@utils";
   import { createEventDispatcher } from "svelte";

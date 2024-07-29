@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ModalBody } from "@component-utils";
   import { Button } from "@interactables";
-  import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
+  import { LoadingSpinner } from "@layout";
   import { t } from "@stores/Locale";
   import { apiSearchCanceled, showSearchingApi } from "@stores/Modals";
 

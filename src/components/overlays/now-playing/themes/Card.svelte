@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { Button, MenuButton } from "@interactables";
-  import Marquee from "@layout/Marquee.svelte";
+  import { Marquee } from "@layout";
   import type { Song } from "@models";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";

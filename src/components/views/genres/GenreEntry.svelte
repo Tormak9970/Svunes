@@ -7,9 +7,7 @@
   import type { Genre } from "@models";
   import { IMAGE_FADE_OPTIONS, TILTED_DIMENSIONS } from "@utils";
 
-  import CardClickable from "@layout/CardClickable.svelte";
-  import Lazy from "@layout/Lazy.svelte";
-  import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
+  import { CardClickable, Lazy, MusicNotePlaceholder } from "@layout";
   import { t } from "@stores/Locale";
   
 

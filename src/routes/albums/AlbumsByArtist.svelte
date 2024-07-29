@@ -2,7 +2,7 @@
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { Button } from "@interactables";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import VirtualGrid from "@layout/VirtualGrid.svelte";
+  import { VirtualGrid } from "@layout";
   import type { Album } from "@models";
   import { t } from "@stores/Locale";
   import { albumsMap, artistsMap } from "@stores/State";

@@ -2,7 +2,7 @@
   import { Icon } from "@component-utils";
   import { Checkbox } from "@interactables";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
-  import CardClickable from "@layout/CardClickable.svelte";
+  import { CardClickable } from "@layout";
   import type { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";

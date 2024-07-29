@@ -2,7 +2,7 @@
   import { ModalBody } from "@component-utils";
   import { ApiController } from "@controllers";
   import { Button, Select } from "@interactables";
-  import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
+  import { LoadingSpinner } from "@layout";
   import { t } from "@stores/Locale";
   import { albumInfos, availableReleaseGroups, onAlbumInfoDone, selectedReleaseGroupId, showPickAlbumInfo } from "@stores/Modals";
   import { onDestroy, onMount } from "svelte";

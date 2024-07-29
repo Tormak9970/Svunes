@@ -2,7 +2,7 @@
   import { autoPlayOnConnect } from "@stores/State";
   import { pop } from "svelte-spa-router";
 
-  import SectionLabel from "@layout/SectionLabel.svelte";
+  import { SectionLabel } from "@layout";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";

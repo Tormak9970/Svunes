@@ -7,10 +7,7 @@
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
-  import AlbumCarousel from "@layout/album-carousel/AlbumCarousel.svelte";
-  import Marquee from "@layout/Marquee.svelte";
-  import MenuItem from "@layout/MenuItem.svelte";
-  import SongsList from "@layout/songs-list/SongsList.svelte";
+  import { AlbumCarousel, Marquee, MenuItem, SongsList } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { albumToAdd, showAddToPlaylist } from "@stores/Overlays";
