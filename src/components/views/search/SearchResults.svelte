@@ -1,10 +1,6 @@
 <script lang="ts">
   import SectionLabel from "@layout/SectionLabel.svelte";
-  import type { Album } from "@lib/models/Album";
-  import type { Artist } from "@lib/models/Artist";
-  import type { Genre } from "@lib/models/Genre";
-  import type { Playlist } from "@lib/models/Playlist";
-  import type { Song } from "@lib/models/Song";
+  import type { Album, Artist, Genre, Playlist, Song } from "@models";
   import { t } from "@stores/Locale";
   import { searchQuery, selectedChips, showOnlyMissingAlbum, showOnlyMissingAlbumArtist, showOnlyMissingArtist, showOnlyMissingCover, showOnlyMissingGenre, showOnlyMissingTitle, showOnlyMissingYear } from "@stores/Search";
   import { albums, artists, genres, playlists, songs } from "@stores/State";

@@ -1,6 +1,6 @@
 <script lang="ts">
   import GridEntry from "@layout/entries/GridEntry.svelte";
-  import type { Album } from "@lib/models/Album";
+  import type { Album } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { albumGridSize, albumSortOrder } from "@stores/State";

@@ -1,6 +1,6 @@
+import type { Song } from "@models";
 import { songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import type { Song } from "../models/Song";
 import { getAllArtistNames } from "./Utils";
 
 /**

@@ -1,6 +1,6 @@
 <script lang="ts">
   import GridEntry from "@layout/entries/GridEntry.svelte";
-  import type { Artist } from "@lib/models/Artist";
+  import type { Artist } from "@models";
   import { inSelectMode, selected } from "@stores/Select";
   import { artistGridSize } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";

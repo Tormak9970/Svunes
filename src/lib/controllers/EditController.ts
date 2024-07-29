@@ -1,8 +1,7 @@
+import { Album, Song } from "@models";
+import { t as translate } from "@stores/Locale";
 import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
 import { get } from "svelte/store";
-import { t as translate } from "../../stores/Locale";
-import { Album } from "../models/Album";
-import { Song } from "../models/Song";
 import { AppController } from "./AppController";
 import { QueueController } from "./QueueController";
 import { DialogController } from "./utils/DialogController";

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
+import { Playlist, Song, type Album, type Artist } from "@models";
 import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
@@ -22,10 +23,6 @@ import { debounce } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "../../types/Settings";
 import { View } from "../../types/View";
-import type { Album } from "../models/Album";
-import type { Artist } from "../models/Artist";
-import { Playlist } from "../models/Playlist";
-import { Song } from "../models/Song";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
 

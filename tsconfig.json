@@ -24,6 +24,7 @@
       "@lib/*": ["./src/lib/*"],
       "@stores/*": ["./src/stores/*"],
       "@routes/*": ["./src/routes/*"],
+      "@models": ["./src/lib/models"],
       "@directives": ["./src/lib/directives"],
       "@utils": ["./src/lib/utils"]
     }

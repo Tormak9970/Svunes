@@ -1,10 +1,6 @@
+import type { Album, Artist, Genre, Playlist, Song } from "@models";
 import { location } from "svelte-spa-router";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
-import type { Album } from "../lib/models/Album";
-import type { Artist } from "../lib/models/Artist";
-import type { Genre } from "../lib/models/Genre";
-import type { Playlist } from "../lib/models/Playlist";
-import type { Song } from "../lib/models/Song";
 import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
 import { View } from "../types/View";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";

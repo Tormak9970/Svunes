@@ -1,4 +1,4 @@
-import { Playlist } from "@lib/models/Playlist";
+import { Playlist } from "@models";
 import { t as translate } from "@stores/Locale";
 import { hash64 } from "@utils";
 import { get } from "svelte/store";

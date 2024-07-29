@@ -4,7 +4,7 @@
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
-  import type { Artist } from "@lib/models/Artist";
+  import type { Artist } from "@models";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { artistsMap } from "@stores/State";

@@ -4,7 +4,7 @@
   import AlbumCarouselList from "./AlbumCarouselList.svelte";
 
   import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
-  import type { Album } from "@lib/models/Album";
+  import type { Album } from "@models";
 
   export let maxLength = 5;
 

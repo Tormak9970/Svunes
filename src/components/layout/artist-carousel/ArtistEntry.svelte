@@ -2,7 +2,7 @@
   import CardClickable from "@layout/CardClickable.svelte";
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
-  import type { Artist } from "@lib/models/Artist";
+  import type { Artist } from "@models";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { IMAGE_FADE_OPTIONS } from "@utils";
   import { push } from "svelte-spa-router";

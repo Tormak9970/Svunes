@@ -18,8 +18,7 @@
   import ViewHeader from "@layout/ViewHeader.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
-  import type { Album } from "@lib/models/Album";
-  import type { Artist } from "@lib/models/Artist";
+  import type { Album, Artist } from "@models";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { albumsMap, artistsMap, lastView, selectedView, showSuggestions, songs, songsMap } from "@stores/State";

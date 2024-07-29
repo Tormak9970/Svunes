@@ -3,7 +3,7 @@
   import { AppController } from "@lib/controllers/AppController";
   import { EditController } from "@lib/controllers/EditController";
   import { QueueController } from "@lib/controllers/QueueController";
-  import type { Song } from "@lib/models/Song";
+  import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { playlists, playlistsMap, songIdsToParse } from "@stores/State";

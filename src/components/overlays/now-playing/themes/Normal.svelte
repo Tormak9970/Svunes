@@ -3,7 +3,7 @@
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import Marquee from "@layout/Marquee.svelte";
-  import type { Song } from "@lib/models/Song";
+  import type { Song } from "@models";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
   import { NowPlayingBackgroundType } from "../../../../types/Settings";

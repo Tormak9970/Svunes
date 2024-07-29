@@ -1,12 +1,8 @@
+import { Album, Artist, Genre, Playlist, Song } from "@models";
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
 import { albums, isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress, songs, songsMap, trackHistory } from "@stores/State";
 import { shuffleSongs } from "@utils";
 import { get } from "svelte/store";
-import type { Album } from "../models/Album";
-import type { Artist } from "../models/Artist";
-import type { Genre } from "../models/Genre";
-import type { Playlist } from "../models/Playlist";
-import type { Song } from "../models/Song";
 import { SettingsController } from "./SettingsController";
 
 /**

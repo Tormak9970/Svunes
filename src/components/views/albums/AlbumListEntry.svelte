@@ -1,6 +1,6 @@
 <script lang="ts">
   import ListEntry from "@layout/entries/ListEntry.svelte";
-  import type { Album } from "@lib/models/Album";
+  import type { Album } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";

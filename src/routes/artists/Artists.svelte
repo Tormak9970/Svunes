@@ -11,7 +11,7 @@
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import type { Artist } from "@lib/models/Artist";
+  import type { Artist } from "@models";
   import { t } from "@stores/Locale";
   import { showArtistSortOrder, showGridSize } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";

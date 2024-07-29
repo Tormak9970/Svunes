@@ -1,3 +1,4 @@
+import { Album, Artist, Genre, Playlist, Song } from "@models";
 import { t } from "@stores/Locale";
 import { showEditMusicFolders } from "@stores/Modals";
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
@@ -6,11 +7,6 @@ import * as fs from "@tauri-apps/plugin-fs";
 import { getAllArtistNames } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "../../types/Settings";
-import { Album } from "../models/Album";
-import { Artist } from "../models/Artist";
-import { Genre } from "../models/Genre";
-import { Playlist } from "../models/Playlist";
-import { Song } from "../models/Song";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
 import { LogController } from "./utils/LogController";

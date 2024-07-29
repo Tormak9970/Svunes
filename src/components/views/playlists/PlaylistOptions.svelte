@@ -4,7 +4,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
-  import type { Playlist } from "@lib/models/Playlist";
+  import type { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { playlists } from "@stores/State";

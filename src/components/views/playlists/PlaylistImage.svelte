@@ -2,7 +2,7 @@
   import Lazy from "@layout/Lazy.svelte";
   import AlbumPlaceholder from "@layout/placeholders/AlbumPlaceholder.svelte";
   import Favorites from "@layout/placeholders/Favorites.svelte";
-  import type { Playlist } from "@lib/models/Playlist";
+  import type { Playlist } from "@models";
   import { albumsMap, songsMap } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { IMAGE_FADE_OPTIONS } from "@utils";

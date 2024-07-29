@@ -8,7 +8,7 @@
   import VirtualList from "@layout/VirtualList.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
-  import type { Song } from "@lib/models/Song";
+  import type { Song } from "@models";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { isPaused, nowPlayingList, songs, songsMap } from "@stores/State";

@@ -20,8 +20,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import { Artist } from "@lib/models/Artist";
-  import type { Song } from "@lib/models/Song";
+  import { Artist, type Song } from "@models";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";

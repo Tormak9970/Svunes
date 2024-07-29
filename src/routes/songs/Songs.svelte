@@ -11,7 +11,7 @@
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import type { Song } from "@lib/models/Song";
+  import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { showGridSize, showSongSortOrder } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";

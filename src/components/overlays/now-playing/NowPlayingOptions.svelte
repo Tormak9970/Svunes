@@ -1,7 +1,7 @@
 <script lang="ts">
   import MenuItem from "@layout/MenuItem.svelte";
   import { AppController } from "@lib/controllers/AppController";
-  import type { Song } from "@lib/models/Song";
+  import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showCarMode, showMiniPlayer, showQueue, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
   import { extraControl } from "@stores/State";

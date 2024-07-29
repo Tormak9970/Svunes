@@ -3,7 +3,7 @@
   import MenuButton from "@interactables/MenuButton.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import type { Playlist } from "@lib/models/Playlist";
+  import type { Playlist } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";

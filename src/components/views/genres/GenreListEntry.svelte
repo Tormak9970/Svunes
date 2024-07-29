@@ -1,6 +1,6 @@
 <script lang="ts">
   import ListEntry from "@layout/entries/ListEntry.svelte";
-  import type { Genre } from "@lib/models/Genre";
+  import type { Genre } from "@models";
   import { t } from "@stores/Locale";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";

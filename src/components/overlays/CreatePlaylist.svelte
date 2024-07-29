@@ -3,7 +3,7 @@
   import TextField from "@interactables/TextField.svelte";
   import BottomSheet from "@layout/BottomSheet.svelte";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import { Playlist } from "@lib/models/Playlist";
+  import { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { showCreatePlaylist, songsForNewPlaylist } from "@stores/Overlays";
   import { playlists, playlistsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";

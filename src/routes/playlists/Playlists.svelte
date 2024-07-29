@@ -12,7 +12,7 @@
   import VirtualList from "@layout/VirtualList.svelte";
   import { AppController } from "@lib/controllers/AppController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import type { Playlist } from "@lib/models/Playlist";
+  import type { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";
   import { showCreatePlaylist } from "@stores/Overlays";

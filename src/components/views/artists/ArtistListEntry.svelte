@@ -1,6 +1,6 @@
 <script lang="ts">
   import ListEntry from "@layout/entries/ListEntry.svelte";
-  import type { Artist } from "@lib/models/Artist";
+  import type { Artist } from "@models";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";

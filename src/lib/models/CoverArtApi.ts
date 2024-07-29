@@ -1,6 +1,6 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import { LogController } from "../controllers/utils/LogController";
-import { RequestError } from "./TauriResponse";
+import { RequestError } from "./RequestError";
 
 type CovertType = 'Front' | 'Back' | 'Booklet' | 'Medium' | 'Obi' | 'Spine' | 'Track' | 'Tray' | 'Sticker' | 'Poster' | 'Liner' | 'Watermark' | 'Raw/Unedited' | 'Matrix/Runout' | 'Top' | 'Bottom' | 'Other';
 

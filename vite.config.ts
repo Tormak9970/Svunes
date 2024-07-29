@@ -62,6 +62,7 @@ export default defineConfig({
       "@lib": resolve(__dirname, "./src/lib"),
       "@stores": resolve(__dirname, "./src/stores"),
       "@routes": resolve(__dirname, "./src/routes"),
+      "@models": resolve(__dirname, "./src/lib/models"),
       "@directives": resolve(__dirname, "./src/lib/directives"),
       "@utils": resolve(__dirname, "./src/lib/utils"),
     }
