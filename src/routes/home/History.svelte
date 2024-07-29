@@ -22,7 +22,7 @@
   $: lastPlayedSongs = [ ...$songs ].filter((song) => song.lastPlayedOn !== "Never").sort((a, b) => Date.parse(b.lastPlayedOn) - Date.parse(a.lastPlayedOn));
   $: limited = lastPlayedSongs.length > 100 ? lastPlayedSongs.slice(0, 100) : lastPlayedSongs;
 
-  let isAtTop = true;
+  let highlight = false;
 
   /**
    * Plays the songs.
@@ -54,9 +54,9 @@
   }
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
         <Button type="text" iconType="full" on:click={pop}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -73,7 +73,7 @@
   </span>
   <span class="content" slot="content">
     {#if lastPlayedSongs.length > 0}
-      <VirtualList name="lastPlayed" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+      <VirtualList name="lastPlayed" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isScrolled={highlight} let:entry>
         <SongListEntry song={entry} detailType="Alphabetical" />
       </VirtualList>
     {:else}
@@ -92,7 +92,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
   }
   
   .message-container {

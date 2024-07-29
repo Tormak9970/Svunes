@@ -16,6 +16,8 @@
   import SongListEntry from "../songs/SongListEntry.svelte";
   import VirtualizedResults from "./VirtualizedResults.svelte";
 
+  export let isScrolled = false;
+
   const searchResults = derived([
     selectedChips,
     songs,
@@ -86,7 +88,7 @@
 <div class="inner-content">
   {#if $searchResults.length > 0}
     {#key $searchResults.length}
-      <VirtualizedResults items={$searchResults} keyFunction={(entry) => entry.data.id ?? entry.data.name ?? entry.data} let:entry>
+      <VirtualizedResults items={$searchResults} keyFunction={(entry) => entry.data.id ?? entry.data.name ?? entry.data} bind:isScrolled={isScrolled} let:entry>
         {#if typeof entry === "string"}
           <SectionLabel marginLeft="0.5rem" label={entry} />
         {:else if !!entry.fileName}

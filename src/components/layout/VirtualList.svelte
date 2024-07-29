@@ -35,7 +35,7 @@
 	export let height = "100%";
   export let width = "100%";
 	export let itemHeight: any = undefined;
-  export let isAtTop = true;
+  export let isScrolled = false;
   export let saveState = true;
   
   export let keyFunction = (entry: any) => entry.index;
@@ -110,7 +110,7 @@
 	async function handleScroll() {
 		const { scrollTop } = viewport;
     cacheEntry.listScrollTop = scrollTop;
-    isAtTop = scrollTop === 0;
+    isScrolled = scrollTop !== 0;
 
 		const oldStart = cacheEntry.start;
 
@@ -185,6 +185,7 @@
 <div style="width: {width}; height: {height};">
   <svelte-virtual-list-viewport
     style="height: {height};"
+    class="styled-scrollbar"
     on:scroll={handleScroll}
     bind:offsetHeight={viewportHeight}
     bind:this={viewport}
@@ -207,17 +208,9 @@
 		position: relative;
 		overflow-y: auto;
     overflow-x: hidden;
-		-webkit-overflow-scrolling:touch;
+		-webkit-overflow-scrolling: touch;
 		display: block;
-
-    scrollbar-color: transparent transparent;
-
-    transition: scrollbar-color 0.2s ease-in-out;
 	}
-
-  svelte-virtual-list-viewport:hover {
-    scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
-  }
 
 	svelte-virtual-list-contents {
 		display: block;

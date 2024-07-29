@@ -4,14 +4,16 @@
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import { formatTime } from "@lib/utils/Utils";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
-  import { queue, songsMap } from "../../../stores/State";
+  import { queue, songsMap } from "@stores/State";
   import QueueSongs from "./QueueSongs.svelte";
 
-  let isAtTop = true;
+  let highlight = true;
+  let contentContainer: HTMLDivElement;
 
   $: queueLength = $queue.reduce((total, id) => total + $songsMap[id].length, 0);
 
@@ -25,9 +27,9 @@
 </script>
 
 <div class="holder">
-  <DetailsBody bind:isAtTop={isAtTop}>
+  <DetailsBody>
     <span slot="header">
-      <OverlayHeader highlight={!isAtTop}>
+      <OverlayHeader highlight={highlight}>
         <span slot="left" class="header">
           <Button type="text" iconType="full" on:click={back}>
             <Icon icon={BackArrow} width="20px" height="20px" />
@@ -45,7 +47,9 @@
       </OverlayHeader>
     </span>
     <span class="content" slot="content">
-      <QueueSongs />
+      <div class="content-inner styled-scrollbar" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+        <QueueSongs />
+      </div>
     </span>
   </DetailsBody>
 </div>
@@ -69,9 +73,19 @@
 
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+  }
+
+  .content-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow-y: scroll;
   }
 </style>

@@ -3,6 +3,7 @@
   import { palette, themePrimaryColor, useOledPalette } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
+  import { isLandscape } from "../../stores/Layout";
   import { genCSS, serializeScheme, type SerializedScheme } from "./themeUtils";
 
   let primaryColorUnsub: Unsubscriber;
@@ -41,7 +42,8 @@
   })
 </script>
 
-<main>
+<!-- svelte-ignore missing-declaration -->
+<main class:mobile={!$isLandscape}>
   {@html `<${""}style>${styling}</${""}style>`}
   <slot />
 </main>

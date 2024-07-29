@@ -31,8 +31,8 @@
 </script>
 
 <script lang="ts">
+	import { debounce } from "@lib/utils/Utils";
 	import { onMount, tick } from "svelte";
-	import { debounce } from "../../lib/utils/Utils";
 
 	// * Component Props.
   export let name: string;
@@ -43,7 +43,7 @@
   export let itemWidth: number;
   export let columnGap: number;
   export let rowGap: number;
-  export let isAtTop = true;
+  export let isScrolled = true;
   export let saveState = true;
 
   export let keyFunction = (entry: any) => entry.index;
@@ -123,7 +123,7 @@
    */
   async function handleScroll() {
     const { scrollTop } = viewport;
-    isAtTop = scrollTop === 0;
+    isScrolled = scrollTop !== 0;
     cacheEntry.listScrollTop = scrollTop;
 
     const numEntriesPerRow = Math.floor((viewport.clientWidth + columnGap) / (itemWidth + columnGap));
@@ -208,6 +208,7 @@
 <div style="width: {width}; height: {height};">
   <svelte-virtual-grid-viewport
     style="height: {height}; --img-width: {itemWidth}px; --img-height: {itemHeight}px; --column-gap: {columnGap}px; --row-gap: {rowGap}px;"
+    class="styled-scrollbar"
     on:scroll={handleScroll}
     bind:offsetHeight={viewportHeight}
     bind:offsetWidth={viewportWidth}
@@ -230,17 +231,9 @@
 	svelte-virtual-grid-viewport {
 		position: relative;
 		overflow-y: auto;
-		-webkit-overflow-scrolling:touch;
+		-webkit-overflow-scrolling: touch;
 		display: block;
-
-    scrollbar-color: transparent transparent;
-
-    transition: scrollbar-color 0.2s ease-in-out;
 	}
-
-  svelte-virtual-grid-viewport:hover {
-    scrollbar-color: rgb(var(--m3-scheme-primary)) transparent;
-  }
 
 	svelte-virtual-grid-contents {
 		width: 100%;

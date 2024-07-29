@@ -7,6 +7,7 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
@@ -29,7 +30,7 @@
   let trackNumber: string | undefined;
   let releaseYear: string | undefined;
 
-  let isAtTop = true;
+  let highlight = false;
   
   $: canSave = artPath !== song?.artPath ||
     title !== song?.title ||
@@ -98,9 +99,9 @@
   });
 </script>
 
-<OverlayBody bind:isAtTop={isAtTop}>
+<OverlayBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -113,19 +114,22 @@
       </span>
     </OverlayHeader>
   </span>
-  <span class="content" slot="content">
-    <DetailsArtPicture artPath={artPath} />
-    <div class="fields">
-      <TextField name={$t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("ALBUM_LABEL")} bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("ARTIST_LABEL")} bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("ALBUM_ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("COMPOSER_LABEL")} bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <div class="two-wide">
-        <NumberField name="{$t("TRACK_LABEL")} #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
-        <NumberField name={$t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
+  <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+    <div class="content-inner">
+      <DetailsArtPicture artPath={artPath} />
+      <div class="fields">
+        <TextField name={$t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("ALBUM_LABEL")} bind:value={album} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("ARTIST_LABEL")} bind:value={artist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("ALBUM_ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("COMPOSER_LABEL")} bind:value={composer} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <div class="two-wide">
+          <NumberField name="{$t("TRACK_LABEL")} #" bind:value={trackNumber} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px); margin-right: 10px;" }} />
+          <NumberField name={$t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: calc(50% - 5px); min-width: calc(50% - 5px);" }} />
+        </div>
       </div>
+      <div style="width: 100%; height: 70px;" />
     </div>
   </span>
 </OverlayBody>
@@ -133,10 +137,20 @@
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .content-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .fields {

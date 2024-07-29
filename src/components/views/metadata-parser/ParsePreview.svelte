@@ -1,7 +1,8 @@
 <script lang="ts">
   import TabsHeader, { type TabItem } from "@layout/TabsHeader.svelte";
+  import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
-  import { showInfoSnackbar } from "../../../stores/State";
+  import { showInfoSnackbar } from "@stores/State";
   import type { ParseResult } from "../../../types/MetadataParser";
   import ParseEntry from "./ParseEntry.svelte";
 
@@ -25,7 +26,7 @@
 
 <div class="tabs-container">
   <TabsHeader secondary items={tabsUsed} bind:tab={tab} />
-  <div class="shadow-positioner">
+  <div class="shadow-positioner" style:--m3-scheme-background={$isLandscape ? "var(--m3-scheme-surface-container)" : undefined}>
     {#if numFailed !== 0}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -60,13 +61,14 @@
   .tabs {
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .status-badge {
     position: absolute;
     top: 0.5rem;
-    right: 0;
+    right: 0.5rem;
     background-color: rgb(var(--m3-scheme-error));
     border-radius: 50%;
 

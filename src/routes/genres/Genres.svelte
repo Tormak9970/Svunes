@@ -6,6 +6,7 @@
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Settings from "@ktibow/iconset-material-symbols/settings";
   import ViewHeader from "@layout/ViewHeader.svelte";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { genres, lastView, selectedView } from "@stores/State";
@@ -13,7 +14,7 @@
   import { push } from "svelte-spa-router";
   import { View } from "../../types/View";
   
-  let isAtTop = true;
+  let highlight = false;
   
   /**
    * Navigates to the settings view.
@@ -33,16 +34,11 @@
     $selectedChips = [ "genre" ];
     push("/search");
   }
-
-  function scrollHandler(e: Event) {
-    const element = e.currentTarget as HTMLDivElement;
-    isAtTop = element.scrollTop === 0;
-  }
 </script>
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title={$t("GENRES_TITLE")} highlight={!isAtTop}>
+    <ViewHeader title={$t("GENRES_TITLE")} highlight={highlight}>
       <div slot="left">
         <Button type="text" iconType="full" on:click={openSearch}>
           <Icon icon={Search} width="20px" height="20px" />
@@ -55,7 +51,7 @@
       </div>
     </ViewHeader>
   </div>
-  <div slot="content" class="content" on:scroll={scrollHandler}>
+  <div slot="content" class="content styled-scrollbar" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
     {#if $genres.length > 0}
       {#each $genres as genre}
         <GenreEntry genre={genre} />
@@ -75,14 +71,11 @@
     height: 100%;
     width: 100%;
 
-    /* display: flex;
-    align-content: flex-start;
-    flex-wrap: wrap; */
     overflow: scroll;
 
     display: grid;
     
-    grid-template-columns: repeat(auto-fill, 200px);
+    grid-template-columns: repeat(auto-fill, 190px);
 
     grid-auto-flow: row;
     grid-auto-rows: 100px;

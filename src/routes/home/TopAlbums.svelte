@@ -17,7 +17,7 @@
   const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 
   let albums: Album[] = [];
-  let isAtTop = true;
+  let highlight = false;
 
   onMount(() => {
     const albumNames: string[] = [];
@@ -34,9 +34,9 @@
   });
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
         <Button type="text" iconType="full" on:click={pop}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -47,7 +47,7 @@
     </OverlayHeader>
   </span>
   <span slot="content">
-    <VirtualGrid name="topAlbums" saveState={false} itemHeight={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height + GRID_IMAGE_DIMENSIONS[GridSize.LARGE].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].gap} columnGap={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].gap} items={albums} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+    <VirtualGrid name="topAlbums" saveState={false} itemHeight={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].height + GRID_IMAGE_DIMENSIONS[GridSize.LARGE].infoHeight + 12} itemWidth={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].width + 10} rowGap={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].gap} columnGap={GRID_IMAGE_DIMENSIONS[GridSize.LARGE].gap} items={albums} keyFunction={keyFunction} bind:isScrolled={highlight} let:entry>
       <AlbumGridEntry album={entry} />
     </VirtualGrid>
   </span>

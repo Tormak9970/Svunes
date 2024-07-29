@@ -17,7 +17,7 @@
   import { t } from "@stores/Locale";
   import { showGridSize, showSongSortOrder } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
-  import { lastView, selectedView, songGridSize, songs, songsIsAtTop, songSortOrder } from "@stores/State";
+  import { lastView, selectedView, songGridSize, songs, songsIsScrolled, songSortOrder } from "@stores/State";
   import SongGridEntry from "@views/songs/SongGridEntry.svelte";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
   import { afterUpdate } from "svelte";
@@ -81,14 +81,14 @@
   afterUpdate(() => {
     if ($songGridSize !== gridSize) {
       gridSize = $songGridSize;
-      $songsIsAtTop = true;
+      $songsIsScrolled = false;
     }
   });
 </script>
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title={$t("SONGS_TITLE")} highlight={!$songsIsAtTop}>
+    <ViewHeader title={$t("SONGS_TITLE")} highlight={$songsIsScrolled}>
       <div slot="left">
         <Button type="text" iconType="full" on:click={openSearch}>
           <Icon icon={Search} width="20px" height="20px" />
@@ -111,7 +111,7 @@
           itemHeight={60}
           items={sortedSongs}
           keyFunction={keyFunction}
-          bind:isAtTop={$songsIsAtTop}
+          bind:isScrolled={$songsIsScrolled}
           let:entry
         >
           <SongListEntry song={entry} detailType={$songSortOrder} />
@@ -124,7 +124,7 @@
           rowGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap}
           columnGap={GRID_IMAGE_DIMENSIONS[$songGridSize].gap}
           items={sortedSongs} keyFunction={keyFunction}
-          bind:isAtTop={$songsIsAtTop}
+          bind:isScrolled={$songsIsScrolled}
           let:entry
         >
           <SongGridEntry song={entry} />

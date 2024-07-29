@@ -30,10 +30,10 @@ export const showNav: Readable<boolean> = derived([location, showQueue, showNowP
     !($showNowPlaying && !$showMiniPlayer);
 });
 
-export const playlistsIsAtTop = writable(true);
-export const songsIsAtTop = writable(true);
-export const albumsIsAtTop = writable(true);
-export const artistsIsAtTop = writable(true);
+export const playlistsIsScrolled = writable(false);
+export const songsIsScrolled = writable(false);
+export const albumsIsScrolled = writable(false);
+export const artistsIsScrolled = writable(false);
 
 export const playlists: Writable<Playlist[]> = writable([]);
 export const playlistsMap: Readable<Record<string, Playlist>> = derived(playlists, (playlists: Playlist[]) => {

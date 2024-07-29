@@ -165,7 +165,7 @@
 </script>
 
 <BottomSheet on:close={close} padding="0 0.5rem">
-  <div class="content-wrapper" bind:this={scrollContainer} on:scroll={handleScroll}>
+  <div class="content-wrapper styled-scrollbar" bind:this={scrollContainer} on:scroll={handleScroll}>
     <div class="content">
       <Button type="tonal" on:click={setCreateNewPlaylist}>{$t("NEW_PLAYLIST_ACTION")}</Button>
       <div class="playlists">

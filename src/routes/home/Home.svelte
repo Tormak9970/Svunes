@@ -17,6 +17,7 @@
   import ViewHeader from "@layout/ViewHeader.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import type { Album } from "@lib/models/Album";
   import type { Artist } from "@lib/models/Artist";
   import { shuffleSongs } from "@lib/utils/Shuffle";
@@ -28,7 +29,7 @@
   import { push } from "svelte-spa-router";
   import { View } from "../../types/View";
 
-  let isAtTop = true;
+  let highlight = false;
 
   let artists: Artist[] = [];
   let albums: Album[] = [];
@@ -50,11 +51,6 @@
     $selectedView = View.SEARCH;
     $selectedChips = [];
     push("/search");
-  }
-
-  function scrollHandler(e: Event) {
-    const element = e.currentTarget as HTMLDivElement;
-    isAtTop = element.scrollTop === 0;
   }
 
   function shuffleAllSongs() {
@@ -88,7 +84,7 @@
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title="Tunistic" highlight={!isAtTop}>
+    <ViewHeader title="Tunistic" highlight={highlight}>
       <div slot="left">
         <!-- svelte-ignore missing-declaration -->
         {#if IS_MOBILE}
@@ -107,7 +103,7 @@
       </div>
     </ViewHeader>
   </div>
-  <div slot="content" class="content" style="overflow: scroll;" on:scroll={scrollHandler}>
+  <div slot="content" class="content styled-scrollbar" style="overflow-y: scroll;" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
     <div class="inner-content">
       <div class="buttons-container" style:--m3-button-shape="10px" style:--m3-scheme-secondary-container="var(--m3-scheme-surface-container)">
         <Button type="tonal" iconType="left" on:click={() => push("/home/history")}>

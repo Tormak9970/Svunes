@@ -56,7 +56,7 @@
       </Button>
     </div>
   </div>
-  <div class="chips">
+  <div class="chips styled-scrollbar">
     <ChipChooser options={options} bind:chosenOptions={$selectedChips} type="general" />
   </div>
 </div>
@@ -76,7 +76,7 @@
   }
 
   .highlight {
-    background-color: var(--m3-scheme-surface-container);
+    background-color: rgb(var(--m3-scheme-surface-container));
   }
 
   .search-container {

@@ -17,7 +17,7 @@
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showGridSize } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
-  import { albumGridSize, albumSortOrder, albums, albumsIsAtTop, lastView, selectedView } from "@stores/State";
+  import { albumGridSize, albumSortOrder, albums, albumsIsScrolled, lastView, selectedView } from "@stores/State";
   import AlbumGridEntry from "@views/albums/AlbumGridEntry.svelte";
   import AlbumListEntry from "@views/albums/AlbumListEntry.svelte";
   import { afterUpdate } from "svelte";
@@ -83,14 +83,14 @@
   afterUpdate(() => {
     if ($albumGridSize !== gridSize) {
       gridSize = $albumGridSize;
-      $albumsIsAtTop = true;
+      $albumsIsScrolled = false;
     }
   });
 </script>
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title={$t("ALBUMS_TITLE")} highlight={!$albumsIsAtTop}>
+    <ViewHeader title={$t("ALBUMS_TITLE")} highlight={$albumsIsScrolled}>
       <div slot="left">
         <Button type="text" iconType="full" on:click={openSearch}>
           <Icon icon={Search} width="20px" height="20px" />
@@ -114,7 +114,7 @@
             itemHeight={60}
             items={sortedAlbums}
             keyFunction={keyFunction}
-            bind:isAtTop={$albumsIsAtTop}
+            bind:isScrolled={$albumsIsScrolled}
             let:entry
           >
             <AlbumListEntry album={entry} detailType={$albumSortOrder} />
@@ -128,7 +128,7 @@
             columnGap={GRID_IMAGE_DIMENSIONS[$albumGridSize].gap}
             items={sortedAlbums}
             keyFunction={keyFunction}
-            bind:isAtTop={$albumsIsAtTop}
+            bind:isScrolled={$albumsIsScrolled}
             let:entry
           >
             <AlbumGridEntry album={entry} />

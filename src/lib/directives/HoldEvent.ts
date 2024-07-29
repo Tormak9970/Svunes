@@ -7,7 +7,7 @@ type HoldEventParams = {
 }
 
 /**
- * A Svelte directive for applying scroll shadow to elements.
+ * A Svelte directive for listening to hold events.
  */
 export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, holdable, duration }) => {
   let startTime = Date.now();

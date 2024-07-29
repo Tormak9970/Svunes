@@ -21,6 +21,7 @@
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
   import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import { goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import SongOptions from "@views/songs/SongOptions.svelte";
@@ -29,7 +30,7 @@
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
 
-  let isAtTop = true;
+  let highlight = false;
   let menuIsOpen = false;
 
   /**
@@ -47,9 +48,9 @@
   }
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -68,19 +69,22 @@
       </span>
     </OverlayHeader>
   </span>
-  <span class="content" slot="content">
-    <DetailsArtPicture artPath={song?.artPath} />
-    <div class="details">
-      <DetailsField icon={Sell} headline={song?.title ?? $t("UNKOWN_VALUE")} />
-      <DetailsField icon={Album} headline={song?.album ?? $t("UNKOWN_VALUE")} />
-      <DetailsField icon={Artist} headline={song?.artist ?? $t("UNKOWN_VALUE")} />
-      <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? $t("UNKOWN_VALUE") : song?.releaseYear.toString()} />
-      <DetailsField icon={Genre} headline={song?.genre ?? $t("UNKOWN_VALUE")} />
-      <DetailsField icon={TrackNumber} headline={song?.displayTrack()} />
-      <DetailsField icon={Duration} headline={song?.displayLength()} />
-      <DetailsField icon={Frequency} headline={song?.displayFrequency()} />
-      <DetailsField icon={Location} supporting={song?.filePath} />
-      <DetailsField icon={FileSize} headline={song?.displaySize()} />
+  <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+    <div class="content-inner">
+      <DetailsArtPicture artPath={song?.artPath} />
+      <div class="details">
+        <DetailsField icon={Sell} headline={song?.title ?? $t("UNKOWN_VALUE")} />
+        <DetailsField icon={Album} headline={song?.album ?? $t("UNKOWN_VALUE")} />
+        <DetailsField icon={Artist} headline={song?.artist ?? $t("UNKOWN_VALUE")} />
+        <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? $t("UNKOWN_VALUE") : song?.releaseYear.toString()} />
+        <DetailsField icon={Genre} headline={song?.genre ?? $t("UNKOWN_VALUE")} />
+        <DetailsField icon={TrackNumber} headline={song?.displayTrack()} />
+        <DetailsField icon={Duration} headline={song?.displayLength()} />
+        <DetailsField icon={Frequency} headline={song?.displayFrequency()} />
+        <DetailsField icon={Location} supporting={song?.filePath} />
+        <DetailsField icon={FileSize} headline={song?.displaySize()} />
+      </div>
+      <div style="width: 100%; height: 70px;" />
     </div>
   </span>
 </DetailsBody>
@@ -88,10 +92,20 @@
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .content-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .details {

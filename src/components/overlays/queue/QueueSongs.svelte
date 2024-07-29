@@ -53,24 +53,32 @@
   });
 </script>
 
-<div class="song-entries" style:height="{songs.length * entryHeight}px">
-  {#each songs as song, i (song.id + i)}
-    <div
-      class="entry"
-      class:being-dragged={draggingIndex === i}
-      style:top="{draggingIndex === i ? i * entryHeight + dragHeight : newOrder.indexOf(i) * entryHeight}px"
-    >
-      <QueueSong song={song} index={i} isDragging={draggingIndex === i}>
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="handle" use:drag on:drag={getDragHandler(i)} style:visibility={$inSelectMode ? "hidden" : "visible"}>
-          <Icon icon={DragHandle} height="30px" width="24px" />
-        </div>
-      </QueueSong>
-    </div>
-  {/each}
+<div class="songs-wrapper">
+  <div class="song-entries" style:height="{songs.length * entryHeight}px">
+    {#each songs as song, i (song.id + i)}
+      <div
+        class="entry"
+        class:being-dragged={draggingIndex === i}
+        style:top="{draggingIndex === i ? i * entryHeight + dragHeight : newOrder.indexOf(i) * entryHeight}px"
+      >
+        <QueueSong song={song} index={i} isDragging={draggingIndex === i}>
+          <!-- svelte-ignore a11y-no-static-element-interactions -->
+          <div class="handle" use:drag on:drag={getDragHandler(i)} style:visibility={$inSelectMode ? "hidden" : "visible"}>
+            <Icon icon={DragHandle} height="30px" width="24px" />
+          </div>
+        </QueueSong>
+      </div>
+    {/each}
+  </div>
 </div>
 
 <style>
+  .songs-wrapper {
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 70px;
+  }
+  
   .song-entries {
     width: calc(100% - 10px);
     margin: 0px 5px;

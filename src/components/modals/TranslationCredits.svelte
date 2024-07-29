@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
+  import { scrollShadow } from "@lib/directives/ScrollShadow";
   import { LANGS } from "@lib/utils/i18n";
   import { getCredits, getLanguageName, t } from "@stores/Locale";
   import { showTranslationCredits } from "@stores/Modals";
@@ -13,13 +14,15 @@
 </script>
 
 <ModalBody open={open} headline={$t("TRANSLATION_CREDITS_TITLE")} on:close={() => open = false} on:closeEnd={() => $showTranslationCredits = false}>
- <div class="content">
-    {#each langs as lang, i}
-      <div class="entry">
-        <div class="font-label lang">{$getLanguageName(lang)}</div>
-        <div class="font-body">{credits[i].length === 0 ? $t("NONE_VALUE") : credits[i].join(", ")}</div>
-      </div>
-    {/each}
+ <div class="content styled-scrollbar" use:scrollShadow>
+    <div class="content-wrapper">
+      {#each langs as lang, i}
+        <div class="entry">
+          <div class="font-label lang">{$getLanguageName(lang)}</div>
+          <div class="font-body">{credits[i].length === 0 ? $t("NONE_VALUE") : credits[i].join(", ")}</div>
+        </div>
+      {/each}
+    </div>
   </div>
   <div class="actions" slot="buttons">
     <div class="left" />
@@ -31,10 +34,18 @@
 
 <style>
   .content {
+    max-height: 20rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .content-wrapper {
+    height: fit-content;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
+
 
   .lang {
     font-weight: bold;

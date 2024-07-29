@@ -17,7 +17,7 @@
   import { t } from "@stores/Locale";
   import { showArtistSortOrder, showGridSize } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
-  import { artistGridSize, artists, artistsIsAtTop, artistSortOrder, lastView, selectedView } from "@stores/State";
+  import { artistGridSize, artists, artistsIsScrolled, artistSortOrder, lastView, selectedView } from "@stores/State";
   import ArtistGridEntry from "@views/artists/ArtistGridEntry.svelte";
   import ArtistListEntry from "@views/artists/ArtistListEntry.svelte";
   import { afterUpdate } from "svelte";
@@ -75,14 +75,14 @@
   afterUpdate(() => {
     if ($artistGridSize !== gridSize) {
       gridSize = $artistGridSize;
-      $artistsIsAtTop = true;
+      $artistsIsScrolled = false;
     }
   });
 </script>
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title={$t("ARTISTS_TITLE")} highlight={!$artistsIsAtTop}>
+    <ViewHeader title={$t("ARTISTS_TITLE")} highlight={!$artistsIsScrolled}>
       <div slot="left">
         <Button type="text" iconType="full" on:click={openSearch}>
           <Icon icon={Search} width="20px" height="20px" />
@@ -105,7 +105,7 @@
           itemHeight={60}
           items={sortedArtists}
           keyFunction={keyFunction}
-          bind:isAtTop={$artistsIsAtTop}
+          bind:isScrolled={$artistsIsScrolled}
           let:entry
         >
           <ArtistListEntry artist={entry} />
@@ -119,7 +119,7 @@
           columnGap={GRID_IMAGE_DIMENSIONS[$artistGridSize].gap}
           items={sortedArtists}
           keyFunction={keyFunction}
-          bind:isAtTop={$artistsIsAtTop}
+          bind:isScrolled={$artistsIsScrolled}
           let:entry
         >
           <ArtistGridEntry artist={entry} />

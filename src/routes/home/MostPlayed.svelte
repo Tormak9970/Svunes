@@ -21,7 +21,7 @@
   $: mostPlayedSongs = [ ...$songs ].sort((a, b) => a.numTimesPlayed - b.numTimesPlayed);
   $: limited = mostPlayedSongs.length > 100 ? mostPlayedSongs.slice(0, 100) : mostPlayedSongs;
 
-  let isAtTop = true;
+  let highlight = false;
 
   /**
    * Plays the songs.
@@ -53,9 +53,9 @@
   }
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
         <Button type="text" iconType="full" on:click={pop}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -71,7 +71,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <VirtualList name="mostPlayed" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+    <VirtualList name="mostPlayed" saveState={false} itemHeight={60} items={limited} keyFunction={keyFunction} bind:isScrolled={highlight} let:entry>
       <SongListEntry song={entry} detailType="Alphabetical" />
     </VirtualList>
   </span>
@@ -84,6 +84,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
   }
 </style>

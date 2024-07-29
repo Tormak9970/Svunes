@@ -19,7 +19,7 @@
   import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";
   import { showCreatePlaylist } from "@stores/Overlays";
   import { selectedChips } from "@stores/Search";
-  import { lastView, playlistGridSize, playlists, playlistsIsAtTop, playlistSortOrder, selectedView } from "@stores/State";
+  import { lastView, playlistGridSize, playlists, playlistsIsScrolled, playlistSortOrder, selectedView } from "@stores/State";
   import * as dialog from "@tauri-apps/plugin-dialog";
   import PlaylistGridEntry from "@views/playlists/PlaylistGridEntry.svelte";
   import PlaylistListEntry from "@views/playlists/PlaylistListEntry.svelte";
@@ -107,14 +107,14 @@
   afterUpdate(() => {
     if ($playlistGridSize !== gridSize) {
       gridSize = $playlistGridSize;
-      $playlistsIsAtTop = true;
+      $playlistsIsScrolled = false;
     }
   });
 </script>
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title={$t("PLAYLISTS_TITLE")} highlight={!$playlistsIsAtTop}>
+    <ViewHeader title={$t("PLAYLISTS_TITLE")} highlight={$playlistsIsScrolled}>
       <div slot="left">
         <Button type="text" iconType="full" on:click={openSearch}>
           <Icon icon={Search} width="20px" height="20px" />
@@ -141,7 +141,7 @@
           itemHeight={60}
           items={sortedPlaylists}
           keyFunction={keyFunction}
-          bind:isAtTop={$playlistsIsAtTop}
+          bind:isScrolled={$playlistsIsScrolled}
           let:entry
         >
           <PlaylistListEntry playlist={entry} detailType={$playlistSortOrder} />
@@ -155,7 +155,7 @@
           columnGap={GRID_IMAGE_DIMENSIONS[$playlistGridSize].gap}
           items={sortedPlaylists}
           keyFunction={keyFunction}
-          bind:isAtTop={$playlistsIsAtTop}
+          bind:isScrolled={$playlistsIsScrolled}
           let:entry
         >
           <PlaylistGridEntry playlist={entry} />

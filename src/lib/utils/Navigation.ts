@@ -1,12 +1,13 @@
-import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
+import { desktopSidePanel, isLandscape, sidePanelProps, SidePanels } from "@stores/Layout";
 import { push } from "svelte-spa-router";
+import { get } from "svelte/store";
 
 /**
  * Displays the details for the provided song.
  * @param songId The id of the song to display details for.
  */
 export function goToSongDetails(songId: string) {
-  if (IS_MOBILE) {
+  if (!get(isLandscape)) {
     push(`/songs/${songId}`);
     return;
   }
@@ -20,7 +21,7 @@ export function goToSongDetails(songId: string) {
  * @param songId The id of the song to edit.
  */
 export function goToSongEdit(songId: string) {
-  if (IS_MOBILE) {
+  if (!get(isLandscape)) {
     push(`/songs/${songId}/edit`);
     return;
   }
@@ -33,7 +34,7 @@ export function goToSongEdit(songId: string) {
  * Displays the bulk edit page for the current selection.
  */
 export function goToBulkEdit() {
-  if (IS_MOBILE) {
+  if (!get(isLandscape)) {
     push("/songs/bulk-edit");
     return;
   }
@@ -46,7 +47,7 @@ export function goToBulkEdit() {
  * @param albumName The name of the album to edit.
  */
 export function goToAlbumEdit(albumName: string) {
-  if (IS_MOBILE) {
+  if (!get(isLandscape)) {
     push(`/albums/${albumName}/edit`);
     return;
   }

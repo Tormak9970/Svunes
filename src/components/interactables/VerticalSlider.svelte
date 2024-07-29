@@ -79,7 +79,8 @@
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
 
-    appearance: slider-vertical;
+    writing-mode: vertical-lr;
+    direction: rtl;
   }
 
   .track::before {

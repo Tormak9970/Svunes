@@ -20,7 +20,6 @@
   let imagePath: string | undefined;
   let playlistName: string;
 
-  let isAtTop = true;
   let rerenderArt = true;
   
   $: canSave = (
@@ -77,9 +76,9 @@
   });
 </script>
 
-<OverlayBody bind:isAtTop={isAtTop}>
+<OverlayBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={false}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />

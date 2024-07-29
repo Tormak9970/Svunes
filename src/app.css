@@ -33,9 +33,34 @@ body {
   user-select: none;
 }
 
-* {
-  /* scrollbar-color: rgb(var(--m3-scheme-primary)) transparent; */
-  /* ! these are only ideal for mobile */
+.styled-scrollbar {
+  scrollbar-gutter: stable both-edges;
+}
+
+.styled-scrollbar::-webkit-scrollbar,
+.styled-scrollbar ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.styled-scrollbar::-webkit-scrollbar-track,
+.styled-scrollbar ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb,
+.styled-scrollbar ::-webkit-scrollbar-thumb {
+  background: rgb(var(--m3-scheme-primary) / 0.9);
+  border-radius: 4px;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb:hover,
+.styled-scrollbar ::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--m3-scheme-primary));
+}
+.styled-scrollbar::-webkit-scrollbar-corner,
+.styled-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.mobile .styled-scrollbar {
   scrollbar-width: none;
   overscroll-behavior: contain;
 }
@@ -256,4 +281,40 @@ a.m3-container {
   --tooltip-offset-y: 0px;
   --tooltip-padding: 0;
   --tooltip-z-index: 100;
+}
+
+.scroll-shadow {
+  position: relative;
+}
+
+.overflow-top::before {
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--scroll-shadow-color) / 0.8),
+    transparent
+  );
+  content: "";
+  width: 100%;
+  position: absolute;
+  height: 40px;
+  z-index: 2;
+  top: 0;
+
+  pointer-events: none;
+}
+
+.overflow-bottom::after {
+  background: linear-gradient(
+    to top,
+    rgb(var(--scroll-shadow-color) / 0.8),
+    transparent
+  );
+  content: "";
+  width: 100%;
+  position: absolute;
+  height: 40px;
+  z-index: 2;
+  bottom: 0;
+
+  pointer-events: none;
 }

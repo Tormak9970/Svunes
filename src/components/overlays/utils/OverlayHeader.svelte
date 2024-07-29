@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { isLandscape } from "@stores/Layout";
+
   export let highlight: boolean;
-  export let highlightColor = "--m3-scheme-surface-container";
+  export let highlightColor = $isLandscape ? "--m3-scheme-surface-container-high" : "--m3-scheme-surface-container";
 </script>
 
 <div class="overlay-header" class:highlight style="--highlight-color: rgb(var({highlightColor}));">

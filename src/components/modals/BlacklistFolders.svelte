@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from "@interactables/Button.svelte";
+  import { scrollShadow } from "@lib/directives/ScrollShadow";
   import { t } from "@stores/Locale";
   import { showBlacklistFolders } from "@stores/Modals";
   import { blacklistedFolders } from "@stores/State";
@@ -52,12 +53,14 @@
 </script>
 
 <ModalBody open={open} headline={$t("BLACKLISTED_TITLE")} on:close={() => open = false} on:closeEnd={() => $showBlacklistFolders = false }>
-  <div style="width: 18rem;">
-    {#each folders as directory, i}
-      <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
-    {:else}
-      <div class="font-label">{$t("NO_BLACKLISTED_MESSAGE")}</div>
-    {/each}
+  <div class="content styled-scrollbar" use:scrollShadow>
+    <div class="content-wrapper">
+      {#each folders as directory, i}
+        <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
+      {:else}
+        <div class="font-label">{$t("NO_BLACKLISTED_MESSAGE")}</div>
+      {/each}
+    </div>
   </div>
   <div class="actions" slot="buttons">
     <div class="left">
@@ -71,6 +74,17 @@
 </ModalBody>
 
 <style>
+  .content {
+    max-height: 20rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .content-wrapper {
+    width: 17rem;
+    height: fit-content;
+  }
+
   .actions {
     width: 100%;
     display: flex;

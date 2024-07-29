@@ -34,6 +34,7 @@
 <style>
   .album-picture {
     border-radius: var(--border-radius);
+    width: 100%;
     overflow: hidden;
   }
 </style>

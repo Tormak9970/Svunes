@@ -13,6 +13,7 @@
   import { EditController } from "@lib/controllers/EditController";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
@@ -25,7 +26,7 @@
   $: playlist = params.id ? $playlistsMap[params.id!] : undefined;
 
   let imageSize = 370;
-  let isAtTop = true;
+  let highlight = false;
 
   /**
    * Closes the details overlay.
@@ -86,9 +87,9 @@
   }
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -112,37 +113,49 @@
       </span>
     </OverlayHeader>
   </span>
-  <span class="content" slot="content">
-    {#if playlist}
-      <PlaylistImage playlist={playlist} height={imageSize} width={imageSize} />
-      <div class="details">
-        <div class="info">
-          <Marquee speed={50} gap={100}>
-            <h3 class="name">{playlist?.name}</h3>
-          </Marquee>
-          <div class="font-body other">
-            <div>{playlist?.songIds?.length} {playlist?.songIds?.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • {playlist?.displayLength()}</div>
+  <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+    <div class="content-inner">
+      {#if playlist}
+        <PlaylistImage playlist={playlist} height={imageSize} width={imageSize} />
+        <div class="details">
+          <div class="info">
+            <Marquee speed={50} gap={100}>
+              <h3 class="name">{playlist?.name}</h3>
+            </Marquee>
+            <div class="font-body other">
+              <div>{playlist?.songIds?.length} {playlist?.songIds?.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • {playlist?.displayLength()}</div>
+            </div>
+          </div>
+          <div class="buttons">
+            <ToggleShuffleButton />
+            <PlayButton name={playlist?.id} on:click={playPlaylist} />
           </div>
         </div>
-        <div class="buttons">
-          <ToggleShuffleButton />
-          <PlayButton name={playlist?.id} on:click={playPlaylist} />
+        <div class="songs" style="margin-top: 5px;">
+          <PlaylistSongs playlistId={playlist.id} />
         </div>
-      </div>
-      <div class="songs" style="margin-top: 5px;">
-        <PlaylistSongs playlistId={playlist.id} />
-      </div>
-    {/if}
+      {/if}
+      <div style="width: 100%; height: 70px;" />
+    </div>
   </span>
 </DetailsBody>
 
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+
+    overflow-y: scroll;
+  }
+
+  .content-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .info {

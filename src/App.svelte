@@ -4,8 +4,6 @@
   import MediaQuery from "./components/utils/MediaQuery.svelte";
   import "./lib/md-defs";
   import { isLandscape } from "./stores/Layout";
-
-  $: console.log($isLandscape);
   
   /**
    * Prevents undesired keypresses.

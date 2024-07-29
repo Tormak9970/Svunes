@@ -6,6 +6,7 @@
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
+  import { scrollShadow } from "@lib/directives/ScrollShadow";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
   import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";
@@ -25,17 +26,9 @@
   });
 
   let selectedIndex = -1;
-  let isOverflowingTop = false;
-  let isOverflowingBottom = $albumCovers.length > 4;
 
   let showDownloadingSpinner = false;
   let coversLoading = false;
-  
-  function scrollHandler(e: Event) {
-    const element = e.currentTarget as HTMLDivElement;
-    isOverflowingTop = element.scrollTop !== 0;
-    isOverflowingBottom = Math.abs(element.scrollHeight - element.clientHeight - element.scrollTop) > 1;
-  }
 
   /**
    * Toggles whether an image is selected.
@@ -100,13 +93,8 @@
           <LoadingSpinner />
         </div>
       {:else}
-        <div
-          class="content"
-          class:overflow-top={isOverflowingTop}
-          class:overflow-bottom={isOverflowingBottom}
-          on:scroll={scrollHandler}
-        >
-          {#each $albumCovers as url, i (`${$selectedReleaseGroupId}|${url}`)}
+        <div class="content styled-scrollbar" use:scrollShadow >
+          {#each [...$albumCovers, ...$albumCovers] as url, i (`${$selectedReleaseGroupId}|${url}|${i}`)}
             <CardClickable type="transparent" highlight={selectedIndex === i} on:click={() => handleImageClick(i)} extraOptions={{ style: `width: ${imageSize + 10}px; height: ${imageSize + 10}px; display: flex; align-items: center; padding: 5px; border-radius: 10px; position: relative; z-index: 1;` }}>
               <div style="width: {imageSize}px; height: {imageSize}px; overflow: hidden; border-radius: 10px;">
                 {#if url !== ""}
@@ -186,41 +174,10 @@
     grid-template-columns: 160px 160px;
     gap: 5px;
 
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     margin-top: 0.5rem;
-  }
-
-  .overflow-top::before {
-    background: linear-gradient(
-      to bottom,
-      rgb(var(--m3-scheme-surface-container-high) / 0.8),
-      transparent
-    );
-    content: "";
-    width: 100%;
-    position: absolute;
-    height: 40px;
-    z-index: 3;
-    top: 0;
-
-    pointer-events: none;
-  }
-
-  .overflow-bottom::after {
-    background: linear-gradient(
-      to top,
-      rgb(var(--m3-scheme-surface-container-high) / 0.8),
-      transparent
-    );
-    content: "";
-    width: 100%;
-    position: absolute;
-    height: 40px;
-    z-index: 2;
-    bottom: 0;
-
-    pointer-events: none;
   }
 
 

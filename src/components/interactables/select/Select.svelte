@@ -104,7 +104,6 @@
     height: 3.5rem;
     min-width: 15rem;
     width: 100%;
-    max-width: 324px;
     
     cursor: pointer;
   }
@@ -118,6 +117,7 @@
     align-items: center;
   }
   .current-label {
+    max-width: 260px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

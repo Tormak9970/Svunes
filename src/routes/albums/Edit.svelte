@@ -11,6 +11,7 @@
   import { AppController } from "@lib/controllers/AppController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
@@ -30,7 +31,7 @@
   let genre: string | undefined;
   let releaseYear: string | undefined;
 
-  let isAtTop = true;
+  let highlight = false;
   let albumNameChanged = false;
   
   $: canSave = artPath !== album?.artPath ||
@@ -156,9 +157,9 @@
   });
 </script>
 
-<OverlayBody bind:isAtTop={isAtTop}>
+<OverlayBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -177,13 +178,16 @@
       </span>
     </OverlayHeader>
   </span>
-  <span class="content" slot="content">
-    <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
-    <div class="fields">
-      <TextField name={$t("NAME_LABEL")} bind:value={albumName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <TextField name={$t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
-      <NumberField name={$t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} extraOptions={{ type: "number" }} />
+  <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+    <div class="content-inner">
+      <DetailsArtPicture artPath={artPath} clickable on:click={onAlbumArtClick} />
+      <div class="fields">
+        <TextField name={$t("NAME_LABEL")} bind:value={albumName} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("ARTIST_LABEL")} bind:value={albumArtist} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <TextField name={$t("GENRE_LABEL")} bind:value={genre} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
+        <NumberField name={$t("YEAR_LABEL")} bind:value={releaseYear} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} extraOptions={{ type: "number" }} />
+      </div>
+      <div style="width: 100%; height: 70px;" />
     </div>
   </span>
 </OverlayBody>
@@ -191,10 +195,20 @@
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .content-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .fields {

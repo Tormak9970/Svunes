@@ -18,13 +18,13 @@
   import SongListEntry from "@views/songs/SongListEntry.svelte";
   import { pop } from "svelte-spa-router";
 
-  const keyFunction = (entry: { data: Song }) => `${entry.data.artPath}${entry.data.title}${entry.data.album}${entry.data.artist}${entry.data.releaseYear}${entry.data.lastPlayedOn}`;
+  const keyFunction = (entry: { data: Song }) => entry.data.id;
 
   export let params: { key?: string } = {};
   $: genre = params.key ? $genresMap[params.key] : undefined;
   $: genreSongs = genre?.songIds.map((id) => $songsMap[id]) ?? [];
 
-  let isAtTop = true;
+  let highlight = false;
 
   /**
    * Closes the details overlay.
@@ -71,9 +71,9 @@
   }
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -91,7 +91,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <VirtualList name="genreDetails" saveState={false} itemHeight={60} items={genreSongs} keyFunction={keyFunction} bind:isAtTop={isAtTop} let:entry>
+    <VirtualList name="genreDetails" saveState={false} itemHeight={60} items={genreSongs} keyFunction={keyFunction} bind:isScrolled={highlight} let:entry>
       <SongListEntry song={entry} detailType="Alphabetical" />
     </VirtualList>
   </span>
@@ -104,6 +104,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
   }
 </style>

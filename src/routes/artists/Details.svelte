@@ -19,6 +19,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import { Artist } from "@lib/models/Artist";
   import type { Song } from "@lib/models/Song";
   import { stringSort } from "@lib/utils/Sorters";
@@ -45,7 +46,7 @@
   // @ts-ignore
   $: similarArtists = (allSimilarArtists && allSimilarArtists?.length > 5) ? getRandomElements<Artist>(allSimilarArtists, 5) : similarArtists;
 
-  let isAtTop = true;
+  let highlight = false;
   let rerenderArt = false;
 
   /**
@@ -137,9 +138,9 @@
 </script>
 
 {#key key}
-  <DetailsBody bind:isAtTop={isAtTop}>
+  <DetailsBody>
     <span slot="header">
-      <OverlayHeader highlight={!isAtTop}>
+      <OverlayHeader highlight={highlight}>
         <span slot="left">
           <Button type="text" iconType="full" on:click={back}>
             <Icon icon={BackArrow} width="20px" height="20px" />
@@ -154,48 +155,51 @@
         </span>
       </OverlayHeader>
     </span>
-    <span class="content" slot="content">
-      {#key rerenderArt}
-        <DetailsArtPicture artPath={artist?.imagePath} clickable on:click={onArtistArtClick} />
-      {/key}
-      <div class="details">
-        <div class="info">
-          <Marquee speed={50} gap={100}>
-            <h3 class="name">{artist?.name}</h3>
-          </Marquee>
-          <div class="font-body other">{`${artist?.albumNames.size} ${artist?.albumNames.size === 1 ? $t("ALBUM_SINGULAR_VALUE") : $t("ALBUM_PLURAL_VALUE")} • `}{`${artist?.songIds.length} ${artist?.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • `}{artist?.displayArtistSongLength()}</div>
-        </div>
+    <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+      <div class="content-inner">
         {#key rerenderArt}
-          <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
-            <ToggleShuffleButton />
-            <PlayButton name={artist?.name} on:click={playArtist} />
-          </div>
+          <DetailsArtPicture artPath={artist?.imagePath} clickable on:click={onArtistArtClick} />
         {/key}
-      </div>
-      {#if artistAlbums.length > 0 }
-        <div class="albums">
-          <div class="section-header">
-            <h3 class="label">{$t("ALBUMS_TITLE")}</h3>
-            <div />
+        <div class="details">
+          <div class="info">
+            <Marquee speed={50} gap={100}>
+              <h3 class="name">{artist?.name}</h3>
+            </Marquee>
+            <div class="font-body other">{`${artist?.albumNames.size} ${artist?.albumNames.size === 1 ? $t("ALBUM_SINGULAR_VALUE") : $t("ALBUM_PLURAL_VALUE")} • `}{`${artist?.songIds.length} ${artist?.songIds.length === 1 ? $t("SONG_SINGULAR_VALUE") : $t("SONG_PLURAL_VALUE")} • `}{artist?.displayArtistSongLength()}</div>
           </div>
-          <AlbumCarouselList albums={artistAlbums} />
+          {#key rerenderArt}
+            <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
+              <ToggleShuffleButton />
+              <PlayButton name={artist?.name} on:click={playArtist} />
+            </div>
+          {/key}
         </div>
-      {/if}
-      <div class="songs">
-        <div class="section-header">
-          <h3 class="label">{$t("SONGS_TITLE")}</h3>
-          <MenuButton icon={Filter}>
-            <RadioMenuItem name="artistEntriesSort" label={$t("ALPHABETICAL_LABEL")} checked={artistSortMethod === "Alphabetical"} on:input={() => artistSortMethod = "Alphabetical" } />
-            <RadioMenuItem name="artistEntriesSort" label={$t("ALBUM_LABEL")} checked={artistSortMethod === "Album"} on:input={() => artistSortMethod = "Album"} />
-            <RadioMenuItem name="artistEntriesSort" label={$t("YEAR_LABEL")} checked={artistSortMethod === "Year"} on:input={() => artistSortMethod = "Year"} />
-            <RadioMenuItem name="artistEntriesSort" label={$t("SONG_DURATION_LABEL")} checked={artistSortMethod === "Song Duration"} on:input={() => artistSortMethod = "Song Duration"} />
-          </MenuButton>
+        {#if artistAlbums.length > 0 }
+          <div class="albums">
+            <div class="section-header">
+              <h3 class="label">{$t("ALBUMS_TITLE")}</h3>
+              <div />
+            </div>
+            <AlbumCarouselList albums={artistAlbums} />
+          </div>
+        {/if}
+        <div class="songs">
+          <div class="section-header">
+            <h3 class="label">{$t("SONGS_TITLE")}</h3>
+            <MenuButton icon={Filter}>
+              <RadioMenuItem name="artistEntriesSort" label={$t("ALPHABETICAL_LABEL")} checked={artistSortMethod === "Alphabetical"} on:input={() => artistSortMethod = "Alphabetical" } />
+              <RadioMenuItem name="artistEntriesSort" label={$t("ALBUM_LABEL")} checked={artistSortMethod === "Album"} on:input={() => artistSortMethod = "Album"} />
+              <RadioMenuItem name="artistEntriesSort" label={$t("YEAR_LABEL")} checked={artistSortMethod === "Year"} on:input={() => artistSortMethod = "Year"} />
+              <RadioMenuItem name="artistEntriesSort" label={$t("SONG_DURATION_LABEL")} checked={artistSortMethod === "Song Duration"} on:input={() => artistSortMethod = "Song Duration"} />
+            </MenuButton>
+          </div>
+          <SongsList songs={sortedSongs} />
         </div>
-        <SongsList songs={sortedSongs} />
+        {#if similarArtists && similarArtists?.length > 0}
+          <ArtistCarousel label={$t("SIMILAR_ARTISTS_TITLE")} artists={similarArtists} on:click={showAllSimilar} />
+        {/if}
+        <div style="width: 100%; height: 70px;" />
       </div>
-      {#if similarArtists && similarArtists?.length > 0}
-        <ArtistCarousel label={$t("SIMILAR_ARTISTS_TITLE")} artists={similarArtists} on:click={showAllSimilar} />
-      {/if}
     </span>
   </DetailsBody>
 {/key}
@@ -203,10 +207,19 @@
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+
+    overflow-y: scroll;
+  }
+
+  .content-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .info {

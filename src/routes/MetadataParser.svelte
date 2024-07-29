@@ -13,6 +13,7 @@
   import TextRotationNone from "@ktibow/iconset-material-symbols/text-rotation-none-rounded";
   import type { TabItem } from "@layout/TabsHeader.svelte";
   import { EditController } from "@lib/controllers/EditController";
+  import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showParserVariables } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
@@ -59,7 +60,6 @@
   }
   const templateSplitter = /(%title%|%album%|%track%|%artist%|%albumartist%|%genre%|%year%|%dummy%)+/;
 
-  let isAtTop = true;
   let canSave = false;
   let parserWasRun = false;
   
@@ -194,9 +194,9 @@
   }
 </script>
 
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={false}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -217,7 +217,7 @@
     </OverlayHeader>
   </span>
   <span class="content" slot="content">
-    <div class="pattern-container">
+    <div class="pattern-container" style:--m3-util-background={$isLandscape ? "var(--m3-scheme-surface-container)" : undefined}>
       <TextField name="Pattern" bind:value={patternString} extraWrapperOptions={{ style: "height: 2.5rem; width: 100%" }} />
     </div>
     <div class="preview">

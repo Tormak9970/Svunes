@@ -19,6 +19,7 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
+  import { isScrolled } from "@lib/directives/IsScrolled";
   import type { Song } from "@lib/models/Song";
   import { goToAlbumEdit } from "@lib/utils/Navigation";
   import { nullishNumberSort, stringSort } from "@lib/utils/Sorters";
@@ -43,7 +44,7 @@
 
   $: backgroundColor = $useAlbumColors ? album?.backgroundColor : undefined;
 
-  let isAtTop = true;
+  let highlight = false;
 
   /**
    * Closes the details overlay.
@@ -134,9 +135,9 @@
 </script>
 
 {#key key}
-<DetailsBody bind:isAtTop={isAtTop}>
+<DetailsBody>
   <span slot="header">
-    <OverlayHeader highlight={!isAtTop}>
+    <OverlayHeader highlight={highlight}>
       <span slot="left">
         <Button type="text" iconType="full" on:click={back}>
           <Icon icon={BackArrow} width="20px" height="20px" />
@@ -156,34 +157,37 @@
       </span>
     </OverlayHeader>
   </span>
-  <span class="content" slot="content">
-    <DetailsArtPicture artPath={album?.artPath} />
-    <div class="details">
-      <div class="info">
-        <Marquee speed={50} gap={100}>
-          <h3 class="name">{album?.name}</h3>
-        </Marquee>
-        <div class="font-body other"><div class="album-artist">{album?.albumArtist ? album?.albumArtist : ""}</div>&nbsp;{album?.releaseYear !== -1 ? "• " + album?.releaseYear : ""}{" • " + album?.displayAlbumLength()}</div>
+  <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+    <div class="content-inner">
+      <DetailsArtPicture artPath={album?.artPath} />
+      <div class="details">
+        <div class="info">
+          <Marquee speed={50} gap={100}>
+            <h3 class="name">{album?.name}</h3>
+          </Marquee>
+          <div class="font-body other"><div class="album-artist">{album?.albumArtist ? album?.albumArtist : ""}</div>&nbsp;{album?.releaseYear !== -1 ? "• " + album?.releaseYear : ""}{" • " + album?.displayAlbumLength()}</div>
+        </div>
+        <div class="buttons" style="{backgroundColor ? `--m3-scheme-primary: ${backgroundColor};` : ""}">
+          <ToggleShuffleButton />
+          <PlayButton name={album?.name} on:click={playAlbum} />
+        </div>
       </div>
-      <div class="buttons" style="{backgroundColor ? `--m3-scheme-primary: ${backgroundColor};` : ""}">
-        <ToggleShuffleButton />
-        <PlayButton name={album?.name} on:click={playAlbum} />
+      <div class="songs" style="margin-top: 5px;">
+        <div class="section-header">
+          <h3 class="label">{$t("SONGS_TITLE")}</h3>
+          <MenuButton icon={Filter}>
+            <RadioMenuItem name="albumEntriesSort" label="Alphabetical" checked={albumSortMethod === "Alphabetical"} on:input={() => albumSortMethod = "Alphabetical" } />
+            <RadioMenuItem name="albumEntriesSort" label="Track Number" checked={albumSortMethod === "Track Number"} on:input={() => albumSortMethod = "Track Number"} />
+            <RadioMenuItem name="albumEntriesSort" label="Song Duration" checked={albumSortMethod === "Song Duration"} on:input={() => albumSortMethod = "Song Duration"} />
+          </MenuButton>
+        </div>
+        <SongsList songs={sortedSongs} />
       </div>
+      {#if album && artist && artist.albumNames.size > 1}
+        <AlbumCarousel label="{$t("MORE_FROM_TITLE")} {album?.albumArtist}" albums={artistOtherAlbums} on:click={showAllAlbums} />
+      {/if}
+      <div style="width: 100%; height: 70px;" />
     </div>
-    <div class="songs" style="margin-top: 5px;">
-      <div class="section-header">
-        <h3 class="label">{$t("SONGS_TITLE")}</h3>
-        <MenuButton icon={Filter}>
-          <RadioMenuItem name="albumEntriesSort" label="Alphabetical" checked={albumSortMethod === "Alphabetical"} on:input={() => albumSortMethod = "Alphabetical" } />
-          <RadioMenuItem name="albumEntriesSort" label="Track Number" checked={albumSortMethod === "Track Number"} on:input={() => albumSortMethod = "Track Number"} />
-          <RadioMenuItem name="albumEntriesSort" label="Song Duration" checked={albumSortMethod === "Song Duration"} on:input={() => albumSortMethod = "Song Duration"} />
-        </MenuButton>
-      </div>
-      <SongsList songs={sortedSongs} />
-    </div>
-    {#if album && artist && artist.albumNames.size > 1}
-      <AlbumCarousel label="{$t("MORE_FROM_TITLE")} {album?.albumArtist}" albums={artistOtherAlbums} on:click={showAllAlbums} />
-    {/if}
   </span>
 </DetailsBody>
 {/key}
@@ -192,10 +196,19 @@
 <style>
   .content {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
+
+    overflow-y: scroll;
+  }
+
+  .content-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .info {

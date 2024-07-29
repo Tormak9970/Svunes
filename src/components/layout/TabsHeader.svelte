@@ -101,7 +101,7 @@
 
 <style>
   .m3-container {
-    background-color: rgb(var(--m3-scheme-surface));
+    background-color: transparent;
     overflow-x: auto;
     width: 100%;
   }
