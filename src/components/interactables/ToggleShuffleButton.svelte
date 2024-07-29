@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import { shuffle } from "@stores/State";

@@ -1,0 +1,12 @@
+{
+  "svelte.enable-ts-plugin": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "svelte.plugin.svelte.defaultScriptLanguage": "ts",
+  // "svelte.plugin.css.globals": "src/",
+  "svelte.plugin.svelte.compilerWarnings": {
+    "ignore missing-declaration": "ignore"
+  },
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+}

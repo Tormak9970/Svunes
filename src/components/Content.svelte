@@ -129,16 +129,13 @@
 <InfoSnackbar bind:show={$showInfoSnackbar} />
 
 <DesktopViewWrapper>
-  <!-- svelte-ignore missing-declaration -->
   {#if $showNav && !$isLandscape}
     <MobileNav />
   {/if}
-  <!-- svelte-ignore missing-declaration -->
   {#if $selectedView !== View.SETTINGS && !$location.endsWith("/edit") && $showNowPlaying && !$isLandscape}
     <NowPlayingContainer />
   {/if}
 
-  <!-- svelte-ignore missing-declaration -->
   <div class="content" style:height={($showNav && !$isLandscape) ? "calc(100% - 56px)" : "100%"}>
     {#if $inSelectMode}
       <SelectHeader />

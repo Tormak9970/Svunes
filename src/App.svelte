@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { MediaQuery } from "@component-utils";
   import Content from "./components/Content.svelte";
   import Theme from "./components/theme/Theme.svelte";
-  import MediaQuery from "./components/utils/MediaQuery.svelte";
   import "./lib/md-defs";
   import { isLandscape } from "./stores/Layout";
   

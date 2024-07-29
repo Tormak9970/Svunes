@@ -1,8 +1,6 @@
 <script lang="ts">
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import Button from "@interactables/Button.svelte";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { showErrorSnackbar, songIdsToParse, songsMap } from "@stores/State";
   import { pop } from "svelte-spa-router";
   

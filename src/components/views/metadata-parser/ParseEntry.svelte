@@ -4,7 +4,7 @@
   export let result: ParseResult;
   export let tab: string;
   
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import ArrowForward from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
   import SubdirectoryArrowRight from "@ktibow/iconset-material-symbols/subdirectory-arrow-right-rounded";
   import { t } from "@stores/Locale";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import { AppController, EditController, LogController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";

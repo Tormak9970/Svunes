@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import type { HTMLAttributes } from "svelte/elements";
-  import Icon from "../utils/Icon.svelte";
   import Button from "./Button.svelte";
 
   export let extraOptions: HTMLAttributes<HTMLButtonElement> = {};

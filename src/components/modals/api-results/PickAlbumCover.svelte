@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ModalBody } from "@component-utils";
   import { ApiController } from "@controllers";
   import { scrollShadow } from "@directives";
   import Button from "@interactables/Button.svelte";
@@ -12,7 +13,6 @@
   import { IMAGE_FADE_OPTIONS } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
-  import ModalBody from "../utils/ModalBody.svelte";
 
   let open = true;
 

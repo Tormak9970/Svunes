@@ -1,8 +1,7 @@
 <script lang="ts">
+  import { easeEmphasizedAccel, easeEmphasizedDecel, outroClass } from "@utils";
   import { createEventDispatcher, onMount } from "svelte";
   import type { TransitionConfig } from "svelte/transition";
-  import { outroClass } from "../utils/animations/animations";
-  import { easeEmphasizedAccel, easeEmphasizedDecel } from "../utils/animations/easing";
   
   /**
    * The bottom sheet height animation.

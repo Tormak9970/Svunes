@@ -1,6 +1,6 @@
 <script lang="ts">
   import { isLandscape } from "@stores/Layout";
-  import { sharedAxisTransition } from "./animations/animations";
+  import { sharedAxisTransition } from "@utils";
 </script>
 
 <div

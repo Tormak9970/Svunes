@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import Checkbox from "@interactables/Checkbox.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import CardClickable from "@layout/CardClickable.svelte";

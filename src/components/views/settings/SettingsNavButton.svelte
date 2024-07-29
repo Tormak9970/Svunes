@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import CardClickable from "@layout/CardClickable.svelte";
   import { push } from "svelte-spa-router";

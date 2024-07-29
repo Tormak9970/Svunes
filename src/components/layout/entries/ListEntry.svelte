@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ViewImage from "@component-utils/ViewImage.svelte";
+  import { ViewImage } from "@component-utils";
   import CardClickable from "@layout/CardClickable.svelte";
   import { inSelectMode } from "@stores/Select";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";

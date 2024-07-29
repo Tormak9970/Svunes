@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ModalBody } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import Lazy from "@layout/Lazy.svelte";
   import { t } from "@stores/Locale";
@@ -10,7 +11,6 @@
   import { drag } from "svelte-gesture";
   import { spring } from "svelte/motion";
   import type { Unsubscriber } from "svelte/store";
-  import ModalBody from "./utils/ModalBody.svelte";
 
   let open = true;
 

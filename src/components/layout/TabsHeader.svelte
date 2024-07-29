@@ -5,7 +5,7 @@
   };
 </script>
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 

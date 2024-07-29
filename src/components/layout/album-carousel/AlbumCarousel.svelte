@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import AlbumCarouselList from "./AlbumCarouselList.svelte";
 

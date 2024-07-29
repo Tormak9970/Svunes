@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
   import type { IconifyIcon } from "@iconify/types";
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import { createEventDispatcher } from "svelte";
   import type { HTMLDialogAttributes } from "svelte/elements";
+  import Icon from "../Icon.svelte";
 
   export let display = "flex";
   export let extraOptions: HTMLDialogAttributes = {};

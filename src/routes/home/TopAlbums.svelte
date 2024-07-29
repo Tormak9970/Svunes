@@ -1,11 +1,9 @@
 <script lang="ts">
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import VirtualGrid from "@layout/VirtualGrid.svelte";
   import type { Album } from "@models";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { albumsMap, songs } from "@stores/State";
   import { GridSize } from "@types";

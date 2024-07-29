@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { FolderEntry, ModalBody } from "@component-utils";
   import { scrollShadow } from "@directives";
   import Button from "@interactables/Button.svelte";
   import { t } from "@stores/Locale";
@@ -6,8 +7,6 @@
   import { musicDirectories } from "@stores/State";
   import * as dialog from "@tauri-apps/plugin-dialog";
   import { location } from "svelte-spa-router";
-  import FolderEntry from "./utils/FolderEntry.svelte";
-  import ModalBody from "./utils/ModalBody.svelte";
 
   let open = true;
 

@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { ModalBody } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import { t } from "@stores/Locale";
   import { apiSearchCanceled, showSearchingApi } from "@stores/Modals";
-  import ModalBody from "./utils/ModalBody.svelte";
 
   function cancel() {
     $apiSearchCanceled = true;

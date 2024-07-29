@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { SmallModalBody } from "@component-utils";
   import RadioInput from "@interactables/radio/RadioInput.svelte";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder } from "@stores/Modals";
   import { albumSortOrder } from "@stores/State";
   import type { AlbumSortOrder } from "@types";
-  import SmallModalBody from "../utils/SmallModalBody.svelte";
 
   let open = true;
 

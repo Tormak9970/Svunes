@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sharedAxisTransition } from "../../utils/animations/animations";
+  import { sharedAxisTransition } from "@utils";
 </script>
 
 <div class="full-screen-overlay" transition:sharedAxisTransition={{ direction: "Z", leaving: false }}>

@@ -3,10 +3,9 @@
   import { showErrorSnackbar, viewIndices, viewsToRender } from "@stores/State";
   import { View, Views, getViewName } from "@types";
 
+  import { Icon, ModalBody } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import Checkbox from "@interactables/Checkbox.svelte";
-  import Icon from "../utils/Icon.svelte";
-  import ModalBody from "./utils/ModalBody.svelte";
   
   import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
   import { t } from "@stores/Locale";

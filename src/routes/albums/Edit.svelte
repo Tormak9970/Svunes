@@ -1,6 +1,5 @@
 <script lang="ts">
-  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { ApiController, AppController, EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
@@ -9,8 +8,6 @@
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import PageViewOutlined from "@ktibow/iconset-material-symbols/pageview-outline-rounded";
   import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
-  import OverlayBody from "@overlays/utils/OverlayBody.svelte";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";

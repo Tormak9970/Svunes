@@ -2,7 +2,7 @@
   import { playlists, playlistsMap, songsMap } from "@stores/State";
   import PlaylistSong from "./PlaylistSong.svelte";
   
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
   import { inSelectMode } from "@stores/Select";
   import { clamp, swap } from "@utils";

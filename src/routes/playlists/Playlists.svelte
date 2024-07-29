@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
-  import ViewContainer from "@component-utils/ViewContainer.svelte";
+  import { Icon, ViewContainer } from "@component-utils";
   import { AppController, LogController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";

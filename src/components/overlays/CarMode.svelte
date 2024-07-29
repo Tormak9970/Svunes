@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import Marquee from "@layout/Marquee.svelte";
   import ProgressControls from "./now-playing/ProgressControls.svelte";
@@ -18,8 +18,7 @@
   import { PlaybackController, QueueController } from "@controllers";
   import { t } from "@stores/Locale";
   import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songsMap } from "@stores/State";
-  import { hash64 } from "@utils";
-  import { sharedAxisTransition } from "../utils/animations/animations";
+  import { hash64, sharedAxisTransition } from "@utils";
   
   $: song = $playingSongId !== "" ? $songsMap[$playingSongId] : null;
   $: songLength = song?.length ?? 0;

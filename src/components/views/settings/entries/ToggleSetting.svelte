@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import Toggle from "@interactables/Toggle.svelte";
   import Card from "@layout/Card.svelte";

@@ -1,6 +1,5 @@
 <script lang="ts">
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { PlaybackController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
@@ -10,7 +9,6 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import VirtualList from "@layout/VirtualList.svelte";
   import type { Song } from "@models";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { genresMap, isPaused, nowPlayingList, songsMap } from "@stores/State";

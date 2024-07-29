@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
-  import MediaQuery from "@component-utils/MediaQuery.svelte";
+  import { Icon, MediaQuery } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import GridView from "@ktibow/iconset-material-symbols/grid-view";
@@ -80,7 +79,6 @@
         {/if}
       </div>
     </div>
-    <!-- svelte-ignore missing-declaration -->
     <div class="now-playing-wrapper" style:height={$showNowPlaying ? "5.5rem" : "0rem"}>
       {#if $showNowPlaying}
         <NowPlayingDesktop />

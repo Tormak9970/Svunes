@@ -1,6 +1,5 @@
 <script lang="ts">
-  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsArtPicture, Icon } from "@component-utils";
   import { PlaybackController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
-  import Icon from "../utils/Icon.svelte";
 
   export let display = "inline-flex";
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};

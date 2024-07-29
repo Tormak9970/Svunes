@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import Slider from "@interactables/Slider.svelte";
   import { showVolumeControls, volumeLevel } from "@stores/State";
 

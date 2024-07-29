@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import MenuButton from "@interactables/MenuButton.svelte";
   import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";

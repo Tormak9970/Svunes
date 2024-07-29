@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import type { HTMLAttributes } from "svelte/elements";
   
   import ArrowDropDown from "@ktibow/iconset-material-symbols/arrow-drop-down-rounded";

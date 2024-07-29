@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ModalBody } from "@component-utils";
   import { ApiController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import Select from "@interactables/select/Select.svelte";
@@ -7,7 +8,6 @@
   import { albumInfos, availableReleaseGroups, onAlbumInfoDone, selectedReleaseGroupId, showPickAlbumInfo } from "@stores/Modals";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
-  import ModalBody from "../utils/ModalBody.svelte";
   
   let open = true;
 

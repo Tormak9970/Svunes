@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import MusicNote from "@ktibow/iconset-material-symbols/music-note-rounded";
 
   export let width = 30;

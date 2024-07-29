@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
-  import ViewContainer from "@component-utils/ViewContainer.svelte";
+  import { Icon, ViewContainer } from "@component-utils";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import Search from "@ktibow/iconset-material-symbols/search";

@@ -2,7 +2,7 @@
   import { queue, songsMap } from "@stores/State";
   import QueueSong from "./QueueSong.svelte";
   
-  import Icon from "@component-utils/Icon.svelte";
+  import { Icon } from "@component-utils";
   import DragHandle from "@ktibow/iconset-material-symbols/drag-handle-rounded";
   import { inSelectMode } from "@stores/Select";
   import { clamp, swap } from "@utils";

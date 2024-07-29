@@ -1,11 +1,9 @@
 <script lang="ts">
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { queue, songsMap } from "@stores/State";

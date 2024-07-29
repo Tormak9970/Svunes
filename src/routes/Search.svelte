@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ViewContainer from "@component-utils/ViewContainer.svelte";
+  import { ViewContainer } from "@component-utils";
   import SearchHeader from "@views/search/SearchHeader.svelte";
   import SearchResults from "@views/search/SearchResults.svelte";
 

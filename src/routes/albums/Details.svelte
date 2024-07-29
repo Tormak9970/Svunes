@@ -1,7 +1,5 @@
 <script lang="ts">
-  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { EditController, LogController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
@@ -18,7 +16,6 @@
   import MenuItem from "@layout/MenuItem.svelte";
   import SongsList from "@layout/songs-list/SongsList.svelte";
   import type { Song } from "@models";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { albumToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artistsMap, isPaused, nowPlayingList, songsMap, useAlbumColors } from "@stores/State";

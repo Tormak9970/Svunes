@@ -1,6 +1,5 @@
 <script lang="ts">
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { PlaybackController, QueueController } from "@controllers";
   import Button from "@interactables/Button.svelte";
   import PlayButton from "@interactables/PlayButton.svelte";
@@ -9,7 +8,6 @@
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import VirtualList from "@layout/VirtualList.svelte";
   import type { Song } from "@models";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { isPaused, nowPlayingList, songs, songsMap } from "@stores/State";
   import { shuffleSongs } from "@utils";

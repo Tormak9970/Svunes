@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { SmallModalBody } from "@component-utils";
   import RadioInput from "@interactables/radio/RadioInput.svelte";
   import { t } from "@stores/Locale";
   import { showGridSize } from "@stores/Modals";
   import { albumGridSize, artistGridSize, playlistGridSize, selectedView, songGridSize } from "@stores/State";
   import { GridSize, View } from "@types";
-  import SmallModalBody from "../utils/SmallModalBody.svelte";
 
   $: gridSize = $selectedView === View.PLAYLISTS ? $playlistGridSize : ($selectedView === View.ALBUMS ? $albumGridSize : ($selectedView === View.SONGS ? $songGridSize : $artistGridSize));
 

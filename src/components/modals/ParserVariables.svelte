@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { ModalBody } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import { t } from "@stores/Locale";
   import { showParserVariables } from "@stores/Modals";
-  import ModalBody from "./utils/ModalBody.svelte";
 
   let open = true;
 </script>

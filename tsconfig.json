@@ -20,7 +20,7 @@
       "@layout/*": ["./src/components/layout/*"],
       "@views/*": ["./src/components/views/*"],
       "@overlays/*": ["./src/components/overlays/*"],
-      "@component-utils/*": ["./src/components/utils/*"],
+      "@component-utils": ["./src/components/utils"],
       "@stores/*": ["./src/stores/*"],
       "@routes/*": ["./src/routes/*"],
       "@controllers": ["./src/lib/controllers"],

@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { Icon } from "@component-utils";
   import IconCheck from "@ktibow/iconset-material-symbols/check";
   import type { HTMLAttributes } from "svelte/elements";
-  import Icon from "../utils/Icon.svelte";
 
   export let display = "inline-flex";
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};

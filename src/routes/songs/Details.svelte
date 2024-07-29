@@ -1,16 +1,13 @@
 <script lang="ts">
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { songsMap } from "@stores/State";
   import DetailsField from "./DetailsField.svelte";
   
-  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
-  import DetailsBody from "@component-utils/DetailsBody.svelte";
   import { isScrolled } from "@directives";
   import Album from "@ktibow/iconset-material-symbols/album";
   import Artist from "@ktibow/iconset-material-symbols/artist";

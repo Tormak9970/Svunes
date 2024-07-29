@@ -1,14 +1,11 @@
 <script lang="ts">
-  import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
-  import Icon from "@component-utils/Icon.svelte";
+  import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import OverlayBody from "@overlays/utils/OverlayBody.svelte";
-  import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { showWritingChanges } from "@stores/Overlays";
   import { showErrorSnackbar, songsMap } from "@stores/State";

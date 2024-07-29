@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { Icon } from "@component-utils";
   import Close from "@ktibow/iconset-material-symbols/close";
   import { isLandscape } from "@stores/Layout";
+  import { showNav } from "@stores/State";
   import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
-  import { showNav } from "../../stores/State";
-  import Icon from "../utils/Icon.svelte";
 
   type SnackbarData = {
     message: string;
