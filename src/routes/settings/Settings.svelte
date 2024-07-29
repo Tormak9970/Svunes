@@ -26,7 +26,6 @@
   </span>
   <span class="content" slot="content">
     <SettingsNavButton label={$t("SETTINGS_APPEARANCE_TITLE")} description={$t("SETTINGS_APPEARANCE_PAGE_DESC")} route="/settings/appearance" icon={Palette} color="#42a5f5" />
-    <!-- svelte-ignore missing-declaration -->
     {#if !$isLandscape}
       <SettingsNavButton label={$t("SETTINGS_NOW_PLAYING_TITLE")} description={$t("SETTINGS_NOW_PLAYING_PAGE_DESC")} route="/settings/now-playing" icon={PlayCircle} color="#ef5350" />
     {/if}

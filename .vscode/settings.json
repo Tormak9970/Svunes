@@ -5,8 +5,6 @@
   },
   "svelte.plugin.svelte.defaultScriptLanguage": "ts",
   // "svelte.plugin.css.globals": "src/",
-  "svelte.plugin.svelte.compilerWarnings": {
-    "ignore missing-declaration": "ignore"
-  },
+  "svelte.plugin.svelte.compilerWarnings": {},
   "javascript.preferences.importModuleSpecifier": "non-relative",
 }

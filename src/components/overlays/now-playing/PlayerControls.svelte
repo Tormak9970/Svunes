@@ -22,7 +22,6 @@
   }
 </script>
 
-<!-- svelte-ignore missing-declaration -->
 <div class="player-controls" style:margin-top={!$isLandscape ? "10px" : "0px"} class:use-text-color={useTextColor}>
   {#if showExtraControls}
     <Button type="text" iconType="full" size={!$isLandscape ? "3rem" : "2rem"} iconSize={!$isLandscape ? undefined : "1.4rem"} on:click={() => $repeatPlayed = !$repeatPlayed }>

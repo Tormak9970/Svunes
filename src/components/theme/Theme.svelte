@@ -42,7 +42,6 @@
   })
 </script>
 
-<!-- svelte-ignore missing-declaration -->
 <main class:mobile={!$isLandscape}>
   {@html `<${""}style>${styling}</${""}style>`}
   <slot />

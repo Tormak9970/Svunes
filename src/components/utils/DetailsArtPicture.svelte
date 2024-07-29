@@ -20,7 +20,6 @@
 <div class="album-picture" style:--border-radius={borderRadius} style:margin-top={marginTop ? "2px" : "0"} style="max-width: {imageSize}px; max-height: {imageSize}px;">
   {#key artPath ?? ""}
     <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} {clickable} on:click={() => dispatch("click")} let:onError>
-      <!-- svelte-ignore missing-declaration -->
       <!-- svelte-ignore a11y-missing-attribute -->
       <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" on:error={onError} />
       <span slot="placeholder" style="display: flex; width: {imageSize}px; height: {imageSize}px;">
