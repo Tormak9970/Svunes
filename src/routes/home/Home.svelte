@@ -2,16 +2,10 @@
   import { Icon, ViewContainer } from "@component-utils";
   import { Button } from "@interactables";
   import Suggestions from "@views/home/Suggestions.svelte";
-
-  import CalendarAddOn from "@ktibow/iconset-material-symbols/calendar-add-on-rounded";
-  import History from "@ktibow/iconset-material-symbols/history-rounded";
-  import Search from "@ktibow/iconset-material-symbols/search";
-  import Settings from "@ktibow/iconset-material-symbols/settings";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
-  import TrendingUp from "@ktibow/iconset-material-symbols/trending-up-rounded";
   
   import { PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
+  import { CalendarAddOn, History, Search, Settings, Shuffle, TrendingUp } from "@icons";
   import { AlbumCarousel, ArtistCarousel, ViewHeader } from "@layout";
   import type { Album, Artist } from "@models";
   import { t } from "@stores/Locale";

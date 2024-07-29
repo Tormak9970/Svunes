@@ -1,10 +1,8 @@
 <script lang="ts">
   import { Icon, ViewContainer } from "@component-utils";
   import { AppController, LogController } from "@controllers";
+  import { Add, MoreVert, Search } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import Add from "@ktibow/iconset-material-symbols/add-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Search from "@ktibow/iconset-material-symbols/search";
   import { MenuItem, ViewHeader, VirtualGrid, VirtualList } from "@layout";
   import type { Playlist } from "@models";
   import { t } from "@stores/Locale";

@@ -5,8 +5,7 @@
   export let tab: string;
   
   import { Icon } from "@component-utils";
-  import ArrowForward from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
-  import SubdirectoryArrowRight from "@ktibow/iconset-material-symbols/subdirectory-arrow-right-rounded";
+  import { ForwardArrow, SubdirectoryArrowRight } from "@icons";
   import { t } from "@stores/Locale";
 
   $: doesntMatchPattern = Object.keys(result).length === 2;
@@ -21,7 +20,7 @@
   <div class="parsed-value font-label">
     <Icon icon={SubdirectoryArrowRight} />
     <div class="field">{tab}</div>
-    <Icon icon={ArrowForward} />
+    <Icon icon={ForwardArrow} />
     <div class="value" style:color="rgb(var({doesntMatchPattern ? "--m3-scheme-error" : "--m3-scheme-primary"})">{value}</div>
   </div>
 </div>

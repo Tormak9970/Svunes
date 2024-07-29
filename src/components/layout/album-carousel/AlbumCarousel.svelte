@@ -3,7 +3,7 @@
   import { Button } from "@interactables";
   import AlbumCarouselList from "./AlbumCarouselList.svelte";
 
-  import ForwardArrow from "@ktibow/iconset-material-symbols/arrow-forward-rounded";
+  import { ForwardArrow } from "@icons";
   import type { Album } from "@models";
 
   export let maxLength = 5;

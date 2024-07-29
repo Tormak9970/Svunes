@@ -11,10 +11,7 @@
   import PlayerControls from "../PlayerControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
   
-  import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
-  import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
-  import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
+  import { FavoriteOff, FavoriteOn, KeyboardArrowDown, MoreVert } from "@icons";
   import { t } from "@stores/Locale";
   
   let menuIsOpen = false;

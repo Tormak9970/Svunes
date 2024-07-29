@@ -8,8 +8,7 @@
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   import SliderSetting from "@views/settings/entries/SliderSetting.svelte";
   
-  import FolderOpen from "@ktibow/iconset-material-symbols/folder-open-rounded";
-  import VisibilityOff from "@ktibow/iconset-material-symbols/visibility-off-rounded";
+  import { FolderOpen, VisibilityOff } from "@icons";
   import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
 </script>

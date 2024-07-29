@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import IconCheck from "@ktibow/iconset-material-symbols/check";
+  import { Checkmark } from "@icons";
   import type { HTMLAttributes } from "svelte/elements";
 
   export let display = "inline-flex";
@@ -45,7 +45,7 @@
     }}
   />
   <div class="layer">
-    <Icon icon={IconCheck} />
+    <Icon icon={Checkmark} />
   </div>
 </div>
 

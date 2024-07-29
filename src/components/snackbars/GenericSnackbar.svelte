@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Close from "@ktibow/iconset-material-symbols/close";
+  import { Close } from "@icons";
   import { isLandscape } from "@stores/Layout";
   import { showNav } from "@stores/State";
   import { onDestroy } from "svelte";

@@ -1,10 +1,8 @@
 <script lang="ts">
   import { Icon, ViewContainer } from "@component-utils";
   import { isScrolled } from "@directives";
+  import { SadFace, Search, Settings } from "@icons";
   import { Button } from "@interactables";
-  import Search from "@ktibow/iconset-material-symbols/search";
-  import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
-  import Settings from "@ktibow/iconset-material-symbols/settings";
   import { ViewHeader } from "@layout";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";

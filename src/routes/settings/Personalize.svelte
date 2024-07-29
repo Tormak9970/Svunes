@@ -8,8 +8,7 @@
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import History from "@ktibow/iconset-material-symbols/history-rounded";
-  import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
+  import { History, LibraryMusic } from "@icons";
   import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
 </script>

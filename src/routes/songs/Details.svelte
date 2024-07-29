@@ -1,23 +1,11 @@
 <script lang="ts">
   import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
+  import { Album, Artist, BackArrow, Edit, FolderOpen, GraphEq, HardDrive2, LibraryMusic, MoreVert, Schedule, Sell, Tag, Today } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { songsMap } from "@stores/State";
   import DetailsField from "./DetailsField.svelte";
   
   import { isScrolled } from "@directives";
-  import Album from "@ktibow/iconset-material-symbols/album";
-  import Artist from "@ktibow/iconset-material-symbols/artist";
-  import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
-  import Frequency from "@ktibow/iconset-material-symbols/graphic-eq-rounded";
-  import FileSize from "@ktibow/iconset-material-symbols/hard-drive-2";
-  import Genre from "@ktibow/iconset-material-symbols/library-music-rounded";
-  import Duration from "@ktibow/iconset-material-symbols/schedule-rounded";
-  import Sell from "@ktibow/iconset-material-symbols/sell";
-  import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
-  import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
   import { t } from "@stores/Locale";
   import { goToSongEdit } from "@utils";
   import SongOptions from "@views/songs/SongOptions.svelte";
@@ -72,13 +60,13 @@
         <DetailsField icon={Sell} headline={song?.title ?? $t("UNKOWN_VALUE")} />
         <DetailsField icon={Album} headline={song?.album ?? $t("UNKOWN_VALUE")} />
         <DetailsField icon={Artist} headline={song?.artist ?? $t("UNKOWN_VALUE")} />
-        <DetailsField icon={ReleaseYear} headline={song?.releaseYear === -1 ? $t("UNKOWN_VALUE") : song?.releaseYear.toString()} />
-        <DetailsField icon={Genre} headline={song?.genre ?? $t("UNKOWN_VALUE")} />
-        <DetailsField icon={TrackNumber} headline={song?.displayTrack()} />
-        <DetailsField icon={Duration} headline={song?.displayLength()} />
-        <DetailsField icon={Frequency} headline={song?.displayFrequency()} />
-        <DetailsField icon={Location} supporting={song?.filePath} />
-        <DetailsField icon={FileSize} headline={song?.displaySize()} />
+        <DetailsField icon={Today} headline={song?.releaseYear === -1 ? $t("UNKOWN_VALUE") : song?.releaseYear.toString()} />
+        <DetailsField icon={LibraryMusic} headline={song?.genre ?? $t("UNKOWN_VALUE")} />
+        <DetailsField icon={Tag} headline={song?.displayTrack()} />
+        <DetailsField icon={Schedule} headline={song?.displayLength()} />
+        <DetailsField icon={GraphEq} headline={song?.displayFrequency()} />
+        <DetailsField icon={FolderOpen} supporting={song?.filePath} />
+        <DetailsField icon={HardDrive2} headline={song?.displaySize()} />
       </div>
       <div style="width: 100%; height: 70px;" />
     </div>

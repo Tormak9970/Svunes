@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
+  import { Keep, MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
-  import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { GridEntry } from "@layout";
   import type { Playlist } from "@models";
   import { renderDate, t } from "@stores/Locale";

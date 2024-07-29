@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { Close } from "@icons";
   import { Button } from "@interactables";
-  import Close from "@ktibow/iconset-material-symbols/close-rounded";
   import Icon from "../Icon.svelte";
   
   export let folderPath: string;

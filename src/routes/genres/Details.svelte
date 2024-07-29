@@ -1,9 +1,8 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { PlaybackController, QueueController } from "@controllers";
+  import { BackArrow, MoreVert } from "@icons";
   import { Button, MenuButton, PlayButton } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { MenuItem, VirtualList } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";

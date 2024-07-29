@@ -2,10 +2,8 @@
   import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { ApiController, AppController, EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
+  import { BackArrow, PageViewOutlined, TravelExplore } from "@icons";
   import { Button, NumberField, TextField } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import PageViewOutlined from "@ktibow/iconset-material-symbols/pageview-outline-rounded";
-  import TravelExplore from "@ktibow/iconset-material-symbols/travel-explore-rounded";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";

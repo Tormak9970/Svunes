@@ -1,9 +1,8 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { isScrolled } from "@directives";
+  import { BackArrow, DeleteSweep } from "@icons";
   import { Button } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
   import { t } from "@stores/Locale";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { queue, songsMap } from "@stores/State";
@@ -11,7 +10,6 @@
   import QueueSongs from "./QueueSongs.svelte";
 
   let highlight = true;
-  let contentContainer: HTMLDivElement;
 
   $: queueLength = $queue.reduce((total, id) => total + $songsMap[id].length, 0);
 

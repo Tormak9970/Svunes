@@ -1,8 +1,8 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
   import { holdEvent } from "@directives";
+  import { MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Lazy, MusicNotePlaceholder } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";

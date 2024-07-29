@@ -7,9 +7,7 @@
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   
-  import Groups from "@ktibow/iconset-material-symbols/groups";
-  import Translate from "@ktibow/iconset-material-symbols/translate-rounded";
-  import VolunteerActivism from "@ktibow/iconset-material-symbols/volunteer-activism-rounded";
+  import { Groups, Translate, VolunteerActivism } from "@icons";
   import { getLanguageName, HELP_TRANSLATE_LINK, selectedLanguage, t } from "@stores/Locale";
 </script>
 

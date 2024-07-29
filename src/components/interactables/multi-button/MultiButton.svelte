@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
-  import IconCheck from "@ktibow/iconset-material-symbols/check";
+  import { Checkmark } from "@icons";
   import type { HTMLLabelAttributes } from "svelte/elements";
 
   export let display = "flex";
@@ -26,7 +26,7 @@
     </div>
   {/if}
   <div class="check icon">
-    <Icon icon={IconCheck} />
+    <Icon icon={Checkmark} />
   </div>
   <div class="start-pad pad" />
   <slot />

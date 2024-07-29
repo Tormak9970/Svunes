@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import MusicNote from "@ktibow/iconset-material-symbols/music-note-rounded";
+  import { MusicNote } from "@icons";
 
   export let width = 30;
   export let height = 30;

@@ -2,10 +2,8 @@
   import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { EditController, LogController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
+  import { BackArrow, MoreVert, Sort } from "@icons";
   import { Button, MenuButton, PlayButton, RadioMenuItem, ToggleShuffleButton } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import { AlbumCarouselList, ArtistCarousel, Marquee, MenuItem, SongsList } from "@layout";
   import { Artist, type Song } from "@models";
   import { t } from "@stores/Locale";
@@ -170,7 +168,7 @@
         <div class="songs">
           <div class="section-header">
             <h3 class="label">{$t("SONGS_TITLE")}</h3>
-            <MenuButton icon={Filter}>
+            <MenuButton icon={Sort}>
               <RadioMenuItem name="artistEntriesSort" label={$t("ALPHABETICAL_LABEL")} checked={artistSortMethod === "Alphabetical"} on:input={() => artistSortMethod = "Alphabetical" } />
               <RadioMenuItem name="artistEntriesSort" label={$t("ALBUM_LABEL")} checked={artistSortMethod === "Album"} on:input={() => artistSortMethod = "Album"} />
               <RadioMenuItem name="artistEntriesSort" label={$t("YEAR_LABEL")} checked={artistSortMethod === "Year"} on:input={() => artistSortMethod = "Year"} />

@@ -2,7 +2,7 @@
   import { Icon, OverlayHeader } from "@component-utils";
   import { Button } from "@interactables";
 
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
+  import { BackArrow } from "@icons";
 
   export let label: string;
   export let goBack: () => void;

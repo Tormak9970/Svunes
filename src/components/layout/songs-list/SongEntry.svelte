@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
+  import { MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";

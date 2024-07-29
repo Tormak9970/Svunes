@@ -1,13 +1,8 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { AppController, EditController, LogController, QueueController } from "@controllers";
+  import { AddToQueue, BackArrow, MoreVert, PlaylistAdd, PlaylistRemove, RemoveFromQueue } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import QueueAdd from "@ktibow/iconset-material-symbols/add-to-queue-outline-rounded";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import PlaylistAdd from "@ktibow/iconset-material-symbols/playlist-add-rounded";
-  import PlaylistRemove from "@ktibow/iconset-material-symbols/playlist-remove-rounded";
-  import QueueRemove from "@ktibow/iconset-material-symbols/remove-from-queue-outline-rounded";
   import { MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
@@ -367,11 +362,11 @@
   <div class="right">
     {#if $showQueue}
       <Button type="text" iconType="full" on:click={removeFromQueue}>
-        <Icon icon={QueueRemove} width="36px" height="36px" />
+        <Icon icon={RemoveFromQueue} width="36px" height="36px" />
       </Button>
     {:else}
       <Button type="text" iconType="full" on:click={addToQueue}>
-        <Icon icon={QueueAdd} width="36px" height="36px" />
+        <Icon icon={AddToQueue} width="36px" height="36px" />
       </Button>
     {/if}
     {#if $location.startsWith("/playlists/")}

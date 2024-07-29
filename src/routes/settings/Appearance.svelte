@@ -11,10 +11,7 @@
   import MultiButtonSetting from "@views/settings/entries/MultiButtonSetting.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import Auto from "@ktibow/iconset-material-symbols/brightness-medium-rounded";
-  import Dark from "@ktibow/iconset-material-symbols/dark-mode-rounded";
-  import Light from "@ktibow/iconset-material-symbols/light-mode-rounded";
-  import Theme from "@ktibow/iconset-material-symbols/palette";
+  import { BrightnessMedium, DarkMode, LightMode, Palette as Theme } from "@icons";
   import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
   
@@ -51,9 +48,9 @@
     </div>
     <SectionLabel label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} />
     <MultiButtonSetting label={$t("SETTINGS_APPEARANCE_PALETTE_LABEL")} description={$t("SETTINGS_APPEARANCE_PALETTE_DESC")}>
-      <MultiButton name="theme-palette" id="auto" icon={Auto} checked={$palette === "Auto"} on:input={() => setPalette("Auto")}>{$t("SETTINGS_APPEARANCE_PALETTE_AUTO")}</MultiButton>
-      <MultiButton name="theme-palette" id="dark" icon={Dark} checked={$palette === "Dark"} on:input={() => setPalette("Dark")}>{$t("SETTINGS_APPEARANCE_PALETTE_DARK")}</MultiButton>
-      <MultiButton name="theme-palette" id="light" icon={Light} checked={$palette === "Light"} on:input={() => setPalette("Light")}>{$t("SETTINGS_APPEARANCE_PALETTE_LIGHT")}</MultiButton>
+      <MultiButton name="theme-palette" id="auto" icon={BrightnessMedium} checked={$palette === "Auto"} on:input={() => setPalette("Auto")}>{$t("SETTINGS_APPEARANCE_PALETTE_AUTO")}</MultiButton>
+      <MultiButton name="theme-palette" id="dark" icon={DarkMode} checked={$palette === "Dark"} on:input={() => setPalette("Dark")}>{$t("SETTINGS_APPEARANCE_PALETTE_DARK")}</MultiButton>
+      <MultiButton name="theme-palette" id="light" icon={LightMode} checked={$palette === "Light"} on:input={() => setPalette("Light")}>{$t("SETTINGS_APPEARANCE_PALETTE_LIGHT")}</MultiButton>
     </MultiButtonSetting>
     <ToggleSetting label={$t("SETTINGS_APPEARANCE_OLED_LABEL")} description={$t("SETTINGS_APPEARANCE_OLED_DESC")} bind:checked={$useOledPalette} />
   </span>

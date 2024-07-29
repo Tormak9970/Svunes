@@ -2,10 +2,8 @@
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { EditController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
+  import { BackArrow, Edit, MoreVert } from "@icons";
   import { Button, MenuButton, PlayButton, ToggleShuffleButton } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";

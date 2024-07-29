@@ -11,13 +11,7 @@
   import MultiButtonSetting from "@views/settings/entries/MultiButtonSetting.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import Bedtime from "@ktibow/iconset-material-symbols/bedtime-outline-rounded";
-  import DirectionsCar from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
-  import HideSource from "@ktibow/iconset-material-symbols/hide-source-outline-rounded";
-  import Imagesmode from "@ktibow/iconset-material-symbols/imagesmode-outline-rounded";
-  import PlayCircle from "@ktibow/iconset-material-symbols/play-circle-outline-rounded";
-  import SwipeDownAlt from "@ktibow/iconset-material-symbols/swipe-down-alt-rounded";
-  import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
+  import { Bedtime, DirectionsCar, HideSource, Imagesmode, PlayCircle, SwipeDownAlt, VolumeUp } from "@icons";
   import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
 

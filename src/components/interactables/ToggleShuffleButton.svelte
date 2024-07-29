@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
+  import { Shuffle } from "@icons";
   import { shuffle } from "@stores/State";
   import { fade } from "svelte/transition";
   import Button from "./Button.svelte";

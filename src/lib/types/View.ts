@@ -1,12 +1,5 @@
 import type { IconifyIcon } from "@iconify/types";
-import Album from "@ktibow/iconset-material-symbols/album";
-import Artist from "@ktibow/iconset-material-symbols/artist-rounded";
-import Home from "@ktibow/iconset-material-symbols/home-rounded";
-import LibraryMusic from "@ktibow/iconset-material-symbols/library-music-rounded";
-import MusicNote from "@ktibow/iconset-material-symbols/music-note";
-import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
-import Search from "@ktibow/iconset-material-symbols/search-rounded";
-import Settings from "@ktibow/iconset-material-symbols/settings";
+import { Album, Artist, Home, LibraryMusic, MusicNote, QueueMusic, Search, Settings } from "@icons";
 import { t as translate } from "@stores/Locale";
 import { get } from "svelte/store";
 

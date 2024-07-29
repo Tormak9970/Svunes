@@ -4,9 +4,7 @@
   import { searchQuery, selectedChips } from "@stores/Search";
   import { pop } from "svelte-spa-router";
 
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import Close from "@ktibow/iconset-material-symbols/close-rounded";
-  import Tune from "@ktibow/iconset-material-symbols/tune-rounded";
+  import { BackArrow, Close, Tune } from "@icons";
   import { t } from "@stores/Locale";
   import { showAdvancedFilters } from "@stores/Modals";
   import { lastView, selectedView } from "@stores/State";

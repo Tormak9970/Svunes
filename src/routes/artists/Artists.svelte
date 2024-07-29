@@ -1,10 +1,8 @@
 <script lang="ts">
   import { Icon, ViewContainer } from "@component-utils";
   import { LogController } from "@controllers";
+  import { MoreVert, SadFace, Search } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Search from "@ktibow/iconset-material-symbols/search";
-  import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import { MenuItem, ViewHeader, VirtualGrid, VirtualList } from "@layout";
   import type { Artist } from "@models";
   import { t } from "@stores/Locale";

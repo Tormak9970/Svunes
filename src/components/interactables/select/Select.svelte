@@ -2,8 +2,7 @@
   import { Icon } from "@component-utils";
   import type { HTMLAttributes } from "svelte/elements";
   
-  import ArrowDropDown from "@ktibow/iconset-material-symbols/arrow-drop-down-rounded";
-  import ArrowDropUp from "@ktibow/iconset-material-symbols/arrow-drop-up-rounded";
+  import { ArrowDropDown, ArrowDropUp } from "@icons";
   import { onMount } from "svelte";
   import SelectOption from "./SelectOption.svelte";
 

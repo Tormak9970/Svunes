@@ -1,9 +1,8 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { PlaybackController, QueueController } from "@controllers";
+  import { BackArrow, Shuffle } from "@icons";
   import { Button, PlayButton } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import { VirtualList } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";

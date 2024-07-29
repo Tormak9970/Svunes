@@ -5,10 +5,7 @@
   import { pop } from "svelte-spa-router";
   
   import { EditController } from "@controllers";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import CheckCircle from "@ktibow/iconset-material-symbols/check-circle-rounded";
-  import Help from "@ktibow/iconset-material-symbols/help-rounded";
-  import TextRotationNone from "@ktibow/iconset-material-symbols/text-rotation-none-rounded";
+  import { BackArrow, CheckCircle, Help, TextRotationNone } from "@icons";
   import { type TabItem } from "@layout";
   import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";

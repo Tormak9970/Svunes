@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
+  import { Pause, Play } from "@icons";
   import { isPaused, nowPlayingList } from "@stores/State";
   import Button from "./Button.svelte";
 

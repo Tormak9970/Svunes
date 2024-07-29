@@ -1,11 +1,9 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
+  import { Bedtime, DirectionsCar } from "@icons";
   import { Button } from "@interactables";
   import { showCarMode, showSleepTimerSelection } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
-
-  import Bedtime from "@ktibow/iconset-material-symbols/bedtime-outline-rounded";
-  import DirectionsCar from "@ktibow/iconset-material-symbols/directions-car-outline-rounded";
 
   export let size = "2.5rem";
   export let iconSize = "1.5rem";

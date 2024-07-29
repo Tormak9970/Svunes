@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Album from "@ktibow/iconset-material-symbols/album";
+  import { Album } from "@icons";
 
   export let width = 30;
   export let height = 30;

@@ -6,7 +6,7 @@
   import { Icon, ModalBody } from "@component-utils";
   import { Button, Checkbox } from "@interactables";
   
-  import DragIndicator from "@ktibow/iconset-material-symbols/drag-indicator";
+  import { DragIndicator } from "@icons";
   import { t } from "@stores/Locale";
   import { clamp, swap } from "@utils";
   import { drag } from "svelte-gesture";

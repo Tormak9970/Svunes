@@ -7,13 +7,7 @@
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   import TextSetting from "@views/settings/entries/TextSetting.svelte";
   
-  import BugReport from "@ktibow/iconset-material-symbols/bug-report-outline-rounded";
-  import EditDocument from "@ktibow/iconset-material-symbols/edit-document-rounded";
-  import Help from "@ktibow/iconset-material-symbols/help-rounded";
-  import Version from "@ktibow/iconset-material-symbols/info-outline-rounded";
-  import License from "@ktibow/iconset-material-symbols/license-outline-rounded";
-  import Person from "@ktibow/iconset-material-symbols/person-rounded";
-  import Star from "@ktibow/iconset-material-symbols/star-rounded";
+  import { BugReport, EditDocument, Help, InfoOutline, License, Person, Star } from "@icons";
   import { t } from "@stores/Locale";
 </script>
 
@@ -23,7 +17,7 @@
   </span>
   <span class="content" slot="content">
     <!-- svelte-ignore missing-declaration -->
-    <TextSetting label={$t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={Version} />
+    <TextSetting label={$t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={InfoOutline} />
     <TextSetting label={$t("SETTINGS_ABOUT_DEV_LABEL")} description="Travis Lane" icon={Person} />
     <ButtonSetting label={$t("SETTINGS_ABOUT_CHANGELOG_LABEL")} description={$t("SETTINGS_ABOUT_CHANGELOG_DESC")} icon={EditDocument} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic/blob/main/CHANGELOG.md")} />
     <ButtonSetting label={$t("SETTINGS_ABOUT_GITHUB_LABEL")} description={$t("SETTINGS_ABOUT_GITHUB_DESC")} icon={Star} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic")} />

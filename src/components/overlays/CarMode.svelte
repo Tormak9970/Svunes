@@ -4,15 +4,7 @@
   import { Marquee } from "@layout";
   import ProgressControls from "./now-playing/ProgressControls.svelte";
   
-  import Close from "@ktibow/iconset-material-symbols/close-rounded";
-  import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
-  import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
-  import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import Repeat from "@ktibow/iconset-material-symbols/repeat-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
-  import SkipNext from "@ktibow/iconset-material-symbols/skip-next-rounded";
-  import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
+  import { Close, FavoriteOff, FavoriteOn, Pause, Play, Repeat, Shuffle, SkipNext, SkipPrevious } from "@icons";
   import { showCarMode } from "@stores/Overlays";
   
   import { PlaybackController, QueueController } from "@controllers";

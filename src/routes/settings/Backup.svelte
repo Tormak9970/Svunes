@@ -8,15 +8,13 @@
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   
-  import AppShortcut from "@ktibow/iconset-material-symbols/app-shortcut-rounded";
-  import Download from "@ktibow/iconset-material-symbols/download-rounded";
-  import RestartAlt from "@ktibow/iconset-material-symbols/restart-alt-rounded";
+  import { AppShortcut, Download, RestartAlt } from "@icons";
   import { t } from "@stores/Locale";
   
   /**
    * Prompts the user to select a backup file.
    */
-   async function pickBackup() {
+  async function pickBackup() {
     const file = await dialog.open({
       title: $t("CHOOSE_BACKUP_MESSAGE"),
       directory: false,

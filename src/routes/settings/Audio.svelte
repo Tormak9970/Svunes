@@ -7,7 +7,7 @@
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import WiredAuto from "@ktibow/iconset-material-symbols/cable-rounded";
+  import { WiredAuto } from "@icons";
   import { t } from "@stores/Locale";
 </script>
 

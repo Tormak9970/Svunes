@@ -11,11 +11,7 @@
   import ProgressControls from "../ProgressControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
 
-  import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
-  import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
-  import KeyboardArrowDown from "@ktibow/iconset-material-symbols/keyboard-arrow-down-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
+  import { FavoriteOff, FavoriteOn, KeyboardArrowDown, MoreVert, QueueMusic } from "@icons";
   import { t } from "@stores/Locale";
   import ExtraControl from "../ExtraControl.svelte";
   

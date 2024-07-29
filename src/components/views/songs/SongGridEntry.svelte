@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
+  import { MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import { GridEntry } from "@layout";
   import type { Song } from "@models";
   import { renderDate, t } from "@stores/Locale";

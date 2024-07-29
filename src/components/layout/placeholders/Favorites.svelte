@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import Favorite from "@ktibow/iconset-material-symbols/favorite-rounded";
+  import { FavoriteOn } from "@icons";
 
   export let width = 30;
   export let height = 30;
@@ -8,7 +8,7 @@
 
 <div class="background">
   <div style="width: {width}px; height: {height}px;">
-    <Icon icon={Favorite} width={`${width}px`} height={`${height}px`} />
+    <Icon icon={FavoriteOn} width={`${width}px`} height={`${height}px`} />
   </div>
 </div>
 

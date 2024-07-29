@@ -1,12 +1,8 @@
 <script lang="ts">
   import { DetailsArtPicture, Icon } from "@component-utils";
   import { PlaybackController } from "@controllers";
+  import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, VolumeDown } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import FavoriteOff from "@ktibow/iconset-material-symbols/favorite-outline-rounded";
-  import FavoriteOn from "@ktibow/iconset-material-symbols/favorite-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
-  import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
   import { MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";

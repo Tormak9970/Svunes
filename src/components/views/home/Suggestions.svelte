@@ -2,7 +2,7 @@
   import { Icon } from "@component-utils";
   import { Button } from "@interactables";
 
-  import Refresh from "@ktibow/iconset-material-symbols/refresh-rounded";
+  import { Refresh } from "@icons";
   import { t } from "@stores/Locale";
   import { albums } from "@stores/State";
   import { shuffle } from "@utils";

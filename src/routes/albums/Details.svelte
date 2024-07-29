@@ -2,11 +2,8 @@
   import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
   import { EditController, LogController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
+  import { BackArrow, Edit, MoreVert, Sort } from "@icons";
   import { Button, MenuButton, PlayButton, RadioMenuItem, ToggleShuffleButton } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
-  import Edit from "@ktibow/iconset-material-symbols/edit-outline-rounded";
-  import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
-  import Filter from "@ktibow/iconset-material-symbols/sort-rounded";
   import { AlbumCarousel, Marquee, MenuItem, SongsList } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
@@ -161,7 +158,7 @@
       <div class="songs" style="margin-top: 5px;">
         <div class="section-header">
           <h3 class="label">{$t("SONGS_TITLE")}</h3>
-          <MenuButton icon={Filter}>
+          <MenuButton icon={Sort}>
             <RadioMenuItem name="albumEntriesSort" label="Alphabetical" checked={albumSortMethod === "Alphabetical"} on:input={() => albumSortMethod = "Alphabetical" } />
             <RadioMenuItem name="albumEntriesSort" label="Track Number" checked={albumSortMethod === "Track Number"} on:input={() => albumSortMethod = "Track Number"} />
             <RadioMenuItem name="albumEntriesSort" label="Song Duration" checked={albumSortMethod === "Song Duration"} on:input={() => albumSortMethod = "Song Duration"} />

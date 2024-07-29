@@ -4,12 +4,7 @@
   import { Button } from "@interactables";
   import { isPaused, repeatPlayed, shuffle } from "@stores/State";
 
-  import Pause from "@ktibow/iconset-material-symbols/pause-rounded";
-  import Play from "@ktibow/iconset-material-symbols/play-arrow-rounded";
-  import Repeat from "@ktibow/iconset-material-symbols/repeat-rounded";
-  import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
-  import SkipNext from "@ktibow/iconset-material-symbols/skip-next-rounded";
-  import SkipPrevious from "@ktibow/iconset-material-symbols/skip-previous-rounded";
+  import { Pause, Play, Repeat, Shuffle, SkipNext, SkipPrevious } from "@icons";
   import { isLandscape } from "@stores/Layout";
 
   export let useTextColor = false;

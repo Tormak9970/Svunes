@@ -1,7 +1,7 @@
 <script lang="ts">
   import { DetailsBody, Icon, OverlayHeader } from "@component-utils";
+  import { BackArrow } from "@icons";
   import { Button } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { VirtualGrid } from "@layout";
   import type { Artist } from "@models";
   import { t } from "@stores/Locale";

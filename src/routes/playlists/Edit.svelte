@@ -1,8 +1,8 @@
 <script lang="ts">
   import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { EditController, LogController } from "@controllers";
+  import { BackArrow } from "@icons";
   import { Button, TextField } from "@interactables";
-  import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { playlists, playlistsMap, showErrorSnackbar } from "@stores/State";

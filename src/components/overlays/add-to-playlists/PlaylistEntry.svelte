@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
+  import { Keep } from "@icons";
   import { Checkbox } from "@interactables";
-  import Keep from "@ktibow/iconset-material-symbols/keep-rounded";
   import { CardClickable } from "@layout";
   import type { Playlist } from "@models";
   import { t } from "@stores/Locale";

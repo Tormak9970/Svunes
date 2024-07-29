@@ -3,8 +3,7 @@
   import { Slider } from "@interactables";
   import { showVolumeControls, volumeLevel } from "@stores/State";
 
-  import VolumeDown from "@ktibow/iconset-material-symbols/volume-down-rounded";
-  import VolumeUp from "@ktibow/iconset-material-symbols/volume-up-rounded";
+  import { VolumeDown, VolumeUp } from "@icons";
 
   export let useTextColor = false;
 </script>
