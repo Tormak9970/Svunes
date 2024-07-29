@@ -6,7 +6,7 @@
   import type { Song } from "@models";
   import { showMiniPlayer, showQueue } from "@stores/Overlays";
   import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
-  import { NowPlayingBackgroundType } from "../../../../types/Settings";
+  import { NowPlayingBackgroundType } from "@types";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";

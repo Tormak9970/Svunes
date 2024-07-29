@@ -1,8 +1,8 @@
 <script lang="ts">
   import { showNowPlayingBackground, showNowPlayingTheme } from "@stores/Modals";
   import { dismissMiniPlayerWithSwipe, extraControl, nowPlayingBackgroundType, nowPlayingTheme, showExtraSongInfo, showVolumeControls } from "@stores/State";
+  import { getNowPlayingBackgroundType, getNowPlayingTheme, type NowPlayingExtraControl } from "@types";
   import { pop } from "svelte-spa-router";
-  import { getNowPlayingBackgroundType, getNowPlayingTheme, type NowPlayingExtraControl } from "../../types/Settings";
 
   import MultiButton from "@interactables/multi-button/MultiButton.svelte";
   import SettingsBody from "@views/settings/SettingsBody.svelte";

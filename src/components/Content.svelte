@@ -6,12 +6,12 @@
   import { inSelectMode } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { getViewRoute, View } from "@types";
   import { hash64 } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import Router, { location, push, replace, type ConditionsFailedEvent } from 'svelte-spa-router';
   import type { Unsubscriber } from "svelte/store";
   import { routes } from "../routes";
-  import { getViewRoute, View } from "../types/View";
   import DesktopViewWrapper from "./desktop/DesktopViewWrapper.svelte";
   import Modals from "./modals/Modals.svelte";
   import MobileNav from "./navigation/MobileNav.svelte";

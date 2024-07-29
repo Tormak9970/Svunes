@@ -16,13 +16,12 @@
   import { showArtistSortOrder, showGridSize } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
   import { artistGridSize, artists, artistsIsScrolled, artistSortOrder, lastView, selectedView } from "@stores/State";
+  import { GridSize, View, type ArtistSortOrder } from "@types";
   import { GRID_IMAGE_DIMENSIONS, stringSort } from "@utils";
   import ArtistGridEntry from "@views/artists/ArtistGridEntry.svelte";
   import ArtistListEntry from "@views/artists/ArtistListEntry.svelte";
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
-  import { GridSize, type ArtistSortOrder } from "../../types/Settings";
-  import { View } from "../../types/View";
 
   const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songIds.length}`;
 

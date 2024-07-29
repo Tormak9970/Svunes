@@ -4,9 +4,9 @@ import { albumCovers, albumInfos, apiSearchCanceled, availableReleaseGroups, onA
 import { showErrorSnackbar } from "@stores/State";
 import { path } from "@tauri-apps/api";
 import { create, exists, remove } from "@tauri-apps/plugin-fs";
+import type { ReleaseGroup } from "@types";
 import { compareStrings } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
-import type { ReleaseGroup } from "../../types/MusicBrainz";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
 

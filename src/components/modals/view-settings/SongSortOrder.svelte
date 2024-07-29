@@ -3,7 +3,7 @@
   import { t } from "@stores/Locale";
   import { showSongSortOrder } from "@stores/Modals";
   import { songSortOrder } from "@stores/State";
-  import type { SongSortOrder } from "../../../types/Settings";
+  import type { SongSortOrder } from "@types";
   import SmallModalBody from "../utils/SmallModalBody.svelte";
 
   let open = true;

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { selected } from "@stores/Select";
   import { isLoading, isSwitchingView, lastView, selectedView, viewIndices, viewsToRender } from "@stores/State";
+  import { getViewIcon, getViewName, getViewRoute, View } from "@types";
   import { push } from "svelte-spa-router";
-  import { getViewIcon, getViewName, getViewRoute, View } from "../../types/View";
   import NavList from "./NavList.svelte";
   import NavListButton from "./NavListButton.svelte";
 

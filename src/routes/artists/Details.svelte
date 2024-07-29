@@ -23,9 +23,9 @@
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { artistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, songsMap, useArtistColors } from "@stores/State";
+  import type { ArtistEntriesSortOrder } from "@types";
   import { getRandomElements, stringSort } from "@utils";
   import { pop, push } from "svelte-spa-router";
-  import type { ArtistEntriesSortOrder } from "../../types/Settings";
 
   let artistSortMethod: ArtistEntriesSortOrder = "Album";
 

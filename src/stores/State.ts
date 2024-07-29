@@ -1,8 +1,7 @@
 import type { Album, Artist, Genre, Playlist, Song } from "@models";
+import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "@types";
 import { location } from "svelte-spa-router";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
-import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "../types/Settings";
-import { View } from "../types/View";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
 
 export const isLoading = writable(true);

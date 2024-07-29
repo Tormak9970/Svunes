@@ -1,7 +1,7 @@
 <script lang="ts">
   import { showEditViewOrder } from "@stores/Modals";
   import { showErrorSnackbar, viewIndices, viewsToRender } from "@stores/State";
-  import { View, Views, getViewName } from "../../types/View";
+  import { View, Views, getViewName } from "@types";
 
   import Button from "@interactables/Button.svelte";
   import Checkbox from "@interactables/Checkbox.svelte";

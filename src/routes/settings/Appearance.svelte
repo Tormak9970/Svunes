@@ -1,7 +1,7 @@
 <script lang="ts">
   import { palette, themePrimaryColor, useOledPalette } from "@stores/State";
+  import type { Palette } from "@types";
   import { pop } from "svelte-spa-router";
-  import type { Palette } from "../../types/Settings";
 
   import MultiButton from "@interactables/multi-button/MultiButton.svelte";
   import ColorPreset from "@views/settings/ColorPreset.svelte";

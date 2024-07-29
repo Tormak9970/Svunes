@@ -3,7 +3,7 @@
   import { t } from "@stores/Locale";
   import { showNowPlayingBackground } from "@stores/Modals";
   import { nowPlayingBackgroundType } from "@stores/State";
-  import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "../../types/Settings";
+  import { NowPlayingBackgroundType, getNowPlayingBackgroundType } from "@types";
   import SmallModalBody from "./utils/SmallModalBody.svelte";
 
   let open = true;

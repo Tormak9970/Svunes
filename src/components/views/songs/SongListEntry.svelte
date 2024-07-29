@@ -6,8 +6,8 @@
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import type { SongSortOrder } from "@types";
   import { fade } from "svelte/transition";
-  import type { SongSortOrder } from "../../../types/Settings";
   import ListEntry from "../../layout/entries/ListEntry.svelte";
   import SongOptions from "./SongOptions.svelte";
 

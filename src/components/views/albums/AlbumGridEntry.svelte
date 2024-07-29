@@ -5,9 +5,9 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { albumGridSize, albumSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { GridSize } from "@types";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import { GridSize } from "../../../types/Settings";
 
   export let album: Album;
 

@@ -1,6 +1,6 @@
 import { LogController } from "@controllers";
 import { fetch } from "@tauri-apps/plugin-http";
-import type { Release, ReleaseGroup, ReleaseGroupResponse } from "../../types/MusicBrainz";
+import type { Release, ReleaseGroup, ReleaseGroupResponse } from "@types";
 import { RequestError } from "./RequestError";
 
 export type MBAlbumInfo = {

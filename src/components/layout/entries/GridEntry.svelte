@@ -2,8 +2,8 @@
   import ViewImage from "@component-utils/ViewImage.svelte";
   import CardClickable from "@layout/CardClickable.svelte";
   import { inSelectMode } from "@stores/Select";
+  import { GridSize } from "@types";
   import { GRID_IMAGE_DIMENSIONS } from "@utils";
-  import { GridSize } from "../../../types/Settings";
 
   export let label: string;
   export let gridSize: GridSize;

@@ -11,8 +11,8 @@
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
   import { lastView, selectedView } from "@stores/State";
+  import { View } from "@types";
   import { push } from "svelte-spa-router";
-  import { View } from "../../types/View";
   import DesktopNav from "../navigation/DesktopNav.svelte";
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
   import SidePanelRouter from "./SidePanelRouter.svelte";

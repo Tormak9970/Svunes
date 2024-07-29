@@ -22,9 +22,9 @@
   import { t } from "@stores/Locale";
   import { albumToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { albumsMap, artistsMap, isPaused, nowPlayingList, songsMap, useAlbumColors } from "@stores/State";
+  import type { AlbumEntriesSortOrder } from "@types";
   import { goToAlbumEdit, nullishNumberSort, stringSort } from "@utils";
   import { pop, push, replace } from "svelte-spa-router";
-  import type { AlbumEntriesSortOrder } from "../../types/Settings";
 
   let albumSortMethod: AlbumEntriesSortOrder = "Track Number";
 

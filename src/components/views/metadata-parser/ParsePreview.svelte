@@ -3,7 +3,7 @@
   import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showInfoSnackbar } from "@stores/State";
-  import type { ParseResult } from "../../../types/MetadataParser";
+  import type { ParseResult } from "@types";
   import ParseEntry from "./ParseEntry.svelte";
 
   export let results: ParseResult[];

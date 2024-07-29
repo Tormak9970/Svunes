@@ -17,8 +17,8 @@
   import { t } from "@stores/Locale";
   import { showParserVariables } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
+  import type { ParseResult } from "@types";
   import ParsePreview from "@views/metadata-parser/ParsePreview.svelte";
-  import type { ParseResult } from "../types/MetadataParser";
 
   type MatchGroups = {
     title?: string;

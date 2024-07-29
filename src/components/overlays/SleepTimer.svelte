@@ -5,7 +5,7 @@
   import { t } from "@stores/Locale";
   import { showSleepTimerSelection } from "@stores/Overlays";
   import { isPaused, shouldPauseOnEnd, showInfoSnackbar } from "@stores/State";
-  import { SleepTimerOption, getTimeForOption, getTimeOptionLabel } from "../../types/SleepTimer";
+  import { SleepTimerOption, getTimeForOption, getTimeOptionLabel } from "@types";
 
   /**
    * Sets the selected sleep timer.

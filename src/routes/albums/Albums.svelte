@@ -16,13 +16,12 @@
   import { showAlbumSortOrder, showGridSize } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
   import { albumGridSize, albumSortOrder, albums, albumsIsScrolled, lastView, selectedView } from "@stores/State";
+  import { GridSize, View, type AlbumSortOrder } from "@types";
   import { GRID_IMAGE_DIMENSIONS, dateSort, stringSort } from "@utils";
   import AlbumGridEntry from "@views/albums/AlbumGridEntry.svelte";
   import AlbumListEntry from "@views/albums/AlbumListEntry.svelte";
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
-  import { GridSize, type AlbumSortOrder } from "../../types/Settings";
-  import { View } from "../../types/View";
 
   const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 

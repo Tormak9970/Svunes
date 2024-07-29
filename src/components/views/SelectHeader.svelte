@@ -14,9 +14,9 @@
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { bulkEditSongIds, selected } from "@stores/Select";
   import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songIdsToParse, songs } from "@stores/State";
+  import { View } from "@types";
   import { location, push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
-  import { View } from "../../types/View";
 
   /**
    * Gets the ids of the songs from the selected items.

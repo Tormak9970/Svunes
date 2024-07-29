@@ -1,5 +1,5 @@
+import { t as translate } from "@stores/Locale";
 import { get } from "svelte/store";
-import { t as translate } from "../stores/Locale";
 
 export enum SleepTimerOption {
   FIVE_MINUTES,

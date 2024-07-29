@@ -18,13 +18,12 @@
   import { selectedChips } from "@stores/Search";
   import { lastView, playlistGridSize, playlists, playlistsIsScrolled, playlistSortOrder, selectedView } from "@stores/State";
   import * as dialog from "@tauri-apps/plugin-dialog";
+  import { type PlaylistSortOrder, GridSize, View } from "@types";
   import { dateSort, GRID_IMAGE_DIMENSIONS, stringSort } from "@utils";
   import PlaylistGridEntry from "@views/playlists/PlaylistGridEntry.svelte";
   import PlaylistListEntry from "@views/playlists/PlaylistListEntry.svelte";
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
-  import { type PlaylistSortOrder, GridSize } from "../../types/Settings";
-  import { View } from "../../types/View";
 
   const keyFunction = (entry: { data: Playlist }) => `${entry.data.name}${entry.data.songIds.length}${entry.data.numTimesPlayed}${entry.data.lastPlayedOn}`;
 

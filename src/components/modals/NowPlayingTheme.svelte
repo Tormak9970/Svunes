@@ -4,12 +4,12 @@
   import { t } from "@stores/Locale";
   import { showNowPlayingTheme } from "@stores/Modals";
   import { nowPlayingTheme } from "@stores/State";
+  import { getNowPlayingTheme, NowPlayingTheme } from "@types";
   import { IMAGE_FADE_OPTIONS } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
   import { spring } from "svelte/motion";
   import type { Unsubscriber } from "svelte/store";
-  import { getNowPlayingTheme, NowPlayingTheme } from "../../types/Settings";
   import ModalBody from "./utils/ModalBody.svelte";
 
   let open = true;

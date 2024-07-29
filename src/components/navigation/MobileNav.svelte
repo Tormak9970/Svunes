@@ -2,9 +2,9 @@
   import { showMiniPlayer } from "@stores/Overlays";
   import { selected } from "@stores/Select";
   import { isLoading, isSwitchingView, lastView, selectedView, viewIndices, viewsToRender } from "@stores/State";
+  import { getViewIcon, getViewRoute, View } from "@types";
   import { push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
-  import { getViewIcon, getViewRoute, View } from "../../types/View";
   import NavList from "./NavList.svelte";
   import NavListButton from "./NavListButton.svelte";
 

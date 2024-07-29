@@ -1,9 +1,9 @@
 <script lang="ts">
   import { isLandscape } from "@stores/Layout";
   import { isSwitchingView, lastView, selectedView, viewsToRender } from "@stores/State";
+  import { View } from "@types";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-  import { View } from "../../types/View";
   import { sharedAxisTransition } from "./animations/animations";
 
   let showHeader = !$isLandscape || $selectedView === View.HOME || $selectedView === View.SEARCH;

@@ -23,11 +23,11 @@
       "@component-utils/*": ["./src/components/utils/*"],
       "@stores/*": ["./src/stores/*"],
       "@routes/*": ["./src/routes/*"],
-      "@lib/*": ["./src/lib/*"],
       "@controllers": ["./src/lib/controllers"],
       "@models": ["./src/lib/models"],
       "@directives": ["./src/lib/directives"],
-      "@utils": ["./src/lib/utils"]
+      "@utils": ["./src/lib/utils"],
+      "@types": ["./src/lib/types"]
     }
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],

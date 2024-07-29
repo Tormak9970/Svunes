@@ -1,7 +1,8 @@
-import { Playlist } from "@models";
 import { t as translate } from "@stores/Locale";
 import { hash64 } from "@utils";
 import { get } from "svelte/store";
+// ! This is not an alias bc it would cause a circular dependency
+import { Playlist } from "../models/Playlist";
 import type { View } from "./View";
 
 export enum NowPlayingTheme {

@@ -6,8 +6,8 @@
   import type { Song } from "@models";
   import { showMiniPlayer } from "@stores/Overlays";
   import { nowPlayingBackgroundType, songProgress } from "@stores/State";
+  import { NowPlayingBackgroundType } from "@types";
   import { formatTime } from "@utils";
-  import { NowPlayingBackgroundType } from "../../../../types/Settings";
   import DetailsArtPicture from "../../../utils/DetailsArtPicture.svelte";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";

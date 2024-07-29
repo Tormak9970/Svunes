@@ -6,10 +6,10 @@
   import { albumToAdd, artistToAdd, genreToAdd, playlistToAdd, showAddToPlaylist, showCreatePlaylist, songToAdd, songsForNewPlaylist } from "@stores/Overlays";
   import { selected } from "@stores/Select";
   import { albumsMap, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar } from "@stores/State";
+  import { View } from "@types";
   import { afterUpdate } from "svelte";
   import { location } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import { View } from "../../../types/View";
   import PlaylistEntry from "./PlaylistEntry.svelte";
   
   let scrollContainer: HTMLDivElement;

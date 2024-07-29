@@ -4,9 +4,9 @@
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import type { AlbumSortOrder } from "@types";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import type { AlbumSortOrder } from "../../../types/Settings";
 
   export let album: Album;
   export let detailType: AlbumSortOrder;

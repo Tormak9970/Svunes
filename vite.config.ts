@@ -61,11 +61,11 @@ export default defineConfig({
       "@component-utils": resolve(__dirname, "./src/components/utils"),
       "@stores": resolve(__dirname, "./src/stores"),
       "@routes": resolve(__dirname, "./src/routes"),
-      "@lib": resolve(__dirname, "./src/lib"),
       "@controllers": resolve(__dirname, "./src/lib/controllers"),
       "@models": resolve(__dirname, "./src/lib/models"),
       "@directives": resolve(__dirname, "./src/lib/directives"),
       "@utils": resolve(__dirname, "./src/lib/utils"),
+      "@types": resolve(__dirname, "./src/lib/types"),
     }
   },
 

@@ -6,10 +6,10 @@
   import type { Playlist } from "@models";
   import { renderDate, t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
+  import type { PlaylistSortOrder } from "@types";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import type { PlaylistSortOrder } from "../../../types/Settings";
   import ListEntry from "../../layout/entries/ListEntry.svelte";
   import PlaylistImage from "./PlaylistImage.svelte";
   import PlaylistOptions from "./PlaylistOptions.svelte";

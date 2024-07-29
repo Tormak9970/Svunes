@@ -1,4 +1,4 @@
-import type { GridSize } from "../../types/Settings";
+import type { GridSize } from "@types";
 
 export const IMAGE_FADE_OPTIONS = { delay: 0, duration: 200 };
 

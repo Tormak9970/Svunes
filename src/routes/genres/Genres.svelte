@@ -10,9 +10,9 @@
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { genres, lastView, selectedView } from "@stores/State";
+  import { View } from "@types";
   import GenreEntry from "@views/genres/GenreEntry.svelte";
   import { push } from "svelte-spa-router";
-  import { View } from "../../types/View";
   
   let highlight = false;
   

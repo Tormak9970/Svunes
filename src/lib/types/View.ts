@@ -7,8 +7,8 @@ import MusicNote from "@ktibow/iconset-material-symbols/music-note";
 import QueueMusic from "@ktibow/iconset-material-symbols/queue-music-rounded";
 import Search from "@ktibow/iconset-material-symbols/search-rounded";
 import Settings from "@ktibow/iconset-material-symbols/settings";
+import { t as translate } from "@stores/Locale";
 import { get } from "svelte/store";
-import { t as translate } from "../stores/Locale";
 
 export enum View {
   PLAYLISTS,

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ParseResult } from "../../../types/MetadataParser";
+  import type { ParseResult } from "@types";
 
   export let result: ParseResult;
   export let tab: string;

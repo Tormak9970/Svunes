@@ -21,10 +21,10 @@
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { albumsMap, artistsMap, lastView, selectedView, showSuggestions, songs, songsMap } from "@stores/State";
+  import { View } from "@types";
   import { getAllArtistNames, shuffleSongs } from "@utils";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
-  import { View } from "../../types/View";
 
   let highlight = false;
 

@@ -1,6 +1,6 @@
 import type { AlbumInfo, SelectedAlbum } from "@controllers";
+import type { ReleaseGroup } from "@types";
 import { writable, type Writable } from "svelte/store";
-import type { ReleaseGroup } from "../types/MusicBrainz";
 
 export const showEditMusicFolders = writable(false);
 export const showBlacklistFolders = writable(false);

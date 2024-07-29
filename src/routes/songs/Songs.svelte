@@ -16,13 +16,12 @@
   import { showGridSize, showSongSortOrder } from "@stores/Modals";
   import { selectedChips } from "@stores/Search";
   import { lastView, selectedView, songGridSize, songs, songsIsScrolled, songSortOrder } from "@stores/State";
+  import { type SongSortOrder, GridSize, View } from "@types";
   import { dateSort, GRID_IMAGE_DIMENSIONS, stringSort } from "@utils";
   import SongGridEntry from "@views/songs/SongGridEntry.svelte";
   import SongListEntry from "@views/songs/SongListEntry.svelte";
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
-  import { type SongSortOrder, GridSize } from "../../types/Settings";
-  import { View } from "../../types/View";
 
   const keyFunction = (entry: { data: Song }) => entry.data.filePath;
 

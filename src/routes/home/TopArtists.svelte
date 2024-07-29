@@ -8,11 +8,11 @@
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";
   import { artistsMap, songs } from "@stores/State";
+  import { GridSize } from "@types";
   import { GRID_IMAGE_DIMENSIONS, getAllArtistNames } from "@utils";
   import ArtistGridEntry from "@views/artists/ArtistGridEntry.svelte";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
-  import { GridSize } from "../../types/Settings";
   
   const keyFunction = (entry: { data: Artist}) => `${entry.data.imagePath}${entry.data.name}${entry.data.albumNames.size}${entry.data.songIds.length}`;
 
