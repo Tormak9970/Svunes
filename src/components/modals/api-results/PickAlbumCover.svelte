@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { scrollShadow } from "@directives";
   import Button from "@interactables/Button.svelte";
   import Select from "@interactables/select/Select.svelte";
   import CardClickable from "@layout/CardClickable.svelte";
@@ -6,7 +7,6 @@
   import LoadingSpinner from "@layout/loading-animations/LoadingSpinner.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { ApiController } from "@lib/controllers/ApiController";
-  import { scrollShadow } from "@lib/directives/ScrollShadow";
   import { IMAGE_FADE_OPTIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";
   import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";

@@ -2,6 +2,7 @@
   import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import MenuButton from "@interactables/MenuButton.svelte";
   import PlayButton from "@interactables/PlayButton.svelte";
@@ -19,7 +20,6 @@
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import { isScrolled } from "@lib/directives/IsScrolled";
   import { Artist } from "@lib/models/Artist";
   import type { Song } from "@lib/models/Song";
   import { stringSort } from "@lib/utils/Sorters";

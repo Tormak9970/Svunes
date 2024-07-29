@@ -11,6 +11,7 @@
   
   import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
   import DetailsBody from "@component-utils/DetailsBody.svelte";
+  import { isScrolled } from "@directives";
   import Album from "@ktibow/iconset-material-symbols/album";
   import Artist from "@ktibow/iconset-material-symbols/artist";
   import Location from "@ktibow/iconset-material-symbols/folder-open-rounded";
@@ -21,7 +22,6 @@
   import Sell from "@ktibow/iconset-material-symbols/sell";
   import TrackNumber from "@ktibow/iconset-material-symbols/tag-rounded";
   import ReleaseYear from "@ktibow/iconset-material-symbols/today-rounded";
-  import { isScrolled } from "@lib/directives/IsScrolled";
   import { goToSongEdit } from "@lib/utils/Navigation";
   import { t } from "@stores/Locale";
   import SongOptions from "@views/songs/SongOptions.svelte";

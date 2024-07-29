@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { holdEvent } from "@lib/directives/HoldEvent";
+  import { holdEvent } from "@directives";
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
 

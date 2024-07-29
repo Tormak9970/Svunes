@@ -12,12 +12,12 @@
   import Shuffle from "@ktibow/iconset-material-symbols/shuffle-rounded";
   import TrendingUp from "@ktibow/iconset-material-symbols/trending-up-rounded";
   
+  import { isScrolled } from "@directives";
   import AlbumCarousel from "@layout/album-carousel/AlbumCarousel.svelte";
   import ArtistCarousel from "@layout/artist-carousel/ArtistCarousel.svelte";
   import ViewHeader from "@layout/ViewHeader.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
   import { QueueController } from "@lib/controllers/QueueController";
-  import { isScrolled } from "@lib/directives/IsScrolled";
   import type { Album } from "@lib/models/Album";
   import type { Artist } from "@lib/models/Artist";
   import { shuffleSongs } from "@lib/utils/Shuffle";

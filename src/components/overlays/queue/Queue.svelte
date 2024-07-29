@@ -1,10 +1,10 @@
 <script lang="ts">
   import DetailsBody from "@component-utils/DetailsBody.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import BackArrow from "@ktibow/iconset-material-symbols/arrow-back-rounded";
   import DeleteSweep from "@ktibow/iconset-material-symbols/delete-sweep-rounded";
-  import { isScrolled } from "@lib/directives/IsScrolled";
   import { formatTime } from "@lib/utils/Utils";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";

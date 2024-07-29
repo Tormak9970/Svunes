@@ -15,12 +15,14 @@
         "label": "main",
         "title": "Tunistic",
         "url": "src/main.html",
-        "height": 830,
-        "width": 500,
+        "height": 800,
+        "minHeight": 700,
+        "width": 1280,
+        "minWidth": 900,
         "fullscreen": false,
         "resizable": true,
         "decorations": true,
-        "transparent": true,
+        "transparent": false,
         "center": true,
         "visible": true
       }

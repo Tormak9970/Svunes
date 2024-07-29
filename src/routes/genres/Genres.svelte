@@ -1,12 +1,12 @@
 <script lang="ts">
   import Icon from "@component-utils/Icon.svelte";
   import ViewContainer from "@component-utils/ViewContainer.svelte";
+  import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import Search from "@ktibow/iconset-material-symbols/search";
   import SadFace from "@ktibow/iconset-material-symbols/sentiment-dissatisfied-outline-rounded";
   import Settings from "@ktibow/iconset-material-symbols/settings";
   import ViewHeader from "@layout/ViewHeader.svelte";
-  import { isScrolled } from "@lib/directives/IsScrolled";
   import { t } from "@stores/Locale";
   import { selectedChips } from "@stores/Search";
   import { genres, lastView, selectedView } from "@stores/State";

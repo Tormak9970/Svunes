@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { holdEvent } from "@directives";
   import MenuButton from "@interactables/MenuButton.svelte";
   import MoreVert from "@ktibow/iconset-material-symbols/more-vert";
   import Lazy from "@layout/Lazy.svelte";
   import MusicNotePlaceholder from "@layout/placeholders/MusicNotePlaceholder.svelte";
   import { PlaybackController } from "@lib/controllers/PlaybackController";
-  import { holdEvent } from "@lib/directives/HoldEvent";
   import type { Song } from "@lib/models/Song";
   import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@lib/utils/ImageConstants";
   import { t } from "@stores/Locale";

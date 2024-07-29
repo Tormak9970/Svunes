@@ -1,6 +1,7 @@
 <script lang="ts">
   import DetailsArtPicture from "@component-utils/DetailsArtPicture.svelte";
   import Icon from "@component-utils/Icon.svelte";
+  import { isScrolled } from "@directives";
   import Button from "@interactables/Button.svelte";
   import NumberField from "@interactables/NumberField.svelte";
   import TextField from "@interactables/TextField.svelte";
@@ -11,7 +12,6 @@
   import { AppController } from "@lib/controllers/AppController";
   import { EditController } from "@lib/controllers/EditController";
   import { LogController } from "@lib/controllers/utils/LogController";
-  import { isScrolled } from "@lib/directives/IsScrolled";
   import OverlayBody from "@overlays/utils/OverlayBody.svelte";
   import OverlayHeader from "@overlays/utils/OverlayHeader.svelte";
   import { t } from "@stores/Locale";

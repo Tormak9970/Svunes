@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { scrollShadow } from "@directives";
   import Button from "@interactables/Button.svelte";
-  import { scrollShadow } from "@lib/directives/ScrollShadow";
   import { LANGS } from "@lib/utils/i18n";
   import { getCredits, getLanguageName, t } from "@stores/Locale";
   import { showTranslationCredits } from "@stores/Modals";
