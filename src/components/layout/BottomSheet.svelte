@@ -1,6 +1,7 @@
 <script lang="ts">
   import { easeEmphasizedAccel, easeEmphasizedDecel, outroClass } from "@utils";
   import { createEventDispatcher, onMount } from "svelte";
+  import { drag } from "svelte-gesture";
   import type { TransitionConfig } from "svelte/transition";
   
   /**
@@ -60,6 +61,27 @@
     startY = y;
   }
 
+  function dragHandler({ detail }: any) {
+    console.log(detail);
+      // const { active, movement: [_, y] } = detail;
+
+      // draggingIndex = originalIndex;
+      // const curIndex = newOrder.indexOf(originalIndex);
+      // const curRow = clamp(Math.round((originalIndex * entryHeight + y) / entryHeight), 0, songs.length - 1);
+      // newOrder = swap(newOrder, curIndex, curRow);
+      
+      // dragHeight = y;
+
+      // if (!active) {
+      //   draggingIndex = -1;
+      //   songs = newOrder.map((index) => songs[index]);
+      //   newOrder = songs.map((_, i) => i);
+      //   $playlistsMap[playlistId].songIds = songs.map((song) => song.id);
+      //   $playlists = [ ...$playlists ];
+      //   dragHeight = 0;
+      // }
+    }
+
   /**
    * Handles drag end.
    */
@@ -104,9 +126,11 @@
   out:heightAnim={{ easing: easeEmphasizedAccel, duration: 300 }}
   bind:this={dialogElement}
 >
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     style="padding: {padding}"
     on:touchstart={(e) => onDragStart(e.touches[0].clientY)}
+    use:drag on:drag={dragHandler}
   >
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div

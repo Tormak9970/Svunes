@@ -8,7 +8,7 @@
   import { clamp, swap } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
-  import type { Unsubscriber } from "svelte/store";
+  import { get, type Unsubscriber } from "svelte/store";
 
   let playlistsMapUnsub: Unsubscriber;
 
@@ -16,7 +16,9 @@
 
   const entryHeight = 60;
 
-  let songs = $playlistsMap[playlistId].songIds.map((id) => $songsMap[id]);
+  // ! using $playlistsMap instead of "get(playlistsMap)" will cause svelte to throw an error.
+  let playlist = get(playlistsMap)[playlistId];
+  let songs = playlist.songIds.map((id) => $songsMap[id]);
   let newOrder = songs.map((_, i) => i);
 
   let draggingIndex = -1;
@@ -37,7 +39,7 @@
         draggingIndex = -1;
         songs = newOrder.map((index) => songs[index]);
         newOrder = songs.map((_, i) => i);
-        $playlistsMap[playlistId].songIds = songs.map((song) => song.id);
+        playlist.songIds = songs.map((song) => song.id);
         $playlists = [ ...$playlists ];
         dragHeight = 0;
       }
