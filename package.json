@@ -52,6 +52,7 @@
     "@tauri-apps/plugin-process": "2.0.0-beta.7",
     "@tauri-apps/plugin-shell": "2.0.0-beta.8",
     "@tauri-apps/plugin-store": "2.0.0-beta.7",
+    "svelte-dnd-action": "github:Tormak9970/svelte-dnd-action",
     "svelte-gesture": "^0.1.4",
     "svelte-spa-router": "^4.0.1"
   },

@@ -12,7 +12,6 @@
   import SongOptions from "@views/songs/SongOptions.svelte";
 
   export let song: Song;
-  export let isDragging: boolean;
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
@@ -48,10 +47,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<button
-  class="m3-container"
-  class:is-dragging={isDragging}
->
+<button class="m3-container playlist-song">
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
@@ -134,10 +130,10 @@
   button:hover > .highlight.layer {
     background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
   }
-  
-  button:is(:focus-visible, :active).is-dragging > .layer {
+
+  :global(#dnd-action-dragged-el .playlist-song > .layer) {
     background-color: rgb(var(--m3-scheme-surface-container-highest));
-  }
+	}
 
   .content-wrapper {
     width: 100%; 
@@ -149,6 +145,7 @@
   }
 
   .content {
+    margin-left: 40px;
     width: calc(100% - 40px); 
     display: flex;
     align-items: center;

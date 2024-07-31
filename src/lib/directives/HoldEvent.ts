@@ -9,7 +9,7 @@ type HoldEventParams = {
 /**
  * A Svelte directive for listening to hold events.
  */
-export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, holdable, duration }) => {
+export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, holdable, duration }: HoldEventParams) => {
   let startTime = Date.now();
   let shouldTrigger = true;
   let blockClick = false;
