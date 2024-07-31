@@ -10,6 +10,7 @@
   import { get, type Unsubscriber } from "svelte/store";
 // @ts-expect-error temporary fix until this gets merged
   import { dndzone, dragHandle, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "../../../node_modules/svelte-dnd-action/src/index";
+  import { isLandscape } from "../../stores/Layout";
 
   let playlistsMapUnsub: Unsubscriber;
 
@@ -55,7 +56,7 @@
   });
 </script>
 
-<div class="song-entries" use:dndzone={{ items, flipDurationMs, axis: "y", dropTargetStyle: {} }} on:consider={consider} on:finalize={finalize}>
+<div class="song-entries" use:dndzone={{ items, flipDurationMs, axis: "y", dropTargetStyle: { backgroundColor: $isLandscape ? "rgb(var(--m3-scheme-surface-container-high))" : "transparent" } }} on:consider={consider} on:finalize={finalize}>
   {#each items as item (item.id)}
     <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
       <PlaylistSong song={item.data}>
@@ -72,6 +73,11 @@
   .song-entries {
     width: calc(100% - 10px);
     margin: 0px 5px;
+
+    background-color: transparent;
+    border-radius: 10px;
+
+    transition: background-color 0.3s ease-in-out;
   }
 
   .handle {
