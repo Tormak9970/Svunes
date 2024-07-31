@@ -6,7 +6,7 @@
 </script>
 
 <div class="song-entries">
-  {#each songs as song (song.filePath)}
+  {#each songs as song (song.id)}
     <SongEntry song={song} />
   {/each}
 </div>

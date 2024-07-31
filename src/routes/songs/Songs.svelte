@@ -16,7 +16,7 @@
   import { afterUpdate } from "svelte";
   import { push } from "svelte-spa-router";
 
-  const keyFunction = (entry: { data: Song }) => entry.data.filePath;
+  const keyFunction = (entry: { data: Song }) => entry.data.id;
 
   let gridSize = $songGridSize;
   let menuIsOpen = false;

@@ -102,7 +102,6 @@
     padding: 10px 0px;
     border: none;
     border-radius: 10px;
-    margin: 2px 0px;
     background-color: transparent;
     color: rgb(var(--m3-scheme-on-surface));
   }
@@ -123,22 +122,21 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
-  @media (hover: hover) {
-    button:hover {
-      box-shadow: var(--m3-util-elevation-1);
-    }
-    button:hover > .layer {
-      background-color: rgb(var(--m3-scheme-on-surface) / 0.08);
-    }
+  button:hover {
+    box-shadow: var(--m3-util-elevation-1);
   }
-  button:is(:focus-visible, :active) > .layer,
-  .is-dragging > .layer {
-    background-color: rgb(var(--m3-scheme-surface-container));
+  button:hover > .layer {
+    background-color: rgb(var(--m3-scheme-on-surface) / 0.08);
   }
   
+  button:is(:focus-visible, :active) > .layer,
   .highlight.layer,
   button:hover > .highlight.layer {
     background-color: rgb(var(--m3-scheme-on-surface) / 0.12);
+  }
+  
+  button:is(:focus-visible, :active).is-dragging > .layer {
+    background-color: rgb(var(--m3-scheme-surface-container-highest));
   }
 
   .content-wrapper {
