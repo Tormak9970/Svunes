@@ -3,7 +3,7 @@
   import { PlaybackController } from "@controllers";
   import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, VolumeDown } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import { MenuItem } from "@layout";
+  import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";
@@ -18,6 +18,7 @@
   let menuIsOpen = false;
   
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
+  $: label = song?.title ?? song?.fileName;
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
 
   $: favoritesPlaylist = $playlists.find((playlist) => playlist.id === hash64("Favorites"));
@@ -84,8 +85,12 @@
   <div class="song-info-container" on:click={goToSong}>
     <DetailsArtPicture artPath={song?.artPath} imageSize={70} borderRadius="5px" />
     <div class="song-info">
-      <div class="title font-label-large">{song?.title ?? song?.fileName}</div>
-      <div class="font-body">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
+      {#key label}
+        <Marquee speed={40} gap={80}>
+          <div class="title">{label}</div>
+        </Marquee>
+      {/key}
+      <div class="font-body artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
     </div>
   </div>
   <div class="player-controls">
@@ -142,6 +147,7 @@
 
   .song-info-container {
     min-width: 15rem;
+    max-width: 20rem;
     padding: 0.25rem;
 
     display: flex;
@@ -159,11 +165,20 @@
   }
 
   .song-info {
+    width: calc(100% - 1rem - 70px);
     margin-left: 1rem;
   }
 
   .title {
+    font-size: 1.1rem;
     font-weight: bold;
+  }
+
+  .artist {
+    width: 100%;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .player-controls {
