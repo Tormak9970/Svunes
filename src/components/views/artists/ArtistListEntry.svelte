@@ -32,10 +32,8 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode && isSelectable) {
-      $selected = [ ...$selected, artist.name ];
-    }
+    $selected = [ ...$selected, artist.name ];
   }
 </script>
 
-<ListEntry label={artist.name} convertedPath={convertedPath} highlighted={highlighted} on:click={onClick} on:hold={select} />
+<ListEntry label={artist.name} convertedPath={convertedPath} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select} />

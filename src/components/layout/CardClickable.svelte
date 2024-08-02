@@ -7,6 +7,7 @@
 
   export let extraOptions: HTMLAttributes<HTMLDivElement> & HTMLButtonAttributes = {};
   export let highlight = false;
+  export let holdable = true;
   export let type: "elevated" | "filled" | "outlined" | "transparent";
 
   /**
@@ -19,7 +20,7 @@
 
 <button
   on:click|stopPropagation
-  use:holdEvent={{ onHold: onHold, duration: 300 }}
+  use:holdEvent={{ onHold: onHold, holdable: holdable, duration: 300 }}
   class="m3-container type-{type}"
   {...extraOptions}
 >

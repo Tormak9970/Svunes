@@ -37,9 +37,7 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
-      $selected = [ ...$selected, song.id ];
-    }
+    $selected = [ ...$selected, song.id ];
   }
   
   let menuIsOpen = false;
@@ -51,7 +49,11 @@
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
-    <div class="content" use:holdEvent={{ onHold: select, duration: 300 }} on:click|stopPropagation={onClick}>
+    <div
+      class="content"
+      use:holdEvent={{ onHold: select, holdable: !$inSelectMode, duration: 300 }}
+      on:click|stopPropagation={onClick}
+    >
       <div class="left">
         <div class="album">
           {#if convertedPath !== ""}
@@ -95,9 +97,9 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    padding: 10px 0px;
     border: none;
     border-radius: 10px;
+    padding: 0px;
     background-color: transparent;
     color: rgb(var(--m3-scheme-on-surface));
   }
@@ -146,6 +148,7 @@
 
   .content {
     margin-left: 40px;
+    padding: 10px 0px;
     width: calc(100% - 40px); 
     display: flex;
     align-items: center;

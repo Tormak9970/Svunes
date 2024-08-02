@@ -9,7 +9,7 @@
   import { flip } from "svelte/animate";
   import type { Unsubscriber } from "svelte/store";
 // @ts-expect-error temporary fix until this gets merged
-  import { dndzone, dragHandle, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "../../../../node_modules/svelte-dnd-action/src/index";
+  import { dragHandle, dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "../../../../node_modules/svelte-dnd-action/src/index";
 
 
   let queueUnsub: Unsubscriber;
@@ -53,7 +53,7 @@
 </script>
 
 <div class="songs-wrapper">
-  <div class="song-entries" use:dndzone={{ items, flipDurationMs, axis: "y", dropTargetStyle: {} }} on:consider={consider} on:finalize={finalize}>
+  <div class="song-entries" use:dragHandleZone={{ items, flipDurationMs, axis: "y", dropTargetStyle: {} }} on:consider={consider} on:finalize={finalize}>
     {#each items as item, i (item.id)}
       <div class="entry" animate:flip="{{ duration: flipDurationMs }}">
         <QueueSong song={item.data} index={i}>
@@ -97,6 +97,7 @@
   .entry {
     border-radius: 10px;
     width: 100%;
+    margin-bottom: 2px;
   }
 
   :global(#dnd-action-dragged-el) {

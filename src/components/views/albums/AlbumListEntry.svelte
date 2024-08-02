@@ -36,13 +36,11 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode && isSelectable) {
-      $selected = [ ...$selected, album.name ];
-    }
+    $selected = [ ...$selected, album.name ];
   }
 </script>
 
-<ListEntry label={album.name} convertedPath={convertedPath} highlighted={highlighted} on:click={onClick} on:hold={select}>
+<ListEntry label={album.name} convertedPath={convertedPath} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select}>
   <span slot="details">
     {#if detailType === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{album.albumArtist ?? $t("UNKOWN_VALUE")}</div>

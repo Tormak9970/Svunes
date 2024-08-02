@@ -38,15 +38,13 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
-      $selected = [ ...$selected, playlist.id ];
-    }
+    $selected = [ ...$selected, playlist.id ];
   }
   
   let menuIsOpen = false;
 </script>
 
-<GridEntry label={playlist.name} {highlighted} gridSize={$playlistGridSize} convertedPath={""} on:click={onClick} on:hold={select}>
+<GridEntry label={playlist.name} {highlighted} gridSize={$playlistGridSize} convertedPath={""} holdable={!$inSelectMode} on:click={onClick} on:hold={select}>
   <span slot="playlistImage">
     <PlaylistImage playlist={playlist} height={GRID_IMAGE_DIMENSIONS[$playlistGridSize].height} width={GRID_IMAGE_DIMENSIONS[$playlistGridSize].width} />
   </span>

@@ -36,13 +36,11 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
-      $selected = [ ...$selected, album.name ];
-    }
+    $selected = [ ...$selected, album.name ];
   }
 </script>
 
-<GridEntry label={album.name} {highlighted} gridSize={$albumGridSize} convertedPath={convertedPath} on:click={onClick} on:hold={select}>
+<GridEntry label={album.name} {highlighted} gridSize={$albumGridSize} convertedPath={convertedPath} holdable={!$inSelectMode} on:click={onClick} on:hold={select}>
   <span slot="details">
     {#if $albumSortOrder === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{album.albumArtist ?? $t("UNKOWN_VALUE")}</div>

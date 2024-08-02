@@ -9,11 +9,12 @@
   export let highlighted: boolean;
   export let borderRadius = "4px";
   export let isSongEntry = false;
+  export let holdable = true;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<CardClickable type="transparent" highlight={highlighted} on:click on:hold extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
+<CardClickable type="transparent" highlight={highlighted} holdable={holdable} on:click on:hold extraOptions={{ style: "width: 100%; display: flex; position: relative; padding: 10px 0px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content" class:in-select-mode={$inSelectMode}>
     <div class="left" class:has-options={$$slots.options}>
       {#if $$slots.playlistImage}

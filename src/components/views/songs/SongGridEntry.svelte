@@ -37,15 +37,13 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
-      $selected = [ ...$selected, song.id ];
-    }
+    $selected = [ ...$selected, song.id ];
   }
   
   let menuIsOpen = false;
 </script>
 
-<GridEntry label={song.title ?? song.fileName} {highlighted} gridSize={$songGridSize} convertedPath={convertedPath} on:click={onClick} on:hold={select}>
+<GridEntry label={song.title ?? song.fileName} {highlighted} gridSize={$songGridSize} convertedPath={convertedPath} holdable={!$inSelectMode} on:click={onClick} on:hold={select}>
   <span slot="details">
     {#if $songSortOrder === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>

@@ -40,14 +40,12 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode && isSelectable) {
-      $selected = [ ...$selected, playlist.id ];
-    }
+    $selected = [ ...$selected, playlist.id ];
   }
   
   let menuIsOpen = false;
 </script>
-<ListEntry label={playlist.name} convertedPath={""} highlighted={highlighted} on:click={onClick} on:hold={select}>
+<ListEntry label={playlist.name} convertedPath={""} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select}>
   <span slot="playlistImage" style="margin-left: 10px;">
     <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} />
   </span>

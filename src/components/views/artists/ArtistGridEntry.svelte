@@ -32,10 +32,8 @@
    * Handles when the user selects the entry.
    */
   function select() {
-    if (!$inSelectMode) {
-      $selected = [ ...$selected, artist.name ];
-    }
+    $selected = [ ...$selected, artist.name ];
   }
 </script>
 
-<GridEntry label={artist.name} {highlighted} gridSize={$artistGridSize} convertedPath={convertedPath} centerLabel borderRadius="50%" on:click={onClick} on:hold={select} />
+<GridEntry label={artist.name} {highlighted} gridSize={$artistGridSize} convertedPath={convertedPath} centerLabel borderRadius="50%" holdable={!$inSelectMode} on:click={onClick} on:hold={select} />

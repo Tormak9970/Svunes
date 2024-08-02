@@ -9,9 +9,9 @@ type HoldEventParams = {
 /**
  * A Svelte directive for listening to hold events.
  */
-export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, holdable, duration }: HoldEventParams) => {
-  let startTime = Date.now();
-  let shouldTrigger = true;
+export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElement, { onHold, holdable, duration }: HoldEventParams = { onHold: () => {}, holdable: true, duration: 300 }) => {
+  let config: HoldEventParams = { onHold, holdable, duration };
+  let timeoutId: number | null = null;
   let blockClick = false;
 
   function checkClick(e: MouseEvent) {
@@ -22,49 +22,38 @@ export const holdEvent: Action<HTMLElement, HoldEventParams> = (node: HTMLElemen
     }
   }
 
-  function mouseDown(e: MouseEvent) {
-    shouldTrigger = true;
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    startTime = Date.now();
-
-    setTimeout(() => {
-      if (shouldTrigger) {
-        let currentTime = Date.now();
-
-        if (currentTime - startTime >= duration) {
-          blockClick = true;
-          onHold();
-        }
-
-        startTime = currentTime;
-      }
-      
-      shouldTrigger = true;
-    }, duration);
+  function mouseDown() {
+    timeoutId = setTimeout(() => {
+      blockClick = true;
+      config.onHold();
+      timeoutId = null;
+    }, config.duration);
   }
 
-  function mouseUp(e: MouseEvent) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    shouldTrigger = false;
+  function mouseUp() {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
   }
 
-  if (holdable || holdable === undefined) {
-    node.addEventListener("mousedown", mouseDown);
-    node.addEventListener("mouseup", mouseUp);
-    node.addEventListener('click', checkClick, true);
-  }
+  node.addEventListener("mousedown", mouseDown);
+  node.addEventListener("mouseup", mouseUp);
+  node.addEventListener('click', checkClick, true);
 
   return {
     update({ onHold, holdable, duration }: HoldEventParams) {
-      
+      config = { onHold, holdable, duration };
     },
     destroy() {
       node.removeEventListener("mousedown", mouseDown);
       node.removeEventListener("mouseup", mouseUp);
       node.removeEventListener('click', checkClick);
+      
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
     }
   }
 }

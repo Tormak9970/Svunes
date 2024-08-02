@@ -23,7 +23,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<CardClickable type="transparent" on:click={onClick} extraOptions={{ style: `width: ${size + 10}px; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 0px;` }}>
+<CardClickable type="transparent" on:click={onClick} holdable={false} extraOptions={{ style: `width: ${size + 10}px; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 0px;` }}>
   <div class="content">
     <div class="album" style="width: {size}px; height: {size}px;">
       {#if convertedPath !== ""}
