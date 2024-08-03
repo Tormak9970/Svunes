@@ -1,47 +1,99 @@
-# Svelte + TS + Vite
+<h1 align="center">
+  <a name="logo" href="https://tunistic.org/"><img src="./public/github-banner.png" /></a>
+</h1>
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+<p align="center">
+  <a href="https://github.com/Tormak9970/tunistic/releases"><img src="https://img.shields.io/github/v/release/Tormak9970/Tunistic?label=version&style=flat-square" /></a>
+  <img src="https://img.shields.io/github/downloads/Tormak9970/Tunistic/total?style=flat-square" />
+  <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/github/license/Tormak9970/Tunistic?style=flat-square" /></a>
+  <a href="https://crowdin.com/project/tunistic"><img src="https://img.shields.io/badge/-translate-brightgreen?style=flat-square&logo=Crowdin" /></a>
+  <br>
+  <br>
+</p>
 
-## Recommended IDE Setup
+# Tunistic
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+An offline-first music player for your music library. Allows you to make playlists, view artists/albums, and more! Made with Svelte, Tauri, Rust, and Material Design 3.
 
-## Need an official Svelte framework?
+# Installation
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+<!-- TODO: Android -->
+<!-- TODO: iOS -->
+<!-- TODO: Windows -->
+<!-- TODO: Linux -->
+<!-- TODO: Mac -->
 
-## Technical considerations
+# Features
 
-**Why use this over SvelteKit?**
+## Fast Load Times
+Tunistic leverages the performance of Rust and multi-threading to quickly load libraries with thousands of songs.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+## Intuitive Navigation
+You can browse by your albums, genres, artists, songs or search all of them. Its easy to customize the order of the navigation bar, as well as which pages are displayed.
+| <img src="public/readme-images/home.png" width="200"/>	|<img src="public/readme-images/playlists.png" width="200"/>|   <img src="public/readme-images/search.png" width="200"/>  	|    <img src="public/readme-images/songs.png" width="200"/> 	|
+|:-----:|   :-----:   | :-----:	|:-----:|
+| Home 	| Playlists 	| Search 	| Songs |
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+| <img src="public/readme-images/albums.png" width="200"/>	|<img src="public/readme-images/artists.png" width="200"/>|   <img src="public/readme-images/genres.png" width="200"/>  	|    <img src="public/readme-images/settings.png" width="200"/> 	|
+|:-----: | :-----:	| :-----:	| :-----:	  |
+| Albums | Artists 	| Genres 	| Settings 	|
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+## Now Playing Themes
+There are four different Now Playing Themes to pick from, as well as whether to use a solid, gradient, or blurred background.
+| <img src="public/readme-images/np_normal_blurr.png" width="200"/>	|<img src="public/readme-images/np_card_gradient.png" width="200"/>|   <img src="public/readme-images/np_simple_solid.png" width="200"/>  	|    <img src="public/readme-images/np_full_solid.png" width="200"/> 	|
+| :-----: |      :-----:      |    :-----:     |:-----: |
+| Normal (Blurr) 	| Card (Gradient) 	| Simple (Solid) | Full 	|
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+## Other Features
+ - Customize the look of Tunistic by choosing the app's primary color
+ - AMOLED Dark Theme
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+ - Apple CarPlay / Android Auto Support
+ - Bulk Share your songs
 
-**Why include `.vscode/extensions.json`?**
+ - Personalized Home screen
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+ - Driving Mode (with an option to start/stop automatically)
+ - Sleep Timer
+ - Volume Controls
 
-**Why enable `allowJs` in the TS template?**
+ - Create your own playlists
+ - Import/Export playlists
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+ - Tag Editing for Songs and Albums
+ - Bulk Tag Editing
+ - Filename -> Metadata Parser
+ - Album Info and Cover Art Lookup (requires an internet connection)
 
-**Why is HMR not preserving my local component state?**
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
+# Frequently Asked Questions
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+**Q: Does Tunistic report metrics or track anaylitics?**
+No, everything stays on your device. The only tracking the app does is when songs have been played (for the History feature). This can be disabled in settings if you don't like it.
 
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
+**Q: It says this is an offline music player, why does it need wifi for some features?**
+The Album Info and Cover lookup require internet by nature, and are useful when trying to edit albums/songs.
+
+# Translations
+If you're native language (or a language you speak) is not currently supported, please consider contributing to Tunistic's translations! You can help by heading to [https://crowdin.com/project/tunistic](https://crowdin.com/project/tunistic) and submitting translations. If a language is not listed there, please submit a GitHub issue and I will add it asap.
+
+
+# Acknowledgements
+APIs Used:
+ - [MetaBrainz](https://beta.musicbrainz.org/doc/About) - Used for automatic song/album information lookup and covers.
+
+References:
+ - [How Spotify's Shuffle Works](https://engineering.atspotify.com/2014/02/how-to-shuffle-songs/) - An explanation of how pseudo-randomness can make shuffling feel more random.
+ - [Metro](https://github.com/MuntashirAkon/Metro) - Inspired the UI scheme and the project as a whole.
+ - [Svelte Md3](https://ktibow.github.io/m3-svelte/) - Many of the base components are heavily modified version of components from Svelte Md3.
+
+Libraries:
+ - [Material Icons](https://fonts.google.com/icons) - All of the app's icons came from here.
+ - [Fontawesome Icons](https://fontawesome.com/) - The app's logo uses one of fontawesome's icons.
+
+# License
+ - This program is licensed under the [GNU General Public License Version 3](https://www.gnu.org/licenses/#GPL)
+ - Additionally, if you use Tunistic for any projects, add it to a package manager, etc, please let me know!
+ - Lastly, please provide appropriate credit for code usage
+
+Copyright Travis Lane

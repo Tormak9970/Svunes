@@ -1,0 +1,6 @@
+pull_request_title: 'feat: update translations'
+commit_message: 'feat: new translations (%language%)'
+append_commit_message: 
+files:
+  - source: /src/lib/i18n/strings.json
+    translation: /src/lib/i18n/%two_letters_code%.json

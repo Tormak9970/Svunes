@@ -1,25 +1,46 @@
 [package]
 name = "app"
 version = "0.0.0"
-description = "The backend of the app"
+description = "Tunistic's Backend"
 authors = ["you"]
-license = ""
+license = "GPL-v3.0"
 repository = ""
 edition = "2021"
-rust-version = "1.57"
+rust-version = "1.79"
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.1", features = [] }
+tauri-build = { version = "2.0.0-beta", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.6.1", features = ["devtools", "dialog-all", "fs-all", "http-request", "os-all", "path-all", "process-exit", "process-relaunch", "protocol-all", "reqwest-client", "shell-open", "updater", "window-all"] }
-tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
-chrono = "0.4.34"
+tauri = { version = "2.0.0-beta", features = [ "protocol-asset", "devtools" ] }
+tauri-plugin-fs = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v2" }
+tauri-plugin-http = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v2" }
+tauri-plugin-dialog = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v2" }
+tauri-plugin-process = "2.0.0-beta.7"
+tauri-plugin-shell = "2.0.0-beta"
+tauri-plugin-store = "2.0.0-beta.10"
+
 panic-message = "0.3.0"
+chrono = "0.4.34"
+rayon = "1.10.0"
+palette_extract = "0.1.0"
+image = "0.25.1"
+
+symphonia = { version = "0.5.4", features = [ "flac" ] }
+symphonia-metadata = "0.5.4"
+metaflac = "0.2.7"
+id3 = "1.13.1"
+
+[target.'cfg(not(any(target_os = "ios", target_os = "android")))'.dependencies]
+tauri-plugin-single-instance = "2.0.0-beta"
 
 [features]
 # by default Tauri runs in production mode
