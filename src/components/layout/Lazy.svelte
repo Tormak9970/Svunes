@@ -2,7 +2,8 @@
   import { createEventDispatcher } from "svelte";
 
   export let src: string;
-  export let height: number;
+  export let height: number = 0;
+  export let width: number = 0;
   export let clickable = false;
   
   const dispatch = createEventDispatcher();
@@ -10,17 +11,28 @@
   let loaded = false;
   let failed = false;
 
+  $: showPlaceholder = !loaded || failed;
+
+  $: styleHeight = height !== 0 ? `${height}px` : "auto";
+  $: styleWidth = width !== 0 ? `${width}px` : "auto";
+
   const load = () => loaded = true;
   const onError = () => failed = true;
 </script>
 
-<div class="lazy-container" style:height="{height}px">
+<div
+  class="lazy-container"
+  style:max-height={styleHeight}
+  style:min-height={showPlaceholder ? "100%" : undefined}
+  style:max-width={styleWidth}
+  style:min-width={showPlaceholder ? "100%" : undefined}
+>
   {#if clickable}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="click-container" on:click={() => dispatch("click")} />
   {/if}
-  {#if !loaded || failed}
+  {#if showPlaceholder}
     <div class="placeholder-container">
       <slot />
     </div>
@@ -28,8 +40,9 @@
   <!-- svelte-ignore a11y-missing-attribute -->
   <img
     src={src}
-    style:max-height="{height}px"
-    style:opacity={(failed || !loaded) ? "0" : "1"}
+    style:max-height={styleHeight}
+    style:max-width={styleWidth}
+    style:opacity={showPlaceholder ? "0" : "1"}
     draggable="false"
     on:load={load}
     on:error={onError}

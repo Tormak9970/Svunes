@@ -55,3 +55,17 @@ export function goToAlbumEdit(albumName: string) {
   sidePanelProps.set({ key: albumName });
   desktopSidePanel.set(SidePanels.ALBUM_EDIT);
 }
+
+/**
+ * Displays the edit page for the provided playlist.
+ * @param playlistId The id of the playlist to edit.
+ */
+export function goToPlaylistEdit(playlistId: string) {
+  if (!get(isLandscape)) {
+    push(`/playlists/${playlistId}/edit`);
+    return;
+  }
+
+  sidePanelProps.set({ id: playlistId });
+  desktopSidePanel.set(SidePanels.PLAYLIST_EDIT);
+}

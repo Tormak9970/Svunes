@@ -2,6 +2,7 @@
   import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
   import type { ComponentType } from "svelte";
   import AlbumEdit from "../../routes/albums/Edit.svelte";
+  import PlaylistEdit from "../../routes/playlists/Edit.svelte";
   import SongBulkEdit from "../../routes/songs/BulkEdit.svelte";
   import SongDetails from "../../routes/songs/Details.svelte";
   import SongEdit from "../../routes/songs/Edit.svelte";
@@ -13,6 +14,7 @@
     2: SongEdit,
     3: SongBulkEdit,
     4: AlbumEdit,
+    5: PlaylistEdit
   };
 </script>
 

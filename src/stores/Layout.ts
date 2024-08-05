@@ -5,7 +5,8 @@ export enum SidePanels {
   SONG_DETAILS,
   SONG_EDIT,
   SONG_BULK_EDIT,
-  ALBUM_EDIT
+  ALBUM_EDIT,
+  PLAYLIST_EDIT
 }
 
 export const isLandscape: Writable<boolean> = writable(!IS_MOBILE);

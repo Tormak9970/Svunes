@@ -16,9 +16,14 @@
 
 </script>
 
-<div class="album-picture" style:--border-radius={borderRadius} style:margin-top={marginTop ? "2px" : "0"} style="max-width: {imageSize}px; max-height: {imageSize}px;">
+<div
+  class="album-picture"
+  style:--border-radius={borderRadius}
+  style:margin-top={marginTop ? "2px" : "0"}
+  style:width="{imageSize}px"
+>
   {#key artPath ?? ""}
-    <Lazy height={imageSize} src="{convertedPath}" {clickable} on:click={() => dispatch("click")}>
+    <Lazy width={imageSize} height={imageSize} src="{convertedPath}" {clickable} on:click={() => dispatch("click")}>
       <span style="display: flex; width: {imageSize}px; height: {imageSize}px;">
         <MusicNotePlaceholder height={80} width={80} backgroundColor="--m3-scheme-surface-container-lowest" fillColor="--m3-scheme-on-secondary" />
       </span>
@@ -29,7 +34,11 @@
 <style>
   .album-picture {
     border-radius: var(--border-radius);
-    width: 100%;
     overflow: hidden;
+
+    max-height: 100%;
+    max-width: 100%;
+
+    aspect-ratio: 1;
   }
 </style>
