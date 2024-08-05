@@ -1,36 +1,28 @@
 <script lang="ts">
-  import { easeEmphasizedAccel, easeEmphasizedDecel, outroClass } from "@utils";
-  import { createEventDispatcher, onMount } from "svelte";
+  import { easeEmphasizedAccel, easeEmphasizedDecel } from "@utils";
+  import { createEventDispatcher, onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
-  import type { TransitionConfig } from "svelte/transition";
-  
-  /**
-   * The bottom sheet height animation.
-   */
-  function heightAnim(node: HTMLDialogElement, options: Record<string, unknown> = {}): TransitionConfig {
-    if (node.clientHeight < height) height = node.clientHeight;
+  import { spring, tweened } from "svelte/motion";
+  import type { Unsubscriber } from "svelte/store";
 
-    return {
-      duration: 400,
-      easing: easeEmphasizedDecel,
-      ...options,
-      css: (t) => `max-height: ${t * height}px`,
-    }
-  }
+  let heightUnsub: Unsubscriber;
 
   let dialogElement: HTMLDialogElement;
 
-  let fullHeight: number;
-  export let height = 1000;
-  export let closeThreshold = 1.2;
+  export let maxHeight = 1000;
+  export let closeThreshold = 0.4;
   export let padding = "0 1rem";
-  
-  let isDragging = false;
-  let startY = 0;
 
-  let isMovingBack = false;
+  let leaving = false;
+  let hasMounted = false;
 
   const dispatch = createEventDispatcher();
+
+  const actualHeight = tweened(0, {
+    duration: 400,
+    easing: easeEmphasizedDecel
+  });
+  const dragHeight = spring(0, {});
 
   /**
    * Handles opening the sheet.
@@ -41,102 +33,56 @@
     node.inert = false;
   }
 
-  /**
-   * Function to run on mouse move.
-   */
-  function moveMouse(e: { clientY: number }) {
-    if (isDragging) {
-      const distance = e.clientY - startY;
-      height -= distance;
-      if (height > fullHeight) height = fullHeight;
-      startY = e.clientY;
-    }
-  }
-
-  /**
-   * Handles drag start.
-   */
-  function onDragStart(y: number) {
-    isDragging = true;
-    startY = y;
+  const close = () => {
+    leaving = true;
+    actualHeight.set(0, {
+      duration: 200,
+      easing: easeEmphasizedAccel
+    });
   }
 
   function dragHandler({ detail }: any) {
-    console.log(detail);
-    // const { active, movement: [_, y] } = detail;
+    const { active, movement: [, my], direction: [, dy], offset: [, oy] } = detail;
 
-    // draggingIndex = originalIndex;
-    // const curIndex = newOrder.indexOf(originalIndex);
-    // const curRow = clamp(Math.round((originalIndex * entryHeight + y) / entryHeight), 0, songs.length - 1);
-    // newOrder = swap(newOrder, curIndex, curRow);
+    $dragHeight = my;
     
-    // dragHeight = y;
-
-    // if (!active) {
-    //   draggingIndex = -1;
-    //   songs = newOrder.map((index) => songs[index]);
-    //   newOrder = songs.map((_, i) => i);
-    //   $playlistsMap[playlistId].songIds = songs.map((song) => song.id);
-    //   $playlists = [ ...$playlists ];
-    //   dragHeight = 0;
-    // }
-  }
-
-  /**
-   * Handles drag end.
-   */
-  function onDragEnd() {
-    isDragging = false;
-
-    if (height < fullHeight / closeThreshold) {
-      dispatch("close", "low");
-    } else {
-      isMovingBack = true;
-      height = fullHeight;
-
-      setTimeout(() => {
-        isMovingBack = false;
-      }, 300);
+    if (($actualHeight - oy) / oy >= closeThreshold && !active) {
+      close();
+      return;
     }
+
+    if (!active) $dragHeight = 0;
   }
 
   onMount(() => {
-    fullHeight = dialogElement.scrollHeight;
-    height = fullHeight;
+    $actualHeight = Math.min(maxHeight, dialogElement.scrollHeight);
+    heightUnsub = actualHeight.subscribe((height) => {
+      if (height === 0 && hasMounted) dispatch("close");
+    });
+    hasMounted = true;
+  });
+
+  onDestroy(() => {
+    if (heightUnsub) heightUnsub();
   });
 </script>
-
-<svelte:window
-  on:mousemove={moveMouse}
-  on:mouseup={onDragEnd}
-  on:touchmove={(e) => moveMouse(e.touches[0])}
-  on:touchend={onDragEnd}
-/>
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
   class="m3-container"
-  class:moving-back={isMovingBack}
-  style:max-height="{height}px"
+  class:leaving
+  style:max-height="{$actualHeight - $dragHeight}px"
   use:open
-  use:outroClass
-  on:cancel|preventDefault={() => dispatch("close", "browser")}
-  on:mousedown|self={() => dispatch("close", "click")}
-  in:heightAnim
-  out:heightAnim={{ easing: easeEmphasizedAccel, duration: 300 }}
+  on:cancel|preventDefault={close}
+  on:mouseup={close}
   bind:this={dialogElement}
 >
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     style:padding={padding}
-    on:touchstart={(e) => onDragStart(e.touches[0].clientY)}
     use:drag on:drag={dragHandler}
   >
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div
-      class="handle-container"
-      on:mousedown|preventDefault={(e) => onDragStart(e.clientY)}
-    >
+    <div class="handle-container" >
       <div class="handle" />
     </div>
     <slot />
@@ -167,7 +113,7 @@
   }
   dialog:global(.leaving)::backdrop {
     background-color: transparent;
-    animation: backdropReverse 400ms;
+    animation: backdropReverse 200ms;
   }
   .handle-container {
     display: flex;
@@ -182,10 +128,6 @@
     width: 2rem;
     height: 0.25rem;
     border-radius: 0.25rem;
-  }
-
-  .moving-back {
-    transition: max-height 0.3s cubic-bezier(0.356, 0.701, 0, 1.004);
   }
 
   @keyframes backdrop {
