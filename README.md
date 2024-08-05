@@ -75,7 +75,7 @@ No, everything stays on your device. The only tracking the app does is when song
 The Album Info and Cover lookup require internet by nature, and are useful when trying to edit albums/songs.
 
 # Translations
-If you're native language (or a language you speak) is not currently supported, please consider contributing to Svunes's translations! You can help by heading to [https://crowdin.com/project/svunes](https://crowdin.com/project/svunes) and submitting translations. If a language is not listed there, please submit a GitHub issue and I will add it asap.
+If you're native language (or a language you speak) is not currently supported, please consider contributing to Svunes's translations! You can help by heading to [https://crowdin.com/project/svunes](https://crowdin.com/project/tunistic) and submitting translations. If a language is not listed there, please submit a GitHub issue and I will add it asap.
 
 
 # Acknowledgements
