@@ -4,6 +4,7 @@
   import { isScrolled } from "@directives";
   import { BackArrow } from "@icons";
   import { Button, NumberField, TextField } from "@interactables";
+  import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showWritingChanges } from "@stores/Overlays";
   import { showErrorSnackbar, songsMap } from "@stores/State";
@@ -109,7 +110,7 @@
     </OverlayHeader>
   </span>
   <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
-    <div class="content-inner">
+    <div class="content-inner" style:width={$isLandscape ? "calc(100% - 0.5rem)" : undefined}>
       <DetailsArtPicture artPath={artPath} />
       <div class="fields">
         <TextField name={$t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
@@ -134,7 +135,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     overflow-y: scroll;
     overflow-x: hidden;

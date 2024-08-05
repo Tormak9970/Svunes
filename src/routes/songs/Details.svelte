@@ -10,6 +10,7 @@
   import { goToSongEdit } from "@utils";
   import SongOptions from "@views/songs/SongOptions.svelte";
   import { pop } from "svelte-spa-router";
+  import { isLandscape } from "../../stores/Layout";
   
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
@@ -54,7 +55,7 @@
     </OverlayHeader>
   </span>
   <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
-    <div class="content-inner">
+    <div class="content-inner" style:width={$isLandscape ? "calc(100% - 0.5rem)" : undefined}>
       <DetailsArtPicture artPath={song?.artPath} />
       <div class="details">
         <DetailsField icon={Sell} headline={song?.title ?? $t("UNKOWN_VALUE")} />
@@ -79,7 +80,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     overflow-y: scroll;
     overflow-x: hidden;
