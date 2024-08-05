@@ -3,7 +3,6 @@
   import type { Playlist } from "@models";
   import { albumsMap, songsMap } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
   import PlaylistGrid from "./PlaylistGrid.svelte";
 
   export let playlist: Playlist;
@@ -43,12 +42,8 @@
     {#if playlist.name === "Favorites"}
       <Favorites width={iconSize} height={iconSize} />
     {:else if chosenImagePath}
-      <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{chosenImagePath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
-        <span slot="placeholder">
-          <AlbumPlaceholder width={iconSize} height={iconSize} />
-        </span>
+      <Lazy height={height} src="{chosenImagePath}">
+        <AlbumPlaceholder width={iconSize} height={iconSize} />
       </Lazy>
     {:else}
       <AlbumPlaceholder width={iconSize} height={iconSize} />
@@ -57,22 +52,14 @@
     {#if playlist.name === "Favorites"}
       <Favorites width={iconSize} height={iconSize} />
     {:else if chosenImagePath}
-      <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{chosenImagePath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
-        <span slot="placeholder">
-          <AlbumPlaceholder width={iconSize} height={iconSize} />
-        </span>
+      <Lazy height={height} src="{chosenImagePath}">
+        <AlbumPlaceholder width={iconSize} height={iconSize} />
       </Lazy>
     {:else if images.length === 0}
       <AlbumPlaceholder width={iconSize} height={iconSize} />
     {:else if images.length === 1}
-      <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="{convertedPath}" style="width: {height}px; height: {height}px;" draggable="false" on:error={onError} />
-        <span slot="placeholder">
-          <AlbumPlaceholder width={iconSize} height={iconSize} />
-        </span>
+      <Lazy height={height} src="{convertedPath}">
+        <AlbumPlaceholder width={iconSize} height={iconSize} />
       </Lazy>
     {:else}
       <PlaylistGrid images={images} size={gridSize} gap={gap} iconSize={iconSize / 2} />

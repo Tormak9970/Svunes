@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Lazy, MusicNotePlaceholder } from "@layout";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { createEventDispatcher } from "svelte";
 
   export let artPath: string | undefined;
@@ -19,10 +18,8 @@
 
 <div class="album-picture" style:--border-radius={borderRadius} style:margin-top={marginTop ? "2px" : "0"} style="max-width: {imageSize}px; max-height: {imageSize}px;">
   {#key artPath ?? ""}
-    <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} {clickable} on:click={() => dispatch("click")} let:onError>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <img src="{convertedPath}" style="width: auto; height: auto; max-width: {imageSize}px; max-height: {imageSize}px;" draggable="false" on:error={onError} />
-      <span slot="placeholder" style="display: flex; width: {imageSize}px; height: {imageSize}px;">
+    <Lazy height={imageSize} src="{convertedPath}" {clickable} on:click={() => dispatch("click")}>
+      <span style="display: flex; width: {imageSize}px; height: {imageSize}px;">
         <MusicNotePlaceholder height={80} width={80} backgroundColor="--m3-scheme-surface-container-lowest" fillColor="--m3-scheme-on-secondary" />
       </span>
     </Lazy>

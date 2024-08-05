@@ -5,7 +5,7 @@
 
   import { RustInterop } from "@controllers";
   import type { Genre } from "@models";
-  import { IMAGE_FADE_OPTIONS, TILTED_DIMENSIONS } from "@utils";
+  import { TILTED_DIMENSIONS } from "@utils";
 
   import { CardClickable, Lazy, MusicNotePlaceholder } from "@layout";
   import { t } from "@stores/Locale";
@@ -41,12 +41,8 @@
     </div>
     <div class="cover" style="width: {TILTED_DIMENSIONS.width}px; height: {TILTED_DIMENSIONS.height}px;">
       {#if convertedPath !== ""}
-        <Lazy height={TILTED_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {TILTED_DIMENSIONS.width}px; height: {TILTED_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
-          <span slot="placeholder">
-            <MusicNotePlaceholder />
-          </span>
+        <Lazy height={TILTED_DIMENSIONS.height} src="{convertedPath}">
+          <MusicNotePlaceholder />
         </Lazy>
       {:else}
         <MusicNotePlaceholder />

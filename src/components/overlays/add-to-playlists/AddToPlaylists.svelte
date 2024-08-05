@@ -161,54 +161,6 @@
         <div class="playlists">
           {#each playlistToRender as playlist}
             <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
           {/each}
         </div>
       </div>

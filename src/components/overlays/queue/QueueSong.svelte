@@ -8,7 +8,7 @@
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@utils";
+  import { LIST_IMAGE_DIMENSIONS } from "@utils";
   import QueueSongOptions from "./QueueSongOptions.svelte";
 
   export let song: Song;
@@ -58,12 +58,8 @@
       <div class="left">
         <div class="album">
           {#if convertedPath !== ""}
-            <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-              <!-- svelte-ignore a11y-missing-attribute -->
-              <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
-              <span slot="placeholder">
-                <MusicNotePlaceholder />
-              </span>
+            <Lazy height={LIST_IMAGE_DIMENSIONS.height} src="{convertedPath}">
+              <MusicNotePlaceholder />
             </Lazy>
           {:else}
             <MusicNotePlaceholder />

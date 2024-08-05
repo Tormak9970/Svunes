@@ -24,6 +24,7 @@
           src={convertedPath}
           width={LIST_IMAGE_DIMENSIONS.width}
           height={LIST_IMAGE_DIMENSIONS.height}
+          iconSize={20}
           borderRadius={borderRadius}
           marginLeft="10px"
         />

@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Artist } from "@models";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { push } from "svelte-spa-router";
   import CardClickable from "../CardClickable.svelte";
   import Lazy from "../Lazy.svelte";
@@ -27,12 +26,8 @@
   <div class="content">
     <div class="album" style="width: {size}px; height: {size}px;">
       {#if convertedPath !== ""}
-        <Lazy height={size} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{convertedPath}" style="width: {size}px; height: {size}px;" draggable="false" on:error={onError} />
-          <span slot="placeholder">
-            <MusicNotePlaceholder />
-          </span>
+        <Lazy height={size} src="{convertedPath}">
+          <MusicNotePlaceholder />
         </Lazy>
       {:else}
         <MusicNotePlaceholder />

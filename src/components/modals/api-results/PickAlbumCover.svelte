@@ -6,7 +6,6 @@
   import { CardClickable, Lazy, LoadingSpinner, MusicNotePlaceholder } from "@layout";
   import { t } from "@stores/Locale";
   import { albumCovers, availableReleaseGroups, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover } from "@stores/Modals";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
 
@@ -94,12 +93,8 @@
             <CardClickable type="transparent" highlight={selectedIndex === i} on:click={() => handleImageClick(i)} extraOptions={{ style: `width: ${imageSize + 10}px; height: ${imageSize + 10}px; display: flex; align-items: center; padding: 5px; border-radius: 10px; position: relative; z-index: 1;` }}>
               <div style="width: {imageSize}px; height: {imageSize}px; overflow: hidden; border-radius: 10px;">
                 {#if url !== ""}
-                  <Lazy height={imageSize} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    <img src="{url}" style="width: {imageSize}px; height: {imageSize}px;" draggable="false" on:error={onError} />
-                    <span slot="placeholder">
-                      <MusicNotePlaceholder width={iconSize} height={iconSize} />
-                    </span>
+                  <Lazy height={imageSize} src="{url}">
+                    <MusicNotePlaceholder width={iconSize} height={iconSize} />
                   </Lazy>
                 {:else}
                   <MusicNotePlaceholder width={iconSize} height={iconSize} />
