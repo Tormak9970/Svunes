@@ -1,17 +1,17 @@
 <h1 align="center">
-  <a name="logo" href="https://tunistic.org/"><img src="./public/github-banner.png" /></a>
+  <a name="logo" href="https://svunes.org/"><img src="./public/github-banner.png" /></a>
 </h1>
 
 <p align="center">
-  <a href="https://github.com/Tormak9970/tunistic/releases"><img src="https://img.shields.io/github/v/release/Tormak9970/Tunistic?label=version&style=flat-square" /></a>
-  <img src="https://img.shields.io/github/downloads/Tormak9970/Tunistic/total?style=flat-square" />
-  <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/github/license/Tormak9970/Tunistic?style=flat-square" /></a>
+  <a href="https://github.com/Tormak9970/svunes/releases"><img src="https://img.shields.io/github/v/release/Tormak9970/Svunes?label=version&style=flat-square" /></a>
+  <img src="https://img.shields.io/github/downloads/Tormak9970/Svunes/total?style=flat-square" />
+  <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/github/license/Tormak9970/Svunes?style=flat-square" /></a>
   <a href="https://crowdin.com/project/tunistic"><img src="https://img.shields.io/badge/-translate-brightgreen?style=flat-square&logo=Crowdin" /></a>
   <br>
   <br>
 </p>
 
-# Tunistic
+# Svunes
 
 An offline-first music player for your music library. Allows you to make playlists, view artists/albums, and more! Made with Svelte, Tauri, Rust, and Material Design 3.
 
@@ -26,7 +26,7 @@ An offline-first music player for your music library. Allows you to make playlis
 # Features
 
 ## Fast Load Times
-Tunistic leverages the performance of Rust and multi-threading to quickly load libraries with thousands of songs.
+Svunes leverages the performance of Rust and multi-threading to quickly load libraries with thousands of songs.
 
 ## Intuitive Navigation
 You can browse by your albums, genres, artists, songs or search all of them. Its easy to customize the order of the navigation bar, as well as which pages are displayed.
@@ -45,7 +45,7 @@ There are four different Now Playing Themes to pick from, as well as whether to 
 | Normal (Blurr) 	| Card (Gradient) 	| Simple (Solid) | Full 	|
 
 ## Other Features
- - Customize the look of Tunistic by choosing the app's primary color
+ - Customize the look of Svunes by choosing the app's primary color
  - AMOLED Dark Theme
 
  - Apple CarPlay / Android Auto Support
@@ -68,14 +68,14 @@ There are four different Now Playing Themes to pick from, as well as whether to 
 
 # Frequently Asked Questions
 
-**Q: Does Tunistic report metrics or track anaylitics?**
+**Q: Does Svunes report metrics or track anaylitics?**
 No, everything stays on your device. The only tracking the app does is when songs have been played (for the History feature). This can be disabled in settings if you don't like it.
 
 **Q: It says this is an offline music player, why does it need wifi for some features?**
 The Album Info and Cover lookup require internet by nature, and are useful when trying to edit albums/songs.
 
 # Translations
-If you're native language (or a language you speak) is not currently supported, please consider contributing to Tunistic's translations! You can help by heading to [https://crowdin.com/project/tunistic](https://crowdin.com/project/tunistic) and submitting translations. If a language is not listed there, please submit a GitHub issue and I will add it asap.
+If you're native language (or a language you speak) is not currently supported, please consider contributing to Svunes's translations! You can help by heading to [https://crowdin.com/project/svunes](https://crowdin.com/project/svunes) and submitting translations. If a language is not listed there, please submit a GitHub issue and I will add it asap.
 
 
 # Acknowledgements
@@ -93,7 +93,7 @@ Libraries:
 
 # License
  - This program is licensed under the [GNU General Public License Version 3](https://www.gnu.org/licenses/#GPL)
- - Additionally, if you use Tunistic for any projects, add it to a package manager, etc, please let me know!
+ - Additionally, if you use Svunes for any projects, add it to a package manager, etc, please let me know!
  - Lastly, please provide appropriate credit for code usage
 
 Copyright Travis Lane

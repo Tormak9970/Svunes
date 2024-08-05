@@ -300,7 +300,7 @@ export class AppController {
     }
 
     let playlistJson: any = JSON.parse(contents);
-    if (playlistJson.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.tunistic") {
+    if (playlistJson.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.svunes") {
       get(showErrorSnackbar)({ message: get(t)("INVALID_PLAYLIST_MESSAGE"), faster: true });
       LogController.error("Playlist did not contain the FILE_SIG.");
     }
@@ -333,7 +333,7 @@ export class AppController {
   static async exportPlaylist(playlistPath: string, playlist: Playlist) {
     const songMap = get(songsMap);
     const playlistJSON = JSON.parse(JSON.stringify(playlist));
-    playlistJSON.FILE_SIG_DO_NOT_EDIT = "dev.travislane.tunistic";
+    playlistJSON.FILE_SIG_DO_NOT_EDIT = "dev.travislane.svunes";
 
     playlistJSON.songFileNames = playlist.songIds.map((id) => songMap[id].fileName);
 

@@ -1,7 +1,7 @@
 {
-  "productName": "Tunistic",
+  "productName": "Svunes",
   "version": "../package.json",
-  "identifier": "dev.travislane.tunistic",
+  "identifier": "dev.travislane.svunes",
   "build": {
     "beforeDevCommand": "bun dev",
     "beforeBuildCommand": "bun build",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Tunistic",
+        "title": "Svunes",
         "url": "src/main.html",
         "height": 800,
         "minHeight": 700,
@@ -32,80 +32,24 @@
         "scope": {
           "allow": [
             "$APPCONFIG",
-            "/var/home/*/.config/dev.travislane.tunistic",
+            "/var/home/*/.config/dev.travislane.svunes",
             "$APPCONFIG/**",
-            "/var/home/*/.config/dev.travislane.tunistic/**",
+            "/var/home/*/.config/dev.travislane.svunes/**",
             "$Home/**",
             "/var/home/*/**",
             "$APPLOG",
             "$APPLOG/**",
             "$APPCACHE",
-            "/var/home/*/.cache/dev.travislane.tunistic",
+            "/var/home/*/.cache/dev.travislane.svunes",
             "$APPCACHE/**",
-            "/var/home/*/.cache/dev.travislane.tunistic/**"
+            "/var/home/*/.cache/dev.travislane.svunes/**"
           ],
           "requireLiteralLeadingDot": false
         },
         "enable": true
       },
       "capabilities": [
-        {
-          "identifier": "main-window-capabilities",
-          "windows": [ "main" ],
-          "permissions": [
-            "path:default",
-            "event:default",
-            "webview:default",
-            "app:default",
-            "dialog:default",
-            {
-              "identifier": "fs:read-all",
-              "allow": [
-                "$APPCONFIG",
-                "/var/home/*/.config/dev.travislane.tunistic",
-                "$APPCONFIG/**",
-                "/var/home/*/.config/dev.travislane.tunistic/**",
-                "$Home/**",
-                "/var/home/*/**",
-                "$APPLOG",
-                "$APPLOG/**",
-                "$APPCACHE",
-                "/var/home/*/.cache/dev.travislane.tunistic",
-                "$APPCACHE/**",
-                "/var/home/*/.cache/dev.travislane.tunistic/**"
-              ]
-            },
-            {
-              "identifier": "fs:write-all",
-              "allow": [
-                "$APPCONFIG",
-                "/var/home/*/.config/dev.travislane.tunistic",
-                "$APPCONFIG/**",
-                "/var/home/*/.config/dev.travislane.tunistic/**",
-                "$Home/**",
-                "/var/home/*/**",
-                "$APPLOG",
-                "$APPLOG/**",
-                "$APPCACHE",
-                "/var/home/*/.cache/dev.travislane.tunistic",
-                "$APPCACHE/**",
-                "/var/home/*/.cache/dev.travislane.tunistic/**"
-              ]
-            },
-            "window:default",
-            "shell:allow-open",
-            "process:default",
-            {
-              "identifier": "http:default",
-              "allow": [
-                "https://*.musicbrainz.org/*",
-                "https://coverartarchive.org/*",
-                "https://*.archive.org/*"
-              ]
-            },
-            "store:default"
-          ]
-        }
+        "main-capability"
       ],
       "dangerousDisableAssetCspModification": [
         "style-src"
@@ -117,27 +61,11 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIxRjcwRDQ0QzczMjAzMUMKUldRY0F6TEhSQTMzc2F0VWxEOUJyTTBQVUY2Ui94dkNXUGVBZW1PZ0RZTmVPUlhFcXFpb1djM1MK",
       "endpoints": [
-        "https://raw.githubusercontent.com/Tormak9970/Tunistic/release/latest.json"
+        "https://raw.githubusercontent.com/Tormak9970/Svunes/release/latest.json"
       ]
     },
     "fs": {
-      "scope": {
-        "allow": [
-          "$APPCONFIG",
-          "/var/home/*/.config/dev.travislane.tunistic",
-          "$APPCONFIG/**",
-          "/var/home/*/.config/dev.travislane.tunistic/**",
-          "$Home/**",
-          "/var/home/*/**",
-          "$APPLOG",
-          "$APPLOG/**",
-          "$APPCACHE",
-          "/var/home/*/.cache/dev.travislane.tunistic",
-          "$APPCACHE/**",
-          "/var/home/*/.cache/dev.travislane.tunistic/**"
-        ],
-        "requireLiteralLeadingDot": false
-      }
+      "requireLiteralLeadingDot": false
     }
   },
   "bundle": {

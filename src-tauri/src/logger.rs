@@ -46,7 +46,7 @@ pub fn log_to_given_file(log_path: &PathBuf, message: &str, level: u8) {
 
         if let Err(e) = writeln!(
             log_file,
-            "[Tunistic] [{hour}:{min}:{sec}] [{level_name}]: {message}"
+            "[Svunes] [{hour}:{min}:{sec}] [{level_name}]: {message}"
         ) {
             eprintln!("Couldn't write to file: {}", e);
         }

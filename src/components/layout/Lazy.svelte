@@ -1,55 +1,5 @@
-<div class:container={true} use:load class={rootClass} style="height: {rootInitialHeight};">
-  {#if clickable}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="click-container" on:click={() => dispatch("click")}>
-      <slot name="click-container" />
-    </div>
-  {/if}
-  {#if loaded}
-    {#if !failed}
-      <div
-        in:fade={fadeOption || {}}
-        class={contentClass}
-        style={contentStyle}
-      >
-        <slot onError={onError}>Lazy load content</slot>
-      </div>
-    {/if}
-    {#if !contentShow || failed}
-      <slot name="placeholder" />
-    {/if}
-  {:else}
-    <slot name="placeholder" />
-  {/if}
-</div>
-
-<style>
-  .container {
-    position: relative;
-  }
-
-  .click-container {
-    position: absolute;
-    top: 0;
-
-    cursor: pointer;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 2;
-
-    background-color: transparent;
-    transition: background-color 0.2s ease-in-out;
-  }
-
-  .container:hover .click-container {
-    background-color: rgb(var(--m3-scheme-scrim) / 0.3);
-  }
-</style>
-
 <script lang="ts">
+  import { throttle } from "@utils";
   import { createEventDispatcher } from "svelte";
   import { fade } from 'svelte/transition';
   export let keep = false;
@@ -81,19 +31,22 @@
 
   function load(node: HTMLElement) {
     setHeight(node);
+
     const handler = createHandler(node);
     addListeners(handler);
+    
     setTimeout(() => {
       handler();
     });
+
     const observer = observeNode(node);
 
     return {
       destroy: () => {
         removeListeners(handler);
         observer.unobserve(node);
-      },
-    };
+      }
+    }
   }
 
   function createHandler(node: HTMLElement) {
@@ -108,6 +61,7 @@
         unload(node)
       }
     }, 200);
+
     return handler;
   }
 
@@ -122,7 +76,7 @@
 
   function unload(node: HTMLElement) {
     setHeight(node);
-    loaded = false
+    loaded = false;
   }
 
   function loadNode(node: HTMLElement) {
@@ -130,6 +84,7 @@
 
     loaded = true;
     resetHeight(node);
+    
     if (onload) onload(node);
   }
 
@@ -202,40 +157,55 @@
     }
   }
 
-  // From underscore souce code
-  function throttle(func: any, wait: number, options?: any) {
-    let context: any, args: any, result: any;
-    let timeout: any = null;
-    let previous: any = 0;
-
-    if (!options) options = {};
-    const later = function() {
-      previous = options.leading === false ? 0 : new Date();
-      timeout = null;
-      result = func.apply(context, args);
-      if (!timeout) context = args = null;
-    };
-
-    return function() {
-      const now = new Date();
-      if (!previous && options.leading === false) previous = now;
-      // @ts-ignore
-      const remaining = wait - (now - previous);
-      // @ts-ignore
-      context = this;
-      args = arguments;
-      if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-        previous = now;
-        result = func.apply(context, args);
-        if (!timeout) context = args = null;
-      } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
-      }
-      return result;
-    };
-  }
 </script>
+
+<div class:container={true} class={rootClass} style="height: {rootInitialHeight};" use:load>
+  {#if clickable}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class="click-container" on:click={() => dispatch("click")}>
+      <slot name="click-container" />
+    </div>
+  {/if}
+  {#if loaded}
+    {#if !failed}
+      <div
+        in:fade={fadeOption || {}}
+        class={contentClass}
+        style={contentStyle}
+      >
+        <slot onError={onError}>Lazy load content</slot>
+      </div>
+    {/if}
+    {#if !contentShow || failed}
+      <slot name="placeholder" />
+    {/if}
+  {:else}
+    <slot name="placeholder" />
+  {/if}
+</div>
+
+<style>
+  .container {
+    position: relative;
+  }
+
+  .click-container {
+    position: absolute;
+    top: 0;
+
+    cursor: pointer;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 2;
+
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .container:hover .click-container {
+    background-color: rgb(var(--m3-scheme-scrim) / 0.3);
+  }
+</style>

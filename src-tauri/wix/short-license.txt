@@ -1,4 +1,4 @@
-Tunistic is a robust, offline first Material Design music player.
+Svunes is a robust, offline first Material Design music player.
 Copyright (C) 2023 Travis Lane (Tormak)
 
 This program is free software: you can redistribute it and/or modify

@@ -142,6 +142,8 @@
     } else {
       selectedPlaylists.push(playlistId);
     }
+
+    selectedPlaylists = [ ...selectedPlaylists ];
   }
 
   /**
@@ -170,7 +172,7 @@
       <Button type="tonal" on:click={setCreateNewPlaylist}>{$t("NEW_PLAYLIST_ACTION")}</Button>
       <div class="playlists">
         {#each playlistToRender as playlist}
-          <PlaylistEntry playlist={playlist} checked={false} on:click={() => togglePlaylistInclude(playlist.id)} />
+          <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
         {/each}
       </div>
     </div>

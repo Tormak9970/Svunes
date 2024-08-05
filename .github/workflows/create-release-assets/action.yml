@@ -95,12 +95,12 @@ runs:
           if (process.env.git_branch == "release") {
             const versionNoV = process.env.release_tag.substring(1);
             const GENERIC_NAMES = {
-              "windowsInstaller": "tunistic.msi",
-              "windowsUpdater": `tunistic_${versionNoV}.msi.zip`,
-              "windowsUpdaterSig": `tunistic_${versionNoV}.msi.zip.sig`,
-              "linuxInstaller": "tunistic.AppImage",
-              "linuxUpdater": `tunistic_${versionNoV}.AppImage.tar.gz`,
-              "linuxUpdaterSig": `tunistic_${versionNoV}.AppImage.tar.gz.sig`
+              "windowsInstaller": "svunes.msi",
+              "windowsUpdater": `svunes_${versionNoV}.msi.zip`,
+              "windowsUpdaterSig": `svunes_${versionNoV}.msi.zip.sig`,
+              "linuxInstaller": "svunes.AppImage",
+              "linuxUpdater": `svunes_${versionNoV}.AppImage.tar.gz`,
+              "linuxUpdaterSig": `svunes_${versionNoV}.AppImage.tar.gz.sig`
             }
 
             const assets = await github.rest.repos.listReleaseAssets({
@@ -156,8 +156,8 @@ runs:
             core.setSecret(process.env.GITHUB_TOKEN);
             
             updateOrigin(`https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`);
-            config('user.email', "tunistic.release.action@github.com");
-            config('user.name', "Tunistic Release Action");
+            config('user.email', "svunes.release.action@github.com");
+            config('user.name', "Svunes Release Action");
 
             await add(".");
             await commit("chore(release): updating latest.json to generated version.");

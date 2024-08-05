@@ -46,7 +46,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `${process.env.RELEASE_TAG}`,
-              name: `Tunistic ${process.env.RELEASE_TAG}`,
+              name: `Svunes ${process.env.RELEASE_TAG}`,
               body: `${process.env.RELEASE_LOG}`,
               draft: true,
               prerelease: false
@@ -147,8 +147,8 @@ jobs:
             core.setSecret(process.env.GITHUB_TOKEN);
             
             updateOrigin(`https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`);
-            config('user.email', "tunistic.release.action@github.com");
-            config('user.name', "Tunistic Release Action");
+            config('user.email', "svunes.release.action@github.com");
+            config('user.name', "Svunes Release Action");
 
             const cwdPath = path.resolve(process.cwd());
             const changelogFilePath = path.join(cwdPath, "CHANGELOG.md");

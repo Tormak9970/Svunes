@@ -1,3 +1,3 @@
-package dev.travislane.tunistic
+package dev.travislane.svunes
 
 class MainActivity : TauriActivity()

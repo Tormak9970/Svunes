@@ -22,7 +22,7 @@ import { LogLevel, RustInterop } from "./RustInterop";
  * ! Should do no logging here.
  */
 export class LogController {
-  private static APP_NAME = "Tunistic";
+  private static APP_NAME = "Svunes";
   private static APP_THEME_COLOR = "#73169e";
   private static APP_INFO_COLOR = "#1abc9c";
   private static APP_WARN_COLOR = "#e3c907";

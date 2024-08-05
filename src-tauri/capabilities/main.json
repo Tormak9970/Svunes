@@ -1,0 +1,43 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-capability",
+  "windows": [ "main" ],
+  "permissions": [
+    "core:path:default",
+    "core:event:default",
+    "core:webview:default",
+    "core:app:default",
+    "dialog:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        "$APPCONFIG",
+        "/var/home/*/.config/dev.travislane.svunes",
+        "$APPCONFIG/**",
+        "/var/home/*/.config/dev.travislane.svunes/**",
+        "$Home/**",
+        "/var/home/*/**",
+        "$APPLOG",
+        "$APPLOG/**",
+        "$APPCACHE",
+        "/var/home/*/.cache/dev.travislane.svunes",
+        "$APPCACHE/**",
+        "/var/home/*/.cache/dev.travislane.svunes/**"
+      ]
+    },
+    "fs:read-all",
+    "fs:write-all",
+    "core:window:default",
+    "shell:allow-open",
+    "process:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        "https://*.musicbrainz.org/*",
+        "https://coverartarchive.org/*",
+        "https://*.archive.org/*"
+      ]
+    },
+    "store:default"
+  ]
+}

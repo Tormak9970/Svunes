@@ -23,7 +23,7 @@ use tauri::{self, AppHandle, Manager};
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 use tauri::Emitter;
 
-use image::{imageops::FilterType, io::Reader as ImageReader};
+use image::{imageops::FilterType, ImageReader};
 use rayon::prelude::*;
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
@@ -380,10 +380,10 @@ pub fn run() {
         }
 
         logger::log_to_given_file(&log_file_path_buf, &log_message, 2);
-        logger::log_to_given_file(&log_file_path_buf, "Please open an issue at https://github.com/Tormak9970/Tunistic/issues", 2);
+        logger::log_to_given_file(&log_file_path_buf, "Please open an issue at https://github.com/Tormak9970/Svunes/issues", 2);
 
         let dialog = app_handle.dialog()
-          .message("Check your log file for more information, and please open an issue at https://github.com/Tormak9970/Tunistic/issues")
+          .message("Check your log file for more information, and please open an issue at https://github.com/Tormak9970/Svunes/issues")
           .title("Panic!")
           .ok_button_label("Ok");
 
