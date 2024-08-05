@@ -21,7 +21,6 @@
   "DELETED_VALUE": "deleted",
   "QUEUED_VALUE": "Queued",
   "KEEP_VALUE": "Keep",
-
   "ALBUM_LABEL": "Album",
   "RELEASE_LABEL": "Release",
   "TITLE_LABEL": "Title",
@@ -43,7 +42,6 @@
   "TRACK_LABEL": "Track",
   "COMPOSER_LABEL": "Composer",
   "SYSTEM_DEFAULT_LANGUAGE_LABEL": "System Default",
-
   "CANCEL_ACTION": "Cancel",
   "CLOSE_ACTION": "Close",
   "APPLY_ACTION": "Apply",
@@ -56,7 +54,6 @@
   "NO_ACTION": "No",
   "OK_ACTION": "Ok",
   "HELP_ACTION": "Help",
-
   "NEW_PLAYLIST_ACTION": "New Playlist",
   "QUEUE_ACTION": "Queue",
   "CAR_MODE_ACTION": "Car Mode",
@@ -85,7 +82,6 @@
   "DELETE_FROM_DEVICE_ACTION": "Delete from Device",
   "SELECT_ALL_ACTION": "Select All",
   "CLEAR_QUEUE_ACTION": "Clear Queue",
-  
   "ALBUM_COVER_RESULTS_TITLE": "Album Cover Results",
   "ALBUM_INFO_RESULTS_TITLE": "Album Info Results",
   "SORT_ORDER_TITLE": "Sort Order",
@@ -122,13 +118,12 @@
   "MORE_FROM_TITLE": "More from",
   "BULK_EDITING_TITLE": "Bulk Editing {count} Songs",
   "RESET_CONFIRM_TITLE": "Are you sure?",
-  "SVUNES_RESTART_TITLE": "Svunes will now restart",
+  "TUNISTIC_RESTART_TITLE": "Tunistic will now restart",
   "FAVORITES_PLAYLIST_TITLE": "Favorites",
   "HOME_TITLE": "Home",
   "HELP_TRANSLATE_TITLE": "Help Translate",
   "TRANSLATION_CREDITS_TITLE": "Translation Credits",
   "PLAYLIST_NAME_TITLE": "Playlist Name",
-
   "SEARCHING_MESSAGE": "Searching",
   "SAVING_SETTINGS_MESSAGE": "Saving Settings",
   "PICK_FROM_DEVICE_MESSAGE": "Pick from device",
@@ -176,11 +171,10 @@
   "SONG_TITLE_REQUIRED_MESSAGE": "Title is required",
   "TRACK_MUST_BE_NUMBER_MESSAGE": "Track must be a number",
   "YEAR_MUST_BE_NUMBER_MESSAGE": "Year must be a number",
-  "SVUNES_RESTART_MESSAGE": "Svunes needs to restart to apply your changes. Please click ok to restart.",
+  "TUNISTIC_RESTART_MESSAGE": "Tunistic needs to restart to apply your changes. Please click ok to restart.",
   "RESTART_CONFIRM_MESSAGE": "Resetting your settings is irriversible! Are you sure you want to continue?",
   "LANGUAGE_NOT_SUPPORTED_MESSAGE": "This language is not supported yet!",
-  "HELP_TRANSLATE_MESSAGE": "Svunes does not currently support your system's language. If you'd like to help translate, it would be greatly appreciated",
-
+  "HELP_TRANSLATE_MESSAGE": "Tunistic does not currently support your system's language. If you'd like to help translate, it would be greatly appreciated",
   "FILTER_ONLY_TITLE": "Only songs with no title",
   "FILTER_ONLY_COVER": "Only songs with no cover",
   "FILTER_ONLY_ALBUM": "Only songs with no album",
@@ -188,16 +182,13 @@
   "FILTER_ONLY_ALBUM_ARTIST": "Only songs with no album artist",
   "FILTER_ONLY_GENRE": "Only songs with no genre",
   "FILTER_ONLY_YEAR": "Only songs with no year",
-
   "NOW_PLAYING_THEME_NORMAL": "Normal",
   "NOW_PLAYING_THEME_CARD": "Card",
   "NOW_PLAYING_THEME_SIMPLE": "Simple",
   "NOW_PLAYING_THEME_FULL": "Full",
-  
   "NOW_PLAYING_BACKGROUND_SOLID": "Solid",
   "NOW_PLAYING_BACKGROUND_GRADIENT": "Gradient",
   "NOW_PLAYING_BACKGROUND_BLUR": "Blur",
-
   "PARSER_PLACEHOLDER_VARIABLE_USE": "You can only use a variable once",
   "PARSER_PLACEHOLDER_CAVEAT": "can be used many times",
   "PARSER_TITLE_DEFINITION": "The track's title",
@@ -208,7 +199,6 @@
   "PARSER_GENRE_DEFINITION": "The track's genre",
   "PARSER_RELEASE_YEAR_DEFINITION": "The track's release year",
   "PARSER_PLACEHOLDER_DEFINITION": "A placeholder variable",
-
   "TIME_OPTION_5m_LABEL": "5 minutes",
   "TIME_OPTION_10m_LABEL": "10 minutes",
   "TIME_OPTION_15m_LABEL": "15 minutes",
@@ -217,7 +207,6 @@
   "TIME_OPTION_1h_LABEL": "1 hour",
   "TIME_OPTION_EOT_LABEL": "End of Track",
   "TIMER_SET_MESSAGE": "Timer Set",
-
   "SETTINGS_TITLE": "Settings",
   "SETTINGS_APPEARANCE_PAGE_DESC": "Customize the look of the app",
   "SETTINGS_NOW_PLAYING_PAGE_DESC": "Customize the now playing screen",
@@ -227,7 +216,6 @@
   "SETTINGS_LANGUAGE_PAGE_DESC": "Change the app's language",
   "SETTINGS_BACKUP_PAGE_DESC": "Backup, restore & reset your settings",
   "SETTINGS_ABOUT_PAGE_DESC": "Info about the app and developers",
-
   "SETTINGS_ABOUT_TITLE": "About",
   "SETTINGS_ABOUT_VERSION_LABEL": "Version",
   "SETTINGS_ABOUT_DEV_LABEL": "Developer",
@@ -241,7 +229,6 @@
   "SETTINGS_ABOUT_FAQ_DESC": "Get answers to common questions",
   "SETTINGS_ABOUT_LICENSING_LABEL": "Licensing",
   "SETTINGS_ABOUT_LICENSING_DESC": "GPL v3.0",
-
   "SETTINGS_APPEARANCE_TITLE": "Appearance",
   "SETTINGS_APPEARANCE_THEME_LABEL": "Theme",
   "SETTINGS_APPEARANCE_APP_THEME_LABEL": "App Theme",
@@ -253,19 +240,16 @@
   "SETTINGS_APPEARANCE_PALETTE_LIGHT": "Light",
   "SETTINGS_APPEARANCE_OLED_LABEL": "OLED Dark",
   "SETTINGS_APPEARANCE_OLED_DESC": "Use an all black theme for the app",
-
   "SETTINGS_AUDIO_TITLE": "Audio",
   "SETTINGS_AUTO_PLAY_LABEL": "Auto Play",
   "SETTINGS_AUDIO_CONNECTIONS_LABEL": "Audio Connections",
   "SETTINGS_AUDIO_CONNECTIONS_DESC": "Automatically start playback when an audio devices is connected, and stop it when one disconnects",
-
   "SETTINGS_LANGUAGE_TITLE": "Language",
   "SETTINGS_LANGUAGE_CHANGE_LABEL": "Change Language",
   "SETTINGS_LANGUAGE_TRANSLATE_LABEL": "Translate",
   "SETTINGS_LANGUAGE_TRANSLATE_DESC": "Help translate the app into your language",
   "SETTINGS_LANGUAGE_CREDITS_LABEL": "Credits",
   "SETTINGS_LANGUAGE_CREDITS_DESC": "View the credits for the translations",
-
   "SETTINGS_BACKUP_TITLE": "Backup & Restore",
   "SETTINGS_BACKUP_LABEL": "Backup",
   "SETTINGS_BACKUP_DESC": "Creates a backup of the app's settings",
@@ -273,7 +257,6 @@
   "SETTINGS_RESTORE_DESC": "Restore the app's settings from a backup file",
   "SETTINGS_RESET_LABEL": "Reset Settings",
   "SETTINGS_RESET_DESC": "Resets the app's settings back to default",
-
   "SETTINGS_SONG_FILTERING_TITLE": "Song Filtering",
   "SETTINGS_SONG_FILTERING_MUSIC_FOLDER_LABEL": "Music Folders",
   "SETTINGS_SONG_FILTERING_MUSIC_FOLDER_DESC": "Edit the list of folders music is loaded from",
@@ -283,7 +266,6 @@
   "SETTINGS_SONG_FILTERING_ADVANCED_LABEL": "Advanced",
   "SETTINGS_SONG_FILTERING_MAX_LENGTH_LABEL": "Max Song Length",
   "SETTINGS_SONG_FILTERING_MAX_LENGTH_DESC": "Filters out songs that are longer than the provided value (in minutes)",
-
   "SETTINGS_PERSONALIZE_TITLE": "Personalize",
   "SETTINGS_PERSONALIZE_HOME_LABEL": "Home",
   "SETTINGS_PERSONALIZE_SUGGESTIONS_LABEL": "Show Suggestions",
@@ -293,7 +275,6 @@
   "SETTINGS_PERSONALIZE_LIBRARY_LABEL": "Library",
   "SETTINGS_PERSONALIZE_CATEGORIES_LABEL": "Library Categories",
   "SETTINGS_PERSONALIZE_CATEGORIES_DESC": "Customize the categories displayed and their order",
-
   "SETTINGS_NOW_PLAYING_TITLE": "Now Playing",
   "SETTINGS_NOW_PLAYING_THEME_LABEL": "Now Playing Theme",
   "SETTINGS_NOW_PLAYING_BACKGROUND_LABEL": "Background Type",

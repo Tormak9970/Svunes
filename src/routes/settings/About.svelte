@@ -19,11 +19,11 @@
     <!-- svelte-ignore missing-declaration -->
     <TextSetting label={$t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={InfoOutline} />
     <TextSetting label={$t("SETTINGS_ABOUT_DEV_LABEL")} description="Travis Lane" icon={Person} />
-    <ButtonSetting label={$t("SETTINGS_ABOUT_CHANGELOG_LABEL")} description={$t("SETTINGS_ABOUT_CHANGELOG_DESC")} icon={EditDocument} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic/blob/main/CHANGELOG.md")} />
-    <ButtonSetting label={$t("SETTINGS_ABOUT_GITHUB_LABEL")} description={$t("SETTINGS_ABOUT_GITHUB_DESC")} icon={Star} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic")} />
-    <ButtonSetting label={$t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} description={$t("SETTINGS_ABOUT_BUG_REPORT_DESC")} icon={BugReport} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic/issues/new/choose")} />
-    <ButtonSetting label={$t("SETTINGS_ABOUT_FAQ_LABEL")} description={$t("SETTINGS_ABOUT_FAQ_DESC")} icon={Help} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic?tab=readme-ov-file#frequently-asked-questions")} />
-    <ButtonSetting label={$t("SETTINGS_ABOUT_LICENSING_LABEL")} description={$t("SETTINGS_ABOUT_LICENSING_DESC")} icon={License} on:click={() => shell.open("https://github.com/Tormak9970/Tunistic/blob/main/LICENSE")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_CHANGELOG_LABEL")} description={$t("SETTINGS_ABOUT_CHANGELOG_DESC")} icon={EditDocument} on:click={() => shell.open("https://github.com/Tormak9970/Svunes/blob/main/CHANGELOG.md")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_GITHUB_LABEL")} description={$t("SETTINGS_ABOUT_GITHUB_DESC")} icon={Star} on:click={() => shell.open("https://github.com/Tormak9970/Svunes")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_BUG_REPORT_LABEL")} description={$t("SETTINGS_ABOUT_BUG_REPORT_DESC")} icon={BugReport} on:click={() => shell.open("https://github.com/Tormak9970/Svunes/issues/new/choose")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_FAQ_LABEL")} description={$t("SETTINGS_ABOUT_FAQ_DESC")} icon={Help} on:click={() => shell.open("https://github.com/Tormak9970/Svunes?tab=readme-ov-file#frequently-asked-questions")} />
+    <ButtonSetting label={$t("SETTINGS_ABOUT_LICENSING_LABEL")} description={$t("SETTINGS_ABOUT_LICENSING_DESC")} icon={License} on:click={() => shell.open("https://github.com/Tormak9970/Svunes/blob/main/LICENSE")} />
   </span>
 </SettingsBody>
 

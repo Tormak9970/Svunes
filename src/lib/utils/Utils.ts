@@ -5,7 +5,7 @@
  * @param immediate Whether to run the function immediately, then debounce, or debounce from the start.
  * @returns The debounced function.
  */
-export function debounce(func: any, wait:number, immediate?:boolean) {
+export function debounce(func: any, wait:number, immediate?: boolean) {
   let timeout:any|null;
 
   return function (...args: any[]) {
@@ -19,6 +19,52 @@ export function debounce(func: any, wait:number, immediate?:boolean) {
     timeout = setTimeout(later, wait);
     
     if (callNow) func(...args);
+  }
+}
+
+/**
+ * Throttles a function to only run every provided interval. From underscore souce code.
+ * @param func The function to throttle.
+ * @param wait How long to wait before running the function again.
+ * @param immediate Whether to run the function immediately or not. 
+ * @returns The throttled function.
+ */
+export function throttle(func: any, wait: number, immediate = false) {
+  let context: any, args: any, result: any;
+  let timeout: any = null;
+  let previous: any = 0;
+
+  const later = function() {
+    previous = immediate === false ? 0 : new Date();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) context = args = null;
+  };
+
+  return function() {
+    const now = new Date();
+    if (!previous && immediate === false) previous = now;
+    // @ts-ignore
+    const remaining = wait - (now - previous);
+    // @ts-ignore
+    context = this;
+    args = arguments;
+
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+
+      previous = now;
+      result = func.apply(context, args);
+
+      if (!timeout) context = args = null;
+    } else if (!timeout && immediate !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+
+    return result;
   }
 }
 

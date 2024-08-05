@@ -51,7 +51,7 @@ export type SelectedAlbum = {
  */
 export class ApiController {
   private static readonly TIMEOUT = 5000;
-  private static readonly USER_AGENT = `dev.tormak.tunistic/${APP_VERSION} ( https://tunistic.org )`;
+  private static readonly USER_AGENT = `dev.travislane.svunes/${APP_VERSION} ( https://svunes.org )`;
 
   private static coverCacheDir: string;
 

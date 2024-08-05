@@ -259,7 +259,7 @@ export class SettingsController {
     }
 
     let currentContents: any = JSON.parse(contents);
-    if (currentContents.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.tunistic") {
+    if (currentContents.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.svunes") {
       get(showErrorSnackbar)({ message: t("INVALID_BACKUP_FILE_MESSAGE"), faster: true });
       LogController.error("Backup did not contain the FILE_SIG.");
     }

@@ -98,7 +98,7 @@ export type ArtistMetadata = {
 }
 
 export type Settings = {
-  FILE_SIG_DO_NOT_EDIT: "dev.travislane.tunistic";
+  FILE_SIG_DO_NOT_EDIT: "dev.travislane.svunes";
   version: string;
 
   palette: Palette;
@@ -179,7 +179,7 @@ export type Settings = {
 const FAVORITES_PLAYLIST = new Playlist(hash64("Favorites"), false, "Favorites", "", [], false, undefined, undefined, 0);
 
 const DEFAULT_SETTINGS_MOBILE: Settings = {
-  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
+  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.svunes",
   "version": "",
   "palette": "Auto",
   "useOledPalette": false,
@@ -266,7 +266,7 @@ const DEFAULT_SETTINGS_MOBILE: Settings = {
   }
 };
 const DEFAULT_SETTINGS_DESKTOP: Settings = {
-  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.tunistic",
+  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.svunes",
   "version": "",
   "palette": "Auto",
   "useOledPalette": false,

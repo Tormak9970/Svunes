@@ -48,7 +48,7 @@ export class CoverArtApi {
    */
   private async makeRequest<T>(url: string): Promise<T | Error> {
     const options = {
-      timeout: this.timeout,
+      signal: AbortSignal.timeout(this.timeout),
       headers: {
         'User-Agent': this.userAgent,
         'Accept': `application/json`

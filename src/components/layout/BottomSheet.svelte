@@ -63,24 +63,24 @@
 
   function dragHandler({ detail }: any) {
     console.log(detail);
-      // const { active, movement: [_, y] } = detail;
+    // const { active, movement: [_, y] } = detail;
 
-      // draggingIndex = originalIndex;
-      // const curIndex = newOrder.indexOf(originalIndex);
-      // const curRow = clamp(Math.round((originalIndex * entryHeight + y) / entryHeight), 0, songs.length - 1);
-      // newOrder = swap(newOrder, curIndex, curRow);
-      
-      // dragHeight = y;
+    // draggingIndex = originalIndex;
+    // const curIndex = newOrder.indexOf(originalIndex);
+    // const curRow = clamp(Math.round((originalIndex * entryHeight + y) / entryHeight), 0, songs.length - 1);
+    // newOrder = swap(newOrder, curIndex, curRow);
+    
+    // dragHeight = y;
 
-      // if (!active) {
-      //   draggingIndex = -1;
-      //   songs = newOrder.map((index) => songs[index]);
-      //   newOrder = songs.map((_, i) => i);
-      //   $playlistsMap[playlistId].songIds = songs.map((song) => song.id);
-      //   $playlists = [ ...$playlists ];
-      //   dragHeight = 0;
-      // }
-    }
+    // if (!active) {
+    //   draggingIndex = -1;
+    //   songs = newOrder.map((index) => songs[index]);
+    //   newOrder = songs.map((_, i) => i);
+    //   $playlistsMap[playlistId].songIds = songs.map((song) => song.id);
+    //   $playlists = [ ...$playlists ];
+    //   dragHeight = 0;
+    // }
+  }
 
   /**
    * Handles drag end.
@@ -117,7 +117,7 @@
 <dialog
   class="m3-container"
   class:moving-back={isMovingBack}
-  style="max-height: {height}px"
+  style:max-height="{height}px"
   use:open
   use:outroClass
   on:cancel|preventDefault={() => dispatch("close", "browser")}
@@ -128,7 +128,7 @@
 >
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
-    style="padding: {padding}"
+    style:padding={padding}
     on:touchstart={(e) => onDragStart(e.touches[0].clientY)}
     use:drag on:drag={dragHandler}
   >
@@ -202,11 +202,6 @@
     }
     100% {
       background-color: transparent;
-    }
-  }
-  @media (forced-colors: active) {
-    .handle {
-      background-color: canvastext;
     }
   }
 </style>

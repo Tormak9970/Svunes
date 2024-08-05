@@ -29,7 +29,7 @@
 
     if (file && file.path !== "") {
       await SettingsController.applyBackup(file.path);
-      DialogController.message($t("TUNISTIC_RESTART_TITLE"), $t("TUNISTIC_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
+      DialogController.message($t("SVUNES_RESTART_TITLE"), $t("SVUNES_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
         process.relaunch();
       });
     }
@@ -61,7 +61,7 @@
     DialogController.ask($t("RESET_CONFIRM_TITLE"), $t("RESTART_CONFIRM_MESSAGE"), $t("YES_ACTION"), $t("NO_ACTION")).then(async (shouldProceed: boolean) => {
       if (shouldProceed) {
         await SettingsController.resetSettings();
-        DialogController.message($t("TUNISTIC_RESTART_TITLE"), $t("TUNISTIC_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
+        DialogController.message($t("SVUNES_RESTART_TITLE"), $t("SVUNES_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
           process.relaunch();
         });
       }

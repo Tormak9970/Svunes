@@ -71,7 +71,7 @@
 
 <ViewContainer>
   <div slot="header">
-    <ViewHeader title="Tunistic" highlight={highlight}>
+    <ViewHeader title="Svunes" highlight={highlight}>
       <div slot="left">
         <!-- svelte-ignore missing-declaration -->
         {#if IS_MOBILE}
