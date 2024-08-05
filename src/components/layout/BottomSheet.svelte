@@ -46,7 +46,7 @@
 
     $dragHeight = my;
     
-    if (($actualHeight - oy) / oy >= closeThreshold && !active) {
+    if (($actualHeight - oy) / $actualHeight <= closeThreshold && !active) {
       close();
       return;
     }
@@ -68,19 +68,22 @@
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
   class="m3-container"
   class:leaving
   style:max-height="{$actualHeight - $dragHeight}px"
   use:open
   on:cancel|preventDefault={close}
-  on:mouseup={close}
+  on:click|self={close}
   bind:this={dialogElement}
+  use:drag on:drag={dragHandler}
 >
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     style:padding={padding}
-    use:drag on:drag={dragHandler}
+    class="sheet-container"
+    on:click|stopImmediatePropagation
   >
     <div class="handle-container" >
       <div class="handle" />
@@ -114,6 +117,9 @@
   dialog:global(.leaving)::backdrop {
     background-color: transparent;
     animation: backdropReverse 200ms;
+  }
+  .sheet-container {
+    touch-action: auto;
   }
   .handle-container {
     display: flex;
