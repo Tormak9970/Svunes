@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
+  import { onMount } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import Button from "./Button.svelte";
 
@@ -17,34 +18,48 @@
   export let open = false;
   $: menuElement && (menuElement.open = open);
 
-  function onMouseUp(e: Event) {
-    if (e.target !== buttonElement) open = false;
-  }
-
   function onClick(e: Event) {
     if (!buttonElement) buttonElement = e.target as HTMLButtonElement;
     if (!menuElement.anchorElement) menuElement.anchorElement = buttonElement;
     open = !open;
   }
 
-</script>
+  onMount(() => {
+    const style = document.createElement("style");
+    style.innerHTML = '.items { scrollbar-color: rgb(var(--m3-scheme-primary)) transparent; scrollbar-width: thin; }';
+    menuElement.shadowRoot?.appendChild(style);
 
-<svelte:window on:mouseup={onMouseUp} />
+    open = false;
+  });
+</script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   class="container"
-  on:click|stopPropagation
-  on:mousedown|stopPropagation
+  on:click|stopImmediatePropagation
+  on:mousedown|stopImmediatePropagation
   style:--md-menu-container-color="rgb(var(--m3-scheme-surface-container))"
   style:--md-menu-item-container-color="rgb(var(--m3-scheme-surface-container))"
   style:--md-menu-item-selected-container-color="rgb(var(--m3-scheme-secondary-container))"
 >
-  <Button type="text" iconType="full" size={size} iconSize={iconSize} on:click={onClick} extraOptions={extraOptions}>
+  <Button
+    type="text"
+    iconType="full"
+    size={size}
+    iconSize={iconSize}
+    on:click={onClick}
+    extraOptions={extraOptions}
+  >
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
-  <md-menu bind:this={menuElement} anchor-corner={"end-end"} menu-corner={"start-end"} positioning="popover">
+  <md-menu
+    bind:this={menuElement}
+    anchor-corner={"end-end"}
+    menu-corner={"start-end"}
+    positioning="popover"
+    on:closing={() => open = false}
+  >
     <slot />
   </md-menu>
 </div>

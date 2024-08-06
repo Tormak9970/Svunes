@@ -1,7 +1,10 @@
 import { Album, Song } from "@models";
+import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
 import { t as translate } from "@stores/Locale";
 import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
 import { get } from "svelte/store";
+import { bulkEditSongIds } from "../../stores/Select";
+import { backFromSidePanel } from "../utils";
 import { AppController } from "./AppController";
 import { QueueController } from "./QueueController";
 import { DialogController } from "./utils/DialogController";
@@ -200,6 +203,17 @@ export class EditController {
 
     DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numSongsMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then(async (shouldContinue) => {
       if (shouldContinue) {
+        const panel = get(desktopSidePanel);
+        const panelProps = get(sidePanelProps);
+        const bulkSongIds = get(bulkEditSongIds);
+
+        if (panel === SidePanels.SONG_DETAILS && songIds.includes(panelProps.id)) backFromSidePanel();
+        if (panel === SidePanels.SONG_EDIT && songIds.includes(panelProps.id)) backFromSidePanel();
+        if (panel === SidePanels.SONG_BULK_EDIT && bulkSongIds.some((id) => songIds.includes(id))) {
+          backFromSidePanel();
+          bulkEditSongIds.set([]);
+        }
+
         const filePaths: string[] = [];
         const songList = get(songs);
         const playlistList = get(playlists);
@@ -261,6 +275,8 @@ export class EditController {
 
     DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numSongsMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then(async (shouldContinue) => {
       if (shouldContinue) {
+        if (get(desktopSidePanel) === SidePanels.ALBUM_EDIT && albumNames.includes(get(sidePanelProps).key)) backFromSidePanel();
+
         const filePaths: string[] = [];
         const albumList = get(albums);
         const songList = get(songs);
@@ -335,6 +351,8 @@ export class EditController {
 
     DialogController.ask(t("CANT_BE_UNDONE_TITLE"), `${t("CONFIRM_DELETE_MESSAGE")} ${numPlaylistMessage}?`, t("YES_ACTION"), t("NO_ACTION")).then((shouldContinue) => {
       if (shouldContinue) {
+        if (get(desktopSidePanel) === SidePanels.PLAYLIST_EDIT && playlistIds.includes(get(sidePanelProps).id)) backFromSidePanel();
+
         const playlistList = get(playlists);
         const nowPlayingName = get(nowPlayingList);
         

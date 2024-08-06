@@ -39,6 +39,7 @@ export function goToBulkEdit() {
     return;
   }
 
+  sidePanelProps.set({});
   desktopSidePanel.set(SidePanels.SONG_BULK_EDIT);
 }
 
@@ -68,4 +69,12 @@ export function goToPlaylistEdit(playlistId: string) {
 
   sidePanelProps.set({ id: playlistId });
   desktopSidePanel.set(SidePanels.PLAYLIST_EDIT);
+}
+
+/**
+ * Handles going back from a side panel.
+ */
+export function backFromSidePanel() {
+  desktopSidePanel.set(SidePanels.NONE);
+  sidePanelProps.set({});
 }

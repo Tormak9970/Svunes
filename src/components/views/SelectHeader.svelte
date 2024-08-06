@@ -9,6 +9,7 @@
   import { bulkEditSongIds, selected } from "@stores/Select";
   import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songIdsToParse, songs } from "@stores/State";
   import { View } from "@types";
+  import { goToBulkEdit } from "@utils";
   import { location, push } from "svelte-spa-router";
   import { fly } from "svelte/transition";
 
@@ -321,7 +322,7 @@
   /**
    * Shows the bulk edit page.
    */
-  function goToBulkEdit() {
+  function bulkEdit() {
     $bulkEditSongIds = getSongsFromSelected();
     goToBulkEdit();
     menuIsOpen = false;
@@ -381,7 +382,7 @@
       {#if !$showQueue}
         <MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
       {/if}
-      <MenuItem on:click={goToBulkEdit}>{$t("BULK_EDIT_ACTION")}</MenuItem>
+      <MenuItem on:click={bulkEdit}>{$t("BULK_EDIT_ACTION")}</MenuItem>
       <MenuItem on:click={goToInfoParser}>{$t("INFO_PARSER_ACTION")}</MenuItem>
       <MenuItem on:click={share}>{$t("SHARE_ACTION")}</MenuItem>
       {#if $location !== "/artists" && !$showQueue}

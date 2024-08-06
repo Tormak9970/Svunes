@@ -2,14 +2,17 @@
   import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
   import { ApiController, AppController, EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
-  import { BackArrow, PageViewOutlined, TravelExplore } from "@icons";
+  import { PageViewOutlined, TravelExplore } from "@icons";
   import { Button, NumberField, TextField } from "@interactables";
+  import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions, showSearchingApi } from "@stores/Modals";
   import { showWritingChanges } from "@stores/Overlays";
   import { albumsMap, showErrorSnackbar, showInfoSnackbar } from "@stores/State";
+  import { backFromSidePanel } from "@utils";
   import { onMount } from "svelte";
   import { pop, replace } from "svelte-spa-router";
+  import SidePanelBackButton from "../../components/desktop/SidePanelBackButton.svelte";
 
   export let params: { key?: string } = {};
   $: album = params.key ? $albumsMap[params.key] : null;
@@ -46,9 +49,11 @@
    * Closes the edit overlay.
    */
   function back() {
+    backFromSidePanel();
+
     if (albumNameChanged) {
       replace(`/albums/${albumName}`);
-    } else {
+    } else if (!$isLandscape) {
       pop();
     }
   }
@@ -151,9 +156,7 @@
   <span slot="header">
     <OverlayHeader highlight={highlight}>
       <span slot="left">
-        <Button type="text" iconType="full" on:click={back}>
-          <Icon icon={BackArrow} width="20px" height="20px" />
-        </Button>
+        <SidePanelBackButton back={back} />
       </span>
       <span slot="right" style="display: flex; align-items: center;">
         <Button type="text" iconType="full" on:click={searchImage}>

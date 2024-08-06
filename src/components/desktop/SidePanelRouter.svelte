@@ -1,12 +1,15 @@
 <script lang="ts">
   import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
-  import type { ComponentType } from "svelte";
+  import { bulkEditSongIds } from "@stores/Select";
+  import { onDestroy, onMount, type ComponentType } from "svelte";
+  import type { Unsubscriber } from "svelte/store";
   import AlbumEdit from "../../routes/albums/Edit.svelte";
   import PlaylistEdit from "../../routes/playlists/Edit.svelte";
   import SongBulkEdit from "../../routes/songs/BulkEdit.svelte";
   import SongDetails from "../../routes/songs/Details.svelte";
   import SongEdit from "../../routes/songs/Edit.svelte";
 
+  let sidePanelUnsub: Unsubscriber;
 
   const routeMap: Record<SidePanels, ComponentType | undefined> = {
     0: undefined,
@@ -16,6 +19,16 @@
     4: AlbumEdit,
     5: PlaylistEdit
   };
+
+  onMount(() => {
+    sidePanelUnsub = desktopSidePanel.subscribe((panel) => {
+      if (panel !== SidePanels.SONG_BULK_EDIT) $bulkEditSongIds = [];
+    });
+  });
+
+  onDestroy(() => {
+    if (sidePanelUnsub) sidePanelUnsub();
+  });
 </script>
 
 <div class="side-panel">

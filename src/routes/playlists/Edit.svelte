@@ -1,13 +1,15 @@
 <script lang="ts">
-  import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
+  import { DetailsArtPicture, OverlayBody, OverlayHeader } from "@component-utils";
   import { EditController, LogController } from "@controllers";
-  import { BackArrow } from "@icons";
   import { Button, TextField } from "@interactables";
+  import { desktopSidePanel, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { playlists, playlistsMap, showErrorSnackbar } from "@stores/State";
+  import { backFromSidePanel } from "@utils";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
+  import SidePanelBackButton from "../../components/desktop/SidePanelBackButton.svelte";
 
   export let params: { id?: string } = {};
   $: playlist = params.id ? $playlistsMap[params.id] : null;
@@ -35,6 +37,11 @@
    * Closes the edit overlay.
    */
   function back() {
+    if ($desktopSidePanel === SidePanels.PLAYLIST_EDIT) {
+      backFromSidePanel();
+      return;
+    }
+    
     pop();
   }
 
@@ -75,9 +82,7 @@
   <span slot="header">
     <OverlayHeader highlight={false}>
       <span slot="left">
-        <Button type="text" iconType="full" on:click={back}>
-          <Icon icon={BackArrow} width="20px" height="20px" />
-        </Button>
+        <SidePanelBackButton back={back} />
       </span>
       <span slot="right">
         <Button type="text" disabled={!canSave} on:click={saveChanges}>
