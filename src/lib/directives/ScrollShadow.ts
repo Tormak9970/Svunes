@@ -6,13 +6,26 @@ type ScrollShadowParams = {
    * The CSS variable to use as the scroll shadow's background.
    */
   background?: string;
+  /**
+   * Whether or not to show the shadow.
+   */
+  enabled?: boolean;
 }
 
 /**
  * A Svelte directive for applying scroll shadow to elements.
  */
-export const scrollShadow: Action<HTMLElement, ScrollShadowParams | undefined> = (node: HTMLElement, props = { background: "--m3-scheme-surface-container-high" }) => {
+export const scrollShadow: Action<HTMLElement, ScrollShadowParams | undefined> = (node: HTMLElement, props = { background: "--m3-scheme-surface-container-high", enabled: true }) => {
   const parent = node.parentElement!;
+
+  const showShadow = writable(props.enabled ?? true);
+  const showShadowUnsub = showShadow.subscribe((show: boolean) => {
+    if (show) {
+      parent.classList.add("scroll-shadow");
+    } else {
+      parent.classList.remove("scroll-shadow");
+    }
+  });
 
   const useBackground = writable(props.background ?? "--m3-scheme-surface-container-high");
   const useBackgroundUnsub = useBackground.subscribe((background: string) => {
@@ -45,7 +58,6 @@ export const scrollShadow: Action<HTMLElement, ScrollShadowParams | undefined> =
   });
   
   node.addEventListener("scroll", scrollHandler);
-  parent.classList.add("scroll-shadow");
   observer.observe(node);
 
 
@@ -58,13 +70,15 @@ export const scrollShadow: Action<HTMLElement, ScrollShadowParams | undefined> =
 
 
   return {
-    update(props = { background: "--m3-scheme-surface-container-high" }) {
+    update(props = { background: "--m3-scheme-surface-container-high", enabled: true }) {
+      showShadow.set(props.enabled ?? true);
       useBackground.set(props.background ?? "--m3-scheme-surface-container-high");
     },
     destroy() {
       node.removeEventListener("scroll", scrollHandler);
       observer.disconnect();
 
+      showShadowUnsub();
       useBackgroundUnsub();
       isOverflowingTopUnsub();
       isOverflowingBottomUnsub();
