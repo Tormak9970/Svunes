@@ -4,15 +4,17 @@
   import { push } from "svelte-spa-router";
 
   import { RustInterop } from "@controllers";
-  import type { Genre } from "@models";
-  import { TILTED_DIMENSIONS } from "@utils";
-
   import { CardClickable, Lazy, MusicNotePlaceholder } from "@layout";
+  import type { Genre } from "@models";
   import { t } from "@stores/Locale";
+  import { TILTED_DIMENSIONS } from "@utils";
+  import { getContextMenuItems } from "./GenreOptions.svelte";
   
 
   export let genre: Genre;
   $: convertedPath = genre.imagePreviewPath ? convertFileSrc(genre.imagePreviewPath) : "";
+  
+  $: ctxMenuItems = getContextMenuItems(genre, $t);
 
   $: backgroundColor = genre.backgroundColor ?? "var(--m3-scheme-on-primary)";
   $: textColor = genre.textColor ?? "var(--m3-scheme-primary)";
@@ -33,7 +35,15 @@
   });
 </script>
 
-<CardClickable type="transparent" on:click={goToGenre} extraOptions={{ style: "width: 100%; max-width: 200px; height: 100px; padding: 5px;" }}>
+<CardClickable
+  type="transparent"
+  ctxMenuId="genre-options"
+  ctxMenuItems={ctxMenuItems ?? []}
+  on:click={goToGenre}
+  extraOptions={{
+    style: "width: 100%; max-width: 200px; height: 100px; padding: 5px;"
+  }}
+>
   <div class="genre-entry" style:--background-color={backgroundColor} style:--text-color={textColor}>
     <div class="info-container">
       <div class="font-label name">{genre.name}</div>
