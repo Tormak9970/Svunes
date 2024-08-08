@@ -31,6 +31,8 @@
 </script>
 
 <script lang="ts">
+	import { scrollShadow } from "@directives";
+	import { isLandscape } from "@stores/Layout";
 	import { debounce } from "@utils";
 	import { onMount, tick } from "svelte";
 
@@ -210,6 +212,7 @@
     style="height: {height}; --img-width: {itemWidth}px; --img-height: {itemHeight}px; --column-gap: {columnGap}px; --row-gap: {rowGap}px;"
     class="styled-scrollbar"
     on:scroll={handleScroll}
+    use:scrollShadow={{ enabled: $isLandscape, background: "--m3-scheme-surface-container" }}
     bind:offsetHeight={viewportHeight}
     bind:offsetWidth={viewportWidth}
     bind:this={viewport}

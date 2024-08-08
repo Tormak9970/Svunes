@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Lazy, MusicNotePlaceholder } from "@layout";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
 
   export let src: string;
   export let width: number;
@@ -12,12 +11,8 @@
 
 <div style="width: {width}px; height: {height}px; overflow: hidden; border-radius: {borderRadius}; margin-left: {marginLeft};">
   {#if src !== ""}
-    <Lazy height={height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <img src="{src}" style="width: {width}px; height: {height}px;" draggable="false" on:error={onError} />
-      <span slot="placeholder">
-        <MusicNotePlaceholder width={iconSize} height={iconSize} />
-      </span>
+    <Lazy height={height} src="{src}">
+      <MusicNotePlaceholder width={iconSize} height={iconSize} />
     </Lazy>
   {:else}
     <MusicNotePlaceholder width={iconSize} height={iconSize} />

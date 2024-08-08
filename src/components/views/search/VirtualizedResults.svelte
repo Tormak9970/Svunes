@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { scrollShadow } from "@directives";
+	import { isLandscape } from "@stores/Layout";
 	import { onMount, tick } from "svelte";
 
 	// * Component Props.
@@ -157,6 +159,7 @@
   <svelte-virtual-list-viewport
     style="height: {height};"
     class="styled-scrollbar"
+    use:scrollShadow={{ enabled: $isLandscape, background: "--m3-scheme-surface-container" }}
     on:scroll={handleScroll}
     bind:offsetHeight={viewportHeight}
     bind:this={viewport}

@@ -1,15 +1,21 @@
 <script lang="ts">
   import { ListEntry } from "@layout";
   import type { Artist } from "@models";
+  import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
+  import { getContextMenuItems } from "./ArtistOptions.svelte";
 
   export let artist: Artist;
   export let isSelectable = true;
 
   $: convertedPath = artist.imagePath ? convertFileSrc(artist.imagePath) : "";
   $: highlighted = $selected.includes(artist.name);
+  
+  $: selectCtxItems = getSelectContextMenuItems($t);
+  $: ctxMenuItems = getContextMenuItems(artist, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -36,4 +42,13 @@
   }
 </script>
 
-<ListEntry label={artist.name} convertedPath={convertedPath} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select} />
+<ListEntry
+  label={artist.name}
+  convertedPath={convertedPath}
+  highlighted={highlighted}
+  holdable={!$inSelectMode && isSelectable}
+  ctxMenuId="artist-options"
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+/>

@@ -287,7 +287,7 @@ a.m3-container {
   position: relative;
 }
 
-.overflow-top::before {
+.scroll-shadow.overflow-top::before {
   background: linear-gradient(
     to bottom,
     rgb(var(--scroll-shadow-color) / 0.8),
@@ -303,7 +303,7 @@ a.m3-container {
   pointer-events: none;
 }
 
-.overflow-bottom::after {
+.scroll-shadow.overflow-bottom::after {
   background: linear-gradient(
     to top,
     rgb(var(--scroll-shadow-color) / 0.8),

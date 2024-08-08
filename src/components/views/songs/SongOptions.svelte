@@ -1,12 +1,134 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import { AppController, EditController, QueueController } from "@controllers";
-  import { MenuItem } from "@layout";
+  import type { ContextMenuItem } from "@directives";
   import type { Song } from "@models";
-  import { t } from "@stores/Locale";
   import { showAddToPlaylist, songToAdd } from "@stores/Overlays";
   import { playlists, playlistsMap, songIdsToParse } from "@stores/State";
   import { goToSongDetails, goToSongEdit } from "@utils";
   import { location, push, replace } from "svelte-spa-router";
+  import { get } from "svelte/store";
+
+  const removeFromPlaylist = (songId: string) => {
+    const id = get(location).slice(11);
+    const playlist = get(playlistsMap)[id];
+
+    playlist.removeSong(songId);
+    
+    playlists.set([ ...get(playlists) ]);
+  }
+
+  const playNext = (songId: string) => QueueController.playSongsNext([songId]);
+  const queueSong = (songId: string) => QueueController.queueSongs([songId]);
+
+  const addToPlaylist = (songId: string) => {
+    songToAdd.set(songId);
+    showAddToPlaylist.set(true);
+  }
+
+  const goToAlbum = (album?: string) => push(`/albums/${album!}`);
+  const goToArtist = (artist?: string) => push(`/artists/${artist!}`);
+  const showDetails = (songId: string) => goToSongDetails(songId);
+  const showSongEdit = (songId: string) => goToSongEdit(songId);
+  const share = (songId: string) => AppController.share([songId]);
+
+  const showInfoParser = (songId: string) => {
+    songIdsToParse.set([ songId ]);
+    push("/metadata-parser");
+  }
+
+  const deleteSong = (songId: string) => {
+    EditController.deleteSongsFromDevice([songId]);
+    if (get(location).startsWith("/songs/")) replace("/songs");
+  }
+
+  export function getContextMenuItems(song: Song, translate: (key: string) => string, currentRoute: string, hideEditOption?: boolean): ContextMenuItem[] {
+    const items: ContextMenuItem[] = [];
+
+    if (currentRoute.startsWith("/playlists")) {
+      items.push({
+        id: "remove-from-playlist",
+        text: translate("REMOVE_FROM_PLAYLIST_ACTION"),
+        action: () => removeFromPlaylist(song.id),
+      });
+    }
+
+    items.push({
+      id: "play-next",
+      text: translate("PLAY_NEXT_ACTION"),
+      action: () => playNext(song.id),
+    });
+    items.push({
+      id: "queue",
+      text: translate("ADD_TO_QUEUE_ACTION"),
+      action: () => queueSong(song.id),
+    });
+    items.push({
+      id: "add-to-playlist",
+      text: translate("ADD_TO_PLAYLISTS_ACTION"),
+      action: () => addToPlaylist(song.id),
+    });
+    
+    items.push({
+      item: 'Separator'
+    });
+
+    items.push({
+      id: "view-details",
+      text: translate("DETAILS_ACTION"),
+      action: () => showDetails(song.id),
+    });
+
+    if (song.album) {
+      items.push({
+        id: "view-album",
+        text: translate("GO_TO_ALBUM_ACTION"),
+        action: () => goToAlbum(song.album),
+      });
+    }
+    
+    if (song.artist) {
+      items.push({
+        id: "view-artist",
+        text: translate("GO_TO_ARTIST_ACTION"),
+        action: () => goToArtist(song.artist),
+      });
+    }
+    
+    items.push({
+      item: 'Separator'
+    });
+
+    if (!hideEditOption) {
+      items.push({
+        id: "edit-song",
+        text: translate("EDIT_ACTION"),
+        action: () => showSongEdit(song.id),
+      });
+    }
+
+    items.push({
+      id: "parse-info",
+      text: translate("INFO_PARSER_ACTION"),
+      action: () => showInfoParser(song.id),
+    });
+    items.push({
+      id: "delete-song",
+      text: translate("DELETE_ACTION"),
+      action: () => deleteSong(song.id),
+    });
+    items.push({
+      id: "share-song",
+      text: translate("SHARE_ACTION"),
+      action: () => share(song.id),
+    });
+
+    return items;
+  }
+</script>
+
+<script lang="ts">
+  import { MenuItem } from "@layout";
+  import { t } from "@stores/Locale";
 
   export let menuIsOpen: boolean;
   export let song: Song;
@@ -18,120 +140,46 @@
   function closeOptions() {
     menuIsOpen = false;
   }
-
-  /**
-   * Removes this song from the current playlist.
-   */
-  function removeFromPlaylist() {
-    const id = $location.slice(11);
-    const playlist = $playlistsMap[id];
-
-    playlist.removeSong(song.id);
-    
-    $playlists = [ ...$playlists ];
-    closeOptions();
-  }
-
-  /**
-   * Plays this song next.
-   */
-  function playNext() {
-    QueueController.playSongsNext([song!.id]);
-    closeOptions();
-  }
-
-  /**
-   * Queues this song.
-   */
-  function queueSong() {
-    QueueController.queueSongs([song!.id]);
-    closeOptions();
-  }
-
-  /**
-   * Opens the add to playlist dialog with this song set to be added.
-   */
-  function addToPlaylist() {
-    $songToAdd = song!.id;
-    $showAddToPlaylist = true;
-    closeOptions();
-  }
-
-  /**
-   * Shows the song's album.
-   */
-  function goToAlbum() {
-    push(`/albums/${song!.album!}`);
-    closeOptions();
-  }
-
-  /**
-   * Shows the song's artist.
-   */
-  function goToArtist() {
-    push(`/artists/${song!.artist!}`);
-    closeOptions();
-  }
-
-  /**
-   * Shows the song details overlay.
-   */
-  function showDetails() {
-    goToSongDetails(song!.id);
-    closeOptions();
-  }
-
-  /**
-   * Shows the edit song overlay.
-   */
-  function showSongEdit() {
-    goToSongEdit(song!.id);
-    closeOptions();
-  }
-
-  /**
-   * Opens the platform's share ui.
-   */
-  function share() {
-    AppController.share([song!.id]);
-    closeOptions();
-  }
-
-  /**
-   * Shows the metadata parser.
-   */
-  function showInfoParser() {
-    menuIsOpen = false;
-    $songIdsToParse = [ song.id ];
-    push("/metadata-parser");
-  }
-
-  /**
-   * Prompts the user to confirm if they want to delete this song.
-   */
-  function deleteSong() {
-    EditController.deleteSongsFromDevice([song!.id]);
-    closeOptions();
-    if ($location.startsWith("/songs/")) replace("/songs");
-  }
 </script>
 
 {#if $location.startsWith("/playlists")}
-<MenuItem on:click={removeFromPlaylist}>Remove from Playlist</MenuItem>
+  <MenuItem on:click={() => { removeFromPlaylist(song.id); closeOptions(); }}>
+    {$t("REMOVE_FROM_PLAYLIST_ACTION")}
+  </MenuItem>
 {/if}
-<MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
-<MenuItem on:click={queueSong}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-<MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
+<MenuItem on:click={() => { playNext(song.id); closeOptions(); }}>
+  {$t("PLAY_NEXT_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { queueSong(song.id); closeOptions(); }}>
+  {$t("ADD_TO_QUEUE_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { addToPlaylist(song.id); closeOptions(); }}>
+  {$t("ADD_TO_PLAYLISTS_ACTION")}
+</MenuItem>
 {#if song?.album}
-  <MenuItem on:click={goToAlbum}>{$t("GO_TO_ALBUM_ACTION")}</MenuItem>
+  <MenuItem on:click={() => { goToAlbum(song.album); closeOptions(); }}>
+    {$t("GO_TO_ALBUM_ACTION")}
+  </MenuItem>
 {/if}
 {#if song?.artist}
-  <MenuItem on:click={goToArtist}>{$t("GO_TO_ARTIST_ACTION")}</MenuItem>
+  <MenuItem on:click={() => { goToArtist(song.artist); closeOptions(); }}>
+    {$t("GO_TO_ARTIST_ACTION")}
+  </MenuItem>
 {/if}
-<MenuItem on:click={showDetails}>{$t("DETAILS_ACTION")}</MenuItem>
+<MenuItem on:click={() => { showDetails(song.id); closeOptions(); }}>
+  {$t("DETAILS_ACTION")}
+</MenuItem>
 {#if !hideEditOption}
-<MenuItem on:click={showSongEdit}>{$t("EDIT_ACTION")}</MenuItem>
+  <MenuItem on:click={() => { showSongEdit(song.id); closeOptions(); }}>
+    {$t("EDIT_ACTION")}
+  </MenuItem>
 {/if}
-<MenuItem on:click={showInfoParser}>{$t("INFO_PARSER_ACTION")}</MenuItem>
-<MenuItem on:click={share}>{$t("SHARE_ACTION")}</MenuItem>
-<MenuItem on:click={deleteSong}>{$t("DELETE_ACTION")}</MenuItem>
+<MenuItem on:click={() => { showInfoParser(song.id); closeOptions(); }}>
+  {$t("INFO_PARSER_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { share(song.id); closeOptions(); }}>
+  {$t("SHARE_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { deleteSong(song.id); closeOptions(); }}>
+  {$t("DELETE_ACTION")}
+</MenuItem>

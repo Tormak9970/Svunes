@@ -102,7 +102,7 @@
     min-width: 17.5rem;
     max-width: 35rem;
     padding: 0;
-    overflow: auto;
+    overflow: hidden;
 
     position: relative;
   }

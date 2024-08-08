@@ -39,6 +39,7 @@ export function goToBulkEdit() {
     return;
   }
 
+  sidePanelProps.set({});
   desktopSidePanel.set(SidePanels.SONG_BULK_EDIT);
 }
 
@@ -54,4 +55,26 @@ export function goToAlbumEdit(albumName: string) {
 
   sidePanelProps.set({ key: albumName });
   desktopSidePanel.set(SidePanels.ALBUM_EDIT);
+}
+
+/**
+ * Displays the edit page for the provided playlist.
+ * @param playlistId The id of the playlist to edit.
+ */
+export function goToPlaylistEdit(playlistId: string) {
+  if (!get(isLandscape)) {
+    push(`/playlists/${playlistId}/edit`);
+    return;
+  }
+
+  sidePanelProps.set({ id: playlistId });
+  desktopSidePanel.set(SidePanels.PLAYLIST_EDIT);
+}
+
+/**
+ * Handles going back from a side panel.
+ */
+export function backFromSidePanel() {
+  desktopSidePanel.set(SidePanels.NONE);
+  sidePanelProps.set({});
 }

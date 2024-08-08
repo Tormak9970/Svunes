@@ -1,5 +1,6 @@
 <script lang="ts">
   import { LogController } from "@controllers";
+  import { scrollShadow } from "@directives";
   import { Button } from "@interactables";
   import { BottomSheet } from "@layout";
   import { t } from "@stores/Locale";
@@ -7,20 +8,12 @@
   import { selected } from "@stores/Select";
   import { albumsMap, artistsMap, genresMap, playlists, playlistsMap, selectedView, showInfoSnackbar } from "@stores/State";
   import { View } from "@types";
-  import { afterUpdate } from "svelte";
   import { location } from "svelte-spa-router";
-  import { fade } from "svelte/transition";
   import PlaylistEntry from "./PlaylistEntry.svelte";
   
-  let scrollContainer: HTMLDivElement;
   let selectedPlaylists: string[] = [];
 
   $: playlistToRender = $location.startsWith("/playlists") ? $playlists.filter((playlist) => playlist.name !== $playlistToAdd && !$selected.includes(playlist.name)) : $playlists;
-  let showShadow = true;
-
-  function handleScroll() {
-    showShadow = scrollContainer.clientHeight !== scrollContainer.scrollHeight && scrollContainer?.scrollHeight - scrollContainer?.scrollTop !== scrollContainer.clientHeight;
-  }
 
   /**
    * Gets the song ids from the current selection.
@@ -158,41 +151,42 @@
     $playlistToAdd = null;
     $selected = [];
   }
-
-  afterUpdate(() => {
-    if ($showAddToPlaylist) {
-      showShadow = scrollContainer.clientHeight !== scrollContainer.scrollHeight && scrollContainer?.scrollHeight - scrollContainer?.scrollTop !== scrollContainer.clientHeight;
-    }
-  });
 </script>
 
 <BottomSheet on:close={close} padding="0 0.5rem">
-  <div class="content-wrapper styled-scrollbar" bind:this={scrollContainer} on:scroll={handleScroll}>
-    <div class="content">
-      <Button type="tonal" on:click={setCreateNewPlaylist}>{$t("NEW_PLAYLIST_ACTION")}</Button>
-      <div class="playlists">
-        {#each playlistToRender as playlist}
-          <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
-        {/each}
+  <div class="scroll-wrapper">
+    <div class="content-wrapper styled-scrollbar" use:scrollShadow={{ background: "--m3-scheme-surface-container-low" }}>
+      <div class="content">
+        <Button type="tonal" on:click={setCreateNewPlaylist}>{$t("NEW_PLAYLIST_ACTION")}</Button>
+        <div class="playlists">
+          {#each playlistToRender as playlist}
+            <PlaylistEntry playlist={playlist} checked={selectedPlaylists.includes(playlist.id)} on:click={() => togglePlaylistInclude(playlist.id)} />
+          {/each}
+        </div>
+      </div>
+      <div class="done-container">
+        <Button type="filled" on:click={addToSelected}>{$t("DONE_ACTION")}</Button>
       </div>
     </div>
-    <div class="done-container">
-      <Button type="filled" on:click={addToSelected}>{$t("DONE_ACTION")}</Button>
-    </div>
-    {#if showShadow}
-      <div class="shadow" in:fade={{ duration: 200 }} />
-    {/if}
   </div>
 </BottomSheet>
 
 <style>
-  .content-wrapper {
+  .scroll-wrapper {
     width: 100%;
     height: 80vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
 
     position: relative;
+  }
+  .content-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+    position: relative;
+
+    user-select: none;
   }
 
   .content {
@@ -221,17 +215,5 @@
     bottom: 40px;
     left: 50%;
     translate: -50% 0%;
-  }
-
-  .shadow {
-    position: fixed;
-    pointer-events: none;
-
-    bottom: 0;
-    left: -0.5rem;
-
-    width: calc(100% + 1rem);
-    height: 40px;
-    background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(var(--m3-scheme-surface-container-low)) 100%);
   }
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { holdEvent } from "@directives";
+  import { contextMenu, holdEvent, type ContextMenuItem } from "@directives";
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
 
@@ -9,6 +9,8 @@
   export let highlight = false;
   export let holdable = true;
   export let type: "elevated" | "filled" | "outlined" | "transparent";
+  export let ctxMenuId = "disabled-menu";
+  export let ctxMenuItems: ContextMenuItem[] = [];
 
   /**
    * Notifies the parent when the user holds on the card.
@@ -21,6 +23,7 @@
 <button
   on:click|stopPropagation
   use:holdEvent={{ onHold: onHold, holdable: holdable, duration: 300 }}
+  use:contextMenu={{ id: ctxMenuId, items: ctxMenuItems, disabled: ctxMenuId === "disabled-menu" || ctxMenuItems.length === 0 }}
   class="m3-container type-{type}"
   {...extraOptions}
 >

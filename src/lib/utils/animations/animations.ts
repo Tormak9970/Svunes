@@ -71,28 +71,3 @@ export function sharedAxisTransition(node: Element, options: TransitionOptions &
     },
   };
 };
-
-/**
- * Directive that applies a "leaving" class to the element when it starts to exit.
- */
-export function outroClass(node: Element) {
-  const addClass = (e: Event) => {
-    if (!(e.target instanceof Element)) return;
-    e.target.classList.add("leaving");
-  };
-
-  const removeClass = (e: Event) => {
-    if (!(e.target instanceof Element)) return;
-    e.target.classList.remove("leaving");
-  };
-  
-  node.addEventListener("outrostart", addClass);
-  node.addEventListener("outroend", removeClass);
-
-  return {
-    destroy() {
-      node.removeEventListener("outrostart", addClass);
-      node.removeEventListener("outroend", removeClass);
-    },
-  };
-};

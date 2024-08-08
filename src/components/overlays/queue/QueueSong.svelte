@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
-  import { holdEvent } from "@directives";
+  import { contextMenu, holdEvent } from "@directives";
   import { MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
   import { Lazy, MusicNotePlaceholder } from "@layout";
@@ -8,14 +8,18 @@
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS, LIST_IMAGE_DIMENSIONS } from "@utils";
-  import QueueSongOptions from "./QueueSongOptions.svelte";
+  import { LIST_IMAGE_DIMENSIONS } from "@utils";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
+  import QueueSongOptions, { getContextMenuItems } from "./QueueSongOptions.svelte";
 
   export let song: Song;
   export let index: number;
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
+  
+  $: selectCtxItems = getSelectContextMenuItems($t);
+  $: ctxMenuItems = getContextMenuItems(song, index, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -46,7 +50,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<button class="m3-container queue-songs">
+<button class="m3-container queue-songs" use:contextMenu={{ id: "queue-options", items: highlight ? selectCtxItems : ctxMenuItems }}>
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
@@ -58,12 +62,8 @@
       <div class="left">
         <div class="album">
           {#if convertedPath !== ""}
-            <Lazy height={LIST_IMAGE_DIMENSIONS.height} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-              <!-- svelte-ignore a11y-missing-attribute -->
-              <img src="{convertedPath}" style="width: {LIST_IMAGE_DIMENSIONS.width}px; height: {LIST_IMAGE_DIMENSIONS.height}px;" draggable="false" on:error={onError} />
-              <span slot="placeholder">
-                <MusicNotePlaceholder />
-              </span>
+            <Lazy height={LIST_IMAGE_DIMENSIONS.height} src="{convertedPath}">
+              <MusicNotePlaceholder />
             </Lazy>
           {:else}
             <MusicNotePlaceholder />

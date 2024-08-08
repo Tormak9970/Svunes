@@ -1,15 +1,17 @@
 <script lang="ts">
   import { DetailsArtPicture, DetailsBody, Icon, OverlayHeader } from "@component-utils";
-  import { Album, Artist, BackArrow, Edit, FolderOpen, GraphEq, HardDrive2, LibraryMusic, MoreVert, Schedule, Sell, Tag, Today } from "@icons";
+  import { Album, Artist, Edit, FolderOpen, GraphEq, HardDrive2, LibraryMusic, MoreVert, Schedule, Sell, Tag, Today } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { songsMap } from "@stores/State";
   import DetailsField from "./DetailsField.svelte";
   
   import { isScrolled } from "@directives";
+  import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { goToSongEdit } from "@utils";
   import SongOptions from "@views/songs/SongOptions.svelte";
   import { pop } from "svelte-spa-router";
+  import SidePanelBackButton from "../../components/desktop/SidePanelBackButton.svelte";
   
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
@@ -36,9 +38,7 @@
   <span slot="header">
     <OverlayHeader highlight={highlight}>
       <span slot="left">
-        <Button type="text" iconType="full" on:click={back}>
-          <Icon icon={BackArrow} width="20px" height="20px" />
-        </Button>
+        <SidePanelBackButton back={back} />
       </span>
       <span slot="right" style="display: flex; flex-direction: row;">
         <Button type="text" iconType="full" on:click={showSongEdit}>
@@ -54,7 +54,7 @@
     </OverlayHeader>
   </span>
   <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
-    <div class="content-inner">
+    <div class="content-inner" style:width={$isLandscape ? "calc(100% - 0.5rem)" : undefined}>
       <DetailsArtPicture artPath={song?.artPath} />
       <div class="details">
         <DetailsField icon={Sell} headline={song?.title ?? $t("UNKOWN_VALUE")} />
@@ -79,7 +79,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     overflow-y: scroll;
     overflow-x: hidden;

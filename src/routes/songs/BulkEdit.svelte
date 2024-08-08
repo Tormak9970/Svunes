@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { DetailsArtPicture, Icon, OverlayBody, OverlayHeader } from "@component-utils";
+  import { DetailsArtPicture, OverlayBody, OverlayHeader } from "@component-utils";
   import { EditController, LogController } from "@controllers";
   import { isScrolled } from "@directives";
-  import { BackArrow } from "@icons";
   import { Button, TextField } from "@interactables";
   import type { Song } from "@models";
+  import { desktopSidePanel, isLandscape, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showWritingChanges } from "@stores/Overlays";
   import { bulkEditSongIds } from "@stores/Select";
   import { showErrorSnackbar, songsMap } from "@stores/State";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
+  import SidePanelBackButton from "../../components/desktop/SidePanelBackButton.svelte";
+  import { backFromSidePanel } from "../../lib/utils";
   
   let originalArtPath: string | undefined;
   let originalTitle: string | undefined;
@@ -84,6 +86,12 @@
    */
   function back() {
     $bulkEditSongIds = [];
+    
+    if ($desktopSidePanel === SidePanels.SONG_BULK_EDIT) {
+      backFromSidePanel();
+      return;
+    }
+
     pop();
   }
 
@@ -156,9 +164,7 @@
   <span slot="header">
     <OverlayHeader highlight={highlight}>
       <span slot="left" style="display: flex; align-items: center; gap: 10px;">
-        <Button type="text" iconType="full" on:click={back}>
-          <Icon icon={BackArrow} width="20px" height="20px" />
-        </Button>
+        <SidePanelBackButton back={back} />
         <div style="font-size: 20px;">{$t("BULK_EDITING_TITLE").replace("{count}", $bulkEditSongIds.length.toString())}</div>
       </span>
       <span slot="right">
@@ -169,7 +175,7 @@
     </OverlayHeader>
   </span>
   <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
-    <div class="content-inner">
+    <div class="content-inner" style:width={$isLandscape ? "calc(100% - 0.5rem)" : undefined}>
       <DetailsArtPicture artPath={artPath} failValue={differencesLabel} />
       <div class="fields">
         <TextField name={$t("TITLE_LABEL")} bind:value={title} extraWrapperOptions={{ style: "width: 100%; margin-bottom: 10px;" }} />
@@ -194,7 +200,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     overflow-y: scroll;
     overflow-x: hidden;
@@ -205,6 +210,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .fields {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 370px;
   }
 
   .two-wide {

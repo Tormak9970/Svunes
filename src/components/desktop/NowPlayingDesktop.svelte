@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DetailsArtPicture, Icon } from "@component-utils";
+  import { Icon } from "@component-utils";
   import { PlaybackController } from "@controllers";
   import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, VolumeDown } from "@icons";
   import { Button, MenuButton } from "@interactables";
@@ -8,11 +8,13 @@
   import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";
   import { tooltip } from "@svelte-plugins/tooltips";
+  import { convertFileSrc } from "@tauri-apps/api/core";
   import { goToSongDetails, hash64 } from "@utils";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
   import PlayerControls from "../overlays/now-playing/PlayerControls.svelte";
   import ProgressControls from "../overlays/now-playing/ProgressControls.svelte";
+  import ViewImage from "../utils/ViewImage.svelte";
   import DesktopVolumeControls from "./DesktopVolumeControls.svelte";
 
   let menuIsOpen = false;
@@ -26,6 +28,8 @@
 
   $: isMp3 = song?.fileName.toLocaleLowerCase().endsWith("mp3");
   $: songLength = song?.length ?? 0;
+
+  $: imagePath = convertFileSrc(song?.artPath ?? "");
 
   $: highlightColor = album?.backgroundColor ? album.backgroundColor : "var(--m3-scheme-surface-container-low)";
 
@@ -83,7 +87,13 @@
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="song-info-container" on:click={goToSong}>
-    <DetailsArtPicture artPath={song?.artPath} imageSize={70} borderRadius="5px" />
+    <ViewImage
+      src={imagePath}
+      width={70}
+      height={70}
+      borderRadius="5px"
+      iconSize={40}
+    />
     <div class="song-info">
       {#key label}
         <Marquee speed={40} gap={80}>

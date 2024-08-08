@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ViewImage } from "@component-utils";
+  import type { ContextMenuItem } from "@directives";
   import { inSelectMode } from "@stores/Select";
   import { GridSize } from "@types";
   import { GRID_IMAGE_DIMENSIONS } from "@utils";
@@ -12,13 +13,26 @@
   export let borderRadius = "10px";
   export let centerLabel = false;
   export let holdable = true;
+  export let ctxMenuId = "disabled-menu";
+  export let ctxMenuItems: ContextMenuItem[] = [];
 
   $: size = gridSize === GridSize.MEDIUM ? 40 : 60;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<CardClickable type="transparent" highlight={highlighted} holdable={holdable} on:click on:hold extraOptions={{ style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;" }}>
+<CardClickable
+  type="transparent"
+  highlight={highlighted}
+  holdable={holdable}
+  ctxMenuId={ctxMenuId}
+  ctxMenuItems={ctxMenuItems}
+  on:click
+  on:hold
+  extraOptions={{
+    style: "width: 100%; display: flex; align-items: center; position: relative; padding: 5px; border-radius: 10px; margin: 2px 0px;"
+  }}
+>
   <div class="content" class:highlight={highlighted}>
     {#if $$slots.playlistImage}
       <slot name="playlistImage" />

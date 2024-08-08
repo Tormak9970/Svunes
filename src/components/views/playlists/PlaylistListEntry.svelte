@@ -8,16 +8,21 @@
   import { inSelectMode, selected } from "@stores/Select";
   import type { PlaylistSortOrder } from "@types";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import PlaylistImage from "./PlaylistImage.svelte";
-  import PlaylistOptions from "./PlaylistOptions.svelte";
+  import PlaylistOptions, { getContextMenuItems } from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
   export let detailType: PlaylistSortOrder;
   export let isSelectable = true;
 
   $: highlighted = $selected.includes(playlist.id);
+  $: pinned = playlist.pinned;
+  
+  $: selectCtxItems = getSelectContextMenuItems($t);
+  $: ctxMenuItems = getContextMenuItems(playlist, $t, pinned);
 
   /**
    * Handles when the user clicks on the entry.
@@ -45,7 +50,16 @@
   
   let menuIsOpen = false;
 </script>
-<ListEntry label={playlist.name} convertedPath={""} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select}>
+<ListEntry
+  label={playlist.name}
+  convertedPath={""}
+  highlighted={highlighted}
+  holdable={!$inSelectMode && isSelectable}
+  ctxMenuId="playlist-options"
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="playlistImage" style="margin-left: 10px;">
     <PlaylistImage playlist={playlist} height={LIST_IMAGE_DIMENSIONS.height} width={LIST_IMAGE_DIMENSIONS.width} />
   </span>

@@ -6,14 +6,19 @@
   import { albumGridSize, albumSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { GridSize } from "@types";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
+  import { getContextMenuItems } from "./AlbumOptions.svelte";
 
   export let album: Album;
 
   $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
   $: size = $albumGridSize === GridSize.MEDIUM ? 40 : 60;
+  
+  $: selectCtxItems = getSelectContextMenuItems($t);
+  $: ctxMenuItems = getContextMenuItems(album, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -40,7 +45,17 @@
   }
 </script>
 
-<GridEntry label={album.name} {highlighted} gridSize={$albumGridSize} convertedPath={convertedPath} holdable={!$inSelectMode} on:click={onClick} on:hold={select}>
+<GridEntry
+  label={album.name}
+  {highlighted}
+  gridSize={$albumGridSize}
+  convertedPath={convertedPath}
+  holdable={!$inSelectMode}
+  ctxMenuId="album-options"
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="details">
     {#if $albumSortOrder === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{album.albumArtist ?? $t("UNKOWN_VALUE")}</div>

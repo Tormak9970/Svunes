@@ -7,9 +7,16 @@
   export let size = "2.5rem";
   export let iconSize = "1.5rem";
   export let disabled = false;
+
+  let innerButton: HTMLButtonElement;
+
+  export function getButtonElement(): HTMLButtonElement {
+    return innerButton;
+  }
 </script>
 
 <button
+  bind:this={innerButton}
   on:click|stopPropagation
   {disabled}
   class="m3-container m3-font-label-large font-label {type} icon-{iconType}"

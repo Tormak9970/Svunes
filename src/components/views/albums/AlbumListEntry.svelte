@@ -5,8 +5,10 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import type { AlbumSortOrder } from "@types";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
+  import { getContextMenuItems } from "./AlbumOptions.svelte";
 
   export let album: Album;
   export let detailType: AlbumSortOrder;
@@ -14,6 +16,9 @@
 
   $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
+  
+  $: selectCtxItems = getSelectContextMenuItems($t);
+  $: ctxMenuItems = getContextMenuItems(album, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -40,7 +45,16 @@
   }
 </script>
 
-<ListEntry label={album.name} convertedPath={convertedPath} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select}>
+<ListEntry
+  label={album.name}
+  convertedPath={convertedPath}
+  highlighted={highlighted}
+  holdable={!$inSelectMode && isSelectable}
+  ctxMenuId="album-options"
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="details">
     {#if detailType === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{album.albumArtist ?? $t("UNKOWN_VALUE")}</div>

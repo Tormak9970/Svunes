@@ -8,13 +8,18 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { songGridSize, songSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
+  import { location } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import SongOptions from "./SongOptions.svelte";
+  import SongOptions, { getContextMenuItems } from "./SongOptions.svelte";
 
   export let song: Song;
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
+  
+  $: selectCtxItems = getSelectContextMenuItems($t);
+  $: ctxMenuItems = getContextMenuItems(song, $t, $location);
 
   /**
    * Handles when the user clicks on the entry.
@@ -43,7 +48,17 @@
   let menuIsOpen = false;
 </script>
 
-<GridEntry label={song.title ?? song.fileName} {highlighted} gridSize={$songGridSize} convertedPath={convertedPath} holdable={!$inSelectMode} on:click={onClick} on:hold={select}>
+<GridEntry
+  label={song.title ?? song.fileName}
+  {highlighted}
+  gridSize={$songGridSize}
+  convertedPath={convertedPath}
+  holdable={!$inSelectMode}
+  ctxMenuId="song-options"
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="details">
     {#if $songSortOrder === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>

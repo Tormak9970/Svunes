@@ -7,6 +7,8 @@
     "core:event:default",
     "core:webview:default",
     "core:app:default",
+    "core:menu:default",
+    "core:window:default",
     "dialog:default",
     {
       "identifier": "fs:scope",
@@ -27,7 +29,6 @@
     },
     "fs:read-all",
     "fs:write-all",
-    "core:window:default",
     "shell:allow-open",
     "process:default",
     {

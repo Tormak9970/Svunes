@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Lazy, MusicNotePlaceholder } from "@layout";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
 
   export let images: (string | undefined)[];
   export let size: number;
@@ -35,12 +34,8 @@
   {#key size}
     {#each converted as image}
       <div class="image-container" style="width: {size}px; height: {size}px;">
-        <Lazy height={size} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <img src="{image}" style="width: {size}px; height: {size}px;" draggable="false" on:error={onError} />
-          <span slot="placeholder">
-            <MusicNotePlaceholder width={iconSize} height={iconSize} />
-          </span>
+        <Lazy height={size} src="{image ?? ""}">
+          <MusicNotePlaceholder width={iconSize} height={iconSize} />
         </Lazy>
       </div>
     {/each}

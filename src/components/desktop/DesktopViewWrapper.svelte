@@ -127,6 +127,8 @@
 
     position: relative;
 
+    z-index: 1;
+
     background-color: rgb(var(--m3-scheme-surface-container-low));
   }
 

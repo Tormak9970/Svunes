@@ -255,6 +255,7 @@ export class AppController {
    * @param songIds The ids of the songs to share.
    */
   static async share(songIds: string[]) {
+    get(showInfoSnackbar)({ message: "Sharing is not implemented yet" });
     // const songMap = get(songsMap);
 
     // const files: File[] = [];

@@ -3,7 +3,6 @@
   import { Lazy, MusicNotePlaceholder } from "@layout";
   import type { Album } from "@models";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
 
   export let album: Album;
   export let size = 146;
@@ -22,12 +21,8 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="album" style="width: {size}px; height: {size}px;" on:click={onClick}>
   {#if convertedPath !== ""}
-    <Lazy height={size} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <img src="{convertedPath}" style="width: {size}px; height: {size}px;" draggable="false" on:error={onError} />
-      <span slot="placeholder">
-        <MusicNotePlaceholder />
-      </span>
+    <Lazy height={size} src="{convertedPath}">
+      <MusicNotePlaceholder />
     </Lazy>
   {:else}
     <MusicNotePlaceholder />

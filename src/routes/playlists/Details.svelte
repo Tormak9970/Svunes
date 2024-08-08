@@ -9,7 +9,8 @@
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { isPaused, nowPlayingList, playlistsMap } from "@stores/State";
   import PlaylistImage from "@views/playlists/PlaylistImage.svelte";
-  import { pop, push } from "svelte-spa-router";
+  import { pop } from "svelte-spa-router";
+  import { goToPlaylistEdit } from "../../lib/utils";
   import PlaylistSongs from "./PlaylistSongs.svelte";
 
   export let params: { id?: string } = {};
@@ -66,7 +67,7 @@
    * Shows the edit playlist overlay.
    */
   function showPlaylistEdit() {
-    push(`/playlists/${params.id}/edit`);
+    goToPlaylistEdit(params.id!);
   }
 
   /**

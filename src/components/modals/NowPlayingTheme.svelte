@@ -6,7 +6,6 @@
   import { showNowPlayingTheme } from "@stores/Modals";
   import { nowPlayingTheme } from "@stores/State";
   import { getNowPlayingTheme, NowPlayingTheme } from "@types";
-  import { IMAGE_FADE_OPTIONS } from "@utils";
   import { onDestroy, onMount } from "svelte";
   import { drag } from "svelte-gesture";
   import { spring } from "svelte/motion";
@@ -83,10 +82,7 @@
         <div class="theme">
           <div class="font-label label">{config.label}</div>
           <div class="preview">
-            <Lazy height={400} fadeOption={IMAGE_FADE_OPTIONS} let:onError>
-              <!-- svelte-ignore a11y-missing-attribute -->
-              <img src="/images/{config.src}" style="width: auto; height: 400px;" draggable="false" on:error={onError} />
-            </Lazy>
+            <Lazy height={400} src="/images/{config.src}" />
           </div>
         </div>
       {/each}
@@ -134,6 +130,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 430px;
+    width: 192px;
   }
 
   .label {
