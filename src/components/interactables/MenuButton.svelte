@@ -12,19 +12,19 @@
   export let height = "36px";
   export let icon: IconifyIcon;
 
-  let buttonElement: HTMLButtonElement;
+  let buttonElement: any;
   let menuElement: any;
 
   export let open = false;
   $: menuElement && (menuElement.open = open);
 
-  function onClick(e: Event) {
-    if (!buttonElement) buttonElement = e.target as HTMLButtonElement;
-    if (!menuElement.anchorElement) menuElement.anchorElement = buttonElement;
+  function onClick() {
     open = !open;
   }
 
   onMount(() => {
+    menuElement.anchorElement = buttonElement.getButtonElement();
+
     const style = document.createElement("style");
     style.innerHTML = '.items { scrollbar-color: rgb(var(--m3-scheme-primary)) transparent; scrollbar-width: thin; }';
     menuElement.shadowRoot?.appendChild(style);
@@ -50,6 +50,7 @@
     iconSize={iconSize}
     on:click={onClick}
     extraOptions={extraOptions}
+    bind:this={buttonElement}
   >
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>

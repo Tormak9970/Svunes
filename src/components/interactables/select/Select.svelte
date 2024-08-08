@@ -30,8 +30,6 @@
   }
 
   function onClick(e: Event) {
-    if (!selectElement) selectElement = e.currentTarget as HTMLDivElement;
-    if (!menuElement.anchorElement) menuElement.anchorElement = selectElement;
     open = !open;
   }
 
@@ -40,6 +38,8 @@
   }
 
   onMount(() => {
+    menuElement.anchorElement = selectElement;
+
     const shadowRoot = menuElement.shadowRoot;
     const style = document.createElement('style');
     style.innerHTML = `
@@ -72,6 +72,7 @@
     {...extraWrapperOptions}
     on:click={onClick}
     on:mouseup|stopPropagation
+    bind:this={selectElement}
   >
     <div class="select-mimic m3-font-body-large" {id} {...extraOptions}>
       <div class="current-label">{label}</div>
