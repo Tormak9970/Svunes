@@ -41,10 +41,19 @@
       text: translate("ADD_TO_QUEUE_ACTION"),
       action: () => queueAlbum(album.name),
     });
+    
+    items.push({
+      item: 'Separator'
+    });
+
     items.push({
       id: "add-to-playlist",
       text: translate("ADD_TO_PLAYLISTS_ACTION"),
       action: () => addToPlaylist(album.name),
+    });
+    
+    items.push({
+      item: 'Separator'
     });
 
     items.push({
@@ -52,7 +61,6 @@
       text: translate("EDIT_ACTION"),
       action: () => showAlbumEdit(album.name),
     });
-
     items.push({
       id: "delete-album",
       text: translate("DELETE_ACTION"),

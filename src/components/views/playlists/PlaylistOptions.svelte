@@ -70,11 +70,19 @@
       text: translate("ADD_TO_PLAYLISTS_ACTION"),
       action: () => addToPlaylist(playlist.id),
     });
+    
+    items.push({
+      item: 'Separator'
+    });
 
     items.push({
       id: "toggle-pinned",
       text: translate(isPinned ? "UNPIN_ACTION" : "PIN_ACTION"),
       action: () => togglePinned(playlist),
+    });
+    
+    items.push({
+      item: 'Separator'
     });
 
     items.push({

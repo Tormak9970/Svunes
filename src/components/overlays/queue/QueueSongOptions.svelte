@@ -51,6 +51,16 @@
       text: translate("ADD_TO_PLAYLISTS_ACTION"),
       action: () => addToPlaylist(song.id),
     });
+    
+    items.push({
+      item: 'Separator'
+    });
+
+    items.push({
+      id: "view-details",
+      text: translate("DETAILS_ACTION"),
+      action: () => showDetails(song.id),
+    });
 
     if (song.album) {
       items.push({
@@ -67,11 +77,9 @@
         action: () => goToArtist(song.artist),
       });
     }
-
+    
     items.push({
-      id: "view-details",
-      text: translate("DETAILS_ACTION"),
-      action: () => showDetails(song.id),
+      item: 'Separator'
     });
 
     items.push({

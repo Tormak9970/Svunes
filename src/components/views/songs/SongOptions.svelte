@@ -47,7 +47,7 @@
     if (currentRoute.startsWith("/playlists")) {
       items.push({
         id: "remove-from-playlist",
-        text: translate("REMOVE_FROM_PLAYLIST"),
+        text: translate("REMOVE_FROM_PLAYLIST_ACTION"),
         action: () => removeFromPlaylist(song.id),
       });
     }
@@ -67,6 +67,16 @@
       text: translate("ADD_TO_PLAYLISTS_ACTION"),
       action: () => addToPlaylist(song.id),
     });
+    
+    items.push({
+      item: 'Separator'
+    });
+
+    items.push({
+      id: "view-details",
+      text: translate("DETAILS_ACTION"),
+      action: () => showDetails(song.id),
+    });
 
     if (song.album) {
       items.push({
@@ -75,7 +85,7 @@
         action: () => goToAlbum(song.album),
       });
     }
-
+    
     if (song.artist) {
       items.push({
         id: "view-artist",
@@ -83,11 +93,9 @@
         action: () => goToArtist(song.artist),
       });
     }
-
+    
     items.push({
-      id: "view-details",
-      text: translate("DETAILS_ACTION"),
-      action: () => showDetails(song.id),
+      item: 'Separator'
     });
 
     if (!hideEditOption) {
@@ -104,14 +112,14 @@
       action: () => showInfoParser(song.id),
     });
     items.push({
-      id: "share-song",
-      text: translate("SHARE_ACTION"),
-      action: () => share(song.id),
-    });
-    items.push({
       id: "delete-song",
       text: translate("DELETE_ACTION"),
       action: () => deleteSong(song.id),
+    });
+    items.push({
+      id: "share-song",
+      text: translate("SHARE_ACTION"),
+      action: () => share(song.id),
     });
 
     return items;
@@ -136,7 +144,7 @@
 
 {#if $location.startsWith("/playlists")}
   <MenuItem on:click={() => { removeFromPlaylist(song.id); closeOptions(); }}>
-    {$t("REMOVE_FROM_PLAYLIST")}
+    {$t("REMOVE_FROM_PLAYLIST_ACTION")}
   </MenuItem>
 {/if}
 <MenuItem on:click={() => { playNext(song.id); closeOptions(); }}>
