@@ -9,6 +9,7 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import SongOptions, { getContextMenuItems } from "@views/songs/SongOptions.svelte";
   import { location } from "svelte-spa-router";
 
@@ -17,6 +18,7 @@
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
   
+  $: selectCtxItems = getSelectContextMenuItems($t);
   $: ctxMenuItems = getContextMenuItems(song, $t, $location);
 
   /**
@@ -48,7 +50,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<button class="m3-container playlist-song" use:contextMenu={{ id: "song-options", items: ctxMenuItems }}>
+<button class="m3-container playlist-song" use:contextMenu={{ id: "song-options", items: highlight ? selectCtxItems : ctxMenuItems }}>
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />

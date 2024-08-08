@@ -5,6 +5,7 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import type { AlbumSortOrder } from "@types";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import { getContextMenuItems } from "./AlbumOptions.svelte";
@@ -16,6 +17,7 @@
   $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
   $: highlighted = $selected.includes(album.name);
   
+  $: selectCtxItems = getSelectContextMenuItems($t);
   $: ctxMenuItems = getContextMenuItems(album, $t);
 
   /**
@@ -49,7 +51,7 @@
   highlighted={highlighted}
   holdable={!$inSelectMode && isSelectable}
   ctxMenuId="album-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
   on:click={onClick}
   on:hold={select}
 >

@@ -366,7 +366,7 @@
     selected.set([]);
   }
 
-  export function selectContextMenu(translate: (key: string) => string): ContextMenuItem[] {
+  export function getSelectContextMenuItems(translate: (key: string) => string): ContextMenuItem[] {
     const items: ContextMenuItem[] = [];
     const currentRoute = get(location);
     const isQueuePage = get(showQueue);
@@ -379,14 +379,14 @@
       });
     } else {
       items.push({
-        id: "queue",
-        text: translate("ADD_TO_QUEUE_ACTION"),
-        action: removeFromQueue,
-      });
-      items.push({
         id: "play-next",
         text: translate("PLAY_NEXT_ACTION"),
         action: playNext,
+      });
+      items.push({
+        id: "queue",
+        text: translate("ADD_TO_QUEUE_ACTION"),
+        action: removeFromQueue,
       });
     }
 
@@ -408,16 +408,18 @@
       item: 'Separator'
     });
 
-    items.push({
-      id: "bulk-edit",
-      text: translate("BULK_EDIT_ACTION"),
-      action: bulkEdit,
-    });
-    items.push({
-      id: "info-parser",
-      text: translate("INFO_PARSER_ACTION"),
-      action: goToInfoParser,
-    });
+    if (currentRoute !== "/artists") {
+      items.push({
+        id: "bulk-edit",
+        text: translate("BULK_EDIT_ACTION"),
+        action: bulkEdit,
+      });
+      items.push({
+        id: "info-parser",
+        text: translate("INFO_PARSER_ACTION"),
+        action: goToInfoParser,
+      });
+    }
     
     if (currentRoute !== "/artists" && !isQueuePage) {
       items.push({
@@ -427,11 +429,13 @@
       });
     }
 
-    items.push({
-      id: "share",
-      text: translate("SHARE_ACTION"),
-      action: share,
-    });
+    if (currentRoute !== "/artists" && currentRoute !== "/albums" && currentRoute !== "/playlists") {
+      items.push({
+        id: "share",
+        text: translate("SHARE_ACTION"),
+        action: share,
+      });
+    }
 
     if (get(selectedView) !== View.SEARCH) {
       items.push({

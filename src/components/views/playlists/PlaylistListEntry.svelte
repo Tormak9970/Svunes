@@ -8,6 +8,7 @@
   import { inSelectMode, selected } from "@stores/Select";
   import type { PlaylistSortOrder } from "@types";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import PlaylistImage from "./PlaylistImage.svelte";
@@ -20,6 +21,7 @@
   $: highlighted = $selected.includes(playlist.id);
   $: pinned = playlist.pinned;
   
+  $: selectCtxItems = getSelectContextMenuItems($t);
   $: ctxMenuItems = getContextMenuItems(playlist, $t, pinned);
 
   /**
@@ -54,7 +56,7 @@
   highlighted={highlighted}
   holdable={!$inSelectMode && isSelectable}
   ctxMenuId="playlist-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
   on:click={onClick}
   on:hold={select}
 >

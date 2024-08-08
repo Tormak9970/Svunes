@@ -4,6 +4,7 @@
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { getContextMenuItems } from "./ArtistOptions.svelte";
 
@@ -13,6 +14,7 @@
   $: convertedPath = artist.imagePath ? convertFileSrc(artist.imagePath) : "";
   $: highlighted = $selected.includes(artist.name);
   
+  $: selectCtxItems = getSelectContextMenuItems($t);
   $: ctxMenuItems = getContextMenuItems(artist, $t);
 
   /**
@@ -46,7 +48,7 @@
   highlighted={highlighted}
   holdable={!$inSelectMode && isSelectable}
   ctxMenuId="artist-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
   on:click={onClick}
   on:hold={select}
 />

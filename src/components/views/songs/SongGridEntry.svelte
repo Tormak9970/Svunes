@@ -8,6 +8,7 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { songGridSize, songSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { location } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import SongOptions, { getContextMenuItems } from "./SongOptions.svelte";
@@ -17,6 +18,7 @@
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
   
+  $: selectCtxItems = getSelectContextMenuItems($t);
   $: ctxMenuItems = getContextMenuItems(song, $t, $location);
 
   /**
@@ -53,7 +55,7 @@
   convertedPath={convertedPath}
   holdable={!$inSelectMode}
   ctxMenuId="song-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
   on:click={onClick}
   on:hold={select}
 >

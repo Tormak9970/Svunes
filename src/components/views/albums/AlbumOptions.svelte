@@ -41,10 +41,6 @@
       text: translate("ADD_TO_QUEUE_ACTION"),
       action: () => queueAlbum(album.name),
     });
-    
-    items.push({
-      item: 'Separator'
-    });
 
     items.push({
       id: "add-to-playlist",

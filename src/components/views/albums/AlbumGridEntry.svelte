@@ -6,6 +6,7 @@
   import { albumGridSize, albumSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { GridSize } from "@types";
+  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import { getContextMenuItems } from "./AlbumOptions.svelte";
@@ -16,6 +17,7 @@
   $: highlighted = $selected.includes(album.name);
   $: size = $albumGridSize === GridSize.MEDIUM ? 40 : 60;
   
+  $: selectCtxItems = getSelectContextMenuItems($t);
   $: ctxMenuItems = getContextMenuItems(album, $t);
 
   /**
@@ -50,7 +52,7 @@
   convertedPath={convertedPath}
   holdable={!$inSelectMode}
   ctxMenuId="album-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
   on:click={onClick}
   on:hold={select}
 >
