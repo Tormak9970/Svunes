@@ -8,8 +8,9 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import type { SongSortOrder } from "@types";
+  import { location } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import SongOptions from "./SongOptions.svelte";
+  import SongOptions, { getContextMenuItems } from "./SongOptions.svelte";
 
   export let song: Song;
   export let detailType: SongSortOrder;
@@ -17,6 +18,8 @@
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
+  
+  $: ctxMenuItems = getContextMenuItems(song, $t, $location);
 
   /**
    * Handles when the user clicks on the entry.
@@ -45,7 +48,16 @@
   let menuIsOpen = false;
 </script>
 
-<ListEntry label={song.title ?? song.fileName} convertedPath={convertedPath} highlighted={highlighted} holdable={!$inSelectMode && isSelectable} on:click={onClick} on:hold={select}>
+<ListEntry
+  label={song.title ?? song.fileName}
+  convertedPath={convertedPath}
+  highlighted={highlighted}
+  holdable={!$inSelectMode && isSelectable}
+  ctxMenuId="song-options"
+  ctxMenuItems={ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="details">
     {#if detailType === "Alphabetical"}
       <div in:fade={{ duration: 200 }}>{song.artist ?? $t("UNKOWN_VALUE")}</div>

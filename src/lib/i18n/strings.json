@@ -85,6 +85,7 @@
   "DELETE_FROM_DEVICE_ACTION": "Delete from Device",
   "SELECT_ALL_ACTION": "Select All",
   "CLEAR_QUEUE_ACTION": "Clear Queue",
+  "REMOVE_FROM_PLAYLIST": "Remove from Playlist",
   
   "ALBUM_COVER_RESULTS_TITLE": "Album Cover Results",
   "ALBUM_INFO_RESULTS_TITLE": "Album Info Results",

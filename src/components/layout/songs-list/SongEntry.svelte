@@ -6,13 +6,16 @@
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import SongOptions from "@views/songs/SongOptions.svelte";
+  import SongOptions, { getContextMenuItems } from "@views/songs/SongOptions.svelte";
+  import { location } from "svelte-spa-router";
   import ListEntry from "../entries/ListEntry.svelte";
 
   export let song: Song;
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
+
+  $: ctxMenuItems = getContextMenuItems(song, $t, $location);
 
   /**
    * Handles when the user clicks on the entry.
@@ -43,7 +46,16 @@
   let menuIsOpen = false;
 </script>
 
-<ListEntry label={song.title ?? song.fileName} convertedPath={convertedPath} highlighted={highlighted} isSongEntry on:click={onClick} on:hold={select}>
+<ListEntry
+  label={song.title ?? song.fileName}
+  convertedPath={convertedPath}
+  highlighted={highlighted}
+  ctxMenuId={"song-options"}
+  ctxMenuItems={ctxMenuItems}
+  isSongEntry
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="details">
     <div class="artist">
       {song.artist ?? $t("UNKOWN_VALUE")}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PlaybackController } from "@controllers";
-  import { holdEvent } from "@directives";
+  import { contextMenu, holdEvent } from "@directives";
   import { MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
   import { Lazy, MusicNotePlaceholder } from "@layout";
@@ -9,12 +9,15 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
-  import SongOptions from "@views/songs/SongOptions.svelte";
+  import SongOptions, { getContextMenuItems } from "@views/songs/SongOptions.svelte";
+  import { location } from "svelte-spa-router";
 
   export let song: Song;
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
+  
+  $: ctxMenuItems = getContextMenuItems(song, $t, $location);
 
   /**
    * Handles when the user clicks on the entry.
@@ -45,7 +48,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<button class="m3-container playlist-song">
+<button class="m3-container playlist-song" use:contextMenu={{ id: "song-options", items: ctxMenuItems }}>
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
