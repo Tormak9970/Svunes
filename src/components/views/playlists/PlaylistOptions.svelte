@@ -1,86 +1,42 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import { AppController, EditController, PlaybackController, QueueController } from "@controllers";
-  import { MenuItem } from "@layout";
+  import type { ContextMenuItem } from "@directives";
   import type { Playlist } from "@models";
-  import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { playlists } from "@stores/State";
   import * as dialog from "@tauri-apps/plugin-dialog";
-  import { location, push, replace } from "svelte-spa-router";
+  import { goToPlaylistEdit } from "@utils";
+  import { location, replace } from "svelte-spa-router";
+  import { get } from "svelte/store";
 
-  export let menuIsOpen: boolean;
-  export let playlist: Playlist;
+  const playPlaylist = (playlist: Playlist) => PlaybackController.playPlaylist(playlist);
+  const playNext = (playlistId: string) => QueueController.playPlaylistsNext([playlistId]);
+  const queuePlaylist = (playlistId: string) => QueueController.queuePlaylists([playlistId]);
 
-  /**
-   * Plays this playlist.
-   */
-  function playPlaylist() {
-    menuIsOpen = false;
-    PlaybackController.playPlaylist(playlist);
+  const addToPlaylist = (playlistId: string) => {
+    playlistToAdd.set(playlistId);
+    showAddToPlaylist.set(true);
   }
 
-  /**
-   * Plays this playlist next.
-   */
-  function playNext() {
-    menuIsOpen = false;
-    QueueController.playPlaylistsNext([playlist.id]);
-  }
-
-  /**
-   * Queues this playlist.
-   */
-  function queuePlaylist() {
-    menuIsOpen = false;
-    QueueController.queuePlaylists([playlist.id]);
-  }
-
-  /**
-   * Opens the add to playlist dialog with this playlist set to be added.
-   */
-  function addToPlaylist() {
-    menuIsOpen = false;
-    $playlistToAdd = playlist.id;
-    $showAddToPlaylist = true;
-  }
-
-  /**
-   * Toggles whether the playlist is pinned or not.
-   */
-  function togglePinned() {
+  const togglePinned = (playlist: Playlist) => {
     playlist.pinned = !playlist.pinned;
-    $playlists = [ ...$playlists ];
-    menuIsOpen = false;
+    playlists.set([ ...get(playlists) ]);
   }
 
-  /**
-   * Shows the edit playlist overlay.
-   */
-  function showPlaylistEdit() {
-    menuIsOpen = false;
-    push(`/playlists/${playlist.id}/edit`);
+  const showPlaylistEdit = (playlistId: string) => goToPlaylistEdit(playlistId);
+
+  const deletePlaylist = (playlistId: string) => {
+    EditController.deletePlaylistsFromDevice([playlistId]);
+    if (get(location).startsWith("/playlists/")) replace("/playlists");
   }
 
-  /**
-   * Prompts the user to confirm if they want to delete this song.
-   */
-  function deletePlaylist() {
-    menuIsOpen = false;
-    EditController.deletePlaylistsFromDevice([playlist.id]);
-    if ($location.startsWith("/playlists/")) replace("/playlists");
-  }
-
-  /**
-   * Exports the playlist to a json file.
-   */
-  async function exportPlaylist() {
-    menuIsOpen = false;
+  async function exportPlaylist(playlist: Playlist) {
     const path = await dialog.save({
-      title: `${$t("EXPORT_ACTION")} ${playlist.name}`,
+      title: `${get(t)("EXPORT_ACTION")} ${playlist.name}`,
       defaultPath: `${playlist.id}.json`,
       filters: [
         {
-          "name": $t("PLAYLIST_SINGULAR_VALUE"),
+          "name": get(t)("PLAYLIST_SINGULAR_VALUE"),
           "extensions": [ "json" ]
         }
       ]
@@ -90,15 +46,97 @@
       AppController.exportPlaylist(path, playlist);
     }
   }
+
+  export function getContextMenuItems(playlist: Playlist, translate: (key: string) => string, isPinned: boolean): ContextMenuItem[] {
+    const items: ContextMenuItem[] = [];
+
+    items.push({
+      id: "play-playlist",
+      text: translate("PLAY_ACTION"),
+      action: () => playPlaylist(playlist),
+    });
+    items.push({
+      id: "play-next",
+      text: translate("PLAY_NEXT_ACTION"),
+      action: () => playNext(playlist.id),
+    });
+    items.push({
+      id: "queue",
+      text: translate("ADD_TO_QUEUE_ACTION"),
+      action: () => queuePlaylist(playlist.id),
+    });
+    items.push({
+      id: "add-to-playlist",
+      text: translate("ADD_TO_PLAYLISTS_ACTION"),
+      action: () => addToPlaylist(playlist.id),
+    });
+
+    items.push({
+      id: "toggle-pinned",
+      text: translate(isPinned ? "UNPIN_ACTION" : "PIN_ACTION"),
+      action: () => togglePinned(playlist),
+    });
+
+    items.push({
+      id: "edit-playlist",
+      text: translate("EDIT_ACTION"),
+      action: () => showPlaylistEdit(playlist.id),
+    });
+
+    items.push({
+      id: "delete-playlist",
+      text: translate("DELETE_ACTION"),
+      action: () => deletePlaylist(playlist.id),
+    });
+
+    items.push({
+      id: "export-playlist",
+      text: translate("EXPORT_ACTION"),
+      action: () => exportPlaylist(playlist),
+    });
+
+    return items;
+  }
 </script>
 
-<MenuItem on:click={playPlaylist}>{$t("PLAY_ACTION")}</MenuItem>
-<MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
-<MenuItem on:click={queuePlaylist}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-<MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
-<MenuItem on:click={togglePinned}>{$t(playlist?.pinned ? "UNPIN_ACTION" : "PIN_ACTION")}</MenuItem>
+<script lang="ts">
+  import { MenuItem } from "@layout";
+  import { t } from "@stores/Locale";
+
+  export let menuIsOpen: boolean;
+  export let playlist: Playlist;
+
+  /**
+   * Handles closing the options.
+   */
+  function closeOptions() {
+    menuIsOpen = false;
+  }
+</script>
+
+<MenuItem on:click={() => { playPlaylist(playlist); closeOptions(); }}>
+  {$t("PLAY_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { playNext(playlist.id); closeOptions(); }}>
+  {$t("PLAY_NEXT_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { queuePlaylist(playlist.id); closeOptions(); }}>
+  {$t("ADD_TO_QUEUE_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { addToPlaylist(playlist.id); closeOptions(); }}>
+  {$t("ADD_TO_PLAYLISTS_ACTION")}
+</MenuItem>
+<MenuItem on:click={() => { togglePinned(playlist); closeOptions(); }}>
+  {$t(playlist?.pinned ? "UNPIN_ACTION" : "PIN_ACTION")}
+</MenuItem>
 {#if playlist.isUserPlaylist}
-  <MenuItem on:click={showPlaylistEdit}>{$t("EDIT_ACTION")}</MenuItem>
-  <MenuItem on:click={deletePlaylist}>{$t("DELETE_ACTION")}</MenuItem>
+  <MenuItem on:click={() => { showPlaylistEdit(playlist.id); closeOptions(); }}>
+    {$t("EDIT_ACTION")}
+  </MenuItem>
+  <MenuItem on:click={() => { deletePlaylist(playlist.id); closeOptions(); }}>
+    {$t("DELETE_ACTION")}
+  </MenuItem>
 {/if}
-<MenuItem on:click={exportPlaylist}>{$t("EXPORT_ACTION")}</MenuItem>
+<MenuItem on:click={() => { exportPlaylist(playlist); closeOptions(); }}>
+  {$t("EXPORT_ACTION")}
+</MenuItem>

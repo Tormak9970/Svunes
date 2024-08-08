@@ -1,12 +1,98 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import { AppController } from "@controllers";
-  import { MenuItem } from "@layout";
+  import type { ContextMenuItem } from "@directives";
   import type { Song } from "@models";
-  import { t } from "@stores/Locale";
   import { showAddToPlaylist, showQueue, songToAdd } from "@stores/Overlays";
   import { queue } from "@stores/State";
   import { goToSongDetails, goToSongEdit } from "@utils";
   import { push } from "svelte-spa-router";
+  import { get } from "svelte/store";
+
+  const removeFromQueue = (index: number) => {
+    const queueList = get(queue);
+    queueList.splice(index, 1);
+
+    queue.set([ ...queueList ]);
+  }
+
+  const addToPlaylist = (songId: string) => {
+    songToAdd.set(songId);
+    showAddToPlaylist.set(true);
+  }
+
+  const goToAlbum = (album?: string) => {
+    push(`/albums/${album!}`);
+    showQueue.set(false);
+  }
+  const goToArtist = (artist?: string) => {
+    push(`/artists/${artist!}`);
+    showQueue.set(false);
+  }
+  const showDetails = (songId: string) => {
+    goToSongDetails(songId);
+    showQueue.set(false);
+  }
+  const showSongEdit = (songId: string) => {
+    goToSongEdit(songId);
+    showQueue.set(false);
+  }
+  const share = (songId: string) => AppController.share([songId]);
+
+  export function getContextMenuItems(song: Song, index: number, translate: (key: string) => string): ContextMenuItem[] {
+    const items: ContextMenuItem[] = [];
+
+    items.push({
+      id: "dequeue",
+      text: translate("REMOVE_FROM_QUEUE_ACTION"),
+      action: () => removeFromQueue(index),
+    });
+    items.push({
+      id: "add-to-playlist",
+      text: translate("ADD_TO_PLAYLISTS_ACTION"),
+      action: () => addToPlaylist(song.id),
+    });
+
+    if (song.album) {
+      items.push({
+        id: "view-album",
+        text: translate("GO_TO_ALBUM_ACTION"),
+        action: () => goToAlbum(song.album),
+      });
+    }
+
+    if (song.artist) {
+      items.push({
+        id: "view-artist",
+        text: translate("GO_TO_ARTIST_ACTION"),
+        action: () => goToArtist(song.artist),
+      });
+    }
+
+    items.push({
+      id: "view-details",
+      text: translate("DETAILS_ACTION"),
+      action: () => showDetails(song.id),
+    });
+
+    items.push({
+      id: "edit-song",
+      text: translate("EDIT_ACTION"),
+      action: () => showSongEdit(song.id),
+    });
+
+    items.push({
+      id: "share-song",
+      text: translate("SHARE_ACTION"),
+      action: () => share(song.id),
+    });
+
+    return items;
+  }
+</script>
+
+<script lang="ts">
+  import { MenuItem } from "@layout";
+  import { t } from "@stores/Locale";
 
   export let menuIsOpen: boolean;
   export let song: Song;
@@ -18,79 +104,16 @@
   function closeOptions() {
     menuIsOpen = false;
   }
-
-  /**
-   * Removes this song from the queue.
-   */
-  function removeFromQueue() {
-    $queue.splice(index, 1);
-
-    $queue = [ ...$queue ];
-    closeOptions();
-  }
-
-  /**
-   * Opens the add to playlist dialog with this song set to be added.
-   */
-  function addToPlaylist() {
-    $songToAdd = song!.id;
-    $showAddToPlaylist = true;
-    closeOptions();
-  }
-
-  /**
-   * Shows the song's album.
-   */
-  function goToAlbum() {
-    push(`/albums/${song!.album!}`);
-    $showQueue = false;
-    closeOptions();
-  }
-
-  /**
-   * Shows the song's artist.
-   */
-  function goToArtist() {
-    push(`/artists/${song!.artist!}`);
-    $showQueue = false;
-    closeOptions();
-  }
-
-  /**
-   * Shows the song details overlay.
-   */
-  function showDetails() {
-    goToSongDetails(song!.id);
-    $showQueue = false;
-    closeOptions();
-  }
-
-  /**
-   * Shows the edit song overlay.
-   */
-  function showSongEdit() {
-    goToSongEdit(song!.id);
-    $showQueue = false;
-    closeOptions();
-  }
-
-  /**
-   * Opens the platform's share ui.
-   */
-  function share() {
-    AppController.share([song!.id]);
-    closeOptions();
-  }
 </script>
 
-<MenuItem on:click={removeFromQueue}>{$t("REMOVE_FROM_QUEUE_ACTION")}</MenuItem>
-<MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
+<MenuItem on:click={() => { removeFromQueue(index); closeOptions(); }}>{$t("REMOVE_FROM_QUEUE_ACTION")}</MenuItem>
+<MenuItem on:click={() => { addToPlaylist(song.id); closeOptions(); }}>{$t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
 {#if song?.album}
-  <MenuItem on:click={goToAlbum}>{$t("GO_TO_ALBUM_ACTION")}</MenuItem>
+  <MenuItem on:click={() => { goToAlbum(song.album); closeOptions(); }}>{$t("GO_TO_ALBUM_ACTION")}</MenuItem>
 {/if}
 {#if song?.artist}
-  <MenuItem on:click={goToArtist}>{$t("GO_TO_ARTIST_ACTION")}</MenuItem>
+  <MenuItem on:click={() => { goToArtist(song.artist); closeOptions(); }}>{$t("GO_TO_ARTIST_ACTION")}</MenuItem>
 {/if}
-<MenuItem on:click={showDetails}>{$t("DETAILS_ACTION")}</MenuItem>
-<MenuItem on:click={showSongEdit}>{$t("EDIT_ACTION")}</MenuItem>
-<MenuItem on:click={share}>{$t("SHARE_ACTION")}</MenuItem>
+<MenuItem on:click={() => { showDetails(song.id); closeOptions(); }}>{$t("DETAILS_ACTION")}</MenuItem>
+<MenuItem on:click={() => { showSongEdit(song.id); closeOptions(); }}>{$t("EDIT_ACTION")}</MenuItem>
+<MenuItem on:click={() => { share(song.id); closeOptions(); }}>{$t("SHARE_ACTION")}</MenuItem>

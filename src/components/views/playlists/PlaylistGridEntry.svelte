@@ -11,11 +11,14 @@
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import PlaylistImage from "./PlaylistImage.svelte";
-  import PlaylistOptions from "./PlaylistOptions.svelte";
+  import PlaylistOptions, { getContextMenuItems } from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
 
   $: highlighted = $selected.includes(playlist.id);
+  $: pinned = playlist.pinned;
+  
+  $: ctxMenuItems = getContextMenuItems(playlist, $t, pinned);
 
   /**
    * Handles when the user clicks on the entry.
@@ -44,7 +47,17 @@
   let menuIsOpen = false;
 </script>
 
-<GridEntry label={playlist.name} {highlighted} gridSize={$playlistGridSize} convertedPath={""} holdable={!$inSelectMode} on:click={onClick} on:hold={select}>
+<GridEntry
+  label={playlist.name}
+  {highlighted}
+  gridSize={$playlistGridSize}
+  convertedPath={""}
+  holdable={!$inSelectMode}
+  ctxMenuId="playlist-options"
+  ctxMenuItems={ctxMenuItems}
+  on:click={onClick}
+  on:hold={select}
+>
   <span slot="playlistImage">
     <PlaylistImage playlist={playlist} height={GRID_IMAGE_DIMENSIONS[$playlistGridSize].height} width={GRID_IMAGE_DIMENSIONS[$playlistGridSize].width} />
   </span>
