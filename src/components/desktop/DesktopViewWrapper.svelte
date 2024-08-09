@@ -10,10 +10,12 @@
   import { lastView, selectedView } from "@stores/State";
   import { View } from "@types";
   import { push } from "svelte-spa-router";
+  import ContextMenu from "../ContextMenu.svelte";
   import DesktopNav from "../navigation/DesktopNav.svelte";
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
   import SidePanelRouter from "./SidePanelRouter.svelte";
 
+  let contextMenuContainer: HTMLDivElement;
   let condenseNav = false;
   let menuIsOpen = false;
 
@@ -52,7 +54,7 @@
 
 <MediaQuery query="(max-width: 1100px)" bind:matches={condenseNav} />
 {#if $isLandscape}
-  <div class="desktop-container">
+  <div class="desktop-container" bind:this={contextMenuContainer}>
     <div class="panels">
       <div class="nav" style:width={condenseNav ? "3.5rem" : "10rem"}>
         <DesktopNav condenseNav={condenseNav} />
@@ -83,6 +85,7 @@
       {/if}
     </div>
   </div>
+  <ContextMenu anchorElement={contextMenuContainer} />
 {:else}
   <slot />
 {/if}

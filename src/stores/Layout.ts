@@ -1,4 +1,4 @@
-import { writable, type Writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 export enum SidePanels {
   NONE,
@@ -9,6 +9,6 @@ export enum SidePanels {
   PLAYLIST_EDIT
 }
 
-export const isLandscape: Writable<boolean> = writable(!IS_MOBILE);
-export const desktopSidePanel: Writable<SidePanels> = writable(SidePanels.NONE);
-export const sidePanelProps: Writable<any> = writable({});
+export const isLandscape = writable<boolean>(!IS_MOBILE);
+export const desktopSidePanel = writable(SidePanels.NONE);
+export const sidePanelProps = writable<any>({});

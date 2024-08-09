@@ -9,11 +9,11 @@ export const showCreatePlaylist = writable(false);
 export const songsForNewPlaylist: Writable<string[]> = writable([]);
 
 export const showAddToPlaylist = writable(false);
-export const songToAdd: Writable<string | null> = writable(null);
-export const playlistToAdd: Writable<string | null> = writable(null);
-export const albumToAdd: Writable<string | null> = writable(null);
-export const artistToAdd: Writable<string | null> = writable(null);
-export const genreToAdd: Writable<string | null> = writable(null);
+export const songToAdd = writable<string | null>(null);
+export const playlistToAdd = writable<string | null>(null);
+export const albumToAdd = writable<string | null>(null);
+export const artistToAdd = writable<string | null>(null);
+export const genreToAdd = writable<string | null>(null);
 
 export const showWritingChanges = writable(false);
 

@@ -1,9 +1,9 @@
-import { writable, type Writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 export type SearchChip = "song" | "album" | "artist" | "playlist" | "genre";
 
 export const searchQuery = writable("");
-export const selectedChips: Writable<SearchChip[]> = writable([]);
+export const selectedChips = writable<SearchChip[]>([]);
 
 // * advanced filters
 export const showOnlyMissingTitle = writable(false);
