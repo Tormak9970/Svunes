@@ -252,8 +252,4 @@
 
     justify-content: center;
 	}
-
-	svelte-virtual-grid-entry {
-		overflow: hidden;
-	}
 </style>
