@@ -7,11 +7,13 @@
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
+  import { inSelectMode } from "@stores/Select";
   import { lastView, selectedView } from "@stores/State";
   import { View } from "@types";
   import { push } from "svelte-spa-router";
   import ContextMenu from "../ContextMenu.svelte";
   import DesktopNav from "../navigation/DesktopNav.svelte";
+  import LandscapeSelectHeader from "./LandscapeSelectHeader.svelte";
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
   import SidePanelRouter from "./SidePanelRouter.svelte";
 
@@ -69,8 +71,15 @@
           {/if}
         </div>
       </div>
-      <div class="view-panel">
-        <slot />
+      <div class="view-panel-wrapper">
+        <div class="select-wrapper" style:height={$inSelectMode ? "3.625rem" : "0rem"}>
+          {#if $inSelectMode}
+            <LandscapeSelectHeader />
+          {/if}
+        </div>
+        <div class="view-panel">
+          <slot />
+        </div>
       </div>
       <div class="side-panel-wrapper" style:width={$desktopSidePanel !== SidePanels.NONE ? "20.5rem" : "0rem"}>
         {#if $desktopSidePanel !== SidePanels.NONE}
@@ -120,9 +129,17 @@
     flex-grow: 1;
   }
 
-  .view-panel {
+  .view-panel-wrapper {
     margin-left: 0.5rem;
     height: 100%;
+    border-radius: 10px;
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .view-panel {
     border-radius: 10px;
     overflow: hidden;
     flex-grow: 1;
@@ -139,6 +156,7 @@
     transition: width 0.2s ease-in-out;
   }
 
+  .select-wrapper,
   .now-playing-wrapper {
     width: 100%;
     transition: height 0.2s ease-in-out;
