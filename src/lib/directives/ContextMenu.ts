@@ -1,8 +1,25 @@
+import type { IconifyIcon } from "@iconify/types";
 import { contextMenuItems, contextMenuPosition, showContextMenu } from "@stores/ContextMenu";
-import { type IconMenuItemOptions, type MenuItemOptions, type PredefinedMenuItemOptions } from '@tauri-apps/api/menu';
 import type { Action } from "svelte/action";
 
-export type ContextMenuItem = MenuItemOptions | IconMenuItemOptions | PredefinedMenuItemOptions;
+export type ActionMenuItem = {
+  id: string;
+  text: string;
+  action: () => void;
+}
+
+export type IconMenuItem = {
+  id: string;
+  icon: IconifyIcon;
+  text: string;
+  action: () => void;
+}
+
+export type SeperatorMenuItem = {
+  isSeparator: boolean;
+}
+
+export type ContextMenuItem = ActionMenuItem | IconMenuItem | SeperatorMenuItem;
 
 type ContextMenuParams = {
   id: string;

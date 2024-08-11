@@ -15,7 +15,6 @@
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
   import SidePanelRouter from "./SidePanelRouter.svelte";
 
-  let contextMenuContainer: HTMLDivElement;
   let condenseNav = false;
   let menuIsOpen = false;
 
@@ -54,7 +53,7 @@
 
 <MediaQuery query="(max-width: 1100px)" bind:matches={condenseNav} />
 {#if $isLandscape}
-  <div class="desktop-container" bind:this={contextMenuContainer}>
+  <div class="desktop-container">
     <div class="panels">
       <div class="nav" style:width={condenseNav ? "3.5rem" : "10rem"}>
         <DesktopNav condenseNav={condenseNav} />
@@ -85,7 +84,7 @@
       {/if}
     </div>
   </div>
-  <ContextMenu anchorElement={contextMenuContainer} />
+  <ContextMenu />
 {:else}
   <slot />
 {/if}

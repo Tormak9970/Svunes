@@ -405,7 +405,7 @@
     });
 
     items.push({
-      item: 'Separator'
+      isSeparator: true,
     });
 
     if (currentRoute !== "/artists") {

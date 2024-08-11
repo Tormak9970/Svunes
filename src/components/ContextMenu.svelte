@@ -1,24 +1,34 @@
 <script lang="ts">
-  import { MenuItem } from "@layout";
-  import { contextMenuPosition, showContextMenu } from "@stores/ContextMenu";
+  import type { ActionMenuItem, ContextMenuItem, IconMenuItem } from "@directives";
+  import { Divider, MenuItem } from "@layout";
+  import { contextMenuItems, contextMenuPosition, showContextMenu } from "@stores/ContextMenu";
   import { onMount } from "svelte";
-
 
   let menuElement: any;
 
-  export let anchorElement: HTMLDivElement;
   $: menuElement && (menuElement.open = $showContextMenu);
 
   $: xOffset = $contextMenuPosition.x;
   $: yOffset = $contextMenuPosition.y;
+
+  function handleScroll() {
+    console.log("scrolled");
+    if ($showContextMenu) $showContextMenu = false;
+  }
+
+  function isIconItem(item: ContextMenuItem): item is IconMenuItem {
+    return !!(item as IconMenuItem).icon;
+  }
+
+  function isActionItem(item: ContextMenuItem): item is ActionMenuItem {
+    return !!(item as ActionMenuItem).action;
+  }
 
   function close() {
     $showContextMenu = false;
   }
 
   onMount(() => {
-    menuElement.anchorElement = anchorElement;
-
     const style = document.createElement("style");
     style.innerHTML = '.items { scrollbar-color: rgb(var(--m3-scheme-primary)) transparent; scrollbar-width: thin; }';
     menuElement.shadowRoot?.appendChild(style);
@@ -27,33 +37,47 @@
   });
 </script>
 
-<!-- TODO: check menu button listener prevention to see if its needed here -->
+<svelte:document on:wheel={handleScroll} on:mousedown={handleScroll} />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-  class="container"
+  class="context-menu-container"
   style:--md-menu-container-color="rgb(var(--m3-scheme-surface-container))"
   style:--md-menu-item-container-color="rgb(var(--m3-scheme-surface-container))"
   style:--md-menu-item-selected-container-color="rgb(var(--m3-scheme-secondary-container))"
+  style:left="{xOffset}px"
+  style:top="{yOffset}px"
 >
+  <div id="contextMenuAnchor" class="context-anchor-element" />
   <md-menu
     bind:this={menuElement}
-    anchor-corner="end-end"
-    menu-corner="start-end"
-    positioning="document"
-    x-offset={300}
-    y-offset={0}
+    anchor="contextMenuAnchor"
+    on:wheel|stopImmediatePropagation
+    on:mousedown|stopImmediatePropagation
     on:closing={close}
   >
-    <MenuItem>
-      PLAY_NEXT_ACTION
-    </MenuItem>
-    <MenuItem>
-      ADD_TO_QUEUE_ACTION
-    </MenuItem>
-    <MenuItem>
-      ADD_TO_PLAYLISTS_ACTION
-    </MenuItem>
+    {#each $contextMenuItems as item, i (i)}
+      {#if isIconItem(item)}
+        <MenuItem icon={item.icon} on:click={item.action}>
+          {item.text}
+        </MenuItem>
+      {:else if isActionItem(item)}
+        <MenuItem on:click={item.action}>
+          {item.text}
+        </MenuItem>
+      {:else}
+        <Divider />
+      {/if}
+    {/each}
   </md-menu>
 </div>
+
+<style>
+  .context-menu-container,
+  .context-anchor-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+</style>
