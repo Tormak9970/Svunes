@@ -1,3 +1,4 @@
+import DesktopQueue from "@views/DesktopQueue.svelte";
 import wrap from "svelte-spa-router/wrap";
 import { get } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
@@ -98,4 +99,5 @@ export const routes = {
   "/home/top-albums": TopAlbums,
 
   "/metadata-parser": MetadataParser,
+  "/queue": DesktopQueue,
 }

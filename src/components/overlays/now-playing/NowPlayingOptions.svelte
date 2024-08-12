@@ -3,7 +3,7 @@
   import { MenuItem } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
-  import { showAddToPlaylist, showCarMode, showMiniPlayer, showQueue, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
+  import { showAddToPlaylist, showCarMode, showMiniPlayer, showSleepTimerSelection, songToAdd } from "@stores/Overlays";
   import { extraControl } from "@stores/State";
   import { goToSongDetails, goToSongEdit } from "@utils";
   import { push } from "svelte-spa-router";
@@ -33,7 +33,7 @@
    * Shows the current queue.
    */
   function goToQueue() {
-    $showQueue = true;
+    goToQueue();
     $showMiniPlayer = true;
     closeOptions();
   }

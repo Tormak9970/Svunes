@@ -110,8 +110,6 @@
     border-radius: inherit;
     transition: background-color 0.2s;
     pointer-events: none;
-
-    z-index: 1;
   }
 
   button {
@@ -145,7 +143,6 @@
     align-items: center;
 
     position: relative;
-    z-index: 2;
   }
 
   .content {

@@ -3,7 +3,7 @@
   import { Button, MenuButton } from "@interactables";
   import { Marquee } from "@layout";
   import type { Song } from "@models";
-  import { showMiniPlayer, showQueue } from "@stores/Overlays";
+  import { showMiniPlayer } from "@stores/Overlays";
   import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
   import { NowPlayingBackgroundType } from "@types";
   import NowPlayingOptions from "../NowPlayingOptions.svelte";
@@ -13,6 +13,7 @@
   
   import { FavoriteOff, FavoriteOn, KeyboardArrowDown, MoreVert, QueueMusic } from "@icons";
   import { t } from "@stores/Locale";
+  import { goToQueue } from "@utils";
   import ExtraControl from "../ExtraControl.svelte";
   
   let menuIsOpen = false;
@@ -77,7 +78,7 @@
           <Icon icon={FavoriteOn} />
         {/if}
       </Button>
-      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => { $showQueue = true; $showMiniPlayer = true; }}>
+      <Button type="text" iconType="full" size="3rem" iconSize="1.75rem" on:click={() => { goToQueue(); $showMiniPlayer = true; }}>
         <Icon icon={QueueMusic} />
       </Button>
       <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
