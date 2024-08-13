@@ -58,7 +58,6 @@
     bind:this={menuElement}
     anchor-corner={"end-end"}
     menu-corner={"start-end"}
-    positioning="popover"
     on:closing={() => open = false}
   >
     <slot />

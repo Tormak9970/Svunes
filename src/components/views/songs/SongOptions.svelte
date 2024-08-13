@@ -69,7 +69,7 @@
     });
     
     items.push({
-      item: 'Separator'
+      isSeparator: true,
     });
 
     items.push({
@@ -95,7 +95,7 @@
     }
     
     items.push({
-      item: 'Separator'
+      isSeparator: true,
     });
 
     if (!hideEditOption) {

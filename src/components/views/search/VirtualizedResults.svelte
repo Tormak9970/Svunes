@@ -194,6 +194,5 @@
     margin-left: 10px;
     margin-right: 10px;
 		display: flex;
-		overflow: hidden;
 	}
 </style>

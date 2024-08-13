@@ -211,7 +211,6 @@
 		position: relative;
 		overflow-y: auto;
     overflow-x: hidden;
-		-webkit-overflow-scrolling: touch;
 		display: block;
 	}
 
@@ -223,6 +222,5 @@
     margin-left: 10px;
     margin-right: 10px;
 		display: flex;
-		overflow: hidden;
 	}
 </style>

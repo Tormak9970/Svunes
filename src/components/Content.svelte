@@ -3,7 +3,7 @@
   import { isLandscape } from "@stores/Layout";
   import { systemDefaultLanguage, t } from "@stores/Locale";
   import { showNowPlaying } from "@stores/Overlays";
-  import { inSelectMode } from "@stores/Select";
+  import { inSelectMode, selected } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { getViewRoute, View } from "@types";
@@ -25,6 +25,7 @@
   let isPausedUnsub: Unsubscriber;
   let playingSongIdUnsub: Unsubscriber;
   let translateUnsub: Unsubscriber;
+  let locationUnsub: Unsubscriber;
 
   let audioPlayer: HTMLAudioElement;
 
@@ -94,6 +95,10 @@
       if (!newStatus) push(getViewRoute($selectedView));
     });
 
+    locationUnsub = location.subscribe((loc) => {
+      $selected = [];
+    });
+
     await SettingsController.init();
     AppController.init();
     DeviceController.init();
@@ -118,6 +123,7 @@
     if (loadingUnsub) loadingUnsub();
     if (isPausedUnsub) isPausedUnsub();
     if (playingSongIdUnsub) playingSongIdUnsub();
+    if (locationUnsub) locationUnsub();
   });
 </script>
 
@@ -137,7 +143,7 @@
   {/if}
 
   <div class="content" style:height={($showNav && !$isLandscape) ? "calc(100% - 56px)" : "100%"}>
-    {#if $inSelectMode}
+    {#if $inSelectMode && !$isLandscape}
       <SelectHeader />
     {/if}
     <Router {routes} restoreScrollState={true} on:conditionsFailed={conditionsFailed} />

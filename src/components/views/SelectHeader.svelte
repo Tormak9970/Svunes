@@ -4,6 +4,7 @@
   import { showAddToPlaylist, showQueue } from "@stores/Overlays";
   import { bulkEditSongIds, selected } from "@stores/Select";
   import { albums, albumsMap, artists, artistsMap, genresMap, playlists, playlistsMap, queue, selectedView, showInfoSnackbar, songIdsToParse, songs } from "@stores/State";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import { View } from "@types";
   import { goToBulkEdit } from "@utils";
   import { location, push } from "svelte-spa-router";
@@ -71,6 +72,33 @@
     }
 
     return songIds;
+  }
+
+  /**
+   * Export the selected playlists.
+   */
+  async function exportSelected() {
+    const playlistIds = get(selected);
+    const playlistMap = get(playlistsMap);
+
+    for (const id of playlistIds) {
+      const playlist = playlistMap[id];
+
+      const path = await dialog.save({
+        title: `${get(t)("EXPORT_ACTION")} ${playlist.name}`,
+        defaultPath: `${playlist.id}.json`,
+        filters: [
+          {
+            "name": get(t)("PLAYLIST_SINGULAR_VALUE"),
+            "extensions": [ "json" ]
+          }
+        ]
+      });
+
+      if (path && path !== "") {
+        AppController.exportPlaylist(path, playlist);
+      }
+    }
   }
 
   /**
@@ -404,8 +432,16 @@
       action: addToPlaylist,
     });
 
+    if (currentRoute === "/playlists") {
+      items.push({
+        id: "export",
+        text: translate("EXPORT_ACTION"),
+        action: exportSelected,
+      });
+    }
+
     items.push({
-      item: 'Separator'
+      isSeparator: true,
     });
 
     if (currentRoute !== "/artists") {
@@ -499,6 +535,11 @@
       {#if !$showQueue}
         <MenuItem on:click={() => { playNext(); closeOptions(); }}>
           {$t("PLAY_NEXT_ACTION")}
+        </MenuItem>
+      {/if}
+      {#if $location === "/playlists"}
+        <MenuItem on:click={() => { exportSelected(); closeOptions(); }}>
+          {$t("EXPORT_ACTION")}
         </MenuItem>
       {/if}
       <MenuItem on:click={() => { bulkEdit(); closeOptions(); }}>

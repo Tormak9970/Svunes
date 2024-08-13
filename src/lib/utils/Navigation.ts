@@ -1,4 +1,5 @@
 import { desktopSidePanel, isLandscape, sidePanelProps, SidePanels } from "@stores/Layout";
+import { showQueue } from "@stores/Overlays";
 import { push } from "svelte-spa-router";
 import { get } from "svelte/store";
 
@@ -77,4 +78,13 @@ export function goToPlaylistEdit(playlistId: string) {
 export function backFromSidePanel() {
   desktopSidePanel.set(SidePanels.NONE);
   sidePanelProps.set({});
+}
+
+/**
+ * Handles displaying the queued songs.
+ */
+export function goToQueue() {
+  showQueue.set(true);
+
+  if (get(isLandscape)) push(`/queue`);
 }

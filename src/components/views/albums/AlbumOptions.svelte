@@ -49,7 +49,7 @@
     });
     
     items.push({
-      item: 'Separator'
+      isSeparator: true,
     });
 
     items.push({

@@ -298,15 +298,26 @@ export class AppController {
     if (contents === "") {
       get(showInfoSnackbar)({ message: get(t)("PLAYLIST_EMPTY_MESSAGE") });
       LogController.error("Playlist JSON was empty.");
+      return;
     }
 
     let playlistJson: any = JSON.parse(contents);
     if (playlistJson.FILE_SIG_DO_NOT_EDIT !== "dev.travislane.svunes") {
-      get(showErrorSnackbar)({ message: get(t)("INVALID_PLAYLIST_MESSAGE"), faster: true });
+      get(showErrorSnackbar)({ message: get(t)("INVALID_PLAYLIST_MESSAGE") });
       LogController.error("Playlist did not contain the FILE_SIG.");
+      return;
     }
+    
+    const playlist = Playlist.fromJSON(playlistJson);
 
     const playlistList = get(playlists);
+
+    if (playlistList.some((p) => p.name === playlist.name)) {
+      get(showErrorSnackbar)({ message: get(t)("PLAYLIST_EXISTS_MESSAGE") });
+      LogController.error(`A playlist with name ${playlist.name} already exists.`);
+      return;
+    }
+    
     const songsList = get(songs);
     const songIds: string[] = [];
 
@@ -315,7 +326,6 @@ export class AppController {
       if (song) songIds.push(song.id);
     }
 
-    const playlist = Playlist.fromJSON(playlistJson);
     playlist.songIds = songIds;
 
     playlistList.push(playlist);

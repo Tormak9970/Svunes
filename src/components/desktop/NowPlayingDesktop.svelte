@@ -5,11 +5,11 @@
   import { Button, MenuButton } from "@interactables";
   import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
-  import { showAddToPlaylist, showNowPlaying, showQueue } from "@stores/Overlays";
+  import { showAddToPlaylist, showNowPlaying } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";
   import { tooltip } from "@svelte-plugins/tooltips";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { goToSongDetails, hash64 } from "@utils";
+  import { goToQueue, goToSongDetails, hash64 } from "@utils";
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
   import PlayerControls from "../overlays/now-playing/PlayerControls.svelte";
@@ -117,7 +117,7 @@
         <Icon icon={FavoriteOn} />
       {/if}
     </Button>
-    <Button type="text" iconType="full" on:click={() => { $showQueue = true; }}>
+    <Button type="text" iconType="full" on:click={goToQueue}>
       <Icon icon={QueueMusic} width="20px" height="20px" />
     </Button>
     <span

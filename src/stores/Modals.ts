@@ -1,6 +1,6 @@
 import type { AlbumInfo, SelectedAlbum } from "@controllers";
 import type { ReleaseGroup } from "@types";
-import { writable, type Writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 export const showEditMusicFolders = writable(false);
 export const showBlacklistFolders = writable(false);
@@ -25,22 +25,22 @@ export const showAdvancedFilters = writable(false);
 export const showParserVariables = writable(false);
 
 export const showArtOptions = writable(false);
-export const onArtOptionsDone: Writable<(artPath: string | undefined) => void> = writable(() => {});
+export const onArtOptionsDone = writable<(artPath: string | undefined) => void>(() => {});
 
 export const showSearchingApi = writable(false);
 export const apiSearchCanceled = writable(false);
 
 
-export const availableReleaseGroups: Writable<ReleaseGroup[]> = writable([]);
-export const selectedReleaseGroupId: Writable<string> = writable("");
+export const availableReleaseGroups = writable<ReleaseGroup[]>([]);
+export const selectedReleaseGroupId = writable("");
 
 export const showPickAlbumCover = writable(false);
-export const albumCovers: Writable<string[]> = writable([]);
-export const onPickCoverDone: Writable<(path: string | null) => void> = writable(() => {});
+export const albumCovers = writable<string[]>([]);
+export const onPickCoverDone = writable<(path: string | null) => void>(() => {});
 
 export const showPickAlbumInfo = writable(false);
-export const albumInfos: Writable<AlbumInfo[]> = writable([]);
-export const onAlbumInfoDone: Writable<(selected: SelectedAlbum | null) => void> = writable(() => {});
+export const albumInfos = writable<AlbumInfo[]>([]);
+export const onAlbumInfoDone = writable<(selected: SelectedAlbum | null) => void>(() => {});
 
 
 export const showControlledModal = writable(false);

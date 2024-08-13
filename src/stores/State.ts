@@ -1,7 +1,7 @@
 import type { Album, Artist, Genre, Playlist, Song } from "@models";
 import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "@types";
 import { location } from "svelte-spa-router";
-import { derived, writable, type Readable, type Writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
 
 export const isLoading = writable(true);
@@ -11,15 +11,15 @@ export const volumeLevel = writable(1);
 export const isPaused = writable(true);
 export const shouldPauseOnEnd = writable(false);
 
-export const songIdsToParse: Writable<string[]> = writable([]);
+export const songIdsToParse = writable<string[]>([]);
 
-export const showInfoSnackbar: Writable<(data: ShowInfoOptions) => void> = writable();
-export const showErrorSnackbar: Writable<(data: ShowErrorOptions) => void> = writable();
+export const showInfoSnackbar = writable<(data: ShowInfoOptions) => void>();
+export const showErrorSnackbar = writable<(data: ShowInfoOptions) => void>();
 
 // * View stores
-export const musicDirectories: Writable<string[]> = writable([]);
-export const selectedView: Writable<View> = writable(-1 as View);
-export const showNav: Readable<boolean> = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([$location, $showQueue, $showNowPlaying, $showMiniPlayer]) => {
+export const musicDirectories = writable<string[]>([]);
+export const selectedView = writable<View>(-1 as View);
+export const showNav = derived([location, showQueue, showNowPlaying, showMiniPlayer], ([$location, $showQueue, $showNowPlaying, $showMiniPlayer]) => {
   return $location.lastIndexOf("/") === 0 && $location !== "/settings" && $location !== "/search" && $location !== "/metadata-parser" &&
     !$showQueue &&
     !($showNowPlaying && !$showMiniPlayer);
@@ -30,30 +30,30 @@ export const songsIsScrolled = writable(false);
 export const albumsIsScrolled = writable(false);
 export const artistsIsScrolled = writable(false);
 
-export const playlists: Writable<Playlist[]> = writable([]);
-export const playlistsMap: Readable<Record<string, Playlist>> = derived(playlists, (playlists: Playlist[]) => {
+export const playlists = writable<Playlist[]>([]);
+export const playlistsMap = derived(playlists, (playlists: Playlist[]) => {
   const entries: [string, Playlist][] = playlists.map((playlist) => [playlist.id, playlist]);
   return Object.fromEntries(entries);
 });
 
-export const history: Writable<string[]> = writable([]);
-export const queue: Writable<string[]> = writable([]);
+export const history = writable<string[]>([]);
+export const queue = writable<string[]>([]);
 
-export const blacklistedFolders: Writable<string[]> = writable([]);
+export const blacklistedFolders = writable<string[]>([]);
 export const filterSongDuration = writable(30);
 
-export const artists: Writable<Artist[]> = writable([]);
-export const artistsMap: Readable<Record<string, Artist>> = derived(artists, (artists: Artist[]) => {
+export const artists = writable<Artist[]>([]);
+export const artistsMap = derived(artists, (artists: Artist[]) => {
   const entries: [string, Artist][] = artists.map((artist) => [artist.name, artist]);
   return Object.fromEntries(entries);
 });
-export const genres: Writable<Genre[]> = writable([]);
-export const genresMap: Readable<Record<string, Genre>> = derived(genres, (genres: Genre[]) => {
+export const genres = writable<Genre[]>([]);
+export const genresMap = derived(genres, (genres: Genre[]) => {
   const entries: [string, Genre][] = genres.map((genre) => [genre.name, genre]);
   return Object.fromEntries(entries);
 });
 
-export const lastView: Writable<View | null> = writable(null);
+export const lastView = writable<View | null>(null);
 export const isSwitchingView = writable(false);
 
 // * Settings stores
@@ -67,7 +67,7 @@ export const nowPlayingTheme = writable(NowPlayingTheme.NORMAL);
 
 export const dismissMiniPlayerWithSwipe = writable(true);
 export const showVolumeControls = writable(true);
-export const extraControl: Writable<NowPlayingExtraControl> = writable("Car Mode");
+export const extraControl = writable<NowPlayingExtraControl>("Car Mode");
 
 export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIENT);
 
@@ -75,8 +75,8 @@ export const nowPlayingBackgroundType = writable(NowPlayingBackgroundType.GRADIE
 export const autoPlayOnConnect = writable(false);
 
 // # Personalization Settings
-export const viewsToRender: Writable<View[]> = writable([]);
-export const viewIndices: Writable<Record<View, number>> = writable({
+export const viewsToRender = writable<View[]>([]);
+export const viewIndices = writable<Record<View, number>>({
   0: 0,
   1: 1,
   2: 2,
@@ -91,33 +91,33 @@ export const trackHistory = writable(true);
 export const showAlbumOnLockScreen = writable(true);
 
 // # Cache Settings
-export const albums: Writable<Album[]> = writable([]);
-export const albumsMap: Readable<Record<string, Album>> = derived(albums, (albums: Album[]) => {
+export const albums = writable<Album[]>([]);
+export const albumsMap = derived(albums, (albums: Album[]) => {
   const entries: [string, Album][] = albums.map((album) => [album.name, album]);
   return Object.fromEntries(entries);
 });
-export const songs: Writable<Song[]> = writable([]);
-export const songsMap: Readable<Record<string, Song>> = derived(songs, (songs: Song[]) => {
+export const songs = writable<Song[]>([]);
+export const songsMap = derived(songs, (songs: Song[]) => {
   const entries: [string, Song][] = songs.map((song) => [song.id, song]);
   return Object.fromEntries(entries);
 });
 export const songProgress = writable(0);
-export const playingSongId: Writable<string> = writable("");
-export const nowPlayingList: Writable<string> = writable("");
-export const nowPlayingType: Writable<NowPlayingType> = writable("Song");
+export const playingSongId = writable<string>("");
+export const nowPlayingList = writable<string>("");
+export const nowPlayingType = writable<NowPlayingType>("Song");
 
 // # View Settings
-export const playlistGridSize: Writable<GridSize> = writable(GridSize.LARGE);
-export const playlistSortOrder: Writable<PlaylistSortOrder> = writable("Alphabetical");
+export const playlistGridSize = writable<GridSize>(GridSize.LARGE);
+export const playlistSortOrder = writable<PlaylistSortOrder>("Alphabetical");
 
-export const albumGridSize: Writable<GridSize> = writable(GridSize.LARGE);
-export const albumSortOrder: Writable<AlbumSortOrder> = writable("Alphabetical");
-export const useAlbumColors: Writable<boolean> = writable(true);
+export const albumGridSize = writable<GridSize>(GridSize.LARGE);
+export const albumSortOrder = writable<AlbumSortOrder>("Alphabetical");
+export const useAlbumColors = writable<boolean>(true);
 
-export const songGridSize: Writable<GridSize> = writable(GridSize.LIST);
-export const songSortOrder: Writable<SongSortOrder> = writable("Alphabetical");
+export const songGridSize = writable<GridSize>(GridSize.LIST);
+export const songSortOrder = writable<SongSortOrder>("Alphabetical");
 
-export const artistGridSize: Writable<GridSize> = writable(GridSize.LARGE);
-export const artistGridStyle: Writable<GridStyle> = writable(GridStyle.CIRCULAR);
-export const artistSortOrder: Writable<ArtistSortOrder> = writable("Alphabetical");
-export const useArtistColors: Writable<boolean> = writable(true);
+export const artistGridSize = writable<GridSize>(GridSize.LARGE);
+export const artistGridStyle = writable<GridStyle>(GridStyle.CIRCULAR);
+export const artistSortOrder = writable<ArtistSortOrder>("Alphabetical");
+export const useArtistColors = writable<boolean>(true);

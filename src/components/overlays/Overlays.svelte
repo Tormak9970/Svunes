@@ -1,4 +1,5 @@
 <script>
+  import { isLandscape } from "@stores/Layout";
   import { showAddToPlaylist, showCarMode, showCreatePlaylist, showQueue, showSleepTimerSelection, showWritingChanges } from "@stores/Overlays";
   import AddToPlaylists from "./add-to-playlists/AddToPlaylists.svelte";
   import CarMode from "./CarMode.svelte";
@@ -20,7 +21,7 @@
 {/if}
 
 <!-- ? Fullscreen -->
-{#if $showQueue}
+{#if $showQueue && !$isLandscape}
   <Queue />
 {/if}
 {#if $showCarMode}

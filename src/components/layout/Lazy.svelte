@@ -40,8 +40,6 @@
   <!-- svelte-ignore a11y-missing-attribute -->
   <img
     src={src}
-    style:max-height={styleHeight}
-    style:max-width={styleWidth}
     style:opacity={showPlaceholder ? "0" : "1"}
     draggable="false"
     on:load={load}
@@ -52,6 +50,8 @@
 <style>
   .lazy-container {
     position: relative;
+    max-height: 100%;
+    max-width: 100%;
   }
 
   .click-container {
@@ -87,7 +87,9 @@
 
   img {
     height: auto;
+    max-height: 100%;
     width: auto;
+    max-width: 100%;
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
     transition: opactiy 0.2s ease-out;
