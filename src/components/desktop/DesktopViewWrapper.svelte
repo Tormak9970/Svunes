@@ -1,16 +1,18 @@
 <script lang="ts">
   import { Icon, MediaQuery } from "@component-utils";
-  import { GridView, Settings } from "@icons";
+  import { AppController } from "@controllers";
+  import { Add, Download, GridView, Settings } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { MenuItem } from "@layout";
   import { desktopSidePanel, isLandscape, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";
-  import { showNowPlaying } from "@stores/Overlays";
+  import { showCreatePlaylist, showNowPlaying } from "@stores/Overlays";
   import { inSelectMode } from "@stores/Select";
   import { lastView, selectedView } from "@stores/State";
+  import * as dialog from "@tauri-apps/plugin-dialog";
   import { View } from "@types";
-  import { push } from "svelte-spa-router";
+  import { location, push } from "svelte-spa-router";
   import ContextMenu from "../ContextMenu.svelte";
   import DesktopNav from "../navigation/DesktopNav.svelte";
   import LandscapeSelectHeader from "./LandscapeSelectHeader.svelte";
@@ -27,6 +29,27 @@
     $lastView = $selectedView;
     $selectedView = View.SETTINGS;
     push("/settings");
+  }
+  
+  /**
+   * Prompts the user to import a playlist.
+   */
+   async function importPlaylist() {
+    const file = await dialog.open({
+      title: $t("CHOOSE_PLAYLIST_MESSAGE"),
+      directory: false,
+      multiple: false,
+      filters: [
+        {
+          "name": $t("PLAYLIST_SINGULAR_VALUE"),
+          "extensions": [ "json" ]
+        }
+      ]
+    });
+
+    if (file && file.path !== "") {
+      AppController.importPlaylist(file.path);
+    }
   }
 
   /**
@@ -68,6 +91,14 @@
               <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>{$t("GRID_SIZE_ACTION")}</MenuItem>
               <MenuItem on:click={onSortByClick}>{$t("SORT_BY_ACTION")}</MenuItem>
             </MenuButton>
+          {/if}
+          {#if $location === "/playlists"}
+            <Button type="text" iconType="full" on:click={() => { $showCreatePlaylist = true; }}>
+              <Icon icon={Add} width="20px" height="20px" />
+            </Button>
+            <Button type="text" iconType="full" on:click={importPlaylist}>
+              <Icon icon={Download} width="20px" height="20px" />
+            </Button>
           {/if}
         </div>
       </div>
