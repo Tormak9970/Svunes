@@ -54,21 +54,13 @@ You can browse by your albums, genres, artists, songs or search all of them. Its
 | Albums | Artists 	| Genres 	| Settings 	|
 
 ### Desktop Views
-| <img src="public/readme-images/desktop/home.png" width="400"/>	|<img src="public/readme-images/desktop/playlists.png" width="400"/>|
-|:-----:|   :-----:   |
-| Home 	| Playlists 	|
+|<img src="public/readme-images/desktop/playlists.png" width="300"/> | <img src="public/readme-images/desktop/search.png" width="300"/> | <img src="public/readme-images/desktop/songs.png" width="300"/> |
+|   :-----:   | :-----:	|:-----:|
+| Playlists 	| Search 	| Songs |
 
-| <img src="public/readme-images/desktop/search.png" width="400"/>  	|    <img src="public/readme-images/desktop/songs.png" width="400"/> 	|
-| :-----:	|:-----:|
-| Search 	| Songs |
-
-| <img src="public/readme-images/desktop/albums.png" width="400"/>	|<img src="public/readme-images/desktop/artists.png" width="400"/>|
-|:-----: | :-----:	|
-| Albums | Artists 	|
-
-|   <img src="public/readme-images/desktop/genres.png" width="400"/>  	|    <img src="public/readme-images/desktop/settings.png" width="400"/> 	|
-| :-----:	| :-----:	  |
-| Genres 	| Settings 	|
+| <img src="public/readme-images/desktop/albums.png" width="300"/> | <img src="public/readme-images/desktop/artists.png" width="300"/> | <img src="public/readme-images/desktop/genres.png" width="300"/> |
+|:-----: | :-----:	| :-----:	|
+| Albums | Artists 	| Genres 	|
 
 ## Now Playing Themes
 There are four different Now Playing Themes to pick from, as well as whether to use a solid, gradient, or blurred background.
