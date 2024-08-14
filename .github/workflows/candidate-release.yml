@@ -106,6 +106,7 @@ jobs:
           releaseBody: "Check Github for the release notes!"
           releaseDraft: true
           includeUpdaterJson: false
+          tauriScript: "bun tauri"
             
   publish-release:
     needs: [create-release, build-tauri]
