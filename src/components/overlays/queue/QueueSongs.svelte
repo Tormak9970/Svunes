@@ -6,10 +6,9 @@
   import { DragHandle } from "@icons";
   import { inSelectMode } from "@stores/Select";
   import { onDestroy, onMount } from "svelte";
+  import { dragHandle, dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { Unsubscriber } from "svelte/store";
-// @ts-expect-error temporary fix until this gets merged
-  import { dragHandle, dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "../../../../node_modules/svelte-dnd-action/src/index";
 
 
   let queueUnsub: Unsubscriber;
