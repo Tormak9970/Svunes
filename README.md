@@ -20,8 +20,10 @@ An offline-first music player for your music library. Allows you to make playlis
 ## Windows
 
 ### Full Releases
+Coming soon
 
 ### Release Candidate
+Coming soon
 
 ## Linux
 Coming soon
