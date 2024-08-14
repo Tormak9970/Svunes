@@ -4,7 +4,7 @@
   "identifier": "dev.travislane.svunes",
   "build": {
     "beforeDevCommand": "bun dev",
-    "beforeBuildCommand": "bun build",
+    "beforeBuildCommand": "bun run build",
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420"
   },
