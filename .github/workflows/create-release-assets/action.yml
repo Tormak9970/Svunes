@@ -165,5 +165,5 @@ runs:
 
             core.info("Committed changes to latest.json.");
           } else {
-            core.info("Skipping latest.json upload for debug release.");
+            core.info("Skipping latest.json upload for non release build.");
           }

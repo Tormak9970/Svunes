@@ -29,6 +29,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tsconfig/svelte": "^5.0.2",
     "@tauri-apps/cli": "2.0.0-beta.22",
+    "@types/markdown-it": "^12.2.3",
     "husky": "^8.0.3",
     "svelte": "^4.2.12",
     "svelte-awesome-color-picker": "^3.1.0",
@@ -40,6 +41,7 @@
     "internal-ip": "^7.0.0"
   },
   "dependencies": {
+    "markdown-it": "^13.0.2",
     "@iconify/types": "^2.0.0",
     "@ktibow/iconset-material-symbols": "^0.0.1715672497",
     "@material/material-color-utilities": "^0.2.7",
@@ -51,6 +53,7 @@
     "@tauri-apps/plugin-process": "2.0.0-beta.7",
     "@tauri-apps/plugin-shell": "2.0.0-beta.8",
     "@tauri-apps/plugin-store": "2.0.0-beta.7",
+    "@tauri-apps/plugin-updater": "^2.0.0-rc.0",
     "svelte-dnd-action": "github:Tormak9970/svelte-dnd-action",
     "svelte-gesture": "^0.1.4",
     "svelte-spa-router": "^4.0.1"

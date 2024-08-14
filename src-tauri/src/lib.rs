@@ -343,10 +343,12 @@ pub fn run() {
     
   #[cfg(not(any(target_os = "ios", target_os = "android")))]
   {
-    builder = builder.plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-      println!("{}, {argv:?}, {cwd}", app.package_info().name);
-      app.emit("single-instance", Payload { args: argv, cwd }).unwrap();
-    }));
+    builder = builder
+      .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+        println!("{}, {argv:?}, {cwd}", app.package_info().name);
+        app.emit("single-instance", Payload { args: argv, cwd }).unwrap();
+      }))
+      .plugin(tauri_plugin_updater::Builder::new().build());
   }
 
   builder.setup(| app | {

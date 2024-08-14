@@ -43,6 +43,10 @@
   "TRACK_LABEL": "Track",
   "COMPOSER_LABEL": "Composer",
   "SYSTEM_DEFAULT_LANGUAGE_LABEL": "System Default",
+  "CURRENT_VERSION_LABEL": "Current Version",
+  "NEW_VERSION_LABEL": "New Version",
+  "RELEASE_DATE_LABEL": "Release Date",
+  "CHANGELOG_LABEL": "Changelog",
 
   "CANCEL_ACTION": "Cancel",
   "CLOSE_ACTION": "Close",
@@ -56,6 +60,10 @@
   "NO_ACTION": "No",
   "OK_ACTION": "Ok",
   "HELP_ACTION": "Help",
+  "SKIP_ACTION": "Skip",
+  "DOWNLOAD_ACTION": "Download",
+  "NOW_ACTION": "Now",
+  "LATER_ACTION": "Later",
 
   "NEW_PLAYLIST_ACTION": "New Playlist",
   "QUEUE_ACTION": "Queue",
@@ -129,6 +137,7 @@
   "HELP_TRANSLATE_TITLE": "Help Translate",
   "TRANSLATION_CREDITS_TITLE": "Translation Credits",
   "PLAYLIST_NAME_TITLE": "Playlist Name",
+  "UPDATE_AVAILABLE_TITLE": "Update Available",
 
   "SEARCHING_MESSAGE": "Searching",
   "SAVING_SETTINGS_MESSAGE": "Saving Settings",
@@ -181,6 +190,8 @@
   "RESTART_CONFIRM_MESSAGE": "Resetting your settings is irriversible! Are you sure you want to continue?",
   "LANGUAGE_NOT_SUPPORTED_MESSAGE": "This language is not supported yet!",
   "HELP_TRANSLATE_MESSAGE": "Svunes does not currently support your system's language. If you'd like to help translate, it would be greatly appreciated",
+  "UPDATE_DOWNLOAD_DONE_MESSAGE": "Update download complete. Svunes needs to restart, would you like to restart now?",
+  "UPDATE_DOWNLOAD_ERROR_MESSAGE": "Failed to download update, please try again later",
 
   "FILTER_ONLY_TITLE": "Only songs with no title",
   "FILTER_ONLY_COVER": "Only songs with no cover",

@@ -1,6 +1,10 @@
 import type { AlbumInfo, SelectedAlbum } from "@controllers";
+import type { Update } from "@tauri-apps/plugin-updater";
 import type { ReleaseGroup } from "@types";
 import { writable } from "svelte/store";
+
+export const showUpdateModal = writable(false);
+export const updateData = writable<Update | null>(null);
 
 export const showEditMusicFolders = writable(false);
 export const showBlacklistFolders = writable(false);

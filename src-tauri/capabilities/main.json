@@ -10,6 +10,7 @@
     "core:menu:default",
     "core:window:default",
     "dialog:default",
+    "updater:default",
     {
       "identifier": "fs:scope",
       "allow": [
