@@ -41,6 +41,7 @@ id3 = "1.13.1"
 
 [target.'cfg(not(any(target_os = "ios", target_os = "android")))'.dependencies]
 tauri-plugin-single-instance = "2.0.0-beta"
+tauri-plugin-updater = "2.0.0-beta"
 
 [features]
 # by default Tauri runs in production mode

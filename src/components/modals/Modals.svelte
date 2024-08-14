@@ -1,5 +1,5 @@
 <script>
-  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showHelpTranslate, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSearchingApi, showSelectLanguage, showSongSortOrder, showTranslationCredits } from "@stores/Modals";
+  import { showAdvancedFilters, showAlbumSortOrder, showArtistSortOrder, showArtOptions, showBlacklistFolders, showControlledModal, showEditMusicFolders, showEditViewOrder, showGridSize, showHelpTranslate, showNowPlayingBackground, showNowPlayingTheme, showParserVariables, showPickAlbumCover, showPickAlbumInfo, showPlaylistSortOrder, showSearchingApi, showSelectLanguage, showSongSortOrder, showTranslationCredits, showUpdateModal } from "@stores/Modals";
   import AdvancedSearchFilters from "./AdvancedSearchFilters.svelte";
   import PickAlbumCover from "./api-results/PickAlbumCover.svelte";
   import PickAlbumInfo from "./api-results/PickAlbumInfo.svelte";
@@ -15,6 +15,7 @@
   import ParserVariables from "./ParserVariables.svelte";
   import SearchingApi from "./SearchingApi.svelte";
   import TranslationCredits from "./TranslationCredits.svelte";
+  import UpdateAvailable from "./UpdateAvailable.svelte";
   import AlbumSortOrder from "./view-settings/AlbumSortOrder.svelte";
   import ArtistSortOrder from "./view-settings/ArtistSortOrder.svelte";
   import GridSize from "./view-settings/GridSize.svelte";
@@ -71,6 +72,9 @@
 {/if}
 
 <!-- ? Misc -->
+{#if $showUpdateModal}
+  <UpdateAvailable />
+{/if}
 {#if $showArtOptions}
   <ArtOptions />
 {/if}

@@ -59,7 +59,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIxRjcwRDQ0QzczMjAzMUMKUldRY0F6TEhSQTMzc2F0VWxEOUJyTTBQVUY2Ui94dkNXUGVBZW1PZ0RZTmVPUlhFcXFpb1djM1MK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIxREFEOTg0NkQ0OUUyMUEKUldRYTRrbHRoTm5hSVlYcGJGU1U1MHBod3M3Mm9JTW91c2wzeVBRMTRpajg4bUxPdURwT3hJaWoK",
       "endpoints": [
         "https://raw.githubusercontent.com/Tormak9970/Svunes/release/latest.json"
       ]
@@ -107,6 +107,6 @@
       "msi"
     ],
     "licenseFile": "wix/short-license.txt",
-    "createUpdaterArtifacts": "v1Compatible"
+    "createUpdaterArtifacts": true
   }
 }
