@@ -14,6 +14,7 @@ export { default as Checkbox } from "./Checkbox.svelte";
 export { default as MenuButton } from "./MenuButton.svelte";
 export { default as NumberField } from "./NumberField.svelte";
 export { default as PlayButton } from "./PlayButton.svelte";
+export { default as ProgressIndicator } from "./ProgressIndicator.svelte";
 export { default as SearchField } from "./SearchField.svelte";
 export { default as Select } from "./select/Select.svelte";
 export { default as Slider } from "./Slider.svelte";

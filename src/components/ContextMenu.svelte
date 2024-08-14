@@ -12,7 +12,6 @@
   $: yOffset = $contextMenuPosition.y;
 
   function handleScroll() {
-    console.log("scrolled");
     if ($showContextMenu) $showContextMenu = false;
   }
 

@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { ApiController, AppController, DeviceController, PlaybackController, QueueController, SettingsController } from "@controllers";
+  import { ApiController, AppController, DeviceController, LogController, PlaybackController, QueueController, SettingsController } from "@controllers";
   import { isLandscape } from "@stores/Layout";
   import { systemDefaultLanguage, t } from "@stores/Locale";
+  import { showUpdateModal, updateData } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode, selected } from "@stores/Select";
   import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { check as checkUpdate, type Update } from "@tauri-apps/plugin-updater";
   import { getViewRoute, View } from "@types";
   import { hash64 } from "@utils";
   import { onDestroy, onMount } from "svelte";
@@ -59,6 +61,19 @@
   }
 
   onMount(async () => {
+    if (!IS_MOBILE) {
+      try {
+        checkUpdate().then((update) => {
+          if (update && update.available) {
+            $updateData = update as Update;
+            $showUpdateModal = true;
+          }
+        });
+      } catch (e: any) {
+        LogController.error(e.message);
+      }
+    }
+
     ApiController.init();
 
     handleMediaDeviceChange();
