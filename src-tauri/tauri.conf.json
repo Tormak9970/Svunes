@@ -104,7 +104,9 @@
     "resources": [],
     "shortDescription": "A robust, offline first Material Design music player.",
     "targets": [
-      "msi"
+      "msi",
+      "appimage",
+      "deb"
     ],
     "licenseFile": "wix/short-license.txt",
     "createUpdaterArtifacts": true
