@@ -8,7 +8,7 @@ successGreen='\033[1;96m'
 infoCyan='\033[1;92m'
 noColor='\033[0m'
 
-comment="An offline first music player for your music library."
+comment="A robust, offline first Material Design music player."
 uninstallComment="Uninstalls all files related to Svunes."
 
 currentVersion="v2.9.0"
