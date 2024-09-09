@@ -89,6 +89,20 @@
         "bannerPath": "wix/bannerImage.jpg"
       }
     },
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": true,
+        "files": {}
+      },
+      "deb": {
+        "files": {}
+      },
+      "rpm": {
+        "epoch": 0,
+        "files": {},
+        "release": "1"
+      }
+    },
     "externalBin": [],
     "icon": [
       "icons/32x32.png",
