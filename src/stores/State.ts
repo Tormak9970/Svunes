@@ -14,7 +14,7 @@ export const shouldPauseOnEnd = writable(false);
 export const songIdsToParse = writable<string[]>([]);
 
 export const showInfoSnackbar = writable<(data: ShowInfoOptions) => void>();
-export const showErrorSnackbar = writable<(data: ShowInfoOptions) => void>();
+export const showErrorSnackbar = writable<(data: ShowErrorOptions) => void>();
 
 // * View stores
 export const musicDirectories = writable<string[]>([]);

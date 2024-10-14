@@ -39,6 +39,12 @@
     if (userData?.reason === 'album-key-dne') {
       userData.reason = "none";
       replace("/albums");
+    } else if (userData?.reason === 'artist-key-dne') {
+      userData.reason = "none";
+      replace("/artists");
+    } else if (userData?.reason === 'genre-key-dne') {
+      userData.reason = "none";
+      replace("/genres");
     } else {
       console.error("conditionsFailed event:", event.detail);
     }

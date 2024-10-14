@@ -1,6 +1,8 @@
 import DesktopQueue from "@views/DesktopQueue.svelte";
+import type { ComponentType } from "svelte";
+import type { WrappedComponent } from "svelte-spa-router";
 import wrap from "svelte-spa-router/wrap";
-import { get } from "svelte/store";
+import { get, type Readable } from "svelte/store";
 import HomeLoadingAnimation from "./components/layout/loading-animations/HomeLoadingAnimation.svelte";
 import Albums from "./routes/albums/Albums.svelte";
 import AlbumsByArtist from "./routes/albums/AlbumsByArtist.svelte";
@@ -35,7 +37,32 @@ import BulkEdit from "./routes/songs/BulkEdit.svelte";
 import SongDetails from "./routes/songs/Details.svelte";
 import SongEditor from "./routes/songs/Edit.svelte";
 import Songs from "./routes/songs/Songs.svelte";
-import { albumsMap } from "./stores/State";
+import { albumsMap, artistsMap, genresMap } from "./stores/State";
+
+/**
+ * Creates a route guard that checks if the key param still exists when the route is loaded.
+ * @param component The component to render if the guard passes.
+ * @param mapStore The entry map store.
+ * @param reason The reason to use if the guard fails.
+ * @returns The route guard.
+ */
+function keyDeleteGuard(component: ComponentType, mapStore: Readable<{ [k: string]: any }>, reason: string): WrappedComponent {
+  return wrap({
+    component: component,
+    userData: {
+      reason: "none"
+    },
+    conditions: [
+      (detail) => {
+        const key = detail.params!.key;
+        const entry = get(mapStore)[key];
+        // @ts-expect-error reason does exist.
+        detail.userData!.reason = reason;
+        return !!entry;
+      }
+    ]
+  })
+}
 
 /**
  * The app's routes.
@@ -49,21 +76,7 @@ export const routes = {
   "/playlists/:id/edit": PlaylistEditor,
 
   "/albums": Albums,
-  "/albums/:key": wrap({
-    component: AblumDetails,
-    userData: {
-      reason: "none"
-    },
-    conditions: [
-      (detail) => {
-        const key = detail.params!.key;
-        const album = get(albumsMap)[key];
-        // @ts-expect-error reason does exist.
-        detail.userData!.reason = "album-key-dne";
-        return !!album;
-      }
-    ]
-  }),
+  "/albums/:key": keyDeleteGuard(AblumDetails, albumsMap, "album-key-dne"),
   "/albums/:key/edit": AlbumEditor,
   "/albums/:key/albums-by-artist": AlbumsByArtist,
 
@@ -73,11 +86,11 @@ export const routes = {
   "/songs/:id/edit": SongEditor,
 
   "/artists": Artists,
-  "/artists/:key": ArtistDetails,
+  "/artists/:key": keyDeleteGuard(ArtistDetails, artistsMap, "artist-key-dne"),
   "/artists/:key/similar": SimilarArtists,
 
   "/genres": Genres,
-  "/genres/:key": GenreDetails,
+  "/genres/:key": keyDeleteGuard(GenreDetails, genresMap, "genre-key-dne"),
 
   "/search": Search,
 

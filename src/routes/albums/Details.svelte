@@ -19,6 +19,10 @@
   $: key = params.key;
   $: album = key ? $albumsMap[key!] : undefined;
 
+  $: if (!album && key) {
+    pop();
+  }
+
   $: artist = album?.albumArtist ? $artistsMap[album?.albumArtist] : undefined;
   $: artistOtherAlbums = Array.from(artist?.albumNames ?? []).filter((name) => name !== album?.name).map((name) => $albumsMap[name]);
   
