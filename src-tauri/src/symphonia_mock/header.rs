@@ -8,7 +8,7 @@
 use symphonia::core::errors::{decode_error, unsupported_error, Result};
 use symphonia::core::io::ReadBytes;
 
-use crate::common::*;
+use crate::symphonia_mock::common::*;
 
 /// The length in bytes of a MPEG frame header word.
 pub const MPEG_HEADER_LEN: usize = 4;

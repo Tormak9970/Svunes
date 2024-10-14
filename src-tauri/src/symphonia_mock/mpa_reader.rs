@@ -19,8 +19,8 @@ use symphonia::core::meta::{Metadata, MetadataLog};
 use symphonia::core::probe::{Descriptor, Instantiate, QueryDescriptor};
 use symphonia::core::io::BufReader;
 
-use crate::common::{FrameHeader, MpegLayer};
-use crate::header::{self, MAX_MPEG_FRAME_SIZE, MPEG_HEADER_LEN};
+use crate::symphonia_mock::common::{FrameHeader, MpegLayer};
+use crate::symphonia_mock::header::{self, MAX_MPEG_FRAME_SIZE, MPEG_HEADER_LEN};
 
 use std::io::{Seek, SeekFrom};
 

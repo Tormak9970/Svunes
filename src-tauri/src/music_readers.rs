@@ -6,7 +6,7 @@ use symphonia::{core::{codecs::CodecRegistry, formats::{FormatOptions, FormatRea
 use symphonia_metadata::id3v2::Id3v2Reader;
 use tauri::{AppHandle, Manager};
 
-use crate::{logger, mpa_reader::MpaReader};
+use crate::{logger, symphonia_mock::mpa_reader::MpaReader};
 
 /// Formats the album name for the album image cache.
 pub fn format_album_name_for_image(album_title: String) -> String {
