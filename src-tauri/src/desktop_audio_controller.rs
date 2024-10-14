@@ -15,7 +15,7 @@ pub async fn get_playback_devices() -> Value {
 
 #[tauri::command]
 /// Sets the playback device that should be used.
-pub fn set_playback_device(app_handle: AppHandle, device_name: String) {
+pub async fn set_playback_device(app_handle: AppHandle, device_name: String) {
   let state = app_handle.state::<Mutex<AppState>>();
 
   // Lock the mutex to mutably access the state.
