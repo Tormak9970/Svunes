@@ -8,7 +8,7 @@ use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_fs::FsExt;
 use tauri_plugin_http::reqwest::Client;
 
-use std::{fs::{self, create_dir_all, File}, io::Write, panic::{self, Location}, path::PathBuf, process::exit, sync::{mpsc::channel, Mutex}, time::Duration};
+use std::{fs::{self, create_dir_all, File}, io::Write, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel, time::Duration};
 
 use music_readers::{format_album_name_for_image, read_music_folder};
 use music_writers::{write_music_file, SongEditFields};
