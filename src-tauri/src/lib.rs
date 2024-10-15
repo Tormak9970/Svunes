@@ -3,12 +3,7 @@ mod logger;
 mod symphonia_mock;
 mod music_readers;
 mod music_writers;
-mod audio_controller;
-mod desktop_audio_controller;
-mod app_state;
 
-use app_state::AppState;
-use audio_controller::AudioController;
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_fs::FsExt;
 use tauri_plugin_http::reqwest::Client;
@@ -334,15 +329,7 @@ pub fn run() {
       copy_playlist_image,
       delete_songs,
       write_music_files,
-      download_image,
-      desktop_audio_controller::get_playback_devices,
-      desktop_audio_controller::set_playback_device,
-      desktop_audio_controller::play_file,
-      desktop_audio_controller::pause_playback,
-      desktop_audio_controller::resume_playback,
-      desktop_audio_controller::clear_playback,
-      desktop_audio_controller::seek_in_track,
-      desktop_audio_controller::set_volume,
+      download_image
     ])
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_http::init())
@@ -363,9 +350,6 @@ pub fn run() {
   }
 
   builder.setup(| app | {
-      let controller = AudioController::new(None);
-      app.manage(Mutex::new(AppState { controller }));
-
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
       
