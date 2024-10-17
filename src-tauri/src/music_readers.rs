@@ -16,7 +16,7 @@ pub fn format_album_name_for_image(album_title: String) -> String {
 }
 
 /// Writes the album visual to the cache folder and returns the path
-fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: String) -> String {
+fn write_visual_to_cache(app_handle: &AppHandle, visual: &Visual, album_title: String) -> String {
   let bundle_id: String = app_handle.config().identifier.to_owned();
   
   let app_cache_dir = app_handle.path().cache_dir().expect("Couldn't resolve app cache dir.");
@@ -55,10 +55,10 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
     let write_res = dest_file.write_all(data.as_ref());
 
     if write_res.is_ok() {
-      logger::log_to_file(app_handle.to_owned(), format!("Writing of {} finished.", file_name).as_str(), 0);
+      logger::log(app_handle, format!("Writing of {} finished.", file_name).as_str(), 0);
     } else {
       let err = write_res.err().unwrap();
-      logger::log_to_file(app_handle.to_owned(), format!("Writing of {} failed with {}.", file_name, err.to_string()).as_str(), 0);
+      logger::log(app_handle, format!("Writing of {} failed with {}.", file_name, err.to_string()).as_str(), 0);
     }
   }
 
@@ -66,7 +66,7 @@ fn write_visual_to_cache(app_handle: AppHandle, visual: &Visual, album_title: St
 }
 
 /// Reads a .flac file and returns the info.
-fn read_flac(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<String, Value> {
+fn read_flac(app_handle: &AppHandle, file_path: PathBuf, max_length: u64) -> Map<String, Value> {
   let file_src = File::open(file_path.to_owned()).expect("failed to open file");
   let file_metadata = file_src.metadata().unwrap();
   
@@ -125,7 +125,7 @@ fn read_flac(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<
       let album_title = entry.get("album").unwrap().to_string();
 
       for visual in visuals {
-        let album_art_path = write_visual_to_cache(app_handle.to_owned(), visual, album_title.clone());
+        let album_art_path = write_visual_to_cache(app_handle, visual, album_title.clone());
 
         if !entry.contains_key("albumpath") {
           entry.insert(String::from("albumpath"), Value::String(album_art_path));
@@ -133,14 +133,14 @@ fn read_flac(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<
       }
     }
   } else {
-    logger::log_to_file(app_handle.to_owned(), format!("Failed to parse {} with flac parser.", file_path.as_os_str().to_str().unwrap()).as_str(), 2);
+    logger::log(app_handle, format!("Failed to parse {} with flac parser.", file_path.as_os_str().to_str().unwrap()).as_str(), 2);
   }
   
   return entry;
 }
 
 /// Reads a .mp3 file and returns the info.
-fn read_mp3(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<String, Value> {
+fn read_mp3(app_handle: &AppHandle, file_path: PathBuf, max_length: u64) -> Map<String, Value> {
   let file_src = File::open(file_path.to_owned()).expect("failed to open file");
   let file_metadata = file_src.metadata().unwrap();
   let mut entry: Map<String, Value> = Map::new();
@@ -206,10 +206,10 @@ fn read_mp3(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<S
   for visual in visuals {
     if entry.contains_key("talb") {
       let album_title = entry.get("talb").unwrap().to_string();
-      entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), &visual, album_title)));
+      entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle, &visual, album_title)));
     } else if entry.contains_key("tal") {
       let album_title = entry.get("tal").unwrap().to_string();
-      entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle.to_owned(), &visual, album_title)));
+      entry.insert(String::from("albumpath"), Value::String(write_visual_to_cache(app_handle, &visual, album_title)));
     } else {
       // entry.insert(String::from("albumpath"), Value::String());
       // println!("{}", write_visual_to_cache(app_handle.to_owned(), &visual, "test".to_owned()));
@@ -220,7 +220,7 @@ fn read_mp3(app_handle: AppHandle, file_path: PathBuf, max_length: u64) -> Map<S
 }
 
 /// Reads a music file and returns the info.
-fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String, max_length: u64) -> Map<String, Value> {
+fn read_music_file(app_handle: &AppHandle, file_path: PathBuf, file_type: String, max_length: u64) -> Map<String, Value> {
   if file_type.eq_ignore_ascii_case("mp3") {
     return read_mp3(app_handle, file_path, max_length);
   } else {
@@ -229,7 +229,7 @@ fn read_music_file(app_handle: AppHandle, file_path: PathBuf, file_type: String,
 }
 
 /// Reads the content of the provided directory.
-pub fn read_music_folder(app_handle: AppHandle, log_sender: &mut Sender<String>, folder_path: PathBuf, blacklist: &[String], max_length: u64) -> Vec<Value> {
+pub fn read_music_folder(app_handle: &AppHandle, log_sender: &mut Sender<String>, folder_path: PathBuf, blacklist: &[String], max_length: u64) -> Vec<Value> {
   let contents_res = read_dir(folder_path.to_owned());
   
   let mut entries: Vec<Value> = vec![];
@@ -259,7 +259,7 @@ pub fn read_music_folder(app_handle: AppHandle, log_sender: &mut Sender<String>,
         let file_type = file_type_str.into_string().ok().expect("Should have been able to convert the file extension to a String.");
       
         if file_type.eq_ignore_ascii_case("mp3") || file_type.eq_ignore_ascii_case("flac") {
-          let mut file_entry = read_music_file(app_handle.to_owned(), file_path.to_owned(), file_type, max_length);
+          let mut file_entry = read_music_file(app_handle, file_path.to_owned(), file_type, max_length);
           
           if !file_entry.is_empty() {
             file_entry.insert(String::from("filename"), Value::String(file_path_str));
@@ -271,7 +271,7 @@ pub fn read_music_folder(app_handle: AppHandle, log_sender: &mut Sender<String>,
   }
 
   for directory_path in sub_dirs {
-    let mut folder_entries = read_music_folder(app_handle.to_owned(), log_sender, directory_path.to_owned(), blacklist, max_length);
+    let mut folder_entries = read_music_folder(app_handle, log_sender, directory_path.to_owned(), blacklist, max_length);
     entries.append(&mut folder_entries);
   }
   

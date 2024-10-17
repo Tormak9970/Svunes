@@ -65,6 +65,12 @@ pub fn log_to_file(app_handle: AppHandle, message: &str, level: u8) {
     log_to_given_file(&log_path, message, level);
 }
 
+/// Used for logging on the Rust side.
+pub fn log(app_handle: &AppHandle, message: &str, level: u8) {
+  let log_path: PathBuf = get_core_log_path(app_handle);
+  log_to_given_file(&log_path, message, level);
+}
+
 #[tauri::command]
 /// Cleans the log file for a new launch of the app.
 pub fn clean_out_log(app_handle: AppHandle) {
