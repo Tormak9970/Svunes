@@ -407,6 +407,7 @@ pub fn run() {
       playback::ipc::get_audio_devices,
       playback::ipc::set_audio_device,
       playback::ipc::load_file,
+      playback::ipc::seek,
       playback::ipc::set_volume,
       playback::ipc::resume_playback,
       playback::ipc::pause_playback,

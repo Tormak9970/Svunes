@@ -94,6 +94,9 @@ fn decode_loop(
             cancel_token.cancel();
             is_reset = true;
           }
+          PlayerEvent::Seek(_position) => {
+
+          }
         }
       }
     } else if let Some(ref p) = path_str.clone() {
@@ -323,6 +326,13 @@ fn decode_loop(
                     seek.replace(timestamp); // Restore current seek position
                     is_reset = true;
                   }
+                  PlayerEvent::Seek(position) => {
+                    path_str.replace(path_str_clone.clone().unwrap());
+                    seek.replace(position);
+                    cancel_token.cancel();
+                    guard.flush();
+                    is_reset = true;
+                  }
                 }
               }
 
@@ -377,6 +387,13 @@ fn decode_loop(
 
                         wake_all(decoding_active.as_ref());
                       }
+                    }
+                    PlayerEvent::Seek(position) => {
+                      path_str.replace(path_str_clone.clone().unwrap());
+                      seek.replace(position);
+                      cancel_token.cancel();
+                      guard.flush();
+                      is_reset = true;
                     }
                   }
                 }

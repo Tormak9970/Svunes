@@ -53,6 +53,12 @@ pub fn load_file(state: State<AudioPlayer>, _app_handle: AppHandle, file_path: S
 }
 
 #[tauri::command]
+/// Seeks to the provided position.
+pub fn seek(state: State<AudioPlayer>, _app_handle: AppHandle, position: f64) {
+  let _ = state.player_sender.send(PlayerEvent::Seek(position));
+}
+
+#[tauri::command]
 /// Sets the playback volume.
 pub fn set_volume(state: State<AudioPlayer>, _app_handle: AppHandle, level: f64) {
   let _ = state.volume_sender.send(VolumeEvent::SetVolume(level));

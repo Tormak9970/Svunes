@@ -21,6 +21,7 @@ pub struct PlaybackEvent {
 
 pub enum PlayerEvent {
   LoadFile(PlaybackEvent),
+  Seek(f64),
   SetAudioDevice(Option<String>),
 }
 

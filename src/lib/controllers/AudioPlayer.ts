@@ -72,8 +72,9 @@ export class AudioPlayer {
       }
     });
 
-    this.songProgressUnsub = songProgress.subscribe((value) => {
+    this.songProgressUnsub = songProgress.subscribe((position) => {
       console.log("seek occured");
+      invoke<void>("seek", { position: position });
     });
 
     this.volumeLevelUnsub = volumeLevel.subscribe((level) => {
