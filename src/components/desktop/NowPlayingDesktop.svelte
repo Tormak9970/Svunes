@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { PlaybackController } from "@controllers";
-  import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, Speaker, VolumeDown } from "@icons";
+  import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, Speaker, VolumeDown, VolumeOff, VolumeUp } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying } from "@stores/Overlays";
-  import { albumsMap, playingSongId, playlists, songsMap } from "@stores/State";
+  import { albumsMap, playingSongId, playlists, songsMap, volumeLevel } from "@stores/State";
   import { tooltip } from "@svelte-plugins/tooltips";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { goToQueue, goToSongDetails, hash64 } from "@utils";
@@ -142,7 +142,7 @@
       }}
     >
       <Button type="text" iconType="full" on:click={handleTooltipShow}>
-        <Icon icon={VolumeDown} width="20px" height="20px" />
+        <Icon icon={$volumeLevel === 0 ? VolumeOff : ($volumeLevel <= 0.5 ? VolumeDown : VolumeUp)} width="20px" height="20px" />
       </Button>
     </span>
     <MenuButton icon={MoreVert} bind:open={menuIsOpen}>

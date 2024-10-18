@@ -24,6 +24,7 @@ export { default as ForwardArrow } from "@ktibow/iconset-material-symbols/arrow-
 export { default as SubdirectoryArrowRight } from "@ktibow/iconset-material-symbols/subdirectory-arrow-right-rounded";
 
 export { default as VolumeDown } from "@ktibow/iconset-material-symbols/volume-down-rounded";
+export { default as VolumeOff } from "@ktibow/iconset-material-symbols/volume-off-rounded";
 export { default as VolumeUp } from "@ktibow/iconset-material-symbols/volume-up-rounded";
 
 export { default as Keep } from "@ktibow/iconset-material-symbols/keep-rounded";
