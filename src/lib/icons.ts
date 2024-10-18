@@ -107,3 +107,6 @@ export { default as PlayCircle } from "@ktibow/iconset-material-symbols/play-cir
 export { default as SwipeDownAlt } from "@ktibow/iconset-material-symbols/swipe-down-alt-rounded";
 
 export { default as Personalize } from "@ktibow/iconset-material-symbols/hdr-weak";
+
+export { default as Speaker } from "@ktibow/iconset-material-symbols/speaker";
+

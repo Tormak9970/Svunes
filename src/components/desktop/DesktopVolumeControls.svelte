@@ -6,7 +6,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="volume-controls">
+<div class="volume-controls" on:click|stopPropagation>
   <VerticalSlider min={0} max={1} bind:value={$volumeLevel} />
 </div>
 

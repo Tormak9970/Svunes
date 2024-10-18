@@ -1,37 +1,11 @@
-
-
-use cpal::traits::{DeviceTrait, HostTrait};
 use tauri::{AppHandle, State};
 
-use super::{player::AudioPlayer, types::{AudioDevice, AudioDevices, PlaybackEvent, PlayerEvent, VolumeEvent}};
+use super::{output, player::AudioPlayer, types::{AudioDevices, PlaybackEvent, PlayerEvent, VolumeEvent}};
 
 #[tauri::command]
 /// Gets the output devices.
 pub fn get_audio_devices(_app_handle: AppHandle) -> Option<AudioDevices> {
-  let host = cpal::default_host();
-
-  let cpal_devices: Vec<AudioDevice> = host
-    .output_devices()
-    .unwrap()
-    .map(|device| AudioDevice {
-      name: device.name().unwrap(),
-    })
-    .collect();
-
-  let default_host = host.default_output_device();
-
-  let default: Option<AudioDevice> = if default_host.is_none() {
-    None
-  } else {
-    Some(AudioDevice {
-      name: default_host.unwrap().name().unwrap(),
-    })
-  };
-
-  return Some(AudioDevices {
-    devices: cpal_devices,
-    default,
-  });
+  return output::get_devices();
 }
 
 #[tauri::command]

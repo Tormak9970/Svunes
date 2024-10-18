@@ -11,6 +11,9 @@ export const volumeLevel = writable(1);
 export const isPaused = writable(true);
 export const shouldPauseOnEnd = writable(false);
 
+export const connectedDevices = writable<string[]>([]);
+export const selectedDevice = writable("");
+
 export const songIdsToParse = writable<string[]>([]);
 
 export const showInfoSnackbar = writable<(data: ShowInfoOptions) => void>();

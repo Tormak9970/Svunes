@@ -7,17 +7,18 @@
 
 //! Platform-dependant Audio Outputs
 
-use std::result;
+use std::{result, thread, time};
 use std::sync::mpsc::{Receiver, Sender};
 
 use ::cpal::traits::{DeviceTrait, HostTrait};
 use ::cpal::{default_host, Device};
 use tauri::async_runtime::Mutex;
+use tauri::{AppHandle, Emitter};
 use std::sync::Arc;
 
 use symphonia::core::audio::{AudioBufferRef, SignalSpec};
 
-use super::types::{SampleOffsetEvent, VolumeEvent};
+use super::types::{AudioDevice, AudioDevices, SampleOffsetEvent, VolumeEvent};
 
 pub trait AudioOutput {
     fn write(&mut self, decoded: AudioBufferRef<'_>, ramp_up_samples: u64, ramp_down_samples: u64);
@@ -200,6 +201,7 @@ mod cpal {
       }
   }
 
+  #[allow(dead_code)]
   struct CpalAudioOutputImpl<T: AudioOutputSample>
   where
       T: AudioOutputSample + Send + Sync,
@@ -593,4 +595,57 @@ pub fn get_device_by_name(name: Option<String>) -> Option<Device> {
                 })
         })
         .or(host.default_output_device());
+}
+
+pub fn get_devices() -> Option<AudioDevices> {
+  let host = default_host();
+
+  let cpal_devices: Vec<AudioDevice> = host
+    .output_devices()
+    .unwrap()
+    .map(|device| AudioDevice {
+      name: device.name().unwrap(),
+    })
+    .collect();
+
+  let default_host = host.default_output_device();
+
+  let default: Option<AudioDevice> = if default_host.is_none() {
+    None
+  } else {
+    Some(AudioDevice {
+      name: default_host.unwrap().name().unwrap(),
+    })
+  };
+
+  return Some(AudioDevices {
+    devices: cpal_devices,
+    default,
+  });
+}
+
+
+pub fn poll_audio_devices(app_handle: &AppHandle) {
+  println!("Starting audio device polling...");
+
+  let polling_interval = time::Duration::from_millis(1000);
+
+  let mut old_device_count = 0;  
+
+  loop {
+    let device_res = get_devices();
+    let device_count = if let Some(devices) = &device_res {
+      devices.devices.len()
+    } else {
+      0
+    };
+
+    if device_count != old_device_count {
+      old_device_count = device_count;
+
+      let _ = app_handle.emit("attached_devices_change", device_res);
+    }
+
+    thread::sleep(polling_interval);
+  }
 }

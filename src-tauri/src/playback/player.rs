@@ -3,7 +3,7 @@ use std::sync::{atomic::AtomicU32, mpsc::{Receiver, Sender}, Arc};
 use atomic_wait::wake_all;
 use tauri::{async_runtime::Mutex, AppHandle};
 
-use super::{audio::start_audio, types::{PlayerEvent, VolumeEvent, ACTIVE, PAUSED}};
+use super::{audio::start_audio, output::poll_audio_devices, types::{PlayerEvent, VolumeEvent, ACTIVE, PAUSED}};
 
 #[derive(Clone)]
 pub struct AudioPlayer {
@@ -34,9 +34,16 @@ impl AudioPlayer {
     let volume_receiver = self.volume_receiver.clone();
     let decoding_active = self.decoding_active.clone();
 
+    let handle_clone = app_handle.clone();
+
     // Create a thread for handling audio events and playback.
     std::thread::spawn(move || {
-      start_audio(&decoding_active, &player_receiver, &volume_receiver, &app_handle);
+      start_audio(&decoding_active, &player_receiver, &volume_receiver, &handle_clone);
+    });
+    
+    // Create a thread for polling for changes in audio devices.
+    std::thread::spawn(move || {
+      poll_audio_devices(&app_handle);
     });
   }
 

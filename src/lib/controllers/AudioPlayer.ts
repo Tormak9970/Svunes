@@ -1,28 +1,32 @@
 // playback::ipc::get_audio_devices,
 // playback::ipc::set_audio_device,
 
-import { autoPlayOnConnect, isPaused, playingSongId, shouldPauseOnEnd, songProgress, songsMap, volumeLevel } from "@stores/State";
+import { autoPlayOnConnect, connectedDevices, isPaused, playingSongId, selectedDevice, shouldPauseOnEnd, songProgress, songsMap, volumeLevel } from "@stores/State";
 import { window } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
 import type { UnlistenFn } from "@tauri-apps/api/event";
 import { get, type Unsubscriber } from "svelte/store";
 import { QueueController } from "./QueueController";
 
+type AudioDevices = {
+  devices: { name: string }[],
+  default: { name: string }
+}
+
 export class AudioPlayer {
   private static songEndUnsub: Promise<UnlistenFn>;
   private static timestampUnsub: Promise<UnlistenFn>;
   private static backendPlayingUnsub: Promise<UnlistenFn>;
   private static backendPausedUnsub: Promise<UnlistenFn>;
+  private static deviceChangesUnsub: Promise<UnlistenFn>;
 
   private static playingSongIdUnsub: Unsubscriber;
   private static isPausedUnsub: Unsubscriber;
   private static songProgressUnsub: Unsubscriber;
   private static volumeLevelUnsub: Unsubscriber;
+  private static selectedDeviceUnsub: Unsubscriber;
 
   private static oldNumAudioDevices: number;
-
-  // TODO: recreate these subscriptions
-  // ! <audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} bind:volume={$volumeLevel} on:ended={QueueController.skip} />
 
   /**
    * Initializes the Audio Player.
@@ -35,7 +39,6 @@ export class AudioPlayer {
     });
 
     this.timestampUnsub = currentWindow.listen("timestamp", (event) => {
-      console.log("timestamp:", event);
       songProgress.setFromBackend(event.payload as number);
     });
 
@@ -73,7 +76,6 @@ export class AudioPlayer {
     });
 
     this.songProgressUnsub = songProgress.subscribe((position) => {
-      console.log("seek occured");
       invoke<void>("seek", { position: position });
     });
 
@@ -81,9 +83,16 @@ export class AudioPlayer {
       invoke<void>("set_volume", { level: level });
     });
     
+    this.selectedDeviceUnsub = selectedDevice.subscribe((device) => {
+      invoke<void>("set_audio_device", { deviceName: device });
+    });
 
-    this.handleMediaDeviceChange();
-    navigator.mediaDevices.ondevicechange = this.handleMediaDeviceChange;
+    this.getAudioDevices().then((devices) => this.handleConnectedDeviceChange(devices));
+    
+    this.deviceChangesUnsub = currentWindow.listen("attached_devices_change", (event) => {
+      const devices = event.payload as AudioDevices;
+      this.handleConnectedDeviceChange(devices);
+    });
   }
 
   /**
@@ -102,26 +111,14 @@ export class AudioPlayer {
     const pausedUnlisten = await this.backendPausedUnsub;
     if (pausedUnlisten) pausedUnlisten();
 
+    const deviceChangeUnlisten = await this.deviceChangesUnsub;
+    if (deviceChangeUnlisten) deviceChangeUnlisten();
+
     if (this.playingSongIdUnsub) this.playingSongIdUnsub();
     if (this.isPausedUnsub) this.isPausedUnsub();
     if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.volumeLevelUnsub) this.volumeLevelUnsub();
-  }
-
-  static handleMediaDeviceChange() {
-    navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) => {
-      const numAudioDevices = devices.filter((device) => device.kind.includes("audio")).length;
-
-      if (this.oldNumAudioDevices && get(autoPlayOnConnect)) {
-        if (numAudioDevices > this.oldNumAudioDevices && get(isPaused)) {
-          isPaused.set(true);
-        } else if (numAudioDevices < this.oldNumAudioDevices && !get(isPaused)) {
-          isPaused.set(false);
-        }
-      }
-
-      this.oldNumAudioDevices = numAudioDevices;
-    });
+    if (this.selectedDeviceUnsub) this.selectedDeviceUnsub();
   }
 
   static async loadFile(filePath: string) {
@@ -129,10 +126,45 @@ export class AudioPlayer {
   }
 
   static play() {
-    invoke<void>("resume_playback", {})
+    invoke<void>("resume_playback", {});
   }
 
   static pause() {
     invoke<void>("pause_playback", {});
+  }
+
+  /**
+   * Gets the currently connected audio devices.
+   * @returns The currently connected audio devices.
+   */
+  private static async getAudioDevices(): Promise<AudioDevices> {
+    return await invoke<AudioDevices>("get_audio_devices", {});
+  }
+
+  /**
+   * Handles when the connected audio devices change.
+   * @param devices The connected devices.
+   */
+  private static handleConnectedDeviceChange(devices: AudioDevices) {
+    let selected = get(selectedDevice);
+
+    if (selected === "") {
+      selectedDevice.set(devices.default.name);
+      selected = devices.default.name;
+    }
+
+    const currentDevices = devices.devices.map((dev) => dev.name);
+    connectedDevices.set(currentDevices);
+
+    if (this.oldNumAudioDevices && get(autoPlayOnConnect)) {
+      if (currentDevices.length > this.oldNumAudioDevices && get(isPaused)) {
+        isPaused.set(false);
+      } else if (!currentDevices.includes(selected) && !get(isPaused)) {
+        isPaused.set(true);
+        selectedDevice.set(devices.default.name);
+      }
+    }
+
+    this.oldNumAudioDevices = currentDevices.length;
   }
 }

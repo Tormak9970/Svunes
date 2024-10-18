@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { PlaybackController } from "@controllers";
-  import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, VolumeDown } from "@icons";
+  import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, Speaker, VolumeDown } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
@@ -15,6 +15,7 @@
   import PlayerControls from "../overlays/now-playing/PlayerControls.svelte";
   import ProgressControls from "../overlays/now-playing/ProgressControls.svelte";
   import ViewImage from "../utils/ViewImage.svelte";
+  import DesktopSpeakerSelect from "./DesktopSpeakerSelect.svelte";
   import DesktopVolumeControls from "./DesktopVolumeControls.svelte";
 
   let menuIsOpen = false;
@@ -70,7 +71,7 @@
     goToSongDetails(song!.id);
   }
 
-  function handleVolumeShow(e: Event) {
+  function handleTooltipShow(e: Event) {
     (e.target as HTMLButtonElement).parentElement?.click();
   }
 
@@ -122,14 +123,25 @@
     </Button>
     <span
       use:tooltip={{
+        content: { component: DesktopSpeakerSelect },
+        action: "click",
+        theme: "speakers-tooltip-theme",
+        arrow: false
+      }}
+    >
+      <Button type="text" iconType="full" on:click={handleTooltipShow}>
+        <Icon icon={Speaker} width="20px" height="20px" />
+      </Button>
+    </span>
+    <span
+      use:tooltip={{
         content: { component: DesktopVolumeControls },
-        hideOnClickOutside: true,
         action: "click",
         theme: "volume-tooltip-theme",
         arrow: false
       }}
     >
-      <Button type="text" iconType="full" on:click={handleVolumeShow}>
+      <Button type="text" iconType="full" on:click={handleTooltipShow}>
         <Icon icon={VolumeDown} width="20px" height="20px" />
       </Button>
     </span>
