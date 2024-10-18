@@ -154,6 +154,7 @@ References:
  - [How Spotify's Shuffle Works](https://engineering.atspotify.com/2014/02/how-to-shuffle-songs/) - An explanation of how pseudo-randomness can make shuffling feel more random.
  - [Metro](https://github.com/MuntashirAkon/Metro) - Inspired the UI scheme and the project as a whole.
  - [Svelte Md3](https://ktibow.github.io/m3-svelte/) - Many of the base components are heavily modified version of components from Svelte Md3.
+ - [Musicat](https://github.com/basharovV/musicat) - Great resource for figuring out how to handle audio playback on the backend.
 
 Libraries:
  - [Material Icons](https://fonts.google.com/icons) - All of the app's icons came from here.
