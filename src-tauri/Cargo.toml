@@ -34,10 +34,19 @@ rayon = "1.10.0"
 palette_extract = "0.1.0"
 image = "0.25.1"
 
-symphonia = { version = "0.5.4", features = [ "flac" ] }
+cpal = "0.15.3"
+atomic-wait = "1.1.0"
+symphonia = { version = "0.5.4", features = [ "all" ] }
 symphonia-metadata = "0.5.4"
 metaflac = "0.2.7"
 id3 = "1.13.1"
+
+rubato = "0.15.0"
+arrayvec = "0.7.4"
+ringbuffer = "0.15.0"
+rb = "0.4.1"
+tokio-util = "0.7.10"
+notify = "6.1.1"
 
 [target.'cfg(not(any(target_os = "ios", target_os = "android")))'.dependencies]
 tauri-plugin-single-instance = "2.0.0-beta"

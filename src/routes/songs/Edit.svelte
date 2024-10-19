@@ -7,10 +7,10 @@
   import { t } from "@stores/Locale";
   import { showWritingChanges } from "@stores/Overlays";
   import { showErrorSnackbar, songsMap } from "@stores/State";
+  import { backFromSidePanel } from "@utils";
   import { onMount } from "svelte";
   import { pop } from "svelte-spa-router";
   import SidePanelBackButton from "../../components/desktop/SidePanelBackButton.svelte";
-  import { backFromSidePanel } from "../../lib/utils";
 
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;

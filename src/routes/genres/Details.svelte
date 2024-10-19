@@ -17,6 +17,10 @@
   $: genre = params.key ? $genresMap[params.key] : undefined;
   $: genreSongs = genre?.songIds.map((id) => $songsMap[id]) ?? [];
 
+  $: if (!genre && params.key) {
+    pop();
+  }
+
   let highlight = false;
 
   /**

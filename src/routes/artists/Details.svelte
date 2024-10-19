@@ -21,6 +21,10 @@
   $: artist = params.key ? $artistsMap[params!.key!] : undefined;
   $: artistAlbums = Array.from(artist?.albumNames ?? []).map((name) => $albumsMap[name]);
 
+  $: if (!artist && key) {
+    pop();
+  }
+
   $: songs = artist?.songIds?.map((id) => $songsMap[id]);
   $: sortedSongs = songs ? sortSongs(songs, artistSortMethod) : [];
 
