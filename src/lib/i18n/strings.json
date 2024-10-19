@@ -138,6 +138,7 @@
   "TRANSLATION_CREDITS_TITLE": "Translation Credits",
   "PLAYLIST_NAME_TITLE": "Playlist Name",
   "UPDATE_AVAILABLE_TITLE": "Update Available",
+  "CHANGES_DETECTED_TITLE": "Changes Detected",
 
   "SEARCHING_MESSAGE": "Searching",
   "SAVING_SETTINGS_MESSAGE": "Saving Settings",
@@ -192,6 +193,7 @@
   "HELP_TRANSLATE_MESSAGE": "Svunes does not currently support your system's language. If you'd like to help translate, it would be greatly appreciated",
   "UPDATE_DOWNLOAD_DONE_MESSAGE": "Update download complete. Svunes needs to restart, would you like to restart now?",
   "UPDATE_DOWNLOAD_ERROR_MESSAGE": "Failed to download update, please try again later",
+  "RESTART_WITH_CHANGES_MESSAGE": "File changes were detected in one of your music folders, would you like to restart?",
 
   "FILTER_ONLY_TITLE": "Only songs with no title",
   "FILTER_ONLY_COVER": "Only songs with no cover",

@@ -34,30 +34,18 @@ impl Watcher {
     std::thread::spawn(move || {
       println!("starting watcher loop...");
 
-      let mut blacklist: Vec<String> = vec![];
       let mut folders_watching: Vec<String> = vec![];
 
       // Select recommended watcher for debouncer.
       // Using a callback here, could also be a channel.
-      // ! the move here means that blacklist won't update which is wrong.
       let mut debouncer: Debouncer<ReadDirectoryChangesWatcher> = new_debouncer(Duration::from_secs(2), move |res: DebounceEventResult| {
         match res {
           Ok(events) => {
-            let blacklist_clone = blacklist.clone();
-            let should_reload = events.iter().any(move |e| {
-              let file_path = e.path.clone();
-              println!("Event {:?} for {:?}",e.kind,e.path);
-
-              let child_of_blacklist = (&blacklist_clone).iter().any(| folder| {
-                return file_path.starts_with(folder);
-              });
-
-              return !child_of_blacklist;
+            events.iter().for_each(move |e| {
+              println!("Event {:?} for {:?}", e.kind, e.path);
             });
 
-            if should_reload {
-              let _ = app.emit("music_folder_update", None::<String>);
-            }
+            let _ = app.emit("music_folder_update", None::<String>);
           },
           Err(e) => {
             println!("Error {:?}", e)
@@ -71,9 +59,7 @@ impl Watcher {
 
         if let Ok(result) = event {
           match result {
-            WatcherEvent::Update(folders, blacklisted_folders) => {
-              blacklist = blacklisted_folders;
-
+            WatcherEvent::Update(folders, _blacklisted_folders) => {
               // * Remove watchers from any paths that were removed.
               let folders_watching_loop = folders_watching.clone();
               for current_folder in folders_watching_loop {
