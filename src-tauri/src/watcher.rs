@@ -1,6 +1,6 @@
-use std::{path::Path, sync::{mpsc::{Receiver, Sender}, Arc}, time::Duration};
+use std::{path::Path, sync::{mpsc::{Receiver, Sender}, Arc}};
 
-use notify_debouncer_mini::{new_debouncer, notify::*, DebounceEventResult, Debouncer};
+use notify::{Config, EventKind, RecommendedWatcher, RecursiveMode, Watcher as _};
 use tauri::{async_runtime::Mutex, AppHandle, Emitter};
 
 pub enum WatcherEvent {
@@ -29,6 +29,10 @@ impl Watcher {
     let event_receiver = self.receiver.clone();
 
     let app = app_handle.clone();
+
+    let (sender, receiver) = std::sync::mpsc::channel();
+
+    let reciever_mutex = Arc::new(Mutex::new(receiver));
     
     // Create a thread for handling the folder watching.
     std::thread::spawn(move || {
@@ -38,20 +42,7 @@ impl Watcher {
 
       // Select recommended watcher for debouncer.
       // Using a callback here, could also be a channel.
-      let mut debouncer: Debouncer<ReadDirectoryChangesWatcher> = new_debouncer(Duration::from_secs(2), move |res: DebounceEventResult| {
-        match res {
-          Ok(events) => {
-            events.iter().for_each(move |e| {
-              println!("Event {:?} for {:?}", e.kind, e.path);
-            });
-
-            let _ = app.emit("music_folder_update", None::<String>);
-          },
-          Err(e) => {
-            println!("Error {:?}", e)
-          },
-        }
-      }).unwrap();
+      let mut watcher = RecommendedWatcher::new(sender, Config::default()).unwrap();
 
       // * Listen for watcher events from the frontend.
       loop {
@@ -64,7 +55,7 @@ impl Watcher {
               let folders_watching_loop = folders_watching.clone();
               for current_folder in folders_watching_loop {
                 if !folders.contains(&current_folder) {
-                  let _ = debouncer.watcher().unwatch(Path::new(&current_folder));
+                  let _ = watcher.unwatch(Path::new(&current_folder));
                   
                   let index = (&folders_watching).iter().position(|f| *f == current_folder).unwrap();
                   folders_watching.remove(index);
@@ -74,12 +65,40 @@ impl Watcher {
               // * Add watchers to any paths that were added.
               for folder in folders {
                 if !folders_watching.contains(&folder) {
-                  let _ = debouncer.watcher().watch(Path::new(&folder), RecursiveMode::Recursive);
+                  let _ = watcher.watch(Path::new(&folder), RecursiveMode::Recursive);
 
                   folders_watching.push(folder);
                 }
               }
             }
+          }
+        }
+      }
+    });
+
+    // Create a thread for handling the watcher events
+    std::thread::spawn(move || {
+      println!("starting watcher event thread...");
+
+      loop {
+        let event = reciever_mutex.try_lock().unwrap().recv();
+
+        if let Ok(res) = event {
+          match res {
+            Ok(event) => match event.kind {
+                EventKind::Create(_path) => {
+                  let _ = app.emit("music_folder_update", None::<String>);
+                },
+                EventKind::Remove(_path) => {
+                  let _ = app.emit("music_folder_update", None::<String>);
+                },
+                _ => {
+                  
+                }
+            },
+            Err(e) => {
+              println!("Error {:?}", e)
+            },
           }
         }
       }

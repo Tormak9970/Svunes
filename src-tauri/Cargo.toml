@@ -46,7 +46,7 @@ arrayvec = "0.7.4"
 ringbuffer = "0.15.0"
 rb = "0.4.1"
 tokio-util = "0.7.10"
-notify-debouncer-mini = "0.4.1"
+notify = "6.1.1"
 
 [target.'cfg(not(any(target_os = "ios", target_os = "android")))'.dependencies]
 tauri-plugin-single-instance = "2.0.0-beta"

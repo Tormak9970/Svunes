@@ -19,8 +19,6 @@ export const songIdsToParse = writable<string[]>([]);
 export const showInfoSnackbar = writable<(data: ShowInfoOptions) => void>();
 export const showErrorSnackbar = writable<(data: ShowErrorOptions) => void>();
 
-export const justWroteChanges = writable(false);
-
 // * View stores
 export const musicDirectories = writable<string[]>([]);
 export const selectedView = writable<View>(-1 as View);

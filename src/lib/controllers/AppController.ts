@@ -2,7 +2,7 @@ import { Album, Artist, Genre, Playlist, Song } from "@models";
 import { t } from "@stores/Locale";
 import { showEditMusicFolders } from "@stores/Modals";
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
-import { albums, artists, blacklistedFolders, genres, isLoading, justWroteChanges, musicDirectories, playingSongId, playlists, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
+import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, playlists, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
 import { window } from "@tauri-apps/api";
 import type { UnlistenFn } from "@tauri-apps/api/event";
 import * as fs from "@tauri-apps/plugin-fs";
@@ -50,21 +50,18 @@ export class AppController {
     const translate = get(t);
 
     const handler = debounce(() => {
-      console.log("detected folder change!", get(justWroteChanges));
-      if (!get(justWroteChanges)) {
-        DialogController.ask(
-          translate("CHANGES_DETECTED_TITLE"),
-          translate("RESTART_WITH_CHANGES_MESSAGE"),
-          translate("YES_ACTION"),
-          translate("NO_ACTION")
-        ).then((result) => {
-          if (result) {
-            this.loadSongs(get(musicDirectories), get(blacklistedFolders));
-          }
-        });
-      } else {
-        justWroteChanges.set(false);
-      }
+      console.log("detected folder change!");
+
+      DialogController.ask(
+        translate("CHANGES_DETECTED_TITLE"),
+        translate("RESTART_WITH_CHANGES_MESSAGE"),
+        translate("YES_ACTION"),
+        translate("NO_ACTION")
+      ).then((result) => {
+        if (result) {
+          this.loadSongs(get(musicDirectories), get(blacklistedFolders));
+        }
+      });
     }, 1000);
 
     this.musicFolderUpdateUnsub = await window.getCurrentWindow().listen("music_folder_update", handler);

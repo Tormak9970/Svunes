@@ -1,7 +1,7 @@
 import { Album, Song } from "@models";
 import { desktopSidePanel, sidePanelProps, SidePanels } from "@stores/Layout";
 import { t as translate } from "@stores/Locale";
-import { albums, history, justWroteChanges, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
+import { albums, history, nowPlayingList, playingSongId, playlists, queue, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
 import { get } from "svelte/store";
 import { bulkEditSongIds } from "../../stores/Select";
 import { backFromSidePanel } from "../utils";
@@ -69,7 +69,6 @@ export class EditController {
       AppController.loadGenresFromSongs(songsList);
 
       get(showInfoSnackbar)({ message: t("FINISHED_WRITING_CHANGES_MESSAGE") });
-      justWroteChanges.set(true);
       LogController.log(`Finished writing edits to ${original.id}`);
     } else {
       get(showErrorSnackbar)({ message: t("FAILED_WRITING_CHANGES_MESSAGE") });
@@ -104,7 +103,6 @@ export class EditController {
       AppController.loadGenresFromSongs(songsList);
 
       get(showInfoSnackbar)({ message: t("FINISHED_WRITING_CHANGES_MESSAGE") });
-      justWroteChanges.set(true);
       LogController.log(`Finished writing edits to ${songIds.length} songs`);
     } else {
       get(showErrorSnackbar)({ message: t("FAILED_WRITING_CHANGES_MESSAGE") });
@@ -186,7 +184,6 @@ export class EditController {
         AppController.loadGenresFromSongs(songsList);
 
         get(showInfoSnackbar)({ message: t("FINISHED_WRITING_CHANGES_MESSAGE") });
-        justWroteChanges.set(true);
         LogController.log(`Finished writing edits to ${original.name}`);
         resolve();
       } else {
