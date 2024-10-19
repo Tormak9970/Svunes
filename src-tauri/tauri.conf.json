@@ -1,0 +1,137 @@
+{
+  "productName": "Svunes",
+  "version": "../package.json",
+  "identifier": "dev.travislane.svunes",
+  "build": {
+    "beforeDevCommand": "bun dev",
+    "beforeBuildCommand": "bun run build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Svunes",
+        "url": "src/main.html",
+        "height": 800,
+        "minHeight": 700,
+        "width": 1280,
+        "minWidth": 900,
+        "fullscreen": false,
+        "resizable": true,
+        "decorations": true,
+        "transparent": false,
+        "center": true,
+        "visible": true
+      }
+    ],
+    "security": {
+      "assetProtocol": {
+        "scope": {
+          "allow": [
+            "$APPCONFIG",
+            "/var/home/*/.config/dev.travislane.svunes",
+            "$APPCONFIG/**",
+            "/var/home/*/.config/dev.travislane.svunes/**",
+            "$Home/**",
+            "/var/home/*/**",
+            "$APPLOG",
+            "$APPLOG/**",
+            "$APPCACHE",
+            "/var/home/*/.cache/dev.travislane.svunes",
+            "$APPCACHE/**",
+            "/var/home/*/.cache/dev.travislane.svunes/**"
+          ],
+          "requireLiteralLeadingDot": false
+        },
+        "enable": true
+      },
+      "capabilities": [
+        "main-capability"
+      ],
+      "dangerousDisableAssetCspModification": [
+        "style-src"
+      ],
+      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; media-src 'self' asset: http://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENBQTg2RDkyODlDNDUwQ0MKUldUTVVNU0prbTJveXA4M0xBNE5oM3liNEp2T1YwakZIVG9GMGZXbko0bW13aGdINnhWaVozMmYK",
+      "endpoints": [
+        "https://raw.githubusercontent.com/Tormak9970/Svunes/release/latest.json"
+      ]
+    },
+    "fs": {
+      "requireLiteralLeadingDot": false
+    }
+  },
+  "bundle": {
+    "active": true,
+    "category": "Utility",
+    "copyright": "Copyright Travis Lane 2024",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "webviewInstallMode": {
+        "type": "offlineInstaller"
+      },
+      "wix": {
+        "language": {
+          "en-US": {
+            "localePath": "wix/locales/en-US.wxl"
+          }
+        },
+        "dialogImagePath": "wix/dialogImage.jpg",
+        "bannerPath": "wix/bannerImage.jpg"
+      }
+    },
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": true,
+        "files": {}
+      },
+      "deb": {
+        "files": {}
+      },
+      "rpm": {
+        "epoch": 0,
+        "files": {},
+        "release": "1"
+      }
+    },
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/64x64.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico",
+      "icons/icon.png",
+      "icons/Square30x30Logo.png",
+      "icons/Square44x44Logo.png",
+      "icons/Square71x71Logo.png",
+      "icons/Square89x89Logo.png",
+      "icons/Square107x107Logo.png",
+      "icons/Square142x142Logo.png",
+      "icons/Square150x150Logo.png",
+      "icons/Square284x284Logo.png",
+      "icons/Square310x310Logo.png",
+      "icons/StoreLogo.png"
+    ],
+    "longDescription": "A robust, offline first Material Design music player.",
+    "resources": [],
+    "shortDescription": "A robust, offline first Material Design music player.",
+    "targets": [
+      "msi",
+      "appimage",
+      "deb"
+    ],
+    "licenseFile": "wix/short-license.txt",
+    "createUpdaterArtifacts": true
+  }
+}

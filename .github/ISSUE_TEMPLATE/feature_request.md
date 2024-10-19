@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for Tunistic
+about: Suggest an idea for Svunes
 title: ''
 labels: enhancement
 assignees: Tormak9970
