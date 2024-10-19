@@ -3,12 +3,15 @@ import { t } from "@stores/Locale";
 import { showEditMusicFolders } from "@stores/Modals";
 import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
 import { albums, artists, blacklistedFolders, genres, isLoading, musicDirectories, playingSongId, playlists, showErrorSnackbar, showInfoSnackbar, songs, songsMap } from "@stores/State";
+import { window } from "@tauri-apps/api";
+import type { UnlistenFn } from "@tauri-apps/api/event";
 import * as fs from "@tauri-apps/plugin-fs";
 import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "@types";
-import { getAllArtistNames } from "@utils";
+import { debounce, getAllArtistNames } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import { PlaybackController } from "./PlaybackController";
 import { SettingsController } from "./SettingsController";
+import { DialogController } from "./utils/DialogController";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
 
@@ -18,6 +21,7 @@ import { RustInterop } from "./utils/RustInterop";
 export class AppController {
   private static musicFoldersSub: Unsubscriber;
   private static blacklistFoldersSub: Unsubscriber;
+  private static musicFolderUpdateUnsub: UnlistenFn;
   private static oldBlacklist: string[] = [];
 
   /**
@@ -42,6 +46,25 @@ export class AppController {
         this.loadSongs(get(musicDirectories), folders);
       }
     });
+
+    const translate = get(t);
+
+    const handler = debounce(() => {
+      console.log("detected folder change!");
+
+      DialogController.ask(
+        translate("CHANGES_DETECTED_TITLE"),
+        translate("RESTART_WITH_CHANGES_MESSAGE"),
+        translate("YES_ACTION"),
+        translate("NO_ACTION")
+      ).then((result) => {
+        if (result) {
+          this.loadSongs(get(musicDirectories), get(blacklistedFolders));
+        }
+      });
+    }, 1000);
+
+    this.musicFolderUpdateUnsub = await window.getCurrentWindow().listen("music_folder_update", handler);
   }
 
   /**
@@ -50,6 +73,7 @@ export class AppController {
   static destroy() {
     if (this.musicFoldersSub) this.musicFoldersSub();
     if (this.blacklistFoldersSub) this.blacklistFoldersSub();
+    if (this.musicFolderUpdateUnsub) this.musicFolderUpdateUnsub();
   }
 
   /**

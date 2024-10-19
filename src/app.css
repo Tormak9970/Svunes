@@ -283,6 +283,18 @@ a.m3-container {
   --tooltip-z-index: 100;
 }
 
+.speakers-tooltip-theme {
+  min-width: 0px !important;
+  --tooltip-arrow-size: 0px;
+  --tooltip-border-radius: 10px;
+
+  --tooltip-line-height: 1rem;
+  --tooltip-offset-y: 0px;
+  --tooltip-offset-x: -110px !important;
+  --tooltip-padding: 0;
+  --tooltip-z-index: 100;
+}
+
 .scroll-shadow {
   position: relative;
 }

@@ -1,5 +1,6 @@
 export { ApiController, type AlbumInfo, type SelectedAlbum } from "./ApiController";
 export { AppController } from "./AppController";
+export { AudioPlayer } from "./AudioPlayer";
 export { DeviceController } from "./DeviceController";
 export { EditController } from "./EditController";
 export { PlaybackController } from "./PlaybackController";

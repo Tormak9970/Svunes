@@ -1,29 +1,29 @@
 
 mod logger;
-mod header;
-mod common;
+mod symphonia_mock;
 mod music_readers;
 mod music_writers;
-mod mpa_reader;
+mod playback;
+mod watcher;
+mod image_utils;
 
+use playback::player::AudioPlayer;
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_fs::FsExt;
-use tauri_plugin_http::reqwest::Client;
+use watcher::Watcher;
 
-use std::{fs::{self, create_dir_all, File}, io::Write, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel, time::Duration};
+use std::{fs, panic::{self, Location}, path::PathBuf, process::exit, sync::mpsc::channel};
 
-use music_readers::{format_album_name_for_image, read_music_folder};
+use music_readers::read_music_folder;
 use music_writers::{write_music_file, SongEditFields};
-use palette_extract::{get_palette_with_options, Color, MaxColors, PixelEncoding, PixelFilter, Quality};
 use rayon::iter::IntoParallelRefIterator;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
-use tauri::{self, AppHandle, Manager};
+use tauri::{self, AppHandle, Manager, State};
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 use tauri::Emitter;
 
-use image::{imageops::FilterType, ImageReader};
 use rayon::prelude::*;
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
@@ -31,10 +31,6 @@ use rayon::prelude::*;
 struct Payload {
   args: Vec<String>,
   cwd: String,
-}
-
-fn color_to_rgb(color: &Color) -> String {
-  return format!("{} {} {}", color.r, color.g, color.b);
 }
 
 #[tauri::command]
@@ -54,7 +50,7 @@ fn write_music_files(app_handle: AppHandle, changes_str: String) -> bool {
   }).collect();
 
   receiver.iter().for_each(| log: String | {
-    logger::log_to_file(app_handle.clone(), &log, 2);
+    logger::log(&app_handle, &log, 2);
   });
 
   return status.into_iter().all(| success | { return success; });
@@ -74,13 +70,13 @@ fn delete_songs(app_handle: AppHandle, file_paths_str: String) -> bool {
     if result.is_err() {
       success = false;
       let err = result.err().unwrap();
-      logger::log_to_file(app_handle.clone(), format!("Failed to delete {}: {}", &file_path_str, err.to_string()).as_str(), 0);
+      logger::log(&app_handle, format!("Failed to delete {}: {}", &file_path_str, err.to_string()).as_str(), 0);
       break;
     }
   }
 
   if !success {
-    logger::log_to_file(app_handle.clone(), "Successfully deleted songs.", 0);
+    logger::log(&app_handle, "Successfully deleted songs.", 0);
   }
 
   return success;
@@ -88,7 +84,7 @@ fn delete_songs(app_handle: AppHandle, file_paths_str: String) -> bool {
 
 #[tauri::command]
 /// Reads the contents of the provided directories.
-async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: String, blacklist_folder_paths_str: String, max_length: u64) -> String {
+async fn read_music_folders(state: State<'_, Watcher>, app_handle: AppHandle, music_folder_paths_str: String, blacklist_folder_paths_str: String, max_length: u64) -> Result<String, ()> {
   let music_folder_paths: Vec<String> = serde_json::from_str(&music_folder_paths_str).expect("Couldn't deserialize music folders array.");
   let blacklist_folder_paths: Vec<String> = serde_json::from_str(&blacklist_folder_paths_str).expect("Couldn't deserialize blacklist folders array.");
 
@@ -98,18 +94,20 @@ async fn read_music_folders(app_handle: AppHandle, music_folder_paths_str: Strin
     add_path_to_scope(app_handle.clone(), music_folder.clone()).await;
   }
 
+  let _ = state.update(music_folder_paths.clone(), blacklist_folder_paths.clone());
+
   let entries: Vec<Value> = music_folder_paths.par_iter().filter(| folder | !blacklist_folder_paths.contains(&folder)).map_with(sender, | log_sender, music_folder | {
     let folder_path: PathBuf = PathBuf::from(&music_folder);
 
-    let folder_entries = read_music_folder(app_handle.clone(), log_sender, folder_path, &blacklist_folder_paths, max_length);
+    let folder_entries = read_music_folder(&app_handle, log_sender, folder_path, &blacklist_folder_paths, max_length);
     return folder_entries;
   }).flatten().collect();
   
   receiver.iter().for_each(| log: String | {
-    logger::log_to_file(app_handle.clone(), &log, 2);
+    logger::log(&app_handle, &log, 2);
   });
 
-  return serde_json::to_string(&entries).expect("Can't serialize entries to string.");
+  return Ok(serde_json::to_string(&entries).expect("Can't serialize entries to string."));
 }
 
 #[tauri::command]
@@ -118,7 +116,7 @@ async fn add_path_to_scope(app_handle: AppHandle, target_path: String) -> bool {
   let path_as_buf: PathBuf = PathBuf::from(&target_path);
 
   if !path_as_buf.as_path().exists() {
-    logger::log_to_file(app_handle.clone(), format!("Error adding {} to scope. Path does not exist.", &target_path).as_str(), 2);
+    logger::log(&app_handle, format!("Error adding {} to scope. Path does not exist.", &target_path).as_str(), 2);
     return false;
   }
 
@@ -129,190 +127,13 @@ async fn add_path_to_scope(app_handle: AppHandle, target_path: String) -> bool {
   let asset_res = asset_scope.allow_directory(&path_as_buf, true);
 
   if asset_res.is_ok() {
-    logger::log_to_file(app_handle.clone(), format!("Added {} to scope.", &target_path).as_str(), 0);
+    logger::log(&app_handle, format!("Added {} to scope.", &target_path).as_str(), 0);
     return true;
   }
 
   let err = asset_res.err().unwrap();
-  logger::log_to_file(app_handle.clone(), format!("Error adding {} to scope. Asset Scope Error: {}", &target_path, err.to_string()).as_str(), 2);
+  logger::log(&app_handle, format!("Error adding {} to scope. Asset Scope Error: {}", &target_path, err.to_string()).as_str(), 2);
   return false;
-}
-
-#[tauri::command]
-/// copies the provided image to the albums directory
-async fn copy_album_image(app_handle: AppHandle, image_path: String, album_name: String) -> String {
-  let bundle_id: String = app_handle.config().identifier.to_owned();
-  
-  let app_cache_dir = app_handle.path().cache_dir().expect("Couldn't resolve app cache dir.");
-  let mut file_path = app_cache_dir.join(&bundle_id).join("albums");
-
-  if !file_path.exists() {
-    let _ = create_dir_all(&file_path);
-  }
-
-  let mut file_name = format_album_name_for_image(album_name);
-  let path_as_buf = PathBuf::from(&image_path);
-  let extension = path_as_buf.extension().expect("Couldn't get extension").to_str().unwrap();
-  file_name.push('.');
-  file_name.push_str(extension);
-  file_path.push(file_name);
-
-  let image_reader_res = ImageReader::open(&image_path);
-  
-  if image_reader_res.is_err() {
-    let err = image_reader_res.err().unwrap();
-    logger::log_to_file(app_handle.clone(), format!("failed to read {}: {}.", image_path, err.to_string()).as_str(), 2);
-    return "".to_owned();
-  }
-
-  let image_reader = image_reader_res.ok().unwrap();
-  let image_format = image_reader.format().expect("Image didn't have a format!");
-  let image_res = image_reader.decode();
-
-  if image_res.is_err() {
-    let err = image_res.err().unwrap();
-    logger::log_to_file(app_handle.clone(), format!("failed to decode {}: {}.", image_path, err.to_string()).as_str(), 2);
-    return "".to_owned();
-  }
-
-  let img = image_res.ok().unwrap();
-
-  let resized = img.resize(512, 512, FilterType::CatmullRom);
-
-  let write_res = resized.save_with_format(&file_path, image_format);
-
-  if write_res.is_ok() {
-    logger::log_to_file(app_handle.clone(), format!("Copying of {} finished.", image_path).as_str(), 0);
-  } else {
-    let err = write_res.err().unwrap();
-    logger::log_to_file(app_handle.clone(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 2);
-  }
-
-  return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
-}
-
-#[tauri::command]
-/// copies the provided image to the artists directory
-async fn copy_artist_image(app_handle: AppHandle, image_path: String) -> String {
-  let bundle_id: String = app_handle.config().identifier.to_owned();
-  
-  let app_cache_dir = app_handle.path().cache_dir().expect("Couldn't resolve app cache dir.");
-  let mut file_path = app_cache_dir.join(&bundle_id).join("artists");
-
-  if !file_path.exists() {
-    let _ = create_dir_all(&file_path);
-  }
-
-  let image_pathbuf = PathBuf::from(&image_path);
-  let file_name = image_pathbuf.file_name().expect("Couldn't get filename of artist image.");
-  file_path.push(file_name);
-
-  let copy_res = fs::copy(&image_path, &file_path);
-
-  if copy_res.is_ok() {
-    logger::log_to_file(app_handle.clone(), format!("Copying of {} finished.", image_path).as_str(), 0);
-  } else {
-    let err = copy_res.err().unwrap();
-    logger::log_to_file(app_handle.clone(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 2);
-  }
-
-  return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
-}
-
-#[tauri::command]
-/// copies the provided image to the playlists directory
-async fn copy_playlist_image(app_handle: AppHandle, image_path: String) -> String {
-  let bundle_id: String = app_handle.config().identifier.to_owned();
-  
-  let app_cache_dir = app_handle.path().cache_dir().expect("Couldn't resolve app cache dir.");
-  let mut file_path = app_cache_dir.join(&bundle_id).join("playlists");
-
-  if !file_path.exists() {
-    let _ = create_dir_all(&file_path);
-  }
-
-  let image_pathbuf = PathBuf::from(&image_path);
-  let file_name = image_pathbuf.file_name().expect("Couldn't get filename of playlist image.");
-  file_path.push(file_name);
-
-  let copy_res = fs::copy(&image_path, &file_path);
-
-  if copy_res.is_ok() {
-    logger::log_to_file(app_handle.clone(), format!("Copying of {} finished.", image_path).as_str(), 0);
-  } else {
-    let err = copy_res.err().unwrap();
-    logger::log_to_file(app_handle.clone(), format!("Copying of {} failed with {}.", image_path, err.to_string()).as_str(), 2);
-  }
-
-  return file_path.as_mut_os_string().to_str().expect("failed to parse copied file path!").to_owned();
-}
-
-#[tauri::command]
-/// Gets the two primary colors from an image
-async fn get_colors_from_image(app_handle: AppHandle, image_path: String) -> String {
-  let image_reader_res = ImageReader::open(image_path.to_owned());
-  
-  if image_reader_res.is_ok() {
-    let image_reader = image_reader_res.ok().unwrap();
-
-    let image_res = image_reader.decode();
-
-    if image_res.is_ok() {
-      let img = image_res.ok().unwrap();
-
-      let color_palette = get_palette_with_options(
-        img.as_bytes(),
-        PixelEncoding::Rgb,
-        Quality::new(5),
-        MaxColors::new(5),
-        PixelFilter::White
-      );
-
-      let colors: Vec<Value> = color_palette.iter().map(| color | {
-        return Value::String(color_to_rgb(color));
-      }).collect();
-      
-      return serde_json::to_string(&colors).expect("Couldn't serialize json!");
-    } else {
-      logger::log_to_file(app_handle.clone(), format!("failed to decode {}.", image_path).as_str(), 2);
-      return serde_json::to_string::<Vec::<Value>>(&vec![]).expect("Couldn't serialize json!");
-    }
-  } else {
-    logger::log_to_file(app_handle.clone(), format!("failed to read {}.", image_path).as_str(), 2);
-    return serde_json::to_string::<Vec::<Value>>(&vec![]).expect("Couldn't serialize json!");
-  }
-}
-
-#[tauri::command]
-/// Downloads a file from a url.
-async fn download_image(app_handle: AppHandle, image_url: String, dest_path: String, timeout: u64) -> String {
-  logger::log_to_file(app_handle.to_owned(), format!("Downloading image from {} to {}", image_url, dest_path).as_str(), 0);
-
-  let http_client_res = Client::builder().timeout(Duration::from_secs(timeout)).build();
-  let http_client: Client = http_client_res.expect("Should have been able to successfully make the reqwest client.");
-
-  let response_res = http_client.get(image_url.clone()).send().await;
-  
-  if response_res.is_ok() {
-    let response = response_res.ok().unwrap();
-    let response_bytes = response.bytes().await.expect("Should have been able to await getting response bytes.");
-
-    let mut dest_file: File = File::create(&dest_path).expect("Dest path should have existed.");
-    let write_res = dest_file.write_all(&response_bytes);
-
-    if write_res.is_ok() {
-      logger::log_to_file(app_handle.to_owned(), format!("Download of {} finished.", image_url.clone()).as_str(), 0);
-      return String::from("success");
-    } else {
-      let err = write_res.err().expect("Request failed, error should have existed.");
-      logger::log_to_file(app_handle.to_owned(), format!("Download of {} failed with {}.", image_url.clone(), err.to_string()).as_str(), 0);
-      return String::from("failed");
-    }
-  } else {
-    let err = response_res.err().expect("Request failed, error should have existed.");
-    logger::log_to_file(app_handle.to_owned(), format!("Download of {} failed with {}.", image_url.clone(), err.to_string()).as_str(), 0);
-    return String::from("failed");
-  }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -320,19 +141,6 @@ async fn download_image(app_handle: AppHandle, image_url: String, dest_path: Str
 /// This app's main function.
 pub fn run() {
   let mut builder = tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![
-      logger::clean_out_log,
-      logger::log_to_file,
-      add_path_to_scope,
-      read_music_folders,
-      get_colors_from_image,
-      copy_album_image,
-      copy_artist_image,
-      copy_playlist_image,
-      delete_songs,
-      write_music_files,
-      download_image
-    ])
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_http::init())
     .plugin(tauri_plugin_dialog::init())
@@ -351,11 +159,23 @@ pub fn run() {
       .plugin(tauri_plugin_updater::Builder::new().build());
   }
 
-  builder.setup(| app | {
+  // * The reason for defining these here is that it will survive for the lifetime of the app.
+  let player: AudioPlayer = AudioPlayer::new();
+  let watcher = Watcher::new();
+
+  builder.manage(player)
+    .manage(watcher)
+    .setup(| app | {
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
       
       logger::clean_out_log(app_handle.clone());
+
+      let player_state: State<AudioPlayer> = app.state();
+      player_state.init(app_handle.clone());
+      
+      let watcher_state: State<Watcher> = app.state();
+      watcher_state.init(app_handle.clone());
 
       panic::set_hook(Box::new(move | panic_info | {
         let path_str = (*log_file_path).to_owned();
@@ -398,6 +218,26 @@ pub fn run() {
 
       Ok(())
     })
+    .invoke_handler(tauri::generate_handler![
+      logger::clean_out_log,
+      logger::log_to_file,
+      add_path_to_scope,
+      read_music_folders,
+      delete_songs,
+      write_music_files,
+      image_utils::get_colors_from_image,
+      image_utils::copy_album_image,
+      image_utils::copy_artist_image,
+      image_utils::copy_playlist_image,
+      image_utils::download_image,
+      playback::ipc::get_audio_devices,
+      playback::ipc::set_audio_device,
+      playback::ipc::load_file,
+      playback::ipc::seek,
+      playback::ipc::set_volume,
+      playback::ipc::resume_playback,
+      playback::ipc::pause_playback,
+    ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

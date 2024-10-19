@@ -1,5 +1,6 @@
 export { Album } from "./Album";
 export { Artist } from "./Artist";
+export { backendWritable } from "./BackendWritable";
 export { CoverArtApi } from "./CoverArtApi";
 export { Genre } from "./Genre";
 export { MusicBrainzApi } from "./MusicBrainzApi";

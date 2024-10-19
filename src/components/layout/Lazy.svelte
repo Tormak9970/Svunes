@@ -63,7 +63,7 @@
     width: 100%;
     height: 100%;
 
-    z-index: 3;
+    z-index: 2;
 
     background-color: transparent;
     transition: background-color 0.2s ease-in-out;
@@ -76,7 +76,7 @@
     width: 100%;
     height: 100%;
 
-    z-index: 2;
+    z-index: 1;
 
     background-color: transparent;
 

@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { ApiController, AppController, DeviceController, LogController, PlaybackController, QueueController, SettingsController } from "@controllers";
+  import { ApiController, AppController, AudioPlayer, DeviceController, LogController, SettingsController } from "@controllers";
   import { isLandscape } from "@stores/Layout";
   import { systemDefaultLanguage, t } from "@stores/Locale";
   import { showUpdateModal, updateData } from "@stores/Modals";
   import { showNowPlaying } from "@stores/Overlays";
   import { inSelectMode, selected } from "@stores/Select";
-  import { autoPlayOnConnect, isLoading, isPaused, playingSongId, playlists, selectedView, shouldPauseOnEnd, showErrorSnackbar, showInfoSnackbar, showNav, songProgress, songsMap, volumeLevel } from "@stores/State";
-  import { convertFileSrc } from "@tauri-apps/api/core";
+  import { isLoading, playlists, selectedView, showErrorSnackbar, showInfoSnackbar, showNav } from "@stores/State";
   import { check as checkUpdate, type Update } from "@tauri-apps/plugin-updater";
   import { getViewRoute, View } from "@types";
   import { hash64 } from "@utils";
@@ -24,14 +23,8 @@
   import SelectHeader from "./views/SelectHeader.svelte";
 
   let loadingUnsub: Unsubscriber;
-  let isPausedUnsub: Unsubscriber;
-  let playingSongIdUnsub: Unsubscriber;
   let translateUnsub: Unsubscriber;
   let locationUnsub: Unsubscriber;
-
-  let audioPlayer: HTMLAudioElement;
-
-  let oldNumAudioDevices: number;
 
   function conditionsFailed(event: ConditionsFailedEvent) {
     const userData = event.detail.userData as any;
@@ -39,25 +32,15 @@
     if (userData?.reason === 'album-key-dne') {
       userData.reason = "none";
       replace("/albums");
+    } else if (userData?.reason === 'artist-key-dne') {
+      userData.reason = "none";
+      replace("/artists");
+    } else if (userData?.reason === 'genre-key-dne') {
+      userData.reason = "none";
+      replace("/genres");
     } else {
       console.error("conditionsFailed event:", event.detail);
     }
-  }
-
-  function handleMediaDeviceChange() {
-    navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) => {
-      const numAudioDevices = devices.filter((device) => device.kind.includes("audio")).length;
-
-      if (oldNumAudioDevices && $autoPlayOnConnect) {
-        if (numAudioDevices > oldNumAudioDevices && $isPaused) {
-          PlaybackController.resume();
-        } else if (numAudioDevices < oldNumAudioDevices && !$isPaused) {
-          PlaybackController.pause();
-        }
-      }
-
-      oldNumAudioDevices = numAudioDevices;
-    });
   }
 
   onMount(async () => {
@@ -76,35 +59,11 @@
 
     ApiController.init();
 
-    handleMediaDeviceChange();
-    navigator.mediaDevices.ondevicechange = handleMediaDeviceChange;
-
     window.onlanguagechange = () => {
       $systemDefaultLanguage = navigator.language;
     }
 
-    playingSongIdUnsub = playingSongId.subscribe((id) => {
-      if (id !== "") {
-        const song = $songsMap[id];
-        audioPlayer.src = convertFileSrc(song.filePath);
-        audioPlayer.load();
-
-        if ($shouldPauseOnEnd) {
-          $isPaused = true;
-          return;
-        }
-
-        if (!$isPaused) audioPlayer.play();
-      }
-    });
-
-    isPausedUnsub = isPaused.subscribe((paused) => {
-      if (paused) {
-        audioPlayer.pause();
-      } else {
-        audioPlayer.play();
-      }
-    })
+    AudioPlayer.init();
 
     loadingUnsub = isLoading.subscribe((newStatus) => {
       if (!newStatus) push(getViewRoute($selectedView));
@@ -132,17 +91,15 @@
     AppController.destroy();
     SettingsController.destroy();
 
+    await AudioPlayer.destroy();
     await ApiController.destroy();
 
     if (translateUnsub) translateUnsub();
     if (loadingUnsub) loadingUnsub();
-    if (isPausedUnsub) isPausedUnsub();
-    if (playingSongIdUnsub) playingSongIdUnsub();
     if (locationUnsub) locationUnsub();
   });
 </script>
 
-<audio style="display: none;" bind:this={audioPlayer} bind:currentTime={$songProgress} bind:volume={$volumeLevel} on:ended={QueueController.skip} />
 <Overlays />
 <Modals />
 

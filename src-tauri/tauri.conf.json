@@ -4,7 +4,7 @@
   "identifier": "dev.travislane.svunes",
   "build": {
     "beforeDevCommand": "bun dev",
-    "beforeBuildCommand": "bun build",
+    "beforeBuildCommand": "bun run build",
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420"
   },
@@ -54,12 +54,12 @@
       "dangerousDisableAssetCspModification": [
         "style-src"
       ],
-      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; media-src 'self' asset: https://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost"
+      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; media-src 'self' asset: http://asset.localhost https://*.musicbrainz.org https://coverartarchive.org https://*.archive.org; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost"
     }
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIxREFEOTg0NkQ0OUUyMUEKUldRYTRrbHRoTm5hSVlYcGJGU1U1MHBod3M3Mm9JTW91c2wzeVBRMTRpajg4bUxPdURwT3hJaWoK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENBQTg2RDkyODlDNDUwQ0MKUldUTVVNU0prbTJveXA4M0xBNE5oM3liNEp2T1YwakZIVG9GMGZXbko0bW13aGdINnhWaVozMmYK",
       "endpoints": [
         "https://raw.githubusercontent.com/Tormak9970/Svunes/release/latest.json"
       ]
@@ -89,22 +89,47 @@
         "bannerPath": "wix/bannerImage.jpg"
       }
     },
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": true,
+        "files": {}
+      },
+      "deb": {
+        "files": {}
+      },
+      "rpm": {
+        "epoch": 0,
+        "files": {},
+        "release": "1"
+      }
+    },
     "externalBin": [],
     "icon": [
       "icons/32x32.png",
       "icons/64x64.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
-      "icons/256x256.png",
       "icons/icon.icns",
       "icons/icon.ico",
-      "icons/icon.png"
+      "icons/icon.png",
+      "icons/Square30x30Logo.png",
+      "icons/Square44x44Logo.png",
+      "icons/Square71x71Logo.png",
+      "icons/Square89x89Logo.png",
+      "icons/Square107x107Logo.png",
+      "icons/Square142x142Logo.png",
+      "icons/Square150x150Logo.png",
+      "icons/Square284x284Logo.png",
+      "icons/Square310x310Logo.png",
+      "icons/StoreLogo.png"
     ],
     "longDescription": "A robust, offline first Material Design music player.",
     "resources": [],
     "shortDescription": "A robust, offline first Material Design music player.",
     "targets": [
-      "msi"
+      "msi",
+      "appimage",
+      "deb"
     ],
     "licenseFile": "wix/short-license.txt",
     "createUpdaterArtifacts": true
