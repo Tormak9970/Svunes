@@ -30,6 +30,7 @@
   <input
     class="m3-font-body-large"
     placeholder=" "
+    autocomplete="off"
     bind:value
     {id}
     {disabled}

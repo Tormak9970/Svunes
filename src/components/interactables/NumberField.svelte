@@ -31,6 +31,7 @@
     class="m3-font-body-large"
     placeholder=" "
     type="number"
+    autocomplete="off"
     bind:value
     {id}
     {disabled}

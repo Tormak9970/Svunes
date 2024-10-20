@@ -24,6 +24,7 @@
 	<div class="container">
 		<input
 			type="color"
+      autocomplete="off"
 			{name}
 			value={hex}
 			on:click|preventDefault={noop}

@@ -222,8 +222,7 @@ pub fn run() {
 
         let dialog = app_handle.dialog()
           .message("Check your log file for more information, and please open an issue at https://github.com/Tormak9970/Svunes/issues")
-          .title("Panic!")
-          .ok_button_label("Ok");
+          .title("Panic!");
 
         let hit_ok = dialog.blocking_show();
 

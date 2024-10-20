@@ -71,6 +71,7 @@
   },
   "bundle": {
     "active": true,
+    "homepage": "svunes.org",
     "category": "Utility",
     "copyright": "Copyright Travis Lane 2024",
     "windows": {
