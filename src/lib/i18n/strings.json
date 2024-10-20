@@ -267,6 +267,8 @@
   "SETTINGS_APPEARANCE_PALETTE_LIGHT": "Light",
   "SETTINGS_APPEARANCE_OLED_LABEL": "OLED Dark",
   "SETTINGS_APPEARANCE_OLED_DESC": "Use an all black theme for the app",
+  "SETTINGS_APPEARANCE_DEBUG_LABEL": "Enabled Dev Mode",
+  "SETTINGS_APPEARANCE_DEBUG_DESC": "Enables the app's dev mode. Helpful for debugging",
 
   "SETTINGS_AUDIO_TITLE": "Audio",
   "SETTINGS_AUTO_PLAY_LABEL": "Auto Play",

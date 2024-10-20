@@ -26,7 +26,12 @@ An offline-first music player for your music library. Allows you to make playlis
  - Download the `Svunes_vX.X.X.msi` file, and run it to install Svunes.
 
 ## Linux
-Coming soon
+
+### Full Releases
+ - Download the `appimage-installer.sh` file, and run it to install Svunes.
+
+### Release Candidate
+ - Download the `Svunes_vX.X.X.AppImage` file.
 
 ## Android
 Coming soon

@@ -6,7 +6,9 @@ mod music_writers;
 mod playback;
 mod watcher;
 mod image_utils;
+mod platforms;
 
+use platforms::init_platform_specifics;
 use playback::player::AudioPlayer;
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_fs::FsExt;
@@ -136,6 +138,18 @@ async fn add_path_to_scope(app_handle: AppHandle, target_path: String) -> bool {
   return false;
 }
 
+#[tauri::command]
+/// Toggles the dev tools for the current window.
+async fn toggle_dev_tools(app_handle: AppHandle, enable: bool) {
+  let window = app_handle.get_webview_window("main").expect("Should have been able to get the main window.");
+  
+  if enable {
+    window.open_devtools();
+  } else {
+    window.close_devtools();
+  }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 #[allow(unused_mut)]
 /// This app's main function.
@@ -169,6 +183,8 @@ pub fn run() {
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
       
+      init_platform_specifics(app_handle.clone());
+
       logger::clean_out_log(app_handle.clone());
 
       let player_state: State<AudioPlayer> = app.state();
@@ -225,6 +241,7 @@ pub fn run() {
       read_music_folders,
       delete_songs,
       write_music_files,
+      toggle_dev_tools,
       image_utils::get_colors_from_image,
       image_utils::copy_album_image,
       image_utils::copy_artist_image,

@@ -96,6 +96,7 @@ export { default as LightMode } from "@ktibow/iconset-material-symbols/light-mod
 export { default as Palette } from "@ktibow/iconset-material-symbols/palette";
 
 export { default as BugReport } from "@ktibow/iconset-material-symbols/bug-report-outline-rounded";
+export { default as Bug } from "@ktibow/iconset-material-symbols/bug-report-rounded";
 export { default as EditDocument } from "@ktibow/iconset-material-symbols/edit-document-rounded";
 export { default as InfoOutline } from "@ktibow/iconset-material-symbols/info-outline-rounded";
 export { default as License } from "@ktibow/iconset-material-symbols/license-outline-rounded";

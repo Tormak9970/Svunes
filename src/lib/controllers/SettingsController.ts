@@ -16,7 +16,7 @@
  */
 import { Playlist, Song, type Album, type Artist } from "@models";
 import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, debugModeEnabled, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { Store } from '@tauri-apps/plugin-store';
 import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "@types";
@@ -116,6 +116,8 @@ export class SettingsController {
   private static artistGridStyleUnsub: Unsubscriber;
   private static artistSortOrderUnsub: Unsubscriber;
   private static useArtistColorsUnsub: Unsubscriber;
+
+  private static debugModeUnsub: Unsubscriber;
 
   private static async loadSettings(): Promise<Settings> {
     const defaultEntries = Object.entries(DEFAULT_SETTINGS);
@@ -299,6 +301,9 @@ export class SettingsController {
     palette.set(this.settings.palette);
     useOledPalette.set(this.settings.useOledPalette);
     themePrimaryColor.set(this.settings.themePrimaryColor);
+
+    debugModeEnabled.set(this.settings.debugModeEnabled);
+    if (this.settings.debugModeEnabled) await RustInterop.toggleDevTools(true);
 
     hasShownHelpTranslate.set(this.settings.hasShownHelpTranslate);
 
@@ -489,6 +494,11 @@ export class SettingsController {
     this.artistGridStyleUnsub = artistGridStyle.subscribe(this.updateStoreIfChanged<GridStyle>("artistsView.gridStyle"));
     this.artistSortOrderUnsub = artistSortOrder.subscribe(this.updateStoreIfChanged<string>("artistsView.sortOrder"));
     this.useArtistColorsUnsub = useArtistColors.subscribe(this.updateStoreIfChanged<boolean>("artistsView.useArtistColors"));
+
+    this.debugModeUnsub = debugModeEnabled.subscribe((enabled: boolean) => {
+      this.updateSetting<boolean>("debugModeEnabled", enabled);
+      RustInterop.toggleDevTools(enabled);
+    });
   }
 
   /**
@@ -601,5 +611,7 @@ export class SettingsController {
     if (this.artistGridStyleUnsub) this.artistGridStyleUnsub();
     if (this.artistSortOrderUnsub) this.artistSortOrderUnsub();
     if (this.useArtistColorsUnsub) this.useArtistColorsUnsub();
+
+    if (this.debugModeUnsub) this.debugModeUnsub();
   }
 }

@@ -173,7 +173,8 @@ export type Settings = {
     gridStyle: GridStyle;
     sortOrder: ArtistSortOrder;
     useArtistColors: boolean;
-  }
+  },
+  debugModeEnabled: boolean;
 }
 
 const FAVORITES_PLAYLIST = new Playlist(hash64("Favorites"), false, "Favorites", "", [], false, undefined, undefined, 0);
@@ -263,7 +264,8 @@ const DEFAULT_SETTINGS_MOBILE: Settings = {
     "gridStyle": GridStyle.CIRCULAR,
     "sortOrder": "Alphabetical",
     "useArtistColors": true
-  }
+  },
+  "debugModeEnabled": false,
 };
 const DEFAULT_SETTINGS_DESKTOP: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.svunes",
@@ -350,6 +352,7 @@ const DEFAULT_SETTINGS_DESKTOP: Settings = {
     "gridStyle": GridStyle.CIRCULAR,
     "sortOrder": "Alphabetical",
     "useArtistColors": true
-  }
+  },
+  "debugModeEnabled": false,
 };
 export const DEFAULT_SETTINGS = IS_MOBILE ? DEFAULT_SETTINGS_MOBILE : DEFAULT_SETTINGS_DESKTOP;

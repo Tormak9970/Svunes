@@ -124,3 +124,5 @@ export const artistGridSize = writable<GridSize>(GridSize.LARGE);
 export const artistGridStyle = writable<GridStyle>(GridStyle.CIRCULAR);
 export const artistSortOrder = writable<ArtistSortOrder>("Alphabetical");
 export const useArtistColors = writable<boolean>(true);
+
+export const debugModeEnabled = writable(false);
