@@ -19,12 +19,8 @@
         "minHeight": 700,
         "width": 1280,
         "minWidth": 900,
-        "fullscreen": false,
-        "resizable": true,
         "decorations": true,
-        "transparent": false,
-        "center": true,
-        "visible": true
+        "center": true
       },
       {
         "label": "popout",
@@ -34,10 +30,7 @@
         "minHeight": 50,
         "width": 250,
         "minWidth": 250,
-        "fullscreen": false,
-        "resizable": true,
         "decorations": false,
-        "transparent": false,
         "center": false,
         "visible": false,
         "alwaysOnTop": true
