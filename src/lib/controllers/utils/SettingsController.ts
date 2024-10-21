@@ -22,8 +22,8 @@ import { load as loadStore, Store } from '@tauri-apps/plugin-store';
 import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "@types";
 import { debounce } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
-import { LogController } from "./utils/LogController";
-import { RustInterop } from "./utils/RustInterop";
+import { LogController } from "./LogController";
+import { RustInterop } from "./RustInterop";
 
 /**
  * Sets settings to defaults if they do not exist.

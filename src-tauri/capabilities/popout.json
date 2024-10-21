@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "main-capability",
-  "windows": [ "main" ],
+  "identifier": "popout-capability",
+  "windows": [ "popout" ],
   "permissions": [
     "core:path:default",
     "core:event:default",
@@ -11,8 +11,8 @@
     "core:window:default",
     "core:window:allow-show",
     "core:window:allow-hide",
-    "dialog:default",
-    "updater:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-set-position",
     {
       "identifier": "fs:scope",
       "allow": [
@@ -29,19 +29,6 @@
         "$APPCACHE/**",
         "/var/home/*/.cache/dev.travislane.svunes/**"
       ]
-    },
-    "fs:read-all",
-    "fs:write-all",
-    "shell:allow-open",
-    "process:default",
-    {
-      "identifier": "http:default",
-      "allow": [
-        "https://*.musicbrainz.org/*",
-        "https://coverartarchive.org/*",
-        "https://*.archive.org/*"
-      ]
-    },
-    "store:default"
+    }
   ]
 }

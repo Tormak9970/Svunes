@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ApiController, AppController, AudioPlayer, DeviceController, LogController, SettingsController } from "@controllers";
+  import { ApiController, AppController, AudioPlayer, DeviceController, LogController, PopoutSender, SettingsController } from "@controllers";
   import { isLandscape } from "@stores/Layout";
   import { systemDefaultLanguage, t } from "@stores/Locale";
   import { showUpdateModal, updateData } from "@stores/Modals";
@@ -76,6 +76,7 @@
     await SettingsController.init();
     AppController.init();
     DeviceController.init();
+    PopoutSender.init();
     
     translateUnsub = t.subscribe((translate) => {
       const favoritesId = hash64("Favorites");
@@ -90,6 +91,7 @@
     DeviceController.destroy();
     AppController.destroy();
     SettingsController.destroy();
+    PopoutSender.destroy();
 
     await AudioPlayer.destroy();
     await ApiController.destroy();

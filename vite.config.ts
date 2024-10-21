@@ -101,7 +101,8 @@ export default defineConfig({
 
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/main.html')
+        main: resolve(__dirname, 'src/windows/main/main.html'),
+        popout: resolve(__dirname, 'src/windows/popout/popout.html'),
       },
       external: [
         "/public/readme-images"

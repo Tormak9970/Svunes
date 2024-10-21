@@ -3,7 +3,7 @@ import { showMiniPlayer, showNowPlaying } from "@stores/Overlays";
 import { albums, isPaused, nowPlayingList, nowPlayingType, playingSongId, playlists, queue, shouldPauseOnEnd, shuffle, songProgress, songs, songsMap, trackHistory } from "@stores/State";
 import { shuffleSongs } from "@utils";
 import { get } from "svelte/store";
-import { SettingsController } from "./SettingsController";
+import { SettingsController } from "./utils/SettingsController";
 
 /**
  * Controller that handles playback.

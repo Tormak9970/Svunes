@@ -93,7 +93,10 @@
   "DELETE_FROM_DEVICE_ACTION": "Delete from Device",
   "SELECT_ALL_ACTION": "Select All",
   "CLEAR_QUEUE_ACTION": "Clear Queue",
+  "GO_TO_QUEUE_ACTION": "Go to Queue",
   "REMOVE_FROM_PLAYLIST_ACTION": "Remove from Playlist",
+  "OPEN_POPOUT_ACTION": "Open Mini-player",
+  "CLOSE_POPOUT_ACTION": "Close Mini-player",
   
   "ALBUM_COVER_RESULTS_TITLE": "Album Cover Results",
   "ALBUM_INFO_RESULTS_TITLE": "Album Info Results",

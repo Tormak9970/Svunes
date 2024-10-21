@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { Icon } from "@component-utils";
+  import { Icon, MediaQuery } from "@component-utils";
   import { PlaybackController } from "@controllers";
-  import { FavoriteOff, FavoriteOn, MoreVert, QueueMusic, Speaker, VolumeDown, VolumeOff, VolumeUp } from "@icons";
+  import { FavoriteOff, FavoriteOn, MoreVert, PictureInPicture, PictureInPictureExit, QueueMusic, Speaker, VolumeDown, VolumeOff, VolumeUp } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { Marquee, MenuItem } from "@layout";
+  import { showPopoutPlayer } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap, volumeLevel } from "@stores/State";
@@ -19,6 +20,9 @@
   import DesktopVolumeControls from "./DesktopVolumeControls.svelte";
 
   let menuIsOpen = false;
+
+  let hideTogglePopout = false;
+  let hideQueue = false;
   
   $: song = $playingSongId ? $songsMap[$playingSongId] : undefined;
   $: label = song?.title ?? song?.fileName;
@@ -84,6 +88,8 @@
   });
 </script>
 
+<MediaQuery query="(max-width: 1000px)" bind:matches={hideQueue} />
+<MediaQuery query="(max-width: 1100px)" bind:matches={hideTogglePopout} />
 <div class="now-playing-desktop">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -118,9 +124,16 @@
         <Icon icon={FavoriteOn} />
       {/if}
     </Button>
-    <Button type="text" iconType="full" on:click={goToQueue}>
-      <Icon icon={QueueMusic} width="20px" height="20px" />
-    </Button>
+    {#if !hideQueue}
+      <Button type="text" iconType="full" on:click={goToQueue}>
+        <Icon icon={QueueMusic} width="20px" height="20px" />
+      </Button>
+    {/if}
+    {#if !hideTogglePopout}
+      <Button type="text" iconType="full" on:click={() => $showPopoutPlayer = !$showPopoutPlayer}>
+        <Icon icon={$showPopoutPlayer ? PictureInPictureExit : PictureInPicture} width="20px" height="20px" />
+      </Button>
+    {/if}
     <span
       use:tooltip={{
         content: { component: DesktopSpeakerSelect },
@@ -153,7 +166,13 @@
       {#if song?.artist}
         <MenuItem on:click={goToArtist}>{$t("GO_TO_ARTIST_ACTION")}</MenuItem>
       {/if}
+      {#if hideQueue}
+        <MenuItem on:click={goToQueue}>{$t("GO_TO_QUEUE_ACTION")}</MenuItem>
+      {/if}
       <MenuItem on:click={clearNowPlaying}>{$t("CLEAR_QUEUE_ACTION")}</MenuItem>
+      {#if hideTogglePopout}
+        <MenuItem on:click={() => $showPopoutPlayer = !$showPopoutPlayer}>{$t($showPopoutPlayer ? "CLOSE_POPOUT_ACTION" : "OPEN_POPOUT_ACTION")}</MenuItem>
+      {/if}
     </MenuButton>
   </div>
 </div>

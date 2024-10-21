@@ -14,7 +14,7 @@
       {
         "label": "main",
         "title": "Svunes",
-        "url": "src/main.html",
+        "url": "src/windows/main/main.html",
         "height": 800,
         "minHeight": 700,
         "width": 1280,
@@ -25,6 +25,22 @@
         "transparent": false,
         "center": true,
         "visible": true
+      },
+      {
+        "label": "popout",
+        "title": "Svunes: Popout",
+        "url": "src/windows/popout/popout.html",
+        "height": 250,
+        "minHeight": 50,
+        "width": 250,
+        "minWidth": 250,
+        "fullscreen": false,
+        "resizable": true,
+        "decorations": false,
+        "transparent": false,
+        "center": false,
+        "visible": false,
+        "alwaysOnTop": true
       }
     ],
     "security": {
@@ -49,7 +65,8 @@
         "enable": true
       },
       "capabilities": [
-        "main-capability"
+        "main-capability",
+        "popout-capability"
       ],
       "dangerousDisableAssetCspModification": [
         "style-src"

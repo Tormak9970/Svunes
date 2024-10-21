@@ -110,5 +110,8 @@ export { default as SwipeDownAlt } from "@ktibow/iconset-material-symbols/swipe-
 
 export { default as Personalize } from "@ktibow/iconset-material-symbols/hdr-weak";
 
+export { default as PictureInPictureAlt } from "@ktibow/iconset-material-symbols/picture-in-picture-alt";
+export { default as PictureInPicture } from "@ktibow/iconset-material-symbols/pip";
+export { default as PictureInPictureExit } from "@ktibow/iconset-material-symbols/pip-exit";
 export { default as Speaker } from "@ktibow/iconset-material-symbols/speaker";
 

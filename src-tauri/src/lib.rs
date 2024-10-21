@@ -21,7 +21,7 @@ use music_writers::{write_music_file, SongEditFields};
 use rayon::iter::IntoParallelRefIterator;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
-use tauri::{self, AppHandle, Manager, State};
+use tauri::{self, AppHandle, Manager, RunEvent, State};
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 use tauri::Emitter;
@@ -254,6 +254,22 @@ pub fn run() {
       playback::ipc::resume_playback,
       playback::ipc::pause_playback,
     ])
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    .build(tauri::generate_context!())
+    .expect("error while building tauri application")
+    .run(move |app_handle, event| {
+      match event {
+        RunEvent::WindowEvent {
+          event: tauri::WindowEvent::CloseRequested { api: _, .. },
+          label,
+          ..
+        } => {
+          println!("closing window...");
+
+          if label == "main" {
+            app_handle.exit(0);
+          }
+        }
+        _ => (),
+      }
+    });
 }

@@ -10,10 +10,10 @@ import type { AlbumMetadata, ArtistMetadata, SongMetadata } from "@types";
 import { debounce, getAllArtistNames } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import { PlaybackController } from "./PlaybackController";
-import { SettingsController } from "./SettingsController";
 import { DialogController } from "./utils/DialogController";
 import { LogController } from "./utils/LogController";
 import { RustInterop } from "./utils/RustInterop";
+import { SettingsController } from "./utils/SettingsController";
 
 /**
  * The core app controller.
