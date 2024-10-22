@@ -27,7 +27,7 @@
         "title": "Svunes: Popout",
         "url": "src/windows/popout/popout.html",
         "height": 250,
-        "minHeight": 50,
+        "minHeight": 60,
         "width": 250,
         "minWidth": 250,
         "decorations": false,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { DetailsArtPicture } from "@component-utils";
   import { PopoutReciever } from "@controllers";
-  import { Close, DragHandle } from "@icons";
+  import { Close, DragIndicator } from "@icons";
   import { Button } from "@interactables";
   import { Marquee } from "@layout";
   import { currentSongPopout } from "@stores/Popout";
@@ -36,8 +36,10 @@
   <div class="popout">
     <div class="header" data-tauri-drag-region>
       <div style="width: 32px; height: 32px" />
-      <Icon icon={DragHandle} />
-      <Button type="text" iconType="full" size="2rem" on:click={closePopout}>
+      <div style="pointer-events: none;">
+        <Icon icon={DragIndicator} />
+      </div>
+      <Button type="text" iconType="full" size="2rem" iconSize="1.3rem" on:click={closePopout}>
         <Icon icon={Close} />
       </Button>
     </div>

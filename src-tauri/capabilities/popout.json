@@ -29,6 +29,9 @@
         "$APPCACHE/**",
         "/var/home/*/.cache/dev.travislane.svunes/**"
       ]
-    }
+    },
+    "fs:read-all",
+    "process:default",
+    "store:default"
   ]
 }

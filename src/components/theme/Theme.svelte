@@ -1,9 +1,9 @@
 <script lang="ts">
   import { argbFromHex, Hct, SchemeTonalSpot } from "@material/material-color-utilities";
+  import { isLandscape } from "@stores/Layout";
   import { palette, themePrimaryColor, useOledPalette } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
-  import { isLandscape } from "../../stores/Layout";
   import { genCSS, serializeScheme, type SerializedScheme } from "./themeUtils";
 
   let primaryColorUnsub: Unsubscriber;
