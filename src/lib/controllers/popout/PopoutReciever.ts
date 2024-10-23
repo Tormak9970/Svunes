@@ -1,4 +1,5 @@
 import { currentSongPopout, isFavoritedPopout, isPausedPopout, repeatPlayedPopout, shufflePopout, songProgressPopout } from "@stores/Popout";
+import { themePrimaryColor } from "@stores/State";
 import { getCurrentWindow, LogicalPosition, primaryMonitor } from "@tauri-apps/api/window";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
 import type { Unsubscriber } from "svelte/store";
@@ -126,6 +127,9 @@ export class PopoutReciever {
           break;
         case PopoutChannelEventType.FAVORITE:
           isFavoritedPopout.setFromBackend(data.data);
+          break;
+        case PopoutChannelEventType.THEME_COLOR:
+          themePrimaryColor.set(data.data);
           break;
         default:
           break;

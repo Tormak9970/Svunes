@@ -7,7 +7,8 @@ export enum PopoutChannelEventType {
   SKIP,
   PAUSE,
   LOOP,
-  FAVORITE
+  FAVORITE,
+  THEME_COLOR
 }
 
 export type PopoutChannelEvent = {

@@ -7,7 +7,7 @@
   import { Marquee, MenuItem } from "@layout";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
-  import { isPaused, nowPlayingList, playlistsMap } from "@stores/State";
+  import { isPaused, nowPlayingList, playlistsMap, shuffle } from "@stores/State";
   import PlaylistImage from "@views/playlists/PlaylistImage.svelte";
   import { pop } from "svelte-spa-router";
   import { goToPlaylistEdit } from "../../lib/utils";
@@ -118,7 +118,7 @@
             </div>
           </div>
           <div class="buttons">
-            <ToggleShuffleButton />
+            <ToggleShuffleButton bind:shuffle={$shuffle} />
             <PlayButton name={playlist?.id} on:click={playPlaylist} />
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { PlaybackController, QueueController } from "@controllers";
 import { showPopoutPlayer } from "@stores/Layout";
-import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songProgress, songsMap } from "@stores/State";
+import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songProgress, songsMap, themePrimaryColor } from "@stores/State";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
 import { hash64 } from "@utils";
 import { derived, get, type Readable, type Unsubscriber } from "svelte/store";
@@ -18,6 +18,7 @@ export class PopoutSender {
   private static loopTrackUnsub: Unsubscriber;
   private static favoriteUnsub: Unsubscriber;
   private static showPopoutPlayerUnsub: Unsubscriber;
+  private static themeUnsub: Unsubscriber;
 
   private static isFavorited: Readable<boolean>;
   
@@ -84,6 +85,13 @@ export class PopoutSender {
       this.channel.postMessage({
         "label": PopoutChannelEventType.TOGGLE_VISIBILITY,
         "data": show
+      });
+    });
+
+    this.themeUnsub = themePrimaryColor.subscribe((color) => {
+      this.channel.postMessage({
+        "label": PopoutChannelEventType.THEME_COLOR,
+        "data": color
       });
     });
   }
@@ -155,5 +163,6 @@ export class PopoutSender {
     if (this.loopTrackUnsub) this.loopTrackUnsub();
     if (this.favoriteUnsub) this.favoriteUnsub();
     if (this.showPopoutPlayerUnsub) this.showPopoutPlayerUnsub();
+    if (this.themeUnsub) this.themeUnsub();
   }
 }

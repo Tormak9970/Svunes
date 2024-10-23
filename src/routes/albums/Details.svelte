@@ -8,7 +8,7 @@
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { albumToAdd, showAddToPlaylist } from "@stores/Overlays";
-  import { albumsMap, artistsMap, isPaused, nowPlayingList, songsMap, useAlbumColors } from "@stores/State";
+  import { albumsMap, artistsMap, isPaused, nowPlayingList, shuffle, songsMap, useAlbumColors } from "@stores/State";
   import type { AlbumEntriesSortOrder } from "@types";
   import { goToAlbumEdit, nullishNumberSort, stringSort } from "@utils";
   import { pop, push, replace } from "svelte-spa-router";
@@ -155,7 +155,7 @@
           <div class="font-body other"><div class="album-artist">{album?.albumArtist ? album?.albumArtist : ""}</div>&nbsp;{album?.releaseYear !== -1 ? "• " + album?.releaseYear : ""}{" • " + album?.displayAlbumLength()}</div>
         </div>
         <div class="buttons" style="{backgroundColor ? `--m3-scheme-primary: ${backgroundColor};` : ""}">
-          <ToggleShuffleButton />
+          <ToggleShuffleButton bind:shuffle={$shuffle} />
           <PlayButton name={album?.name} on:click={playAlbum} />
         </div>
       </div>
