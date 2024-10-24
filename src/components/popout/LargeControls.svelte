@@ -11,7 +11,7 @@
 
 <div class="player-controls">
   <ToggleShuffleButton bind:shuffle={$shufflePopout} />
-  <Button type="text" iconType="full" size="2.2rem" iconSize="1.8rem" on:click={PopoutReciever.skipBack}>
+  <Button type="text" iconType="full" size="2.2rem" iconSize="1.8rem" on:click={() => PopoutReciever.skipBack()}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipPrevious} />
     </div>
@@ -23,7 +23,7 @@
       <Icon icon={Play} />
     {/if}
   </Button>
-  <Button type="text" iconType="full" size="2.2rem" iconSize="1.8rem" on:click={PopoutReciever.skip}>
+  <Button type="text" iconType="full" size="2.2rem" iconSize="1.8rem" on:click={() => PopoutReciever.skip()}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipNext} />
     </div>

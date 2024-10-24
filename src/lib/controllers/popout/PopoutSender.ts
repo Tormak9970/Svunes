@@ -1,6 +1,6 @@
 import { PlaybackController, QueueController } from "@controllers";
 import { showPopoutPlayer } from "@stores/Layout";
-import { albumsMap, isPaused, playingSongId, playlists, repeatPlayed, shuffle, songProgress, songsMap, themePrimaryColor } from "@stores/State";
+import { albumsMap, isPaused, playingSongId, playlists, repeatPlayed, shuffle, songsMap, themePrimaryColor } from "@stores/State";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
 import { hash64 } from "@utils";
 import { derived, get, type Readable, type Unsubscriber } from "svelte/store";
@@ -11,7 +11,6 @@ import { derived, get, type Readable, type Unsubscriber } from "svelte/store";
 export class PopoutSender {
   private static channel: BroadcastChannel;
 
-  private static progressUnsub: Unsubscriber;
   private static playingIdUnsub: Unsubscriber;
   private static shuffleUnsub: Unsubscriber;
   private static isPausedUnsub: Unsubscriber;
@@ -33,13 +32,6 @@ export class PopoutSender {
   }
 
   private static registerSubs() {
-    this.progressUnsub = songProgress.subscribe((progress) => {
-      this.channel.postMessage({
-        "label": PopoutChannelEventType.PROGRESS,
-        "data": progress
-      });
-    });
-
     this.playingIdUnsub = playingSongId.subscribe((id) => {
       const song = !!id ? get(songsMap)[id] : null;
       const album = song && song.album ? get(albumsMap)[song.album] : null;
@@ -110,9 +102,6 @@ export class PopoutSender {
         case PopoutChannelEventType.TOGGLE_VISIBILITY:
           showPopoutPlayer.set(data.data);
           break;
-        case PopoutChannelEventType.PROGRESS:
-          songProgress.set(data.data);
-          break;
         case PopoutChannelEventType.SHUFFLE:
           shuffle.set(data.data);
           break;
@@ -141,10 +130,10 @@ export class PopoutSender {
           const favoritesPlaylist = playlistsRef.find((playlist) => playlist.id === hash64("Favorites"))!;
           const isFavorited = favoritesPlaylist.songIds.includes(song.id);
 
-          if (isFavorited) {
+          if (data.data && !isFavorited) {
             const index = favoritesPlaylist.songIds.indexOf(song.id);
             favoritesPlaylist.songIds.splice(index, 1);
-          } else {
+          } else if (isFavorited) {
             favoritesPlaylist.songIds.push(song.id);
           }
           
@@ -162,7 +151,6 @@ export class PopoutSender {
   static destroy() {
     this.channel.close();
 
-    if (this.progressUnsub) this.progressUnsub();
     if (this.playingIdUnsub) this.playingIdUnsub();
     if (this.shuffleUnsub) this.shuffleUnsub();
     if (this.isPausedUnsub) this.isPausedUnsub();

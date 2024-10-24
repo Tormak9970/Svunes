@@ -5,13 +5,10 @@
   import { Marquee } from "@layout";
   import { backgroundColorPopout, currentSongPopout, isFavoritedPopout } from "@stores/Popout";
   import LargeControls from "./LargeControls.svelte";
-  import LargeProgress from "./LargeProgress.svelte";
   
   $: song = $currentSongPopout;
   $: label = song?.title ?? song?.fileName;
   $: artist = song?.artist;
-
-  $: songLength = song?.length ?? 100;
   
   $: imagePath = song?.artPath;
 
@@ -32,7 +29,6 @@
   </div>
   <div class="overlay">
     <LargeControls />
-    <LargeProgress songLength={songLength} />
   </div>
 </div>
 <div class="footer">
@@ -99,6 +95,10 @@
 
     opacity: 0;
     transition: opacity 0.15s ease-in-out;
+  }
+
+  .metadata {
+    width: 70%;
   }
 
   .thumbnail {

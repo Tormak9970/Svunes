@@ -60,7 +60,7 @@
     <ToggleShuffleButton bind:shuffle={$shufflePopout} />
   {/if}
   {#if numHidden < 3}
-    <Button type="text" iconType="full" size="2.2rem" iconSize="2rem" on:click={PopoutReciever.skipBack}>
+    <Button type="text" iconType="full" size="2.2rem" iconSize="2rem" on:click={() => PopoutReciever.skipBack()}>
       <div class="button-icon-wrapper" style:color={enabledColor}>
         <Icon icon={SkipPrevious} />
       </div>
@@ -75,7 +75,7 @@
       {/if}
     </Button>
   </span>
-  <Button type="text" iconType="full" size="2.2rem" iconSize="2rem" on:click={PopoutReciever.skip}>
+  <Button type="text" iconType="full" size="2.2rem" iconSize="2rem" on:click={() => PopoutReciever.skip()}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipNext} />
     </div>

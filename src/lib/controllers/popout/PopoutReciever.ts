@@ -1,4 +1,4 @@
-import { backgroundColorPopout, currentSongPopout, isFavoritedPopout, isPausedPopout, repeatPlayedPopout, shufflePopout, songProgressPopout } from "@stores/Popout";
+import { backgroundColorPopout, currentSongPopout, isFavoritedPopout, isPausedPopout, repeatPlayedPopout, shufflePopout } from "@stores/Popout";
 import { themePrimaryColor } from "@stores/State";
 import { getCurrentWindow, LogicalPosition, primaryMonitor } from "@tauri-apps/api/window";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
@@ -10,7 +10,6 @@ import type { Unsubscriber } from "svelte/store";
 export class PopoutReciever {
   private static channel: BroadcastChannel;
 
-  private static progressUnsub: Unsubscriber;
   private static shuffleUnsub: Unsubscriber;
   private static isPausedUnsub: Unsubscriber;
   private static loopTrackUnsub: Unsubscriber;
@@ -59,10 +58,10 @@ export class PopoutReciever {
   }
 
   private static registerSubs() {
-    this.progressUnsub = songProgressPopout.subscribe((progress) => {
+    this.isPausedUnsub = isPausedPopout.subscribe((paused) => {
       this.channel.postMessage({
-        "label": PopoutChannelEventType.PROGRESS,
-        "data": progress
+        "label": PopoutChannelEventType.PAUSE,
+        "data": paused
       });
     });
 
@@ -105,29 +104,28 @@ export class PopoutReciever {
                 .then(() => {
                   this.popoutWindow.show();
                 });
+            } else {
+              this.popoutWindow.show();
             }
           } else {
             this.popoutWindow.hide();
           }
-          break;
-        case PopoutChannelEventType.PROGRESS:
-          songProgressPopout.setFromBackend(data.data);
           break;
         case PopoutChannelEventType.SONG_DATA:
           currentSongPopout.set(data.data.song);
           backgroundColorPopout.set(data.data.color);
           break;
         case PopoutChannelEventType.SHUFFLE:
-          shufflePopout.setFromBackend(data.data);
+          shufflePopout.set(data.data);
           break;
         case PopoutChannelEventType.PAUSE:
-          isPausedPopout.setFromBackend(data.data);
+          isPausedPopout.set(data.data);
           break;
         case PopoutChannelEventType.LOOP:
-          repeatPlayedPopout.setFromBackend(data.data);
+          repeatPlayedPopout.set(data.data);
           break;
         case PopoutChannelEventType.FAVORITE:
-          isFavoritedPopout.setFromBackend(data.data);
+          isFavoritedPopout.set(data.data);
           break;
         case PopoutChannelEventType.THEME_COLOR:
           themePrimaryColor.set(data.data);
@@ -144,7 +142,6 @@ export class PopoutReciever {
   static destroy() {
     this.channel.close();
     
-    if (this.progressUnsub) this.progressUnsub();
     if (this.shuffleUnsub) this.shuffleUnsub();
     if (this.isPausedUnsub) this.isPausedUnsub();
     if (this.loopTrackUnsub) this.loopTrackUnsub();
