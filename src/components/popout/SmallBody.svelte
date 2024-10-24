@@ -36,7 +36,7 @@
         </div>
         <div class="metadata">
           <div class="title">{label}</div>
-          <div class="artist">{artist}</div>
+          <div class="font-body-medium artist">{artist}</div>
         </div>
       </div>
     </Pane>

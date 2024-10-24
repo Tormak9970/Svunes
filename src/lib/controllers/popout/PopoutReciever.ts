@@ -1,4 +1,4 @@
-import { currentSongPopout, isFavoritedPopout, isPausedPopout, repeatPlayedPopout, shufflePopout, songProgressPopout } from "@stores/Popout";
+import { backgroundColorPopout, currentSongPopout, isFavoritedPopout, isPausedPopout, repeatPlayedPopout, shufflePopout, songProgressPopout } from "@stores/Popout";
 import { themePrimaryColor } from "@stores/State";
 import { getCurrentWindow, LogicalPosition, primaryMonitor } from "@tauri-apps/api/window";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
@@ -114,7 +114,8 @@ export class PopoutReciever {
           songProgressPopout.setFromBackend(data.data);
           break;
         case PopoutChannelEventType.SONG_DATA:
-          currentSongPopout.set(data.data);
+          currentSongPopout.set(data.data.song);
+          backgroundColorPopout.set(data.data.color);
           break;
         case PopoutChannelEventType.SHUFFLE:
           shufflePopout.setFromBackend(data.data);

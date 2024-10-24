@@ -12,12 +12,12 @@
   
   $: imagePath = song?.artPath;
 
-  let detailsContainerHeight: number;
+  let containerHeight: number;
 
-  $: imageSize = detailsContainerHeight ? detailsContainerHeight - 10 : 370;
+  $: imageSize = containerHeight ? containerHeight - 10 : 370;
 </script>
 
-<div class="details-cont" bind:clientHeight={detailsContainerHeight}>
+<div class="details-cont" bind:clientHeight={containerHeight}>
   <div class="thumbnail">
     <DetailsArtPicture
       artPath={imagePath}
@@ -26,8 +26,8 @@
       marginTop={false}
     />
   </div>
-  <div class="song-info" style:width="calc(100% - {detailsContainerHeight}px - 1rem)">
-    {#key detailsContainerHeight}
+  <div class="song-info" style:width="calc(100% - {containerHeight}px - 1rem)">
+    {#key containerHeight}
       <div class="metadata">
         {#key label}
           <Marquee speed={40} gap={80}>
@@ -36,7 +36,7 @@
         {/key}
         {#key artist}
           <Marquee speed={40} gap={80}>
-            <div class="artist">{artist}</div>
+            <div class="font-body-medium artist">{artist}</div>
           </Marquee>
         {/key}
       </div>

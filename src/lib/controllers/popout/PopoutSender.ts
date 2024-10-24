@@ -1,6 +1,6 @@
 import { PlaybackController, QueueController } from "@controllers";
 import { showPopoutPlayer } from "@stores/Layout";
-import { isPaused, playingSongId, playlists, repeatPlayed, shuffle, songProgress, songsMap, themePrimaryColor } from "@stores/State";
+import { albumsMap, isPaused, playingSongId, playlists, repeatPlayed, shuffle, songProgress, songsMap, themePrimaryColor } from "@stores/State";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
 import { hash64 } from "@utils";
 import { derived, get, type Readable, type Unsubscriber } from "svelte/store";
@@ -41,9 +41,15 @@ export class PopoutSender {
     });
 
     this.playingIdUnsub = playingSongId.subscribe((id) => {
+      const song = !!id ? get(songsMap)[id] : null;
+      const album = song && song.album ? get(albumsMap)[song.album] : null;
+
       this.channel.postMessage({
         "label": PopoutChannelEventType.SONG_DATA,
-        "data": !!id ? get(songsMap)[id] : null
+        "data": {
+          "song": song,
+          "color": album?.backgroundColor ?? "var(--m3-scheme-on-primary)",
+        }
       });
     });
 
