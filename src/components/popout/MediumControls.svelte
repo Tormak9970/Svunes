@@ -5,11 +5,8 @@
   import { Button, ToggleShuffleButton } from "@interactables";
   import { isPausedPopout, repeatPlayedPopout, shufflePopout } from "@stores/Popout";
 
-  export let useTextColor = false;
-
-  $: disabledColor = useTextColor ? "rgb(var(--m3-scheme-on-background) / 0.2)" : "rgb(var(--m3-scheme-outline-variant))";
-  $: enabledColor = useTextColor ? "rgb(var(--m3-scheme-on-background))" : "rgb(var(--m3-scheme-primary))";
-
+  let disabledColor = "rgb(var(--m3-scheme-outline-variant))";
+  let enabledColor = "rgb(var(--m3-scheme-primary))";
 </script>
 
 <div class="player-controls">
@@ -19,15 +16,13 @@
       <Icon icon={SkipPrevious} />
     </div>
   </Button>
-  <span class:change-play-color={useTextColor}>
-    <Button type="filled" iconType="full" size="2.5rem" iconSize="2rem" on:click={() => $isPausedPopout = !$isPausedPopout}>
-      {#if !$isPausedPopout}
-        <Icon icon={Pause} />
-      {:else}
-        <Icon icon={Play} />
-      {/if}
-    </Button>
-  </span>
+  <Button type="filled" iconType="full" size="2.5rem" iconSize="2rem" on:click={() => $isPausedPopout = !$isPausedPopout}>
+    {#if !$isPausedPopout}
+      <Icon icon={Pause} />
+    {:else}
+      <Icon icon={Play} />
+    {/if}
+  </Button>
   <Button type="text" iconType="full" size="2.5rem" iconSize="2rem" on:click={PopoutReciever.skip}>
     <div class="button-icon-wrapper" style:color={enabledColor}>
       <Icon icon={SkipNext} />
@@ -56,9 +51,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .change-play-color {
-    --m3-scheme-primary: var(--m3-scheme-on-background);
   }
 </style>

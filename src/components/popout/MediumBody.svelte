@@ -4,7 +4,7 @@
   import { Button } from "@interactables";
   import { Marquee } from "@layout";
   import { currentSongPopout, isFavoritedPopout } from "@stores/Popout";
-  import PopoutControls from "./PopoutControls.svelte";
+  import MediumControls from "./MediumControls.svelte";
   
   $: song = $currentSongPopout;
   $: label = song?.title ?? song?.fileName;
@@ -53,7 +53,7 @@
   </div>
 </div>
 <div class="controls">
-  <PopoutControls />
+  <MediumControls />
 </div>
 
 <style>

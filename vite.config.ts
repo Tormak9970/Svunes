@@ -19,7 +19,7 @@ type ExcludeOptions = {
  */
 function excludeDirectories(config?: ExcludeOptions) {
   return {
-    name: 'remove-progress-images',
+    name: 'exclude-directories',
     resolveId (source: string) {
       return source === 'virtual-module' ? source : null;
     },

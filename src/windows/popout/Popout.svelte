@@ -2,12 +2,12 @@
   import { MediaQuery } from "@component-utils";
   import { PopoutReciever } from "@controllers";
   import { onDestroy, onMount } from "svelte";
+  import LargeBody from "../../components/popout/LargeBody.svelte";
+  import MediumBody from "../../components/popout/MediumBody.svelte";
+  import PopoutHeader from "../../components/popout/PopoutHeader.svelte";
+  import SmallBody from "../../components/popout/SmallBody.svelte";
   import Theme from "../../components/theme/Theme.svelte";
   import "../../lib/md-defs";
-  import PopoutHeader from "./PopoutHeader.svelte";
-  import BodyLarge from "./layout/BodyLarge.svelte";
-  import BodyMedium from "./layout/BodyMedium.svelte";
-  import BodySmall from "./layout/BodySmall.svelte";
 
   let useSmall = false;
   let useMedium = false;
@@ -28,11 +28,11 @@
     <PopoutHeader useSideHeader={useSmall} />
     <div class="content">
       {#if useSmall}
-        <BodySmall />
+        <SmallBody />
       {:else if useMedium}
-        <BodyMedium />
+        <MediumBody />
       {:else}
-        <BodyLarge />
+        <LargeBody />
       {/if}
     </div>
   </div>
@@ -59,5 +59,10 @@
 
   .side-header {
     flex-direction: row;
+  }
+
+  .side-header .content {
+    width: calc(100% - 30px - 0.5rem);
+    height: calc(100% - 1rem);
   }
 </style>

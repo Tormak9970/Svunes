@@ -101,7 +101,7 @@ export class PopoutReciever {
               const monitorRight = monitor.position.x + monitor.size.width - 25;
               const monitorBottom = monitor.position.y + monitor.size.height - 75;
 
-              this.popoutWindow.setPosition(new LogicalPosition(monitorRight - 250, monitorBottom - 250))
+              this.popoutWindow.setPosition(new LogicalPosition(monitorRight - 300, monitorBottom - 150))
                 .then(() => {
                   this.popoutWindow.show();
                 });
