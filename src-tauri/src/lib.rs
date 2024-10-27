@@ -21,7 +21,7 @@ use music_writers::{write_music_file, SongEditFields};
 use rayon::iter::IntoParallelRefIterator;
 use panic_message::get_panic_info_message;
 use serde_json::{Map, Value};
-use tauri::{self, AppHandle, Manager, RunEvent, State};
+use tauri::{self, menu::{MenuBuilder, MenuItem}, tray::TrayIconBuilder, App, AppHandle, Manager, RunEvent, State};
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 use tauri::Emitter;
@@ -150,6 +150,52 @@ async fn toggle_dev_tools(app_handle: AppHandle, enable: bool) {
   }
 }
 
+/// Sets up the app's system tray features.
+fn setup_system_tray(app: &App) {
+  let show_command = MenuItem::with_id(app, "show", "Show", false, None::<&str>).unwrap();
+  let hide_command = MenuItem::with_id(app, "minimize", "Minimize to tray", true, None::<&str>).unwrap();
+
+  let quit_command = MenuItem::with_id(app, "quit", "Exit", true, None::<&str>).unwrap();
+
+  let menu = MenuBuilder::new(app)
+    .id("tray-menu")
+    .item(&show_command)
+    .item(&hide_command)
+    .separator()
+    .item(&quit_command)
+    .build()
+    .unwrap();
+
+  let tray_builder = TrayIconBuilder::new()
+    .icon(app.default_window_icon().unwrap().clone())
+    .menu(&menu)
+    .on_menu_event(move |app, event| match event.id.as_ref() {
+      "show" => {
+        let _ = show_command.set_enabled(false);
+        let _ = hide_command.set_enabled(true);
+
+        let main_window = app.get_webview_window("main").unwrap();
+        let _ = main_window.show();
+      }
+      "minimize" => {
+        let _ = hide_command.set_enabled(false);
+        let _ = show_command.set_enabled(true);
+
+        let main_window = app.get_webview_window("main").unwrap();
+        let _ = main_window.hide();
+      }
+      "quit" => {
+        println!("quit menu item was clicked");
+        app.exit(0);
+      }
+      _ => {
+        println!("menu item {:?} not handled", event.id);
+      }
+    });
+    
+    tray_builder.build(app).unwrap();
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 #[allow(unused_mut)]
 /// This app's main function.
@@ -180,6 +226,8 @@ pub fn run() {
   builder.manage(player)
     .manage(watcher)
     .setup(| app | {
+      setup_system_tray(app);
+
       let app_handle = app.handle().clone();
       let log_file_path = Box::new(String::from(logger::get_core_log_path(&app_handle).into_os_string().to_str().expect("Should have been able to convert osString to str.")));
       
