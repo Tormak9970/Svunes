@@ -23,7 +23,7 @@ impl AudioPlayer {
     return AudioPlayer {
       player_receiver: Arc::new(Mutex::new(player_receiver)),
       player_sender,
-      decoding_active: Arc::new(AtomicU32::new(ACTIVE)),
+      decoding_active: Arc::new(AtomicU32::new(PAUSED)),
       volume_receiver: Arc::new(Mutex::new(volume_receiver)),
       volume_sender,
     }

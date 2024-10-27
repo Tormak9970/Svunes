@@ -282,9 +282,6 @@ fn decode_loop(
       if let Some(ref audio) = audio_output {
         if let Ok(ao) = audio {
           if let Ok(mut guard) = ao.try_lock() {
-            // let mut transition_time = Instant::now();
-            // let mut started_transition = false;
-
             // Resampling stuff
             guard.resume();
             guard.update_resampler(spec, new_max_frames);

@@ -33,8 +33,7 @@ export class AudioPlayer {
    */
   static init() {
     const currentWindow = window.getCurrentWindow();
-    this.songEndUnsub = currentWindow.listen("ended", (event) => {
-      console.log("ended:", event);
+    this.songEndUnsub = currentWindow.listen("ended", () => {
       QueueController.skip();
     });
 
@@ -42,11 +41,11 @@ export class AudioPlayer {
       songProgress.setFromBackend(event.payload as number);
     });
 
-    this.backendPlayingUnsub = currentWindow.listen("playing", (event) => {
+    this.backendPlayingUnsub = currentWindow.listen("playing", () => {
       isPaused.set(false);
     });
     
-    this.backendPausedUnsub = currentWindow.listen("paused", (event) => {
+    this.backendPausedUnsub = currentWindow.listen("paused", () => {
       isPaused.set(true);
     });
 
