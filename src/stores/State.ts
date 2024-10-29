@@ -1,4 +1,5 @@
-import { backendWritable, type Album, type Artist, type Genre, type Playlist, type Song } from "@models";
+import { type Album, type Artist, type Genre, type Playlist, type Song } from "@models";
+import { invoke } from "@tauri-apps/api/core";
 import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "@types";
 import { location } from "svelte-spa-router";
 import { derived, writable } from "svelte/store";
@@ -104,7 +105,22 @@ export const songsMap = derived(songs, (songs: Song[]) => {
   const entries: [string, Song][] = songs.map((song) => [song.id, song]);
   return Object.fromEntries(entries);
 });
-export const songProgress = backendWritable(0);
+
+function songProgressWritable(initial: number) {
+  const { subscribe, set, update } = writable<number>(initial);
+  
+  return {
+    subscribe,
+    update,
+    set: (value: number, updateBackend = true) => {
+      set(value);
+
+      if (updateBackend) invoke<void>("seek", { position: value });
+    },
+  };
+}
+
+export const songProgress = songProgressWritable(0);
 export const playingSongId = writable<string>("");
 export const nowPlayingList = writable<string>("");
 export const nowPlayingType = writable<NowPlayingType>("Song");

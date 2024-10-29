@@ -41,7 +41,7 @@ export class PlaybackController {
       const songMap = get(songsMap);
       const shouldShuffle = get(shuffle);
 
-      songProgress.setFromBackend(0);
+      songProgress.set(0, false);
       nowPlayingList.set(playlist.id);
       nowPlayingType.set("Playlist");
 
@@ -69,7 +69,7 @@ export class PlaybackController {
    * @param isFromSkip Whether this is from skipping or a song ending.
    */
   static playSong(song: Song, isFromSkip = false) {
-    songProgress.setFromBackend(0);
+    songProgress.set(0, false);
     
     if (!isFromSkip) {
       nowPlayingList.set("");
@@ -98,7 +98,7 @@ export class PlaybackController {
     const shouldShuffle = get(shuffle);
     const songMap = get(songsMap);
 
-    songProgress.setFromBackend(0);
+    songProgress.set(0, false);
     nowPlayingList.set(album.name);
     nowPlayingType.set("Album");
 
@@ -130,7 +130,7 @@ export class PlaybackController {
     const shouldShuffle = get(shuffle);
     const songMap = get(songsMap);
 
-    songProgress.setFromBackend(0);
+    songProgress.set(0, false);
     nowPlayingList.set(artist.name);
     nowPlayingType.set("Artist");
     
@@ -157,7 +157,7 @@ export class PlaybackController {
     const shouldShuffle = get(shuffle);
     const songMap = get(songsMap);
 
-    songProgress.setFromBackend(0);
+    songProgress.set(0, false);
     nowPlayingList.set(genre.name);
     nowPlayingType.set("Genre");
     

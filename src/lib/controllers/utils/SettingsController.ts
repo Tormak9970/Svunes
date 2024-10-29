@@ -470,6 +470,7 @@ export class SettingsController {
 
     this.songProgressUnsub = songProgress.subscribe((progress) => {
       this.settings.cache.songProgress = progress;
+      this.store.set("cache", this.settings.cache);
     });
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));

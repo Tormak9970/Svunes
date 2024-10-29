@@ -8,7 +8,7 @@ use tokio_util::sync::CancellationToken;
 
 // use crate::logger;
 
-use super::{output::{self, get_device_by_name, AudioOutput, AudioOutputError}, types::{PlayerEvent, SampleOffsetEvent, VolumeEvent, ACTIVE, PAUSED}};
+use super::{output::{self, get_device_by_name, AudioOutput, AudioOutputError}, types::{PlayerEvent, SampleOffsetEvent, VolumeEvent, PAUSED}};
 
 
 fn log(_app_handle: &AppHandle, msg: &str, _level: usize) {
@@ -22,8 +22,8 @@ pub fn start_audio(
   volume_receiver: &Arc<Mutex<Receiver<VolumeEvent>>>,
   app_handle: &AppHandle
 ) {
-  let decoding_active = decoding_active.clone();
-  decoding_active.store(ACTIVE, std::sync::atomic::Ordering::Relaxed);
+  // let decoding_active = decoding_active.clone();
+  // decoding_active.store(ACTIVE, std::sync::atomic::Ordering::Relaxed);
 
   wake_all(decoding_active.as_ref());
 
@@ -54,8 +54,6 @@ fn decode_loop(
   let (device_change_sender, device_change_receiver) = std::sync::mpsc::channel();
   let (sender_sample_offset, receiver_sample_offset) = std::sync::mpsc::channel();
   let sample_offset_receiver = Arc::new(Mutex::new(receiver_sample_offset));
-  let (timestamp_sender, timestamp_receiver) = std::sync::mpsc::channel();
-  let timestamp_send = Arc::new(Mutex::new(timestamp_sender));
   let playback_state = Arc::new(Mutex::new(playback_state_receiver));
   let reset_control = Arc::new(Mutex::new(reset_control_receiver));
   let device_change = Arc::new(Mutex::new(device_change_receiver));
@@ -141,6 +139,7 @@ fn decode_loop(
       let track = reader.default_track().unwrap().clone();
 
       let mut track_id = track.id;
+      let time_base = track.codec_params.time_base.unwrap();
 
       // If seeking, seek the reader to the time or timestamp specified and get the timestamp of the
       // seeked position. All packets with a timestamp < the seeked position will not be played.
@@ -250,7 +249,6 @@ fn decode_loop(
           }
         }
         
-        println!("opening audio output...");
         audio_output = Some(output::try_open(
           &previous_audio_device_name,
           spec,
@@ -260,9 +258,7 @@ fn decode_loop(
           playback_state.clone(),
           reset_control.clone(),
           device_change.clone(),
-          timestamp_send.clone(),
           volume.clone(),
-          app_handle.clone(),
         ));
       } else {
         log(app_handle, "player: Re-using existing audio output", 0);
@@ -296,15 +292,13 @@ fn decode_loop(
 
             // Decode all packets, ignoring all decode errors.
             let result = loop {
-              if let Ok(ts) = timestamp_receiver.try_recv() {
-                timestamp = ts;
-              }
               let event = receiver.try_recv();
               
               if let Ok(result) = event {
                 match result {
                   PlayerEvent::LoadFile(event) => {
                     log(app_handle, "loading new file...", 0);
+
                     path_str.replace(event.file_path);
                     seek.replace(event.position.unwrap());
                     volume.replace(event.volume.unwrap());
@@ -356,6 +350,8 @@ fn decode_loop(
                 if let Ok(result) = ctrl_event {
                   match result {
                     PlayerEvent::LoadFile(event) => {
+                      log(app_handle, "loading new file while paused...", 0);
+
                       path_str.replace(event.file_path);
                       seek.replace(event.position.unwrap());
                       volume.replace(event.volume.unwrap());
@@ -364,7 +360,7 @@ fn decode_loop(
                       is_reset = true;
                     }
                     PlayerEvent::SetAudioDevice(device_name) => {
-                      log(app_handle, "changing audio device", 0);
+                      log(app_handle, "changing audio device while paused", 0);
 
                       audio_device_name = device_name;
                       path_str.replace(path_str_clone.clone().unwrap());
@@ -373,16 +369,9 @@ fn decode_loop(
                       guard.pause();
                       seek.replace(timestamp); // Restore current seek position
                       is_reset = true;
+
                       if is_paused {
                         should_resume = false;
-                        
-                        // Restore pause state after device change
-                        let _ = &decoding_active.store(
-                          PAUSED,
-                          std::sync::atomic::Ordering::Relaxed,
-                        );
-
-                        wake_all(decoding_active.as_ref());
                       }
                     }
                     PlayerEvent::Seek(position) => {
@@ -432,6 +421,14 @@ fn decode_loop(
                     if packet.ts() >= seek_ts {
                       let mut ramp_up_smpls = 0;
                       let mut ramp_down_smpls = 0;
+
+                      let time = time_base.calc_time(packet.ts());
+                      let seconds = time.seconds as f64;
+
+                      if seconds != timestamp {
+                        timestamp = seconds;
+                        let _ = app_handle.emit("timestamp", Some(seconds));
+                      }
                       
                       // Avoid clicks by ramping down and up quickly
                       if let Some(frames) = track.codec_params.n_frames {

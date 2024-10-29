@@ -13,7 +13,14 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- TODO: this might be needed on mobile?  on:touchstart|stopPropagation -->
   <div style="flex-grow: 1; margin: 0px 5px;" on:pointerdown|stopPropagation on:mousedown|stopPropagation>
-    <Slider min={0} max={songLength} trackColor={useTextColor ? "var(--m3-scheme-on-background)" : undefined} trackContainerColor={useTextColor ? "var(--m3-scheme-on-background) / 0.2" : undefined} trackHeight="0.25rem" bind:value={$songProgress} />
+    <Slider
+      min={0}
+      max={songLength}
+      trackColor={useTextColor ? "var(--m3-scheme-on-background)" : undefined}
+      trackContainerColor={useTextColor ? "var(--m3-scheme-on-background) / 0.2" : undefined}
+      trackHeight="0.25rem"
+      bind:value={$songProgress}
+    />
   </div>
   <div class="side" style="justify-content: flex-end;">{formatTime(songLength)}</div>
 </div>

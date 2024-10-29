@@ -8,7 +8,7 @@
 //! Platform-dependant Audio Outputs
 
 use std::{result, thread, time};
-use std::sync::mpsc::{Receiver, Sender};
+use std::sync::mpsc::Receiver;
 
 use ::cpal::traits::{DeviceTrait, HostTrait};
 use ::cpal::{default_host, Device};
@@ -46,7 +46,7 @@ pub enum AudioOutputError {
 pub type Result<T> = result::Result<T, AudioOutputError>;
 
 mod cpal {
-  use std::sync::mpsc::{Receiver, Sender};
+  use std::sync::mpsc::Receiver;
   use std::sync::{Arc, RwLock};
   use std::time::Duration;
 
@@ -64,7 +64,6 @@ mod cpal {
   use cpal::traits::{DeviceTrait, StreamTrait};
   use rb::*;
 
-  use tauri::{AppHandle, Emitter};
   use tauri::async_runtime::Mutex;
 
   pub struct CpalAudioOutput {}
@@ -94,9 +93,7 @@ mod cpal {
           playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
-          timestamp_sender: Arc<Mutex<Sender<f64>>>,
           vol: Option<f64>,
-          app_handle: AppHandle,
       ) -> Result<Arc<Mutex<dyn AudioOutput>>> {
           let device = get_device_by_name(Some(device_name.clone())).unwrap();
 
@@ -150,10 +147,8 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  timestamp_sender,
                   |packet, volume| ((packet as f64) * volume) as f32,
                   vol,
-                  app_handle,
               ),
               cpal::SampleFormat::I16 => CpalAudioOutputImpl::<i16>::try_open(
                   device_spec,
@@ -164,10 +159,8 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  timestamp_sender,
                   |packet, volume| ((packet as f64) * volume) as i16,
                   vol,
-                  app_handle,
               ),
               cpal::SampleFormat::U16 => CpalAudioOutputImpl::<u16>::try_open(
                   device_spec,
@@ -178,10 +171,8 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  timestamp_sender,
                   |packet, volume| ((packet as f64) * volume) as u16,
                   vol,
-                  app_handle,
               ),
               _ => CpalAudioOutputImpl::<f32>::try_open(
                   device_spec,
@@ -192,10 +183,8 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  timestamp_sender,
                   |packet, volume| ((packet as f64) * volume) as f32,
                   vol,
-                  app_handle,
               ),
           }
       }
@@ -225,10 +214,8 @@ mod cpal {
           playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
-          timestamp_sender: Arc<Mutex<Sender<f64>>>,
           volume_change: fn(T, f64) -> T,
-          vol: Option<f64>,
-          app_handle: AppHandle,
+          vol: Option<f64>
       ) -> Result<Arc<Mutex<dyn AudioOutput>>> {
           let num_channels = spec.channels.count();
           // Output audio stream config.
@@ -251,8 +238,8 @@ mod cpal {
               denom: config.sample_rate.0 * config.channels as u32,
           };
 
-          // Create a ring buffer with a capacity
-          let ring_len = ((5000 * config.sample_rate.0 as usize) / 1000) * num_channels;
+          // Create a ring buffer with a capacity of 200ms
+          let ring_len = ((200 * config.sample_rate.0 as usize) / 1000) * num_channels;
 
           let ring_buf = SpscRb::new(ring_len);
           let (ring_buf_producer, ring_buf_consumer) = (ring_buf.producer(), ring_buf.consumer());
@@ -296,7 +283,6 @@ mod cpal {
                               *frame_idx = 0;
                               let mut elapsed_time = elapsed_time_state.write().unwrap();
                               *elapsed_time = 0;
-                              let _ = app_handle.emit("timestamp", Some(0f64));
                           }
                       }
                   }
@@ -331,8 +317,7 @@ mod cpal {
                           let sample_offset = sample_offset_receiver.try_lock();
                           if let Ok(offset_lock) = sample_offset {
                               if let Ok(offset) = offset_lock.try_recv() {
-                                  let mut current_sample_offset =
-                                      frame_idx_state.write().unwrap();
+                                  let mut current_sample_offset = frame_idx_state.write().unwrap();
                                   *current_sample_offset = offset.sample_offset.unwrap();
                               }
                           }
@@ -350,22 +335,12 @@ mod cpal {
                               *sample_offset
                           };
                           // new duration
-                          let next_duration =
-                              time_base.calc_time(new_sample_offset as u64).seconds;
-                          // info!("Next duration: {:?}", next_duration);
+                          let next_duration = time_base.calc_time(new_sample_offset as u64).seconds;
 
                           let prev_duration = { *elapsed_time_state.read().unwrap() };
 
                           if prev_duration != next_duration {
                               let new_duration = Duration::from_secs(next_duration);
-
-                              let _ = app_handle.emit("timestamp", Some(new_duration.as_secs_f64()));
-
-                              // Also emit back to the decoding thread
-                              let _ = timestamp_sender
-                                  .try_lock()
-                                  .unwrap()
-                                  .send(new_duration.as_secs_f64());
 
                               let mut duration = elapsed_time_state.write().unwrap();
                               *duration = new_duration.as_secs();
@@ -556,9 +531,7 @@ pub fn try_open(
     playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
     reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
     device_change_receiver: Arc<Mutex<Receiver<String>>>,
-    timestamp_sender: Arc<Mutex<Sender<f64>>>,
     vol: Option<f64>,
-    app_handle: tauri::AppHandle,
 ) -> Result<Arc<Mutex<dyn AudioOutput>>> {
     cpal::CpalAudioOutput::try_open(
         device_name,
@@ -569,9 +542,7 @@ pub fn try_open(
         playback_state_receiver,
         reset_control_receiver,
         device_change_receiver,
-        timestamp_sender,
         vol,
-        app_handle,
     )
 }
 
