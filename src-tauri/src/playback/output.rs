@@ -48,7 +48,6 @@ pub type Result<T> = result::Result<T, AudioOutputError>;
 mod cpal {
   use std::sync::mpsc::Receiver;
   use std::sync::{Arc, RwLock};
-  use std::time::Duration;
 
   use crate::playback::output::get_device_by_name;
   use crate::playback::types::{SampleOffsetEvent, VolumeEvent};
@@ -59,7 +58,6 @@ mod cpal {
   use cpal::Sample;
   use symphonia::core::audio::{AudioBufferRef, Layout, RawSample, SampleBuffer, SignalSpec};
   use symphonia::core::conv::{ConvertibleSample, IntoSample};
-  use symphonia::core::units::TimeBase;
 
   use cpal::traits::{DeviceTrait, StreamTrait};
   use rb::*;
@@ -233,11 +231,6 @@ mod cpal {
                   .config()
           };
 
-          let time_base = TimeBase {
-              numer: 1,
-              denom: config.sample_rate.0 * config.channels as u32,
-          };
-
           // Create a ring buffer with a capacity of 200ms
           let ring_len = ((200 * config.sample_rate.0 as usize) / 1000) * num_channels;
 
@@ -247,7 +240,6 @@ mod cpal {
           // States
           let volume_state = Arc::new(RwLock::new(vol.unwrap()));
           let frame_idx_state = Arc::new(RwLock::new(0));
-          let elapsed_time_state = Arc::new(RwLock::new(0));
           let playback_state = Arc::new(RwLock::new(true));
           let device_state = Arc::new(RwLock::new(
               device.name().unwrap_or(String::from("Unknown")),
@@ -281,8 +273,6 @@ mod cpal {
                           if rst {
                               let mut frame_idx = frame_idx_state.write().unwrap();
                               *frame_idx = 0;
-                              let mut elapsed_time = elapsed_time_state.write().unwrap();
-                              *elapsed_time = 0;
                           }
                       }
                   }
@@ -328,23 +318,9 @@ mod cpal {
                               i += 1;
                           }
 
-                          // new offset
-                          let new_sample_offset = {
-                              let mut sample_offset = frame_idx_state.write().unwrap();
-                              *sample_offset += i;
-                              *sample_offset
-                          };
-                          // new duration
-                          let next_duration = time_base.calc_time(new_sample_offset as u64).seconds;
+                          let mut sample_offset = frame_idx_state.write().unwrap();
+                          *sample_offset += i;
 
-                          let prev_duration = { *elapsed_time_state.read().unwrap() };
-
-                          if prev_duration != next_duration {
-                              let new_duration = Duration::from_secs(next_duration);
-
-                              let mut duration = elapsed_time_state.write().unwrap();
-                              *duration = new_duration.as_secs();
-                          }
                           // Mute any remaining samples.
                           data[written..].iter_mut().for_each(|s| *s = T::MID);
                       } else {
