@@ -3,7 +3,7 @@ import { t } from "@stores/Locale";
 import { albumCovers, albumInfos, apiSearchCanceled, availableReleaseGroups, onAlbumInfoDone, onPickCoverDone, selectedReleaseGroupId, showPickAlbumCover, showPickAlbumInfo, showSearchingApi } from "@stores/Modals";
 import { showErrorSnackbar } from "@stores/State";
 import { path } from "@tauri-apps/api";
-import { create, exists, remove } from "@tauri-apps/plugin-fs";
+import { exists, mkdir, remove } from "@tauri-apps/plugin-fs";
 import type { ReleaseGroup } from "@types";
 import { compareStrings } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
@@ -76,7 +76,7 @@ export class ApiController {
     
     try {
       const cacheDirExists = await exists(this.coverCacheDir);
-      if (!cacheDirExists) await create(this.coverCacheDir);
+      if (!cacheDirExists) await mkdir(this.coverCacheDir);
     } catch(e: any) {
       LogController.error(e.message);
       get(showErrorSnackbar)({ message: get(t)("ALBUM_CACHE_CREATION_FAILED_MESSAGE") });
