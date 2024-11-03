@@ -16,10 +16,10 @@
  */
 import { Playlist, Song, type Album, type Artist } from "@models";
 import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, debugModeEnabled, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, currentProfile, debugModeEnabled, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, profiles, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { load as loadStore, Store } from '@tauri-apps/plugin-store';
-import { DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata } from "@types";
+import { DEFAULT_PROFILE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata, type UserProfile } from "@types";
 import { debounce } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import { LogController } from "./LogController";
@@ -60,6 +60,7 @@ export class SettingsController {
   private static readonly STORE_NAME = "settings.dat";
   private static store: Store;
   private static settings: Settings;
+  private static profile: UserProfile;
 
   private static paletteUnsub: Unsubscriber;
   private static useOledPaletteUnsub: Unsubscriber;
@@ -123,7 +124,8 @@ export class SettingsController {
     const defaultEntries = Object.entries(DEFAULT_SETTINGS);
 
     const storeEntries = await this.store.entries<any>();
-    const currentSettings = Object.fromEntries(storeEntries);
+    let currentSettings = Object.fromEntries(storeEntries);
+    currentSettings = this.migrateSettingsStructure(currentSettings as Settings);
 
     let settings = {} as Settings;
 
@@ -140,7 +142,13 @@ export class SettingsController {
       settings[key] = currentValue;
     }
 
-    settings = this.migrateSettingsStructure(settings);
+    const settingKeys = Object.keys(settings);
+    for (const [key] of storeEntries) {
+      if (!settingKeys.includes(key)) {
+        this.store.delete(key);
+      }
+    }
+
     settings.version = APP_VERSION;
 
     LogController.log("Finished checking settings for new app version and/or migration.");
@@ -167,10 +175,11 @@ export class SettingsController {
    * Initializes the SettingsController.
    */
   static async init() {
-    this.store = await loadStore(this.STORE_NAME, {
-
-    });
+    this.store = await loadStore(this.STORE_NAME);
     this.settings = await this.loadSettings();
+    this.profile = this.settings.profiles[this.settings.currentProfile];
+
+    this.save();
 
     await this.setStores();
 
@@ -180,23 +189,60 @@ export class SettingsController {
   /**
    * Migrate the settings structure to account for changes in the structure.
    */
-  private static migrateSettingsStructure(oldSettings: Settings): Settings {
-    // ? Handle any changes to settings from version to version here. Ex:
-    // if (oldSettings?.filters) {
-    //   oldSettings.windowSettings.main.filters = oldSettings.filters ?? DEFAULT_SETTINGS.windowSettings.main.filters;
-    //   delete oldSettings.filters;
-    // }
+  private static migrateSettingsStructure(settings: Settings): Settings {
+    if (!settings.currentProfile) {
+      const old = settings as Settings & UserProfile;
+      const defaultProfile: UserProfile = {
+        palette: old.palette,
+        useOledPalette: old.useOledPalette,
+        themePrimaryColor: old.themePrimaryColor,
+        musicDirectories: old.musicDirectories,
+        selectedView: old.selectedView,
 
-    return oldSettings;
+        nowPlaying: old.nowPlaying,
+        audio: old.audio,
+        personalization: old.personalization,
+
+        playlists: old.playlists,
+        queue: old.queue,
+
+        blacklistedFolders:old.blacklistedFolders,
+        filterSongDuration: old.filterSongDuration,
+        selectedLanguage: old.selectedLanguage,
+
+        cache: old.cache,
+
+        playlistsView: old.playlistsView,
+        albumsView: old.albumsView,
+        songsView: old.songsView,
+        artistsView: old.artistsView,
+      }
+
+      settings = {
+        FILE_SIG_DO_NOT_EDIT: settings.FILE_SIG_DO_NOT_EDIT,
+        version: settings.version,
+
+        currentProfile: "Default",
+        profiles: {
+          "Default": defaultProfile,
+        },
+
+        hasShownHelpTranslate: settings.hasShownHelpTranslate,
+        debugModeEnabled: settings.debugModeEnabled,
+      }
+    }
+
+    return settings;
   }
 
   /**
    * Gets the given settings field.
    * @param field The settings property to get.
+   * @param isProfileField Whether the field is scoped to profiles.
    * @returns The given setting, or its default value if it does not exist.
    */
-  static getSetting<T>(field: string): T {
-    const settings: any = structuredClone(this.settings);
+  static getSetting<T>(field: string, isProfileField = true): T {
+    const settings: any = structuredClone(isProfileField ? this.profile : this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
 
@@ -214,9 +260,10 @@ export class SettingsController {
    * Updates the given settings field with the provided data.
    * @param field The setting to update.
    * @param val The new value.
+   * @param isProfileField Whether the field is scoped to profiles.
    */
-  private static updateSetting<T>(field: string, val: T): void {
-    const settings = structuredClone(this.settings);
+  private static updateSetting<T>(field: string, val: T, isProfileField = true): void {
+    const settings = structuredClone(isProfileField ? this.profile : this.settings);
     const fieldPath = field.split(".");
     let parentObject = settings;
 
@@ -228,7 +275,12 @@ export class SettingsController {
     // @ts-ignore
     parentObject[fieldPath[fieldPath.length - 1]] = val;
 
-    this.settings = settings;
+    if (isProfileField) {
+      this.profile = settings as UserProfile;
+      this.settings.profiles[this.settings.currentProfile] = settings as UserProfile;
+    } else {
+      this.settings = settings as Settings;
+    }
     this.save();
 
     const stringified = JSON.stringify(val);
@@ -238,14 +290,15 @@ export class SettingsController {
   /**
    * Returns a function that updates the given setting if the value has changed.
    * @param field The setting to update.
+   * @param isProfileField Whether the field is scoped to profiles.
    * @returns A function that updates the given setting if the value has changed.
    */
-  private static updateStoreIfChanged<T>(field: string): (val: T) => void {
+  private static updateStoreIfChanged<T>(field: string, isProfileField = true): (val: T) => void {
     return (val: T) => {
       const original = this.getSetting<T>(field);
 
       if (original !== val) {
-        this.updateSetting(field, val);
+        this.updateSetting(field, val, isProfileField);
       }
     }
   }
@@ -272,11 +325,12 @@ export class SettingsController {
   
     const defaultSettings = structuredClone(DEFAULT_SETTINGS);
 
-    settings = setIfNotExist(settings, defaultSettings);
     settings = this.migrateSettingsStructure(settings);
+    settings = setIfNotExist(settings, defaultSettings);
 
     settings.version = APP_VERSION;
     this.settings = settings;
+    this.profile = settings.profiles[settings.currentProfile];
 
     await this.save();
 
@@ -289,7 +343,9 @@ export class SettingsController {
    */
   static async resetSettings() {
     const t = get(translate);
-    this.settings = structuredClone(DEFAULT_SETTINGS);
+    const settings = structuredClone(DEFAULT_SETTINGS);
+    this.settings = settings;
+    this.profile = settings.profiles[settings.currentProfile];
     await this.save();
 
     get(showInfoSnackbar)({ message: t("SUCCESS_MESSAGE") });
@@ -300,27 +356,29 @@ export class SettingsController {
    * Sets the Svelte stores associated with the settings.
    */
   private static async setStores(): Promise<void> {
-    palette.set(this.settings.palette);
-    useOledPalette.set(this.settings.useOledPalette);
-    themePrimaryColor.set(this.settings.themePrimaryColor);
+    currentProfile.set(this.settings.currentProfile);
+    profiles.set(Object.keys(this.settings.profiles));
+    palette.set(this.profile.palette);
+    useOledPalette.set(this.profile.useOledPalette);
+    themePrimaryColor.set(this.profile.themePrimaryColor);
 
     debugModeEnabled.set(this.settings.debugModeEnabled);
     if (this.settings.debugModeEnabled) await RustInterop.toggleDevTools(true);
 
     hasShownHelpTranslate.set(this.settings.hasShownHelpTranslate);
 
-    const existencePromises = this.settings.musicDirectories.map(async (dir: string) => {
+    const existencePromises = this.profile.musicDirectories.map(async (dir: string) => {
       return await RustInterop.addPathToScope(dir).then(async (success: boolean) => success && await exists(dir));
     });
     await Promise.all(existencePromises).then((exists: boolean[]) => {
-      this.settings.musicDirectories = this.settings.musicDirectories.filter((_, i) => exists[i]);
-      musicDirectories.set(this.settings.musicDirectories);
+      this.profile.musicDirectories = this.profile.musicDirectories.filter((_, i) => exists[i]);
+      musicDirectories.set(this.profile.musicDirectories);
     });
 
-    selectedView.set(this.settings.selectedView);
+    selectedView.set(this.profile.selectedView);
 
 
-    const nowPlaying = this.settings.nowPlaying;
+    const nowPlaying = this.profile.nowPlaying;
     showExtraSongInfo.set(nowPlaying.songInfo);
     nowPlayingTheme.set(nowPlaying.layout);
     nowPlayingBackgroundType.set(nowPlaying.backgroundType);
@@ -331,12 +389,12 @@ export class SettingsController {
     extraControl.set(controls.extralControl);
 
 
-    const personalization = this.settings.personalization;
+    const personalization = this.profile.personalization;
     viewsToRender.set(personalization.viewsToRender);
     viewIndices.set(personalization.viewIndices);
 
-    const playlistList = this.settings.playlists.map((playlist) => Playlist.fromJSON(playlist));
-    const songMetadata: Record<string, SongMetadata> = this.settings.cache.songsMetadata;
+    const playlistList = this.profile.playlists.map((playlist) => Playlist.fromJSON(playlist));
+    const songMetadata: Record<string, SongMetadata> = this.profile.cache.songsMetadata;
 
     for (const playlist of playlistList) {
       for (const id of playlist.songIds) {
@@ -349,18 +407,18 @@ export class SettingsController {
     }
 
     playlists.set(playlistList);
-    queue.set(this.settings.queue.filter((id) => !!this.settings.cache.songsMetadata[id]));
+    queue.set(this.profile.queue.filter((id) => !!this.profile.cache.songsMetadata[id]));
 
 
-    const audio = this.settings.audio;
+    const audio = this.profile.audio;
     autoPlayOnConnect.set(audio.autoPlay);
 
-    blacklistedFolders.set(this.settings.blacklistedFolders);
-    filterSongDuration.set(this.settings.filterSongDuration);
-    selectedLanguage.set(this.settings.selectedLanguage);
+    blacklistedFolders.set(this.profile.blacklistedFolders);
+    filterSongDuration.set(this.profile.filterSongDuration);
+    selectedLanguage.set(this.profile.selectedLanguage);
 
 
-    const cache = this.settings.cache;
+    const cache = this.profile.cache;
     songProgress.set(cache.songProgress);
     shuffle.set(cache.shuffle);
     repeatPlayed.set(cache.repeat);
@@ -370,23 +428,23 @@ export class SettingsController {
     nowPlayingType.set(cache.nowPlayingType);
 
 
-    const playlistsView = this.settings.playlistsView;
+    const playlistsView = this.profile.playlistsView;
     playlistGridSize.set(playlistsView.gridSize);
     playlistSortOrder.set(playlistsView.sortOrder);
 
 
-    const albumsView = this.settings.albumsView;
+    const albumsView = this.profile.albumsView;
     albumGridSize.set(albumsView.gridSize);
     albumSortOrder.set(albumsView.sortOrder);
     useAlbumColors.set(albumsView.useAlbumColors);
 
 
-    const songsView = this.settings.songsView;
+    const songsView = this.profile.songsView;
     songGridSize.set(songsView.gridSize);
     songSortOrder.set(songsView.sortOrder);
 
 
-    const artistsView = this.settings.artistsView;
+    const artistsView = this.profile.artistsView;
     artistGridSize.set(artistsView.gridSize);
     artistGridStyle.set(artistsView.gridStyle);
     artistSortOrder.set(artistsView.sortOrder);
@@ -401,11 +459,11 @@ export class SettingsController {
     this.useOledPaletteUnsub = useOledPalette.subscribe(this.updateStoreIfChanged<boolean>("useOledPalette"));
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
 
-    this.hasShownHelpTranslateUnsub = hasShownHelpTranslate.subscribe(this.updateStoreIfChanged<boolean>("hasShownHelpTranslate"));
+    this.hasShownHelpTranslateUnsub = hasShownHelpTranslate.subscribe(this.updateStoreIfChanged<boolean>("hasShownHelpTranslate", false));
 
     this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
     this.selectedViewUnsub = selectedView.subscribe((view: View) => {
-      if (this.settings.personalization.viewsToRender.includes(view) && view !== View.SETTINGS && view !== View.SEARCH) {
+      if (this.profile.personalization.viewsToRender.includes(view) && view !== View.SETTINGS && view !== View.SEARCH) {
         this.updateSetting<View>("selectedView", view);
       }
     });
@@ -469,8 +527,8 @@ export class SettingsController {
     });
 
     this.songProgressUnsub = songProgress.subscribe((progress) => {
-      this.settings.cache.songProgress = progress;
-      this.store.set("cache", this.settings.cache);
+      this.profile.cache.songProgress = progress;
+      this.store.set("cache", this.profile.cache);
     });
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
@@ -499,7 +557,7 @@ export class SettingsController {
     this.useArtistColorsUnsub = useArtistColors.subscribe(this.updateStoreIfChanged<boolean>("artistsView.useArtistColors"));
 
     this.debugModeUnsub = debugModeEnabled.subscribe((enabled: boolean) => {
-      this.updateSetting<boolean>("debugModeEnabled", enabled);
+      this.updateSetting<boolean>("debugModeEnabled", enabled, false);
       RustInterop.toggleDevTools(enabled);
     });
   }
@@ -513,17 +571,48 @@ export class SettingsController {
   }
 
   /**
+   * Creates a new profile with the given name.
+   * @param profileName The name of the profile.
+   * @param profileToCopy The profile to copy, or null to make it a default.
+   */
+  static createProfile(profileName: string, profileToCopy: string | null) {
+    const template = profileToCopy ? this.settings.profiles[profileToCopy] : DEFAULT_PROFILE;
+
+    this.settings.profiles[profileName] = template;
+    
+    profiles.set(Object.keys(this.settings.profiles));
+
+    this.save();
+  }
+
+  /**
+   * Renames the provided profile.
+   * @param oldName The profile's old name.
+   * @param newName The new name.
+   */
+  static renameProfile(oldName: string, newName: string) {
+    this.settings.currentProfile = newName;
+    this.settings.profiles[newName] = this.settings.profiles[oldName];
+    delete this.settings.profiles[oldName];
+
+    currentProfile.set(newName);
+    profiles.set(Object.keys(this.settings.profiles));
+
+    this.save();
+  }
+
+  /**
    * Updates the saved metadata for the provided artist.
    * @param artists The artists to update.
    */
   static updateArtistsMetadata(artists: Artist[]) {
     for (const artist of artists) {
-      this.settings.cache.artistsMetadata[artist.name] = {
+      this.profile.cache.artistsMetadata[artist.name] = {
         "imagePath": artist.imagePath
       }
     }
 
-    this.updateSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata", this.settings.cache.artistsMetadata);
+    this.updateSetting<Record<string, ArtistMetadata>>("cache.artistsMetadata", this.profile.cache.artistsMetadata);
   }
 
   /**
@@ -532,13 +621,13 @@ export class SettingsController {
    */
   static updateAlbumsMetadata(albums: Album[]) {
     for (const album of albums) {
-      this.settings.cache.albumsMetadata[album.name] = {
+      this.profile.cache.albumsMetadata[album.name] = {
         "lastPlayedOn": album.lastPlayedOn,
         "numTimesPlayed": album.numTimesPlayed
       }
     }
 
-    this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", this.settings.cache.albumsMetadata);
+    this.updateSetting<Record<string, AlbumMetadata>>("cache.albumsMetadata", this.profile.cache.albumsMetadata);
   }
 
   /**
@@ -546,13 +635,13 @@ export class SettingsController {
    * @param song The song to update.
    */
   static updateSongMetadata(song: Song) {
-    this.settings.cache.songsMetadata[song.id] = {
+    this.profile.cache.songsMetadata[song.id] = {
       "dateAdded": song.dateAdded,
       "lastPlayedOn": song.lastPlayedOn,
       "numTimesPlayed": song.numTimesPlayed
     }
 
-    this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", this.settings.cache.songsMetadata);
+    this.updateSetting<Record<string, SongMetadata>>("cache.songsMetadata", this.profile.cache.songsMetadata);
   }
 
   /**

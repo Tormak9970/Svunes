@@ -97,18 +97,13 @@ export type ArtistMetadata = {
   imagePath: string | undefined;
 }
 
-export type Settings = {
-  FILE_SIG_DO_NOT_EDIT: "dev.travislane.svunes";
-  version: string;
-
+export type UserProfile = {
   palette: Palette;
   useOledPalette: boolean;
   themePrimaryColor: string;
 
   musicDirectories: string[];
   selectedView: View;
-
-  hasShownHelpTranslate: boolean,
 
   nowPlaying: {
     layout: NowPlayingTheme;
@@ -173,22 +168,29 @@ export type Settings = {
     gridStyle: GridStyle;
     sortOrder: ArtistSortOrder;
     useArtistColors: boolean;
-  },
+  };
+}
+
+export type Settings = {
+  FILE_SIG_DO_NOT_EDIT: "dev.travislane.svunes";
+  version: string;
+
+  currentProfile: string;
+  profiles: Record<string, UserProfile>;
+
+  hasShownHelpTranslate: boolean;
+  
   debugModeEnabled: boolean;
 }
 
 const FAVORITES_PLAYLIST = new Playlist(hash64("Favorites"), false, "Favorites", "", [], false, undefined, undefined, 0);
 
-const DEFAULT_SETTINGS_MOBILE: Settings = {
-  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.svunes",
-  "version": "",
+const DEFAULT_PROFILE_MOBILE: UserProfile = {
   "palette": "Auto",
   "useOledPalette": false,
   "themePrimaryColor": "#a74bf2",
   "musicDirectories": [],
   "selectedView": 0,
-
-  "hasShownHelpTranslate": false,
 
   "nowPlaying": {
     "layout": NowPlayingTheme.NORMAL,
@@ -265,18 +267,27 @@ const DEFAULT_SETTINGS_MOBILE: Settings = {
     "sortOrder": "Alphabetical",
     "useArtistColors": true
   },
-  "debugModeEnabled": false,
-};
-const DEFAULT_SETTINGS_DESKTOP: Settings = {
+}
+const DEFAULT_SETTINGS_MOBILE: Settings = {
   "FILE_SIG_DO_NOT_EDIT": "dev.travislane.svunes",
   "version": "",
+  
+  "currentProfile": "Default",
+  "profiles": {
+    "Default": DEFAULT_PROFILE_MOBILE,
+  },
+
+  "hasShownHelpTranslate": false,
+
+  "debugModeEnabled": false,
+};
+
+const DEFAULT_PROFILE_DESKTOP: UserProfile = {
   "palette": "Auto",
   "useOledPalette": false,
   "themePrimaryColor": "#a74bf2",
   "musicDirectories": [],
   "selectedView": 0,
-
-  "hasShownHelpTranslate": false,
 
   "nowPlaying": {
     "layout": NowPlayingTheme.NORMAL,
@@ -353,6 +364,20 @@ const DEFAULT_SETTINGS_DESKTOP: Settings = {
     "sortOrder": "Alphabetical",
     "useArtistColors": true
   },
+};
+const DEFAULT_SETTINGS_DESKTOP: Settings = {
+  "FILE_SIG_DO_NOT_EDIT": "dev.travislane.svunes",
+  "version": "",
+  
+  "currentProfile": "Default",
+  "profiles": {
+    "Default": DEFAULT_PROFILE_DESKTOP,
+  },
+
+  "hasShownHelpTranslate": false,
+  
   "debugModeEnabled": false,
 };
+
+export const DEFAULT_PROFILE = IS_MOBILE ? DEFAULT_PROFILE_MOBILE : DEFAULT_PROFILE_DESKTOP;
 export const DEFAULT_SETTINGS = IS_MOBILE ? DEFAULT_SETTINGS_MOBILE : DEFAULT_SETTINGS_DESKTOP;

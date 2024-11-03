@@ -5,6 +5,8 @@ import { location } from "svelte-spa-router";
 import { derived, writable } from "svelte/store";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
 
+export const profiles = writable<string[]>(["Default"]);
+export const currentProfile = writable("Default");
 export const isLoading = writable(true);
 export const shuffle = writable(true);
 export const repeatPlayed = writable(false);
