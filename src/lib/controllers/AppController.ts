@@ -275,27 +275,6 @@ export class AppController {
   }
 
   /**
-   * Switches to the provided profile.
-   * @param profileToUse The profile to switch to.
-   */
-  static async changeProfile(profileToUse: string) {
-    // TODO: pause playback
-    // TODO: make sure no writes are in progress.
-    // TODO: prompt the user to restart.
-  }
-
-  /**
-   * Creates a new profile with the given name.
-   * @param profileName The name of the profile.
-   * @param profileToCopy The profile to copy, or null to make it a default.
-   */
-  static async makeNewProfile(profileName: string, profileToCopy: string | null) {
-    // TODO: create the new profile.
-
-    // TODO: prompt the user to see if they want to switch to it now.
-  }
-
-  /**
    * Shares the provided songs.
    * @param songIds The ids of the songs to share.
    */

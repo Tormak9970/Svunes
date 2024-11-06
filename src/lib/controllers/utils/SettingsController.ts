@@ -15,13 +15,15 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 import { Playlist, Song, type Album, type Artist } from "@models";
-import { hasShownHelpTranslate, selectedLanguage, t as translate } from "@stores/Locale";
+import { hasShownHelpTranslate, selectedLanguage, t, t as translate } from "@stores/Locale";
 import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, currentProfile, debugModeEnabled, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, profiles, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import * as process from "@tauri-apps/plugin-process";
 import { load as loadStore, Store } from '@tauri-apps/plugin-store';
 import { DEFAULT_PROFILE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata, type UserProfile } from "@types";
 import { debounce } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
+import { DialogController } from "./DialogController";
 import { LogController } from "./LogController";
 import { RustInterop } from "./RustInterop";
 
@@ -62,9 +64,12 @@ export class SettingsController {
   private static settings: Settings;
   private static profile: UserProfile;
 
+  private static promptRestartOnProfileChange = false;
+
   private static paletteUnsub: Unsubscriber;
   private static useOledPaletteUnsub: Unsubscriber;
   private static themePrimaryColorUnsub: Unsubscriber;
+  private static currentProfileUnsub: Unsubscriber;
 
   private static hasShownHelpTranslateUnsub: Unsubscriber;
 
@@ -459,6 +464,25 @@ export class SettingsController {
     this.useOledPaletteUnsub = useOledPalette.subscribe(this.updateStoreIfChanged<boolean>("useOledPalette"));
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
 
+    const updateCurrentProfile = this.updateStoreIfChanged<string>("currentProfile", false);
+    this.currentProfileUnsub = currentProfile.subscribe((profile) => {
+      updateCurrentProfile(profile);
+
+      if (!SettingsController.promptRestartOnProfileChange) {
+        SettingsController.promptRestartOnProfileChange = true;
+        return
+      }
+
+      const translate = get(t);
+      DialogController.message(
+        translate("SVUNES_RESTART_TITLE"),
+        translate("SVUNES_RESTART_MESSAGE"),
+        translate("OK_ACTION")
+      ).then(() => {
+        process.relaunch();
+      });
+    });
+
     this.hasShownHelpTranslateUnsub = hasShownHelpTranslate.subscribe(this.updateStoreIfChanged<boolean>("hasShownHelpTranslate", false));
 
     this.musicDirectoriesUnsub = musicDirectories.subscribe(this.updateStoreIfChanged<string[]>("musicDirectories"));
@@ -528,7 +552,8 @@ export class SettingsController {
 
     this.songProgressUnsub = songProgress.subscribe((progress) => {
       this.profile.cache.songProgress = progress;
-      this.store.set("cache", this.profile.cache);
+      this.settings.profiles[this.settings.currentProfile] = this.profile as UserProfile;
+      this.store.set("profiles", this.settings.profiles);
     });
     this.playingSongIdUnsub = playingSongId.subscribe(this.updateStoreIfChanged<string>("cache.playingSongId"));
     this.shuffleUnsub = shuffle.subscribe(this.updateStoreIfChanged<boolean>("cache.shuffle"));
@@ -578,9 +603,9 @@ export class SettingsController {
   static createProfile(profileName: string, profileToCopy: string | null) {
     const template = profileToCopy ? this.settings.profiles[profileToCopy] : DEFAULT_PROFILE;
 
-    this.settings.profiles[profileName] = template;
+    this.settings.profiles[profileName] = structuredClone(template);
     
-    profiles.set(Object.keys(this.settings.profiles));
+    profiles.set([ ...get(profiles), profileName ]);
 
     this.save();
   }
@@ -595,8 +620,12 @@ export class SettingsController {
     this.settings.profiles[newName] = this.settings.profiles[oldName];
     delete this.settings.profiles[oldName];
 
+    SettingsController.promptRestartOnProfileChange = false;
     currentProfile.set(newName);
-    profiles.set(Object.keys(this.settings.profiles));
+
+    const currentProfiles = get(profiles);
+    currentProfiles.splice(currentProfiles.indexOf(oldName), 1, newName);
+    profiles.set([ ...currentProfiles ]);
 
     this.save();
   }
@@ -651,6 +680,7 @@ export class SettingsController {
     if (this.paletteUnsub) this.paletteUnsub();
     if (this.useOledPaletteUnsub) this.useOledPaletteUnsub();
     if (this.themePrimaryColorUnsub) this.themePrimaryColorUnsub();
+    if (this.currentProfileUnsub) this.currentProfileUnsub();
 
     if (this.hasShownHelpTranslateUnsub) this.hasShownHelpTranslateUnsub();
     

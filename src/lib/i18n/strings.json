@@ -142,6 +142,8 @@
   "PLAYLIST_NAME_TITLE": "Playlist Name",
   "UPDATE_AVAILABLE_TITLE": "Update Available",
   "CHANGES_DETECTED_TITLE": "Changes Detected",
+  "MANAGE_PROFILES_TITLE": "Manage Profiles",
+  "ADD_PROFILE_TITLE": "Add Profile",
 
   "SEARCHING_MESSAGE": "Searching",
   "SAVING_SETTINGS_MESSAGE": "Saving Settings",
@@ -312,6 +314,11 @@
   "SETTINGS_PERSONALIZE_LIBRARY_LABEL": "Library",
   "SETTINGS_PERSONALIZE_CATEGORIES_LABEL": "Library Categories",
   "SETTINGS_PERSONALIZE_CATEGORIES_DESC": "Customize the categories displayed and their order",
+  "SETTINGS_PERSONALIZE_PROFILES_LABEL": "Profiles",
+  "SETTINGS_PERSONALIZE_CURRENT_PROFILE_LABEL": "Current Profile",
+  "SETTINGS_PERSONALIZE_CURRENT_PROFILE_DESC": "The profile that's currently in use",
+  "SETTINGS_PERSONALIZE_MANAGE_PROFILES_LABEL": "Manage Profiles",
+  "SETTINGS_PERSONALIZE_MANAGE_PROFILES_DESC": "Add, rename, and delete profiles",
 
   "SETTINGS_NOW_PLAYING_TITLE": "Now Playing",
   "SETTINGS_NOW_PLAYING_THEME_LABEL": "Now Playing Theme",

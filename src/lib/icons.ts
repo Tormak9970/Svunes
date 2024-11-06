@@ -86,6 +86,7 @@ export { default as AppShortcut } from "@ktibow/iconset-material-symbols/app-sho
 export { default as Download } from "@ktibow/iconset-material-symbols/download-rounded";
 export { default as RestartAlt } from "@ktibow/iconset-material-symbols/restart-alt-rounded";
 
+export { default as Group } from "@ktibow/iconset-material-symbols/group-rounded";
 export { default as Groups } from "@ktibow/iconset-material-symbols/groups";
 export { default as Translate } from "@ktibow/iconset-material-symbols/translate-rounded";
 export { default as VolunteerActivism } from "@ktibow/iconset-material-symbols/volunteer-activism-rounded";
