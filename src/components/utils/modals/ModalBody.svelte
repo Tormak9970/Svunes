@@ -54,8 +54,8 @@
     }
   }
 
-  function onClick() {
-    if (canClose) {
+  function onClick(e: Event) {
+    if (canClose && !(e.target as HTMLElement).closest(".modal-body")) {
       dispatch("close");
       open = false;
     }
@@ -65,28 +65,30 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
   on:cancel={onCancel}
-  on:click|self={onClick}
+  on:click={onClick}
   on:animationend={onAnimationEnd}
   bind:this={dialog}
   style="display: {display};"
   class:hide={hideDialog}
   {...extraOptions}
 >
-  {#if loading}
-    <div class="loading-container">
-      <LoadingSpinner />
-    </div>
-  {/if}
-  <div class="m3-container">
-    {#if icon}
-      <Icon {icon} />
+  <div class="modal-body">
+    {#if loading}
+      <div class="loading-container">
+        <LoadingSpinner />
+      </div>
     {/if}
-    <p class="headline m3-font-headline-small" class:center={icon}>{headline}</p>
-    <div class="content m3-font-body-medium">
-      <slot />
-    </div>
-    <div class="buttons">
-      <slot name="buttons" />
+    <div class="m3-container">
+      {#if icon}
+        <Icon {icon} />
+      {/if}
+      <p class="headline m3-font-headline-small" class:center={icon}>{headline}</p>
+      <div class="content m3-font-body-medium">
+        <slot />
+      </div>
+      <div class="buttons">
+        <slot name="buttons" />
+      </div>
     </div>
   </div>
 </dialog>
@@ -96,12 +98,15 @@
     --m3-dialog-shape: var(--m3-util-rounding-extra-large);
   }
   dialog {
-    background-color: rgb(var(--m3-scheme-surface-container-high));
     border: none;
+    padding: 0;
+    background-color: transparent;
+  }
+  .modal-body {
+    background-color: rgb(var(--m3-scheme-surface-container-high));
     border-radius: var(--m3-dialog-shape);
     min-width: 17.5rem;
     max-width: 35rem;
-    padding: 0;
     overflow: hidden;
 
     position: relative;
