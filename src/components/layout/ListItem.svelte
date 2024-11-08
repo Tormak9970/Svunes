@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
 
-  export let display = "flex";
   export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
   export let headline = "";
   export let supporting = "";
@@ -9,7 +8,7 @@
   $: _lines = lines || (supporting ? 2 : 1);
 </script>
 
-<div class="m3-container lines-{_lines}" style="display: {display}" {...extraOptions}>
+<div class="m3-container lines-{_lines}" {...extraOptions}>
   {#if $$slots.leading}
     <div class="leading">
       <slot name="leading" />
@@ -28,6 +27,8 @@
     padding: 0.5rem 1.5rem 0.5rem 1rem;
     align-items: center;
     gap: 1rem;
+
+    display: flex;
   }
   .lines-1 {
     height: 3.5rem;
