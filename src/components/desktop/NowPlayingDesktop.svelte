@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Icon, MediaQuery } from "@component-utils";
   import { PlaybackController } from "@controllers";
+  import { tooltip } from "@directives";
   import { FavoriteOff, FavoriteOn, MoreVert, PictureInPicture, PictureInPictureExit, QueueMusic, Speaker, VolumeDown, VolumeOff, VolumeUp } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { Marquee, MenuItem } from "@layout";
@@ -8,7 +9,6 @@
   import { t } from "@stores/Locale";
   import { showAddToPlaylist, showNowPlaying } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap, volumeLevel } from "@stores/State";
-  import { tooltip } from "@svelte-plugins/tooltips";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { goToQueue, goToSongDetails, hash64 } from "@utils";
   import { onMount } from "svelte";
@@ -136,8 +136,10 @@
     {/if}
     <span
       use:tooltip={{
+        tooltipId: 1,
         content: { component: DesktopSpeakerSelect },
         action: "click",
+        hideOnClickOutside: true,
         theme: "speakers-tooltip-theme",
         arrow: false
       }}
@@ -148,8 +150,10 @@
     </span>
     <span
       use:tooltip={{
+        tooltipId: 2,
         content: { component: DesktopVolumeControls },
         action: "click",
+        hideOnClickOutside: true,
         theme: "volume-tooltip-theme",
         arrow: false
       }}

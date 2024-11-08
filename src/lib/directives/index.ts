@@ -2,4 +2,5 @@ export { contextMenu, type ActionMenuItem, type ContextMenuItem, type IconMenuIt
 export { holdEvent } from "./HoldEvent";
 export { isScrolled } from "./IsScrolled";
 export { scrollShadow } from "./ScrollShadow";
+export { tooltip } from "./tooltip/Tooltip";
 
