@@ -464,23 +464,30 @@ export class SettingsController {
     this.useOledPaletteUnsub = useOledPalette.subscribe(this.updateStoreIfChanged<boolean>("useOledPalette"));
     this.themePrimaryColorUnsub = themePrimaryColor.subscribe(this.updateStoreIfChanged<string>("themePrimaryColor"));
 
-    const updateCurrentProfile = this.updateStoreIfChanged<string>("currentProfile", false);
     this.currentProfileUnsub = currentProfile.subscribe((profile) => {
-      updateCurrentProfile(profile);
+      let updatePromise: Promise<void> | null = null;
+      if (this.settings.currentProfile !== profile) {
+        this.settings.currentProfile = profile;
+        updatePromise = this.save();
+      }
 
       if (!SettingsController.promptRestartOnProfileChange) {
         SettingsController.promptRestartOnProfileChange = true;
-        return
+        return;
       }
 
-      const translate = get(t);
-      DialogController.message(
-        translate("SVUNES_RESTART_TITLE"),
-        translate("SVUNES_RESTART_MESSAGE"),
-        translate("OK_ACTION")
-      ).then(() => {
-        process.relaunch();
-      });
+      if (updatePromise) {
+        const translate = get(t);
+        updatePromise.then(() => {
+          DialogController.message(
+            translate("SVUNES_RESTART_TITLE"),
+            translate("SVUNES_RESTART_MESSAGE"),
+            translate("OK_ACTION")
+          ).then(() => {
+            process.relaunch();
+          });
+        });
+      }
     });
 
     this.hasShownHelpTranslateUnsub = hasShownHelpTranslate.subscribe(this.updateStoreIfChanged<boolean>("hasShownHelpTranslate", false));
