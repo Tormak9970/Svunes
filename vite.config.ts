@@ -56,6 +56,7 @@ export default defineConfig({
     alias: {
       "@interactables": resolve(__dirname, "./src/components/interactables"),
       "@layout": resolve(__dirname, "./src/components/layout"),
+      "@navigation": resolve(__dirname, "./src/components/navigation"),
       "@views": resolve(__dirname, "./src/components/views"),
       "@component-utils": resolve(__dirname, "./src/components/utils"),
       "@stores": resolve(__dirname, "./src/stores"),

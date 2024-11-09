@@ -40,7 +40,9 @@ export class Song {
     this.albumArtist = albumArtist ? normalizeString(albumArtist) : undefined;
     this.artist = artist ? normalizeString(artist) : undefined;
 
-    if (!this.artist && this.albumArtist && artistIsSingular(this.albumArtist)) this.artist = this.albumArtist;
+    if (!this.artist && this.albumArtist && artistIsSingular(this.albumArtist)) {
+      this.artist = this.albumArtist;
+    }
 
     this.releaseYear = releaseYear;
     this.length = length;

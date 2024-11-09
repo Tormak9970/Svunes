@@ -4,6 +4,7 @@
   import { Add, Download, GridView, Settings } from "@icons";
   import { Button, MenuButton } from "@interactables";
   import { MenuItem } from "@layout";
+  import { DesktopNav } from "@navigation";
   import { desktopSidePanel, isLandscape, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showArtistSortOrder, showGridSize, showPlaylistSortOrder, showSongSortOrder } from "@stores/Modals";
@@ -14,7 +15,6 @@
   import { View } from "@types";
   import { location, push } from "svelte-spa-router";
   import ContextMenu from "../ContextMenu.svelte";
-  import DesktopNav from "../navigation/DesktopNav.svelte";
   import LandscapeSelectHeader from "./LandscapeSelectHeader.svelte";
   import NowPlayingDesktop from "./NowPlayingDesktop.svelte";
   import SidePanelRouter from "./SidePanelRouter.svelte";

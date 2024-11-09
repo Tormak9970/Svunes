@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ApiController, AppController, AudioPlayer, DeviceController, LogController, PopoutSender, SettingsController } from "@controllers";
+  import { MobileNav } from "@navigation";
   import { isLandscape } from "@stores/Layout";
   import { systemDefaultLanguage, t } from "@stores/Locale";
   import { showUpdateModal, updateData } from "@stores/Modals";
@@ -15,7 +16,6 @@
   import { routes } from "../routes";
   import DesktopViewWrapper from "./desktop/DesktopViewWrapper.svelte";
   import Modals from "./modals/Modals.svelte";
-  import MobileNav from "./navigation/MobileNav.svelte";
   import NowPlayingContainer from "./overlays/now-playing/NowPlayingContainer.svelte";
   import Overlays from "./overlays/Overlays.svelte";
   import ErrorSnackbar from "./snackbars/ErrorSnackbar.svelte";
