@@ -12,7 +12,7 @@
    * Prompts the user to select an image.
    */
   async function pickImage() {
-    const file = await dialog.open({
+    const path = await dialog.open({
       title: $t("CHOOSE_IMAGE_MESSAGE"),
       directory: false,
       multiple: false,
@@ -24,8 +24,8 @@
       ]
     });
 
-    if (file && file.path !== "") {
-      $onArtOptionsDone(file.path);
+    if (path && path !== "") {
+      $onArtOptionsDone(path);
       $onArtOptionsDone = () => {};
       open = false;
     }

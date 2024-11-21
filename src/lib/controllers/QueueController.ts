@@ -2,7 +2,7 @@ import { t as translate } from "@stores/Locale";
 import { albumsMap, artistsMap, genresMap, history, nowPlayingList, nowPlayingType, playlists, playlistsMap, queue, repeatPlayed, showInfoSnackbar, songsMap } from "@stores/State";
 import { get } from "svelte/store";
 import { PlaybackController } from "./PlaybackController";
-import { SettingsController } from "./SettingsController";
+import { SettingsController } from "./utils/SettingsController";
 
 /**
  * Controls the current queue.

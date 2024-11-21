@@ -12,3 +12,5 @@ export enum SidePanels {
 export const isLandscape = writable<boolean>(!IS_MOBILE);
 export const desktopSidePanel = writable(SidePanels.NONE);
 export const sidePanelProps = writable<any>({});
+
+export const showPopoutPlayer = writable(false);

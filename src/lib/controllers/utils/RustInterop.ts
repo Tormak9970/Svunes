@@ -54,6 +54,14 @@ export class RustInterop {
   }
 
   /**
+   * Toggles the window dev tools on/off.
+   * @param enable Whether to enable or disable the window dev tools.
+   */
+  static async toggleDevTools(enable: boolean): Promise<void> {
+    await invoke("toggle_dev_tools", { enable: enable });
+  }
+
+  /**
    * Reads the contents of the provided folders.
    * @param folders The folders to read.
    * @param blacklist The blacklisted folders.

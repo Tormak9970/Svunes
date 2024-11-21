@@ -63,15 +63,15 @@
 <div class="text-input" class:alpha={isAlpha}>
 	<div class="input-container">
 		{#if mode === 'hex'}
-			<input aria-label={texts.label.hex} value={hex} on:input={updateHex} style:flex={3} />
+			<input autocomplete="off" aria-label={texts.label.hex} value={hex} on:input={updateHex} style:flex={3} />
 		{:else if mode === 'rgb'}
-			<input aria-label={texts.label.r} value={rgb.r} type="number" min="0" max="255" on:input={updateRgb('r')} />
-			<input aria-label={texts.label.g} value={rgb.g} type="number" min="0" max="255" on:input={updateRgb('g')} />
-			<input aria-label={texts.label.b} value={rgb.b} type="number" min="0" max="255" on:input={updateRgb('b')} />
+			<input autocomplete="off" aria-label={texts.label.r} value={rgb.r} type="number" min="0" max="255" on:input={updateRgb('r')} />
+			<input autocomplete="off" aria-label={texts.label.g} value={rgb.g} type="number" min="0" max="255" on:input={updateRgb('g')} />
+			<input autocomplete="off" aria-label={texts.label.b} value={rgb.b} type="number" min="0" max="255" on:input={updateRgb('b')} />
 		{:else}
-			<input aria-label={texts.label.h} value={h} type="number" min="0" max="360" on:input={updateHsv('h')} />
-			<input aria-label={texts.label.s} value={s} type="number" min="0" max="100" on:input={updateHsv('s')} />
-			<input aria-label={texts.label.v} value={v} type="number" min="0" max="100" on:input={updateHsv('v')} />
+			<input autocomplete="off" aria-label={texts.label.h} value={h} type="number" min="0" max="360" on:input={updateHsv('h')} />
+			<input autocomplete="off" aria-label={texts.label.s} value={s} type="number" min="0" max="100" on:input={updateHsv('s')} />
+			<input autocomplete="off" aria-label={texts.label.v} value={v} type="number" min="0" max="100" on:input={updateHsv('v')} />
 		{/if}
 	</div>
 

@@ -14,17 +14,27 @@
       {
         "label": "main",
         "title": "Svunes",
-        "url": "src/main.html",
+        "url": "src/windows/main/main.html",
         "height": 800,
         "minHeight": 700,
         "width": 1280,
         "minWidth": 900,
-        "fullscreen": false,
-        "resizable": true,
         "decorations": true,
-        "transparent": false,
-        "center": true,
-        "visible": true
+        "center": true
+      },
+      {
+        "label": "popout",
+        "title": "Svunes: Popout",
+        "url": "src/windows/popout/popout.html",
+        "height": 150,
+        "minHeight": 60,
+        "width": 300,
+        "minWidth": 250,
+        "decorations": false,
+        "center": false,
+        "visible": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true
       }
     ],
     "security": {
@@ -49,7 +59,8 @@
         "enable": true
       },
       "capabilities": [
-        "main-capability"
+        "main-capability",
+        "popout-capability"
       ],
       "dangerousDisableAssetCspModification": [
         "style-src"
@@ -59,6 +70,7 @@
   },
   "plugins": {
     "updater": {
+      "active": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENBQTg2RDkyODlDNDUwQ0MKUldUTVVNU0prbTJveXA4M0xBNE5oM3liNEp2T1YwakZIVG9GMGZXbko0bW13aGdINnhWaVozMmYK",
       "endpoints": [
         "https://raw.githubusercontent.com/Tormak9970/Svunes/release/latest.json"
@@ -70,6 +82,7 @@
   },
   "bundle": {
     "active": true,
+    "homepage": "svunes.org",
     "category": "Utility",
     "copyright": "Copyright Travis Lane 2024",
     "windows": {

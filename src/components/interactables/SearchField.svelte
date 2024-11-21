@@ -29,6 +29,7 @@
 >
   <input
     class="m3-font-body-large"
+    autocomplete="off"
     placeholder={placeholder}
     bind:value
     {id}

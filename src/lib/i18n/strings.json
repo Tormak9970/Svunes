@@ -93,7 +93,10 @@
   "DELETE_FROM_DEVICE_ACTION": "Delete from Device",
   "SELECT_ALL_ACTION": "Select All",
   "CLEAR_QUEUE_ACTION": "Clear Queue",
+  "GO_TO_QUEUE_ACTION": "Go to Queue",
   "REMOVE_FROM_PLAYLIST_ACTION": "Remove from Playlist",
+  "OPEN_POPOUT_ACTION": "Open Mini-player",
+  "CLOSE_POPOUT_ACTION": "Close Mini-player",
   
   "ALBUM_COVER_RESULTS_TITLE": "Album Cover Results",
   "ALBUM_INFO_RESULTS_TITLE": "Album Info Results",
@@ -139,6 +142,8 @@
   "PLAYLIST_NAME_TITLE": "Playlist Name",
   "UPDATE_AVAILABLE_TITLE": "Update Available",
   "CHANGES_DETECTED_TITLE": "Changes Detected",
+  "MANAGE_PROFILES_TITLE": "Manage Profiles",
+  "ADD_PROFILE_TITLE": "Add Profile",
 
   "SEARCHING_MESSAGE": "Searching",
   "SAVING_SETTINGS_MESSAGE": "Saving Settings",
@@ -267,6 +272,8 @@
   "SETTINGS_APPEARANCE_PALETTE_LIGHT": "Light",
   "SETTINGS_APPEARANCE_OLED_LABEL": "OLED Dark",
   "SETTINGS_APPEARANCE_OLED_DESC": "Use an all black theme for the app",
+  "SETTINGS_APPEARANCE_DEBUG_LABEL": "Enabled Dev Mode",
+  "SETTINGS_APPEARANCE_DEBUG_DESC": "Enables the app's dev mode. Helpful for debugging",
 
   "SETTINGS_AUDIO_TITLE": "Audio",
   "SETTINGS_AUTO_PLAY_LABEL": "Auto Play",
@@ -307,6 +314,11 @@
   "SETTINGS_PERSONALIZE_LIBRARY_LABEL": "Library",
   "SETTINGS_PERSONALIZE_CATEGORIES_LABEL": "Library Categories",
   "SETTINGS_PERSONALIZE_CATEGORIES_DESC": "Customize the categories displayed and their order",
+  "SETTINGS_PERSONALIZE_PROFILES_LABEL": "Profiles",
+  "SETTINGS_PERSONALIZE_CURRENT_PROFILE_LABEL": "Current Profile",
+  "SETTINGS_PERSONALIZE_CURRENT_PROFILE_DESC": "The profile that's currently in use",
+  "SETTINGS_PERSONALIZE_MANAGE_PROFILES_LABEL": "Manage Profiles",
+  "SETTINGS_PERSONALIZE_MANAGE_PROFILES_DESC": "Add, rename, and delete profiles",
 
   "SETTINGS_NOW_PLAYING_TITLE": "Now Playing",
   "SETTINGS_NOW_PLAYING_THEME_LABEL": "Now Playing Theme",

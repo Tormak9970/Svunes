@@ -65,13 +65,6 @@ body {
   overscroll-behavior: contain;
 }
 
-#app {
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-}
-
 /* Needed for elevation to work */
 :root {
   --m3-util-elevation-0: none;
@@ -270,63 +263,4 @@ a.m3-container {
 }
 .font-body-medium {
   font-size: 0.85rem;
-}
-
-.volume-tooltip-theme {
-  min-width: 0px !important;
-  --tooltip-arrow-size: 0px;
-  --tooltip-border-radius: 10px;
-
-  --tooltip-line-height: 1rem;
-  --tooltip-offset-y: 0px;
-  --tooltip-padding: 0;
-  --tooltip-z-index: 100;
-}
-
-.speakers-tooltip-theme {
-  min-width: 0px !important;
-  --tooltip-arrow-size: 0px;
-  --tooltip-border-radius: 10px;
-
-  --tooltip-line-height: 1rem;
-  --tooltip-offset-y: 0px;
-  --tooltip-offset-x: -110px !important;
-  --tooltip-padding: 0;
-  --tooltip-z-index: 100;
-}
-
-.scroll-shadow {
-  position: relative;
-}
-
-.scroll-shadow.overflow-top::before {
-  background: linear-gradient(
-    to bottom,
-    rgb(var(--scroll-shadow-color) / 0.8),
-    transparent
-  );
-  content: "";
-  width: 100%;
-  position: absolute;
-  height: 40px;
-  z-index: 2;
-  top: 0;
-
-  pointer-events: none;
-}
-
-.scroll-shadow.overflow-bottom::after {
-  background: linear-gradient(
-    to top,
-    rgb(var(--scroll-shadow-color) / 0.8),
-    transparent
-  );
-  content: "";
-  width: 100%;
-  position: absolute;
-  height: 40px;
-  z-index: 2;
-  bottom: 0;
-
-  pointer-events: none;
 }

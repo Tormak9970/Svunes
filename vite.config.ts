@@ -19,7 +19,7 @@ type ExcludeOptions = {
  */
 function excludeDirectories(config?: ExcludeOptions) {
   return {
-    name: 'remove-progress-images',
+    name: 'exclude-directories',
     resolveId (source: string) {
       return source === 'virtual-module' ? source : null;
     },
@@ -56,6 +56,7 @@ export default defineConfig({
     alias: {
       "@interactables": resolve(__dirname, "./src/components/interactables"),
       "@layout": resolve(__dirname, "./src/components/layout"),
+      "@navigation": resolve(__dirname, "./src/components/navigation"),
       "@views": resolve(__dirname, "./src/components/views"),
       "@component-utils": resolve(__dirname, "./src/components/utils"),
       "@stores": resolve(__dirname, "./src/stores"),
@@ -101,7 +102,8 @@ export default defineConfig({
 
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/main.html')
+        main: resolve(__dirname, 'src/windows/main/main.html'),
+        popout: resolve(__dirname, 'src/windows/popout/popout.html'),
       },
       external: [
         "/public/readme-images"

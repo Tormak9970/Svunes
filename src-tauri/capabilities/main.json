@@ -9,6 +9,8 @@
     "core:app:default",
     "core:menu:default",
     "core:window:default",
+    "core:window:allow-show",
+    "core:window:allow-hide",
     "dialog:default",
     "updater:default",
     {

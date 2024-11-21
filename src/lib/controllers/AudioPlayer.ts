@@ -22,7 +22,6 @@ export class AudioPlayer {
 
   private static playingSongIdUnsub: Unsubscriber;
   private static isPausedUnsub: Unsubscriber;
-  private static songProgressUnsub: Unsubscriber;
   private static volumeLevelUnsub: Unsubscriber;
   private static selectedDeviceUnsub: Unsubscriber;
 
@@ -33,28 +32,27 @@ export class AudioPlayer {
    */
   static init() {
     const currentWindow = window.getCurrentWindow();
-    this.songEndUnsub = currentWindow.listen("ended", (event) => {
-      console.log("ended:", event);
+    this.songEndUnsub = currentWindow.listen("ended", () => {
       QueueController.skip();
     });
 
     this.timestampUnsub = currentWindow.listen("timestamp", (event) => {
-      songProgress.setFromBackend(event.payload as number);
+      console.log("seeked to:", event.payload);
+      songProgress.set(event.payload as number, false);
     });
 
-    this.backendPlayingUnsub = currentWindow.listen("playing", (event) => {
+    this.backendPlayingUnsub = currentWindow.listen("playing", () => {
       isPaused.set(false);
     });
     
-    this.backendPausedUnsub = currentWindow.listen("paused", (event) => {
+    this.backendPausedUnsub = currentWindow.listen("paused", () => {
       isPaused.set(true);
     });
 
     this.playingSongIdUnsub = playingSongId.subscribe((id) => {
       if (id !== "") {
         const song = get(songsMap)[id];
-
-        let loadPromise = AudioPlayer.loadFile(song.filePath);
+        const loadPromise = AudioPlayer.loadFile(song.filePath, get(songProgress));
 
         if (get(shouldPauseOnEnd)) {
           isPaused.set(true);
@@ -69,14 +67,10 @@ export class AudioPlayer {
 
     this.isPausedUnsub = isPaused.subscribe((paused) => {
       if (paused) {
-        this.pause();
+        AudioPlayer.pause();
       } else {
-        this.play();
+        AudioPlayer.play();
       }
-    });
-
-    this.songProgressUnsub = songProgress.subscribe((position) => {
-      invoke<void>("seek", { position: position });
     });
 
     this.volumeLevelUnsub = volumeLevel.subscribe((level) => {
@@ -91,7 +85,7 @@ export class AudioPlayer {
     
     this.deviceChangesUnsub = currentWindow.listen("attached_devices_change", (event) => {
       const devices = event.payload as AudioDevices;
-      this.handleConnectedDeviceChange(devices);
+      AudioPlayer.handleConnectedDeviceChange(devices);
     });
   }
 
@@ -116,16 +110,16 @@ export class AudioPlayer {
 
     if (this.playingSongIdUnsub) this.playingSongIdUnsub();
     if (this.isPausedUnsub) this.isPausedUnsub();
-    if (this.songProgressUnsub) this.songProgressUnsub();
     if (this.volumeLevelUnsub) this.volumeLevelUnsub();
     if (this.selectedDeviceUnsub) this.selectedDeviceUnsub();
   }
 
-  static async loadFile(filePath: string) {
-    return invoke<void>("load_file", { filePath: filePath });
+  static async loadFile(filePath: string, position?: number) {
+    return invoke<void>("load_file", { filePath: filePath, position: position ?? 0 });
   }
 
   static play() {
+    console.log("resuming playback...");
     invoke<void>("resume_playback", {});
   }
 

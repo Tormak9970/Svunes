@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FolderEntry, ModalBody } from "@component-utils";
+  import { EditableEntry, ModalBody } from "@component-utils";
   import { scrollShadow } from "@directives";
   import { Button } from "@interactables";
   import { t } from "@stores/Locale";
@@ -34,6 +34,24 @@
     $musicDirectories = [ ...folders ];
     open = false;
   }
+  
+  /**
+   * Handles editing a path.
+   * @param index The index of the path to edit.
+   */
+   async function onPathEdit(index: number) {
+    const path = await dialog.open({
+      title: $t("CHOOSE_FOLDER_MESSAGE"),
+      directory: true,
+      multiple: false,
+      defaultPath: folders[index]
+    });
+
+    if (path && path !== "") {
+      folders.splice(index, 1, path);
+      folders = [ ...folders ];
+    }
+  }
 
   /**
    * Handles removing a path.
@@ -49,7 +67,7 @@
   <div class="content styled-scrollbar" use:scrollShadow>
     <div class="content-wrapper">
       {#each folders as directory, i}
-        <FolderEntry folderPath={directory} index={i} onDelete={onPathDelete} />
+        <EditableEntry label={directory} index={i} onEdit={onPathEdit} onDelete={onPathDelete} />
       {:else}
         <div class="font-label">{$t("NO_MUSIC_FOLDERS_MESSAGE")}</div>
       {/each}
@@ -59,7 +77,7 @@
     <div class="left" />
     <div class="right">
       <Button type="text" on:click={pickFolders}>{$t("ADD_ACTION")}</Button>
-      <Button type="text" on:click={done}>{$t("DONE_ACTION")}</Button>
+      <Button type="text" on:click={done} disabled={folders.length === 0}>{$t("DONE_ACTION")}</Button>
     </div>
   </div>
 </ModalBody>
@@ -72,7 +90,7 @@
   }
 
   .content-wrapper {
-    width: 17rem;
+    width: 20rem;
     height: fit-content;
   }
 

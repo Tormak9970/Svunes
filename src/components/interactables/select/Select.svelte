@@ -14,7 +14,7 @@
 
   export let disabled = false;
   export let value = "";
-  export let options: { label: string, value: string }[];
+  export let options: SelectItem[];
   export let open = false;
   export let maxHeight = "300px";
 
@@ -68,7 +68,6 @@
     class:focus={open}
     class:disabled
     class:empty={!label}
-    style="display: inline-flex"
     {...extraWrapperOptions}
     on:click={onClick}
     on:mouseup|stopPropagation
@@ -106,6 +105,8 @@
     width: 100%;
     
     cursor: pointer;
+
+    display: inline-flex;
   }
   .select-mimic {
     width: calc(100% - 3rem);

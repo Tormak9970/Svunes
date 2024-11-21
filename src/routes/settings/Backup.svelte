@@ -15,7 +15,7 @@
    * Prompts the user to select a backup file.
    */
   async function pickBackup() {
-    const file = await dialog.open({
+    const path = await dialog.open({
       title: $t("CHOOSE_BACKUP_MESSAGE"),
       directory: false,
       multiple: false,
@@ -27,8 +27,8 @@
       ]
     });
 
-    if (file && file.path !== "") {
-      await SettingsController.applyBackup(file.path);
+    if (path && path !== "") {
+      await SettingsController.applyBackup(path);
       DialogController.message($t("SVUNES_RESTART_TITLE"), $t("SVUNES_RESTART_MESSAGE"), $t("OK_ACTION")).then(() => {
         process.relaunch();
       });

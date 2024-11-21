@@ -86,6 +86,7 @@ export { default as AppShortcut } from "@ktibow/iconset-material-symbols/app-sho
 export { default as Download } from "@ktibow/iconset-material-symbols/download-rounded";
 export { default as RestartAlt } from "@ktibow/iconset-material-symbols/restart-alt-rounded";
 
+export { default as Group } from "@ktibow/iconset-material-symbols/group-rounded";
 export { default as Groups } from "@ktibow/iconset-material-symbols/groups";
 export { default as Translate } from "@ktibow/iconset-material-symbols/translate-rounded";
 export { default as VolunteerActivism } from "@ktibow/iconset-material-symbols/volunteer-activism-rounded";
@@ -96,6 +97,7 @@ export { default as LightMode } from "@ktibow/iconset-material-symbols/light-mod
 export { default as Palette } from "@ktibow/iconset-material-symbols/palette";
 
 export { default as BugReport } from "@ktibow/iconset-material-symbols/bug-report-outline-rounded";
+export { default as Bug } from "@ktibow/iconset-material-symbols/bug-report-rounded";
 export { default as EditDocument } from "@ktibow/iconset-material-symbols/edit-document-rounded";
 export { default as InfoOutline } from "@ktibow/iconset-material-symbols/info-outline-rounded";
 export { default as License } from "@ktibow/iconset-material-symbols/license-outline-rounded";
@@ -109,5 +111,8 @@ export { default as SwipeDownAlt } from "@ktibow/iconset-material-symbols/swipe-
 
 export { default as Personalize } from "@ktibow/iconset-material-symbols/hdr-weak";
 
+export { default as PictureInPictureAlt } from "@ktibow/iconset-material-symbols/picture-in-picture-alt";
+export { default as PictureInPicture } from "@ktibow/iconset-material-symbols/pip";
+export { default as PictureInPictureExit } from "@ktibow/iconset-material-symbols/pip-exit";
 export { default as Speaker } from "@ktibow/iconset-material-symbols/speaker";
 

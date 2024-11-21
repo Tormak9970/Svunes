@@ -12,16 +12,14 @@ pub fn get_audio_devices(_app_handle: AppHandle) -> Option<AudioDevices> {
 /// Sets the audio output device to use.
 pub fn set_audio_device(state: State<AudioPlayer>, _app_handle: AppHandle, device_name: Option<String>) {
   let _ = state.player_sender.send(PlayerEvent::SetAudioDevice(device_name));
-
-  state.resume();
 }
 
 #[tauri::command]
 /// Loads the provided filepath.
-pub fn load_file(state: State<AudioPlayer>, _app_handle: AppHandle, file_path: String) {
+pub fn load_file(state: State<AudioPlayer>, _app_handle: AppHandle, file_path: String, position: f64) {
   let _ = state.player_sender.send(PlayerEvent::LoadFile(PlaybackEvent {
     file_path,
-    position: Some(0.0f64),
+    position: Some(position),
     volume: Some(1.0f64)
   }));
 }

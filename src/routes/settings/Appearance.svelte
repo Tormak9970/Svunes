@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { palette, themePrimaryColor, useOledPalette } from "@stores/State";
+  import { debugModeEnabled, palette, themePrimaryColor, useOledPalette } from "@stores/State";
   import type { Palette } from "@types";
   import { pop } from "svelte-spa-router";
 
@@ -11,7 +11,7 @@
   import MultiButtonSetting from "@views/settings/entries/MultiButtonSetting.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import { BrightnessMedium, DarkMode, LightMode, Palette as Theme } from "@icons";
+  import { BrightnessMedium, Bug, DarkMode, LightMode, Palette as Theme } from "@icons";
   import { SectionLabel } from "@layout";
   import { t } from "@stores/Locale";
   
@@ -53,6 +53,10 @@
       <MultiButton name="theme-palette" id="light" icon={LightMode} checked={$palette === "Light"} on:input={() => setPalette("Light")}>{$t("SETTINGS_APPEARANCE_PALETTE_LIGHT")}</MultiButton>
     </MultiButtonSetting>
     <ToggleSetting label={$t("SETTINGS_APPEARANCE_OLED_LABEL")} description={$t("SETTINGS_APPEARANCE_OLED_DESC")} bind:checked={$useOledPalette} />
+    <!-- svelte-ignore missing-declaration -->
+    {#if !IS_MOBILE}
+      <ToggleSetting icon={Bug} label={$t("SETTINGS_APPEARANCE_DEBUG_LABEL")} description={$t("SETTINGS_APPEARANCE_DEBUG_DESC")} bind:checked={$debugModeEnabled} />
+    {/if}
   </span>
 </SettingsBody>
 

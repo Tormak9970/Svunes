@@ -23,7 +23,7 @@ impl AudioPlayer {
     return AudioPlayer {
       player_receiver: Arc::new(Mutex::new(player_receiver)),
       player_sender,
-      decoding_active: Arc::new(AtomicU32::new(ACTIVE)),
+      decoding_active: Arc::new(AtomicU32::new(PAUSED)),
       volume_receiver: Arc::new(Mutex::new(volume_receiver)),
       volume_sender,
     }
@@ -54,8 +54,10 @@ impl AudioPlayer {
 
   /// Resumes audio playback.
   pub fn resume(&self) {
-    let _ = &self.decoding_active.store(ACTIVE, std::sync::atomic::Ordering::Relaxed);
+    if (&self).decoding_active.load(std::sync::atomic::Ordering::Relaxed) == PAUSED {
+      let _ = &self.decoding_active.store(ACTIVE, std::sync::atomic::Ordering::Relaxed);
 
-    wake_all(self.decoding_active.as_ref());
+      wake_all(self.decoding_active.as_ref());
+    }
   }
 }

@@ -17,7 +17,7 @@
 </div>
 
 <style>
-  .small-modal :global(dialog) {
+  .small-modal :global(dialog .modal-body) {
     min-width: 12.5rem;
   }
   .small-modal :global(.m3-container) {

@@ -9,7 +9,7 @@
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
   import { artistToAdd, showAddToPlaylist } from "@stores/Overlays";
-  import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, songsMap, useArtistColors } from "@stores/State";
+  import { albumsMap, artists, artistsMap, isPaused, nowPlayingList, shuffle, songsMap, useArtistColors } from "@stores/State";
   import type { ArtistEntriesSortOrder } from "@types";
   import { getRandomElements, stringSort } from "@utils";
   import { pop, push } from "svelte-spa-router";
@@ -155,7 +155,7 @@
           </div>
           {#key rerenderArt}
             <div class="buttons" style="{(artist?.backgroundColor && $useArtistColors) ? `--m3-scheme-primary: ${artist.backgroundColor};` : ""}">
-              <ToggleShuffleButton />
+              <ToggleShuffleButton bind:shuffle={$shuffle} />
               <PlayButton name={artist?.name} on:click={playArtist} />
             </div>
           {/key}

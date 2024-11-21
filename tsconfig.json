@@ -18,6 +18,7 @@
     "paths": {
       "@interactables": ["./src/components/interactables"],
       "@layout": ["./src/components/layout"],
+      "@navigation": ["./src/components/navigation"],
       "@views/*": ["./src/components/views/*"],
       "@component-utils": ["./src/components/utils"],
       "@stores/*": ["./src/stores/*"],

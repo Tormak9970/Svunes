@@ -6,6 +6,9 @@ import { writable } from "svelte/store";
 export const showUpdateModal = writable(false);
 export const updateData = writable<Update | null>(null);
 
+export const showManageProfiles = writable(false);
+export const showAddProfile = writable(false);
+
 export const showEditMusicFolders = writable(false);
 export const showBlacklistFolders = writable(false);
 

@@ -10,7 +10,7 @@
   export let checked: boolean;
 </script>
 
-<Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 0px; border-radius: 10px; margin: 2px 0px;" }}>
+<Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 0px; padding-bottom: 5px; border-radius: 10px; margin: 2px 0px;" }}>
   <div class="content">
     <div class="icon-container">
       {#if icon}
@@ -34,6 +34,7 @@
   .content {
     width: 100%; 
     display: flex;
+    align-items: center;
   }
 
   .icon-container {

@@ -1,18 +1,19 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { Shuffle } from "@icons";
-  import { shuffle } from "@stores/State";
   import { fade } from "svelte/transition";
   import Button from "./Button.svelte";
+
+  export let shuffle: boolean;
 </script>
 
 <div class="shuffle-container">
-  <Button type="text" iconType="full" extraOptions={{ style: "display: flex;" }} on:click={() => $shuffle = !$shuffle }>
-    <div class="wrapper" style:color={$shuffle ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
+  <Button type="text" iconType="full" extraOptions={{ style: "display: flex;" }} on:click={() => shuffle = !shuffle }>
+    <div class="wrapper" style:color={shuffle ? "rgb(var(--m3-scheme-primary))" : "rgb(var(--m3-scheme-outline-variant))"}>
       <Icon icon={Shuffle} />
     </div>
   </Button>
-  {#if $shuffle}
+  {#if shuffle}
     <div class="indicator" in:fade={{ duration: 200 }} />
   {/if}
 </div>

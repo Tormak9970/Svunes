@@ -20,6 +20,11 @@ type ShowSnackbarOptions = {
   timeout?: number | null;
 }
 
+type SelectItem = {
+  label: string;
+  value: string;
+}
+
 declare module "svelte-icons/md/*.svelte";
 
 declare type Item = import('svelte-dnd-action').Item;

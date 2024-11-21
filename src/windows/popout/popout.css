@@ -1,0 +1,45 @@
+#popout {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+}
+
+#popout .splitpanes,
+#popout .splitpanes .splitpanes__pane {
+  background-color: transparent;
+}
+
+#popout .splitpanes__splitter {
+	background-color: transparent;
+	border: none;
+  cursor: ew-resize;
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.14s ease-in-out;
+  width: 6px;
+}
+#popout .splitpanes__splitter::before {
+	content: '';
+	position: static;
+	background-color: transparent;
+  border-radius: 2px;
+}
+#popout .splitpanes:hover .splitpanes__splitter::before {
+  background-color: rgb(var(--m3-scheme-outline-variant));
+}
+#popout .splitpanes:hover .splitpanes__splitter:hover::before {
+  background-color: rgb(var(--m3-scheme-outline));
+}
+
+#popout .splitpanes__splitter::after{
+  display: none;
+}
+
+#popout .splitpanes--vertical > .splitpanes__splitter::before {
+  margin: 0;
+  transform: none;
+	height: 100%;
+  width: 1px;
+  transition: width 0.14s ease-in-out;
+}

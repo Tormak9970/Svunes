@@ -46,7 +46,7 @@
    * Prompts the user to import a playlist.
    */
   async function importPlaylist() {
-    const file = await dialog.open({
+    const path = await dialog.open({
       title: $t("CHOOSE_PLAYLIST_MESSAGE"),
       directory: false,
       multiple: false,
@@ -58,8 +58,8 @@
       ]
     });
 
-    if (file && file.path !== "") {
-      AppController.importPlaylist(file.path);
+    if (path && path !== "") {
+      AppController.importPlaylist(path);
     }
   }
 
