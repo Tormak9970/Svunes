@@ -1,6 +1,6 @@
 import { backgroundColorPopout, currentSongPopout, isFavoritedPopout, isPausedPopout, repeatPlayedPopout, shufflePopout } from "@stores/Popout";
 import { themePrimaryColor } from "@stores/State";
-import { getCurrentWindow, LogicalPosition, primaryMonitor } from "@tauri-apps/api/window";
+import { availableMonitors, currentMonitor, getCurrentWindow, PhysicalPosition } from "@tauri-apps/api/window";
 import { PopoutChannelEventType, type PopoutChannelEvent } from "@types";
 import type { Unsubscriber } from "svelte/store";
 
@@ -96,16 +96,24 @@ export class PopoutReciever {
           if (data.data) {
             if (this.initialLoad) {
               this.initialLoad = false;
-              const monitor = (await primaryMonitor())!;
-              const monitorRight = monitor.position.x + monitor.size.width - 25;
-              const monitorBottom = monitor.position.y + monitor.size.height - 75;
+              let monitor = (await currentMonitor());
 
-              this.popoutWindow.setPosition(new LogicalPosition(monitorRight - 300, monitorBottom - 150))
-                .then(() => {
+              if (!monitor) {
+                const monitors = await availableMonitors();
+
+                if (monitors.length === 0) {
                   this.popoutWindow.show();
-                });
+                  return;
+                }
 
-              // this.popoutWindow.show();
+                monitor = monitors[0];
+              }
+
+              const monitorRight = monitor.position.x + monitor.size.width - 85;
+              const monitorBottom = monitor.position.y + monitor.size.height - 110;
+              const position = new PhysicalPosition(monitorRight - 300, monitorBottom - 150);
+
+              this.popoutWindow.setPosition(position).then(() => this.popoutWindow.show());
             } else {
               this.popoutWindow.show();
             }
