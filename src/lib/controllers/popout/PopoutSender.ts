@@ -113,9 +113,10 @@ export class PopoutSender {
           }
           break;
         case PopoutChannelEventType.PAUSE:
-          if (data.data) {
+          const paused = get(isPaused);
+          if (data.data && !paused) {
             PlaybackController.pause();
-          } else {
+          } else if (!data.data && paused) {
             PlaybackController.resume();
           }
           break;
@@ -133,7 +134,7 @@ export class PopoutSender {
           if (data.data && !isFavorited) {
             const index = favoritesPlaylist.songIds.indexOf(song.id);
             favoritesPlaylist.songIds.splice(index, 1);
-          } else if (isFavorited) {
+          } else if (!data.data && isFavorited) {
             favoritesPlaylist.songIds.push(song.id);
           }
           

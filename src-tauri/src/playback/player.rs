@@ -49,7 +49,11 @@ impl AudioPlayer {
 
   /// Pauses audio playback.
   pub fn pause(&self) {
-    let _ = &self.decoding_active.store(PAUSED, std::sync::atomic::Ordering::Relaxed);
+    if (&self).decoding_active.load(std::sync::atomic::Ordering::Relaxed) == ACTIVE {
+      let _ = &self.decoding_active.store(PAUSED, std::sync::atomic::Ordering::Relaxed);
+
+      wake_all(self.decoding_active.as_ref());
+    }
   }
 
   /// Resumes audio playback.

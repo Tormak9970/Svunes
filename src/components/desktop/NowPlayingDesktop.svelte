@@ -29,7 +29,7 @@
   $: album = song?.album ? $albumsMap[song?.album] : undefined;
 
   $: favoritesPlaylist = $playlists.find((playlist) => playlist.id === hash64("Favorites"));
-  $: isFavorited = song?.id ? favoritesPlaylist?.songIds.includes(song?.id) : false;
+  $: isFavorited = favoritesPlaylist && song?.id ? favoritesPlaylist.songIds.includes(song?.id) : false;
 
   $: isMp3 = song?.fileName.toLocaleLowerCase().endsWith("mp3");
   $: songLength = song?.length ?? 0;

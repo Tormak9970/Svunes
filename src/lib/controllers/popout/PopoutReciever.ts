@@ -104,6 +104,8 @@ export class PopoutReciever {
                 .then(() => {
                   this.popoutWindow.show();
                 });
+
+              // this.popoutWindow.show();
             } else {
               this.popoutWindow.show();
             }
