@@ -27,6 +27,8 @@ export class AudioPlayer {
 
   private static oldNumAudioDevices: number;
 
+  private static skipBackendPauseUpdate = false;
+
   /**
    * Initializes the Audio Player.
    */
@@ -42,10 +44,12 @@ export class AudioPlayer {
     });
 
     this.backendPlayingUnsub = currentWindow.listen("playing", () => {
+      AudioPlayer.skipBackendPauseUpdate = true;
       isPaused.set(false);
     });
     
     this.backendPausedUnsub = currentWindow.listen("paused", () => {
+      AudioPlayer.skipBackendPauseUpdate = true;
       isPaused.set(true);
     });
 
@@ -66,6 +70,8 @@ export class AudioPlayer {
     });
 
     this.isPausedUnsub = isPaused.subscribe((paused) => {
+      if (AudioPlayer.skipBackendPauseUpdate) return;
+      
       if (paused) {
         AudioPlayer.pause();
       } else {
