@@ -18,7 +18,7 @@ use std::sync::Arc;
 
 use symphonia::core::audio::{AudioBufferRef, SignalSpec};
 
-use super::types::{AudioDevice, AudioDevices, SampleOffsetEvent, VolumeEvent};
+use super::types::{AudioDevice, AudioDevices, BalanceEvent, Equalizer, EqualizerEvent, VolumeEvent, SampleOffsetEvent};
 
 pub trait AudioOutput {
     fn write(&mut self, decoded: AudioBufferRef<'_>, ramp_up_samples: u64, ramp_down_samples: u64);
@@ -49,8 +49,9 @@ mod cpal {
   use std::sync::mpsc::Receiver;
   use std::sync::{Arc, RwLock};
 
+  use crate::playback::adjustments::{adjust_packet, calculate_frequency_bins};
   use crate::playback::output::get_device_by_name;
-  use crate::playback::types::{SampleOffsetEvent, VolumeEvent};
+  use crate::playback::types::{Equalizer, VolumeEvent, BalanceEvent, EqualizerEvent, SampleOffsetEvent};
   use crate::playback::resampler::Resampler;
 
   use super::{AudioOutput, AudioOutputError, Result};
@@ -86,12 +87,16 @@ mod cpal {
           device_name: &String,
           spec: SignalSpec,
           sample_buf_size: u64,
-          volume_control_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
+          volume_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
+          balance_receiver: Arc<Mutex<Receiver<BalanceEvent>>>,
+          equalizer_receiver: Arc<Mutex<Receiver<EqualizerEvent>>>,
           sample_offset_receiver: Arc<Mutex<Receiver<SampleOffsetEvent>>>,
           playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
           vol: Option<f64>,
+          balance: Option<f64>,
+          equalizer: Option<Equalizer>
       ) -> Result<Arc<Mutex<dyn AudioOutput>>> {
           let device = get_device_by_name(Some(device_name.clone())).unwrap();
 
@@ -140,49 +145,81 @@ mod cpal {
                   device_spec,
                   duration,
                   &device,
-                  volume_control_receiver,
+                  volume_receiver,
+                  balance_receiver,
+                  equalizer_receiver,
                   sample_offset_receiver,
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, volume| ((packet as f64) * volume) as f32,
+                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
+                  |data, sample_rate, fft_size| {
+                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                  },
                   vol,
+                  balance,
+                  equalizer,
               ),
               cpal::SampleFormat::I16 => CpalAudioOutputImpl::<i16>::try_open(
                   device_spec,
                   duration,
                   &device,
-                  volume_control_receiver,
+                  volume_receiver,
+                  balance_receiver,
+                  equalizer_receiver,
                   sample_offset_receiver,
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, volume| ((packet as f64) * volume) as i16,
+                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as i16,
+                  |data, sample_rate, fft_size| {
+                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                  },
                   vol,
+                  balance,
+                  equalizer,
               ),
               cpal::SampleFormat::U16 => CpalAudioOutputImpl::<u16>::try_open(
                   device_spec,
                   duration,
                   &device,
-                  volume_control_receiver,
+                  volume_receiver,
+                  balance_receiver,
+                  equalizer_receiver,
                   sample_offset_receiver,
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, volume| ((packet as f64) * volume) as u16,
+                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as u16,
+                  |data, sample_rate, fft_size| {
+                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                  },
                   vol,
+                  balance,
+                  equalizer,
               ),
               _ => CpalAudioOutputImpl::<f32>::try_open(
                   device_spec,
                   duration,
                   &device,
-                  volume_control_receiver,
+                  volume_receiver,
+                  balance_receiver,
+                  equalizer_receiver,
                   sample_offset_receiver,
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, volume| ((packet as f64) * volume) as f32,
+                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
+                  |data, sample_rate, fft_size| {
+                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                  },
                   vol,
+                  balance,
+                  equalizer,
               ),
           }
       }
@@ -202,18 +239,23 @@ mod cpal {
       name: String,
   }
 
-  impl<T: AudioOutputSample + Send + Sync> CpalAudioOutputImpl<T> {
+  impl<T: AudioOutputSample + Send + Sync + Into<f64>> CpalAudioOutputImpl<T> {
       pub fn try_open(
           spec: SignalSpec,
           duration: symphonia::core::units::Duration,
           device: &cpal::Device,
-          volume_control_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
+          volume_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
+          balance_receiver: Arc<Mutex<Receiver<BalanceEvent>>>,
+          equalizer_receiver: Arc<Mutex<Receiver<EqualizerEvent>>>,
           sample_offset_receiver: Arc<Mutex<Receiver<SampleOffsetEvent>>>,
           playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
-          volume_change: fn(T, f64) -> T,
-          vol: Option<f64>
+          packet_change: fn(T, u64, usize, f64, f64, f64, Equalizer) -> T,
+          calculate_frequencies: fn(&[T], u32, usize) -> Vec<f64>,
+          vol: Option<f64>,
+          balance: Option<f64>,
+          equalizer: Option<Equalizer>
       ) -> Result<Arc<Mutex<dyn AudioOutput>>> {
           let num_channels = spec.channels.count();
           // Output audio stream config.
@@ -239,6 +281,8 @@ mod cpal {
           
           // States
           let volume_state = Arc::new(RwLock::new(vol.unwrap()));
+          let balance_state = Arc::new(RwLock::new(balance.unwrap()));
+          let equalizer_state = Arc::new(RwLock::new(equalizer.unwrap()));
           let frame_idx_state = Arc::new(RwLock::new(0));
           let playback_state = Arc::new(RwLock::new(true));
           let device_state = Arc::new(RwLock::new(
@@ -278,15 +322,35 @@ mod cpal {
                   }
 
                   // Get volume
-                  let volume = volume_control_receiver.try_lock();
+                  let volume = volume_receiver.try_lock();
                   if let Ok(volume_lock) = volume {
                       if let Ok(VolumeEvent::SetVolume(vol)) = volume_lock.try_recv() {
                           let mut current_volume = volume_state.write().unwrap();
                           *current_volume = vol;
                       }
                   }
-
                   let current_volume = { *volume_state.read().unwrap() };
+                  
+                  // Get balance
+                  let balance = balance_receiver.try_lock();
+                  if let Ok(balance_lock) = balance {
+                      if let Ok(BalanceEvent::SetBalance(balance)) = balance_lock.try_recv() {
+                          let mut current_balance = balance_state.write().unwrap();
+                          *current_balance = balance;
+                      }
+                  }
+                  let current_balance = { *balance_state.read().unwrap() };
+                  
+                  // Get equalizer
+                  let equalizer = equalizer_receiver.try_lock();
+                  if let Ok(equalizer_lock) = equalizer {
+                      if let Ok(EqualizerEvent::SetEq(eq)) = equalizer_lock.try_recv() {
+                          let mut current_equalizer = equalizer_state.write().unwrap();
+                          *current_equalizer = eq;
+                      }
+                  }
+                  let current_equalizer = { *equalizer_state.read().unwrap() };
+
                   // info!("Current volume: {:?}", current_volume);
 
                   let playing = playback_state_receiver.try_lock();
@@ -312,14 +376,31 @@ mod cpal {
                               }
                           }
 
-                          let mut i = 0;
-                          for d in &mut *data {
-                              *d = volume_change(*d, current_volume);
-                              i += 1;
-                          }
+                          // TODO: figure out why data has length 0 sometimes
+                          // ! might not need this check, but still need to figure out above
+                          if written != 0 {
+                            let frequencies = calculate_frequencies(data, config.sample_rate.0, written);
 
-                          let mut sample_offset = frame_idx_state.write().unwrap();
-                          *sample_offset += i;
+                            let mut i = 0;
+                            for d in &mut *data {
+                                let channel_index = i % (num_channels as u64);
+                                // let frequency = frequencies[i as usize];
+                                *d = packet_change(
+                                  *d,
+                                  channel_index,
+                                  num_channels,
+                                  0.0f64,
+                                  current_volume,
+                                  current_balance,
+                                  current_equalizer
+                                );
+
+                                i += 1;
+                            }
+
+                            let mut sample_offset = frame_idx_state.write().unwrap();
+                            *sample_offset += i;
+                          }
 
                           // Mute any remaining samples.
                           data[written..].iter_mut().for_each(|s| *s = T::MID);
@@ -502,23 +583,31 @@ pub fn try_open(
     device_name: &String,
     spec: SignalSpec,
     sample_buf_size: u64,
-    volume_control_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
+    volume_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
+    balance_receiver: Arc<Mutex<Receiver<BalanceEvent>>>,
+    equalizer_receiver: Arc<Mutex<Receiver<EqualizerEvent>>>,
     sample_offset_receiver: Arc<Mutex<Receiver<SampleOffsetEvent>>>,
     playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
     reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
     device_change_receiver: Arc<Mutex<Receiver<String>>>,
     vol: Option<f64>,
+    balance: Option<f64>,
+    equalizer: Option<Equalizer>
 ) -> Result<Arc<Mutex<dyn AudioOutput>>> {
     cpal::CpalAudioOutput::try_open(
         device_name,
         spec,
         sample_buf_size,
-        volume_control_receiver,
+        volume_receiver,
+        balance_receiver,
+        equalizer_receiver,
         sample_offset_receiver,
         playback_state_receiver,
         reset_control_receiver,
         device_change_receiver,
         vol,
+        balance,
+        equalizer
     )
 }
 
@@ -570,7 +659,6 @@ pub fn get_devices() -> Option<AudioDevices> {
     default,
   });
 }
-
 
 pub fn poll_audio_devices(app_handle: &AppHandle) {
   println!("Starting audio device polling...");

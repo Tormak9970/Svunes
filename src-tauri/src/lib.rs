@@ -1,4 +1,3 @@
-
 mod logger;
 mod symphonia_mock;
 mod music_readers;
@@ -296,11 +295,13 @@ pub fn run() {
       image_utils::download_image,
       playback::ipc::get_audio_devices,
       playback::ipc::set_audio_device,
-      playback::ipc::load_file,
-      playback::ipc::seek,
+      playback::ipc::set_audio_balance,
+      playback::ipc::set_equalizer,
       playback::ipc::set_volume,
+      playback::ipc::load_file,
       playback::ipc::resume_playback,
       playback::ipc::pause_playback,
+      playback::ipc::seek,
     ])
     .build(tauri::generate_context!())
     .expect("error while building tauri application")

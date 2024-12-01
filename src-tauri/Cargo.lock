@@ -114,6 +114,7 @@ dependencies = [
  "rb",
  "ringbuffer",
  "rubato",
+ "rustfft",
  "serde",
  "serde_json",
  "symphonia",

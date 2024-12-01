@@ -16,11 +16,11 @@
  */
 import { Playlist, Song, type Album, type Artist } from "@models";
 import { hasShownHelpTranslate, selectedLanguage, t, t as translate } from "@stores/Locale";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, autoPlayOnConnect, blacklistedFolders, currentProfile, debugModeEnabled, dismissMiniPlayerWithSwipe, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, profiles, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, audioBalance, autoPlayOnConnect, blacklistedFolders, currentProfile, debugModeEnabled, dismissMiniPlayerWithSwipe, equalizers, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, profiles, queue, repeatPlayed, selectedEq, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import * as process from "@tauri-apps/plugin-process";
 import { load as loadStore, Store } from '@tauri-apps/plugin-store';
-import { DEFAULT_PROFILE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata, type UserProfile } from "@types";
+import { DEFAULT_PROFILE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type Equalizer, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata, type UserProfile } from "@types";
 import { debounce } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import { DialogController } from "./DialogController";
@@ -88,6 +88,9 @@ export class SettingsController {
   private static extraControlUnsub: Unsubscriber;
 
   private static autoPlayOnConnectUnsub: Unsubscriber;
+  private static balanceUnsub: Unsubscriber;
+  private static equalizersUnsub: Unsubscriber;
+  private static selectedEqUnsub: Unsubscriber;
 
   private static playlistsUnsub: Unsubscriber;
 
@@ -417,6 +420,9 @@ export class SettingsController {
 
     const audio = this.profile.audio;
     autoPlayOnConnect.set(audio.autoPlay);
+    audioBalance.set(audio.balance);
+    equalizers.set(audio.equalizers);
+    selectedEq.set(audio.selectedEq);
 
     blacklistedFolders.set(this.profile.blacklistedFolders);
     filterSongDuration.set(this.profile.filterSongDuration);
@@ -512,6 +518,9 @@ export class SettingsController {
     this.viewIndicesUnsub = viewIndices.subscribe(this.updateStoreIfChanged<Record<View, number>>("personalization.viewIndices"));
 
     this.autoPlayOnConnectUnsub = autoPlayOnConnect.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlay"));
+    this.balanceUnsub = audioBalance.subscribe(this.updateStoreIfChanged<number>("audio.balance"));
+    this.equalizersUnsub = equalizers.subscribe(this.updateStoreIfChanged<Record<string, Equalizer>>("audio.equalizers"));
+    this.selectedEqUnsub = selectedEq.subscribe(this.updateStoreIfChanged<string>("audio.selectedEq"));
 
 
     this.playlistsUnsub = playlists.subscribe(this.updateStoreIfChanged<Playlist[]>("playlists"));
@@ -706,6 +715,9 @@ export class SettingsController {
     if (this.viewIndicesUnsub) this.viewIndicesUnsub();
 
     if (this.autoPlayOnConnectUnsub) this.autoPlayOnConnectUnsub();
+    if (this.balanceUnsub) this.balanceUnsub();
+    if (this.equalizersUnsub) this.equalizersUnsub();
+    if (this.selectedEqUnsub) this.selectedEqUnsub();
 
     if (this.playlistsUnsub) this.playlistsUnsub();
 

@@ -3,7 +3,7 @@ use std::sync::{atomic::AtomicU32, mpsc::{Receiver, Sender}, Arc};
 use atomic_wait::wake_all;
 use tauri::{async_runtime::Mutex, AppHandle};
 
-use super::{audio::start_audio, output::poll_audio_devices, types::{PlayerEvent, VolumeEvent, ACTIVE, PAUSED}};
+use super::{audio::start_audio, output::poll_audio_devices, types::{BalanceEvent, EqualizerEvent, PlayerEvent, VolumeEvent, ACTIVE, PAUSED}};
 
 #[derive(Clone)]
 pub struct AudioPlayer {
@@ -12,6 +12,10 @@ pub struct AudioPlayer {
   pub decoding_active: Arc<AtomicU32>,
   pub volume_receiver: Arc<Mutex<Receiver<VolumeEvent>>>,
   pub volume_sender: Sender<VolumeEvent>,
+  pub balance_receiver: Arc<Mutex<Receiver<BalanceEvent>>>,
+  pub balance_sender: Sender<BalanceEvent>,
+  pub equalizer_receiver: Arc<Mutex<Receiver<EqualizerEvent>>>,
+  pub equalizer_sender: Sender<EqualizerEvent>,
 }
 
 impl AudioPlayer {
@@ -19,6 +23,8 @@ impl AudioPlayer {
   pub fn new() -> AudioPlayer {
     let (player_sender, player_receiver) = std::sync::mpsc::channel();
     let (volume_sender, volume_receiver) = std::sync::mpsc::channel();
+    let (balance_sender, balance_receiver) = std::sync::mpsc::channel();
+    let (equalizer_sender, equalizer_receiver) = std::sync::mpsc::channel();
 
     return AudioPlayer {
       player_receiver: Arc::new(Mutex::new(player_receiver)),
@@ -26,19 +32,25 @@ impl AudioPlayer {
       decoding_active: Arc::new(AtomicU32::new(PAUSED)),
       volume_receiver: Arc::new(Mutex::new(volume_receiver)),
       volume_sender,
+      balance_receiver: Arc::new(Mutex::new(balance_receiver)),
+      balance_sender,
+      equalizer_receiver: Arc::new(Mutex::new(equalizer_receiver)),
+      equalizer_sender,
     }
   }
 
   pub fn init(&self, app_handle: AppHandle) -> () {
     let player_receiver = self.player_receiver.clone();
     let volume_receiver = self.volume_receiver.clone();
+    let balance_receiver = self.balance_receiver.clone();
+    let equalizer_receiver = self.equalizer_receiver.clone();
     let decoding_active = self.decoding_active.clone();
 
     let handle_clone = app_handle.clone();
 
     // Create a thread for handling audio events and playback.
     std::thread::spawn(move || {
-      start_audio(&decoding_active, &player_receiver, &volume_receiver, &handle_clone);
+      start_audio(&decoding_active, &player_receiver, &volume_receiver, &balance_receiver, &equalizer_receiver, &handle_clone);
     });
     
     // Create a thread for polling for changes in audio devices.

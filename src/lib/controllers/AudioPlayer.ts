@@ -1,10 +1,11 @@
 // playback::ipc::get_audio_devices,
 // playback::ipc::set_audio_device,
 
-import { autoPlayOnConnect, connectedDevices, isPaused, playingSongId, selectedDevice, shouldPauseOnEnd, songProgress, songsMap, volumeLevel } from "@stores/State";
+import { activeEq, audioBalance, autoPlayOnConnect, connectedDevices, equalizers, isPaused, playingSongId, selectedDevice, selectedEq, shouldPauseOnEnd, songProgress, songsMap, volumeLevel } from "@stores/State";
 import { window } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
 import type { UnlistenFn } from "@tauri-apps/api/event";
+import type { Equalizer } from "@types";
 import { get, type Unsubscriber } from "svelte/store";
 import { QueueController } from "./QueueController";
 
@@ -24,6 +25,8 @@ export class AudioPlayer {
   private static isPausedUnsub: Unsubscriber;
   private static volumeLevelUnsub: Unsubscriber;
   private static selectedDeviceUnsub: Unsubscriber;
+  private static equalizerUnsub: Unsubscriber;
+  private static balanceUnsub: Unsubscriber;
 
   private static oldNumAudioDevices: number;
 
@@ -52,7 +55,10 @@ export class AudioPlayer {
     this.playingSongIdUnsub = playingSongId.subscribe((id) => {
       if (id !== "") {
         const song = get(songsMap)[id];
-        const loadPromise = AudioPlayer.loadFile(song.filePath, get(songProgress));
+
+        const equalizer = get(equalizers)[get(selectedEq)];
+
+        const loadPromise = AudioPlayer.loadFile(song.filePath, get(volumeLevel), equalizer, get(songProgress));
 
         if (get(shouldPauseOnEnd)) {
           isPaused.set(true);
@@ -73,12 +79,22 @@ export class AudioPlayer {
       }
     });
 
+    this.balanceUnsub = audioBalance.subscribe((balance) => {
+      invoke<void>("set_audio_balance", { balance: balance });
+    });
+
+
+    this.equalizerUnsub = activeEq.subscribe((equalizer) => {
+      if (equalizer) invoke<void>("set_equalizer", { equalizer: equalizer });
+    });
+    
+
     this.volumeLevelUnsub = volumeLevel.subscribe((level) => {
       invoke<void>("set_volume", { level: level });
     });
     
     this.selectedDeviceUnsub = selectedDevice.subscribe((device) => {
-      invoke<void>("set_audio_device", { deviceName: device });
+      invoke<void>("set_audio_device", { deviceName: device, balance: get(audioBalance) });
     });
 
     this.getAudioDevices().then((devices) => this.handleConnectedDeviceChange(devices));
@@ -112,10 +128,12 @@ export class AudioPlayer {
     if (this.isPausedUnsub) this.isPausedUnsub();
     if (this.volumeLevelUnsub) this.volumeLevelUnsub();
     if (this.selectedDeviceUnsub) this.selectedDeviceUnsub();
+    if (this.balanceUnsub) this.balanceUnsub();
+    if (this.equalizerUnsub) this.equalizerUnsub();
   }
 
-  static async loadFile(filePath: string, position?: number) {
-    return invoke<void>("load_file", { filePath: filePath, position: position ?? 0 });
+  static async loadFile(filePath: string, volumeLevel: number, eq: Equalizer, position?: number) {
+    return invoke<void>("load_file", { filePath: filePath, position: position ?? 0, level: volumeLevel, eq: eq });
   }
 
   static play() {

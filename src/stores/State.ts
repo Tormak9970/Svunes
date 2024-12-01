@@ -1,6 +1,6 @@
 import { type Album, type Artist, type Genre, type Playlist, type Song } from "@models";
 import { invoke } from "@tauri-apps/api/core";
-import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumSortOrder, type ArtistSortOrder, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "@types";
+import { GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumSortOrder, type ArtistSortOrder, type Equalizer, type NowPlayingExtraControl, type NowPlayingType, type Palette, type PlaylistSortOrder, type SongSortOrder } from "@types";
 import { location } from "svelte-spa-router";
 import { derived, writable } from "svelte/store";
 import { showMiniPlayer, showNowPlaying, showQueue } from "./Overlays";
@@ -16,6 +16,14 @@ export const shouldPauseOnEnd = writable(false);
 
 export const connectedDevices = writable<string[]>([]);
 export const selectedDevice = writable("");
+
+export const audioBalance = writable<number>(0);
+export const equalizers = writable<Record<string, Equalizer>>({});
+export const selectedEq = writable("Default");
+/**
+ * Represents the active equalizer. Updates when either the `equalizers` or `selectedEq` store changes.
+ */
+export const activeEq = derived([equalizers, selectedEq], ([$equalizers, $selectedEq]) => $equalizers[$selectedEq]);
 
 export const songIdsToParse = writable<string[]>([]);
 

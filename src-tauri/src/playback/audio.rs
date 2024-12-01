@@ -8,7 +8,7 @@ use tokio_util::sync::CancellationToken;
 
 // use crate::logger;
 
-use super::{output::{self, get_device_by_name, AudioOutput, AudioOutputError}, types::{PlayerEvent, SampleOffsetEvent, VolumeEvent, PAUSED}};
+use super::{output::{self, get_device_by_name, AudioOutput, AudioOutputError}, types::{BalanceEvent, EqualizerEvent, PlayerEvent, SampleOffsetEvent, VolumeEvent, PAUSED}};
 
 
 fn log(_app_handle: &AppHandle, msg: &str, _level: usize) {
@@ -20,14 +20,13 @@ pub fn start_audio(
   decoding_active: &Arc<AtomicU32>,
   player_receiver: &Arc<Mutex<Receiver<PlayerEvent>>>,
   volume_receiver: &Arc<Mutex<Receiver<VolumeEvent>>>,
+  balance_receiver: &Arc<Mutex<Receiver<BalanceEvent>>>,
+  equalizer_receiver: &Arc<Mutex<Receiver<EqualizerEvent>>>,
   app_handle: &AppHandle
 ) {
-  // let decoding_active = decoding_active.clone();
-  // decoding_active.store(ACTIVE, std::sync::atomic::Ordering::Relaxed);
-
   wake_all(decoding_active.as_ref());
 
-  decode_loop(&decoding_active, player_receiver, volume_receiver, app_handle);
+  decode_loop(&decoding_active, player_receiver, volume_receiver, balance_receiver, equalizer_receiver, app_handle);
 }
 
 /// Handles decoding the current track.
@@ -35,14 +34,19 @@ fn decode_loop(
   decoding_active: &Arc<AtomicU32>,
   player_receiver: &Arc<Mutex<Receiver<PlayerEvent>>>,
   volume_receiver: &Arc<Mutex<Receiver<VolumeEvent>>>,
+  balance_receiver: &Arc<Mutex<Receiver<BalanceEvent>>>,
+  equalizer_receiver: &Arc<Mutex<Receiver<EqualizerEvent>>>,
   app_handle: &AppHandle
 ) {
   println!("starting decode loop...");
+  
   // * These will be reset when changing tracks
   let mut path_str: Option<String> = None;
   let mut path_str_clone: Option<String>;
   let mut seek = None;
   let mut volume = None;
+  let mut audio_balance = None;
+  let mut equalizer = None;
   let mut audio_device_name = None;
   let mut previous_audio_device_name: String = String::new();
   let mut timestamp: f64 = 0.0;
@@ -80,11 +84,13 @@ fn decode_loop(
             path_str.replace(event.file_path);
             seek.replace(event.position.unwrap());
             volume.replace(event.volume.unwrap());
+            equalizer.replace(event.eq.unwrap());
           }
-          PlayerEvent::SetAudioDevice(device_name) => {
+          PlayerEvent::SetAudioDevice((device_name, balance)) => {
             log(app_handle, "changing audio device", 0);
 
             audio_device_name = device_name;
+            audio_balance = balance;
             if path_str_clone.is_some() && path_str.is_some() {
               path_str.replace(path_str_clone.clone().unwrap());
             }
@@ -254,11 +260,15 @@ fn decode_loop(
           spec,
           new_max_frames,
           volume_receiver.clone(),
+          balance_receiver.clone(),
+          equalizer_receiver.clone(),
           sample_offset_receiver.clone(),
           playback_state.clone(),
           reset_control.clone(),
           device_change.clone(),
           volume.clone(),
+          audio_balance.clone(),
+          equalizer.clone()
         ));
       } else {
         log(app_handle, "player: Re-using existing audio output", 0);
@@ -302,14 +312,16 @@ fn decode_loop(
                     path_str.replace(event.file_path);
                     seek.replace(event.position.unwrap());
                     volume.replace(event.volume.unwrap());
+                    equalizer.replace(event.eq.unwrap());
                     cancel_token.cancel();
                     guard.flush();
                     is_reset = true;
                   }
-                  PlayerEvent::SetAudioDevice(device_name) => {
+                  PlayerEvent::SetAudioDevice((device_name, balance)) => {
                     log(app_handle, "changing audio device", 0);
 
                     audio_device_name = device_name;
+                    audio_balance = balance;
                     path_str.replace(path_str_clone.clone().unwrap());
                     cancel_token.cancel();
                     guard.flush();
@@ -355,14 +367,16 @@ fn decode_loop(
                       path_str.replace(event.file_path);
                       seek.replace(event.position.unwrap());
                       volume.replace(event.volume.unwrap());
+                      equalizer.replace(event.eq.unwrap());
                       cancel_token.cancel();
                       guard.flush();
                       is_reset = true;
                     }
-                    PlayerEvent::SetAudioDevice(device_name) => {
+                    PlayerEvent::SetAudioDevice((device_name, balance)) => {
                       log(app_handle, "changing audio device while paused", 0);
 
                       audio_device_name = device_name;
+                      audio_balance = balance;
                       path_str.replace(path_str_clone.clone().unwrap());
                       cancel_token.cancel();
                       guard.flush();

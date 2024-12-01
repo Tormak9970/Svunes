@@ -97,6 +97,20 @@ export type ArtistMetadata = {
   imagePath: string | undefined;
 }
 
+export type Equalizer = {
+  gain: number;
+  band32: number;
+  band64: number;
+  band125: number;
+  band250: number;
+  band500: number;
+  band1000: number;
+  band2000: number;
+  band4000: number;
+  band8000: number;
+  band16000: number;
+}
+
 export type UserProfile = {
   palette: Palette;
   useOledPalette: boolean;
@@ -118,6 +132,9 @@ export type UserProfile = {
 
   audio: {
     autoPlay: boolean;
+    balance: number;
+    equalizers: Record<string, Equalizer>;
+    selectedEq: string;
   };
 
   personalization: {
@@ -185,6 +202,21 @@ export type Settings = {
 
 const FAVORITES_PLAYLIST = new Playlist(hash64("Favorites"), false, "Favorites", "", [], false, undefined, undefined, 0);
 
+
+export const DEFAULT_EQUALIZER: Equalizer = {
+  "gain": 0,
+  "band32": 0,
+  "band64": 0,
+  "band125": 0,
+  "band250": 0,
+  "band500": 0,
+  "band1000": 0,
+  "band2000": 0,
+  "band4000": 0,
+  "band8000": 0,
+  "band16000": 0,
+}
+
 const DEFAULT_PROFILE_MOBILE: UserProfile = {
   "palette": "Auto",
   "useOledPalette": false,
@@ -204,7 +236,12 @@ const DEFAULT_PROFILE_MOBILE: UserProfile = {
   },
 
   "audio": {
-    "autoPlay": false
+    "autoPlay": false,
+    "balance": 0,
+    "equalizers": {
+      "Default": DEFAULT_EQUALIZER
+    },
+    "selectedEq": "Default"
   },
 
   "personalization": {
@@ -301,7 +338,12 @@ const DEFAULT_PROFILE_DESKTOP: UserProfile = {
   },
 
   "audio": {
-    "autoPlay": false
+    "autoPlay": false,
+    "balance": 0,
+    "equalizers": {
+      "Default": DEFAULT_EQUALIZER
+    },
+    "selectedEq": "Default"
   },
 
   "personalization": {
