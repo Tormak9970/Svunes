@@ -379,17 +379,17 @@ mod cpal {
                           // TODO: figure out why data has length 0 sometimes
                           // ! might not need this check, but still need to figure out above
                           if written != 0 {
-                            let frequencies = calculate_frequencies(data, config.sample_rate.0, written);
+                            let frequencies = calculate_frequencies(data, config.sample_rate.0, written * 2);
 
                             let mut i = 0;
                             for d in &mut *data {
                                 let channel_index = i % (num_channels as u64);
-                                // let frequency = frequencies[i as usize];
+                                let frequency = frequencies[i as usize];
                                 *d = packet_change(
                                   *d,
                                   channel_index,
                                   num_channels,
-                                  0.0f64,
+                                  frequency,
                                   current_volume,
                                   current_balance,
                                   current_equalizer

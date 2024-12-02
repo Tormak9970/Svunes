@@ -113,9 +113,38 @@ pub fn calculate_frequency_bins(buffer: &[f64], sample_rate: u32, fft_size: usiz
   return frequencies;
 }
 
+/// Calculates the linear gain based on the provided decible value.
+fn linear_gain(db: u8) -> f64 {
+  return 10.0f64.powf((db as f64) / 10.0f64);
+}
+
 /// Applies the provided equalizer to the packet.
-fn equalize_packet(packet: f64, index: u64, channel_count: usize, eq: Equalizer) -> f64 {
-  return packet;
+fn equalize_packet(packet: f64, frequency: f64, eq: Equalizer) -> f64 {
+  let mut gain = 1;
+
+  if frequency <= 32.0 {
+    gain = eq.band32;
+  } else if frequency <= 64.0 {
+    gain = eq.band64;
+  } else if frequency <= 125.0 {
+    gain = eq.band125;
+  } else if frequency <= 250.0 {
+    gain = eq.band250;
+  } else if frequency <= 500.0 {
+    gain = eq.band500;
+  } else if frequency <= 1000.0 {
+    gain = eq.band1000;
+  } else if frequency <= 2000.0 {
+    gain = eq.band2000;
+  } else if frequency <= 4000.0 {
+    gain = eq.band4000;
+  } else if frequency <= 8000.0 {
+    gain = eq.band8000;
+  } else if frequency <= 16000.0 {
+    gain = eq.band16000;
+  }
+
+  return packet * linear_gain(gain);
 }
 
 /// Adjusts audio packets based on the volume, balance, and eq
@@ -129,7 +158,7 @@ pub fn adjust_packet(
   eq: Equalizer
 ) -> f64 {
   let balanced = balance_packet(packet, index, channel_count, balance);
-  let equalized = equalize_packet(balanced, index, channel_count, eq);
+  let equalized = equalize_packet(balanced, frequency, eq);
 
   return equalized * volume;
 }
