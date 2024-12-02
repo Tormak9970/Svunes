@@ -154,7 +154,7 @@ mod cpal {
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
                   |data, sample_rate, fft_size| {
-                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
                     return calculate_frequency_bins(&buffer, sample_rate, fft_size);
                   },
                   vol,
@@ -174,7 +174,7 @@ mod cpal {
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as i16,
                   |data, sample_rate, fft_size| {
-                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
                     return calculate_frequency_bins(&buffer, sample_rate, fft_size);
                   },
                   vol,
@@ -194,7 +194,7 @@ mod cpal {
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as u16,
                   |data, sample_rate, fft_size| {
-                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
                     return calculate_frequency_bins(&buffer, sample_rate, fft_size);
                   },
                   vol,
@@ -214,7 +214,7 @@ mod cpal {
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
                   |data, sample_rate, fft_size| {
-                    let buffer: Vec<f64> = data.iter().map(| s | *s as f64).collect();
+                    let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
                     return calculate_frequency_bins(&buffer, sample_rate, fft_size);
                   },
                   vol,
@@ -251,8 +251,8 @@ mod cpal {
           playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
-          packet_change: fn(T, u64, usize, f64, f64, f64, Equalizer) -> T,
-          calculate_frequencies: fn(&[T], u32, usize) -> Vec<f64>,
+          packet_change: fn(T, u64, usize, f32, f64, f64, Equalizer) -> T,
+          calculate_frequencies: fn(&[T], u32, usize) -> Vec<f32>,
           vol: Option<f64>,
           balance: Option<f64>,
           equalizer: Option<Equalizer>
@@ -383,19 +383,20 @@ mod cpal {
 
                             let mut i = 0;
                             for d in &mut *data {
-                                let channel_index = i % (num_channels as u64);
-                                let frequency = frequencies[i as usize];
-                                *d = packet_change(
-                                  *d,
-                                  channel_index,
-                                  num_channels,
-                                  frequency,
-                                  current_volume,
-                                  current_balance,
-                                  current_equalizer
-                                );
+                              let channel_index = i % (num_channels as u64);
+                              let frequency = frequencies[i as usize];
+                              
+                              *d = packet_change(
+                                *d,
+                                channel_index,
+                                num_channels,
+                                frequency,
+                                current_volume,
+                                current_balance,
+                                current_equalizer
+                              );
 
-                                i += 1;
+                              i += 1;
                             }
 
                             let mut sample_offset = frame_idx_state.write().unwrap();

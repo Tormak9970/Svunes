@@ -1,4 +1,4 @@
-use std::f64::consts::PI;
+use std::f32::consts::PI;
 
 use rustfft::FftPlanner;
 use rustfft::num_complex::Complex;
@@ -84,29 +84,29 @@ fn balance_packet(packet: f64, channel_index: u64, channel_count: usize, balance
 
 
 // Function to apply a Hann window to a buffer of samples
-fn apply_hann_window(buffer: &mut [f64]) {
+fn apply_hann_window(buffer: &mut [f32]) {
   let n = buffer.len();
   
   for i in 0..n {
-    buffer[i] *= 0.5 * (1.0 - (2.0 * PI * i as f64 / (n as f64 - 1.0)).cos());
+    buffer[i] *= 0.5 * (1.0 - (2.0 * PI * i as f32 / (n as f32 - 1.0)).cos());
   }
 }
 
 /// Performs a FFT to figure out the frequencies of each sample.
-pub fn calculate_frequency_bins(buffer: &[f64], sample_rate: u32, fft_size: usize) -> Vec<f64> {
+pub fn calculate_frequency_bins(buffer: &[f32], sample_rate: u32, fft_size: usize) -> Vec<f32> {
   let mut samples = buffer.to_vec().clone();
   apply_hann_window(&mut samples);
   
-  let mut planner = FftPlanner::<f64>::new();
+  let mut planner = FftPlanner::<f32>::new();
   let fft = planner.plan_fft_forward(fft_size);
 
-  let mut fft_buffer: Vec<Complex<f64>> = samples.iter().map(|&x| Complex::new(x, 0.0)).collect();
+  let mut fft_buffer: Vec<Complex<f32>> = samples.iter().map(|&x| Complex::new(x, 0.0)).collect();
   fft.process(&mut fft_buffer);
   
   
   let mut frequencies = Vec::new();
   for i in 0..(fft_size / 2) {
-    let freq = (i as f64 * sample_rate as f64) / fft_size as f64;
+    let freq = (i as f32 * sample_rate as f32) / fft_size as f32;
     frequencies.push(freq);
   }
 
@@ -119,7 +119,7 @@ fn linear_gain(db: u8) -> f64 {
 }
 
 /// Applies the provided equalizer to the packet.
-fn equalize_packet(packet: f64, frequency: f64, eq: Equalizer) -> f64 {
+fn equalize_packet(packet: f64, frequency: f32, eq: Equalizer) -> f64 {
   let mut gain = 1;
 
   if frequency <= 32.0 {
@@ -152,7 +152,7 @@ pub fn adjust_packet(
   packet: f64,
   index: u64,
   channel_count: usize,
-  frequency: f64,
+  frequency: f32,
   volume: f64,
   balance: f64,
   eq: Equalizer
