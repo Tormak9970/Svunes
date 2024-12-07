@@ -4,57 +4,63 @@
   import { scrollShadow } from "@directives";
   import { Button } from "@interactables";
   import { t } from "@stores/Locale";
-  import { showAddProfile, showManageProfiles } from "@stores/Modals";
-  import { currentProfile, profiles } from "@stores/State";
+  import { showAddEq, showManageEqs } from "@stores/Modals";
+  import { equalizers, selectedEq } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
 
-  let profilesUnsub: Unsubscriber;
+  let eqsUnsub: Unsubscriber;
 
   let open = true;
 
-  let currentProfiles = [ ...$profiles ];
-  let activeProfileIndex = currentProfiles.indexOf($currentProfile);
+  let currentEqs = Object.keys($equalizers);
+  let activeEqIndex = currentEqs.indexOf($selectedEq);
   let renamedActive = false;
   let editing = false;
 
   function renameProfile(index: number, value: string) {
     editing = false;
-    currentProfiles[index] = value;
-    currentProfiles = [ ...currentProfiles ];
+    currentEqs[index] = value;
+    currentEqs = [ ...currentEqs ];
 
-    if (index === activeProfileIndex) renamedActive = true;
+    if (index === activeEqIndex) renamedActive = true;
   }
 
   function deleteProfile(index: number) {
-    currentProfiles.splice(index, 1);
-    currentProfiles = [ ...currentProfiles ];
+    currentEqs.splice(index, 1);
+    currentEqs = [ ...currentEqs ];
   }
 
   function done() {
-    $profiles = [ ...currentProfiles ];
+    for (const eq of Object.keys($equalizers)) {
+      if (!currentEqs.includes(eq)) {
+        delete $equalizers[eq];
+      }
+    }
+
+    $equalizers = { ...$equalizers };
 
     if (renamedActive) {
-      SettingsController.renameProfile($currentProfile, currentProfiles[activeProfileIndex]);
+      SettingsController.renameEqualizer($selectedEq, currentEqs[activeEqIndex]);
     }
 
     open = false;
   }
 
   onMount(() => {
-    profilesUnsub = profiles.subscribe((options) => {
-      currentProfiles = [ ...options ];
+    eqsUnsub = equalizers.subscribe((eqs) => {
+      currentEqs = Object.keys(eqs);
     });
   });
   onDestroy(() => {
-    if (profilesUnsub) profilesUnsub();
+    if (eqsUnsub) eqsUnsub();
   });
 </script>
 
-<ModalBody open={open} headline={$t("MANAGE_PROFILES_TITLE")} on:close={() => open = false} on:closeEnd={() => $showManageProfiles = false}>
+<ModalBody open={open} headline={$t("MANAGE_EQUALIZERS_TITLE")} on:close={() => open = false} on:closeEnd={() => $showManageEqs = false}>
   <div class="content styled-scrollbar" use:scrollShadow>
     <div class="content-wrapper">
-      {#each currentProfiles as profile, i}
+      {#each currentEqs as profile, i}
         <ManagedEntry
           label={profile}
           index={i}
@@ -71,7 +77,7 @@
   <div class="actions" slot="buttons">
     <div class="left" />
     <div class="right">
-      <Button type="text" on:click={() => $showAddProfile = true}>{$t("ADD_ACTION")}</Button>
+      <Button type="text" on:click={() => $showAddEq = true}>{$t("ADD_ACTION")}</Button>
       <Button type="text" on:click={done}>{$t("DONE_ACTION")}</Button>
     </div>
   </div>

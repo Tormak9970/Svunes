@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@iconify/types": "^2.0.0",
-    "@ktibow/iconset-material-symbols": "^0.0.1715672497",
+    "@ktibow/iconset-material-symbols": "0.0.1733470085",
     "@material/material-color-utilities": "^0.2.7",
     "@tauri-apps/api": "2.0.3",
     "@tauri-apps/plugin-dialog": "2.0.1",

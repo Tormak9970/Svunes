@@ -9,6 +9,9 @@ export const updateData = writable<Update | null>(null);
 export const showManageProfiles = writable(false);
 export const showAddProfile = writable(false);
 
+export const showManageEqs = writable(false);
+export const showAddEq = writable(false);
+
 export const showEditMusicFolders = writable(false);
 export const showBlacklistFolders = writable(false);
 

@@ -20,7 +20,7 @@ import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle,
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import * as process from "@tauri-apps/plugin-process";
 import { load as loadStore, Store } from '@tauri-apps/plugin-store';
-import { DEFAULT_PROFILE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type Equalizer, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata, type UserProfile } from "@types";
+import { DEFAULT_EQUALIZER, DEFAULT_PROFILE, DEFAULT_SETTINGS, GridSize, GridStyle, NowPlayingBackgroundType, NowPlayingTheme, View, type AlbumMetadata, type ArtistMetadata, type Equalizer, type NowPlayingExtraControl, type NowPlayingType, type Palette, type Settings, type SongMetadata, type UserProfile } from "@types";
 import { debounce } from "@utils";
 import { get, type Unsubscriber } from "svelte/store";
 import { DialogController } from "./DialogController";
@@ -642,6 +642,39 @@ export class SettingsController {
     const currentProfiles = get(profiles);
     currentProfiles.splice(currentProfiles.indexOf(oldName), 1, newName);
     profiles.set([ ...currentProfiles ]);
+
+    this.save();
+  }
+
+  /**
+   * Creates a new equalizer with the given name.
+   * @param equalizerName The name of the equalizer.
+   * @param equalizerToCopy The equalizer to copy, or null to make it a default.
+   */
+  static createEqualizer(equalizerName: string, equalizerToCopy: string | null) {
+    const template = equalizerToCopy ? this.profile.audio.equalizers[equalizerToCopy] : DEFAULT_EQUALIZER;
+
+    this.profile.audio.equalizers[equalizerName] = structuredClone(template);
+    
+    equalizers.set(structuredClone(this.profile.audio.equalizers));
+
+    this.save();
+  }
+
+  /**
+   * Renames the provided equalizer.
+   * @param oldName The equalizer's old name.
+   * @param newName The new name.
+   */
+  static renameEqualizer(oldName: string, newName: string) {
+    this.profile.audio.selectedEq = newName;
+    this.profile.audio.equalizers[newName] = this.profile.audio.equalizers[oldName];
+    delete this.profile.audio.equalizers[oldName];
+
+    SettingsController.promptRestartOnProfileChange = false;
+    selectedEq.set(newName);
+
+    equalizers.set(structuredClone(this.profile.audio.equalizers));
 
     this.save();
   }

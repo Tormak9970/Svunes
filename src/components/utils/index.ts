@@ -10,7 +10,7 @@ export { default as OverlayHeader } from "./overlays/OverlayHeader.svelte";
 
 export { default as EditableEntry } from "./modals/EditableEntry.svelte";
 export { default as ListModalBody } from "./modals/ListModalBody.svelte";
+export { default as ManagedEntry } from "./modals/ManagedEntry.svelte";
 export { default as ModalBody } from "./modals/ModalBody.svelte";
-export { default as ProfileEntry } from "./modals/ProfileEntry.svelte";
 export { default as SmallModalBody } from "./modals/SmallModalBody.svelte";
 

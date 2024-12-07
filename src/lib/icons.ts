@@ -42,6 +42,7 @@ export { default as Tune } from "@ktibow/iconset-material-symbols/tune-rounded";
 
 export { default as Add } from "@ktibow/iconset-material-symbols/add-rounded";
 
+export { default as EditAudio } from "@ktibow/iconset-material-symbols/edit-audio-rounded";
 export { default as FolderOpen } from "@ktibow/iconset-material-symbols/folder-open-rounded";
 export { default as GraphEq } from "@ktibow/iconset-material-symbols/graphic-eq-rounded";
 export { default as HardDrive2 } from "@ktibow/iconset-material-symbols/hard-drive-2";

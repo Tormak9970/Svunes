@@ -3,33 +3,35 @@
   import { SettingsController } from "@controllers";
   import { Button, Select, TextField } from "@interactables";
   import { t } from "@stores/Locale";
-  import { showAddProfile } from "@stores/Modals";
-  import { profiles } from "@stores/State";
+  import { showAddEq } from "@stores/Modals";
+  import { equalizers } from "@stores/State";
 
   let open = true;
+  
+  let eqNames = Object.keys($equalizers);
 
-  let profileName = "Profile #" + ($profiles.length + 1);
-  let profileToCopy = "None";
+  let eqName = "Equalizer #" + (eqNames.length + 1);
+  let eqToCopy = "None";
 
-  let options = $profiles.map((profile) => {
+  let options = eqNames.map((eq) => {
     return {
-      label: profile,
-      value: profile
+      label: eq,
+      value: eq
     };
   });
 
   options.unshift({ label: "None", value: "None" });
 
   function create() {
-    SettingsController.createProfile(profileName, profileToCopy === "None" ? null : profileToCopy);
+    SettingsController.createEqualizer(eqName, eqToCopy === "None" ? null : eqToCopy);
     open = false;
   }
 </script>
 
-<ModalBody open={open} headline={$t("ADD_PROFILE_TITLE")} on:close={() => open = false} on:closeEnd={() => $showAddProfile = false}>
+<ModalBody open={open} headline={$t("ADD_EQUALIZER_TITLE")} on:close={() => open = false} on:closeEnd={() => $showAddEq = false}>
   <div class="content" style:--m3-util-background="var(--m3-scheme-surface-container-high)">
-    <TextField name={$t("PROFILE_NAME_LABEL")} bind:value={profileName} />
-    <Select name={$t("PROFILE_COPY_LABEL")} options={options} bind:value={profileToCopy} />
+    <TextField name={$t("EQUALIZER_NAME_LABEL")} bind:value={eqName} />
+    <Select name={$t("EQUALIZER_COPY_LABEL")} options={options} bind:value={eqToCopy} />
   </div>
   <div class="actions" slot="buttons">
     <div class="left" />

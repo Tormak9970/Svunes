@@ -47,6 +47,10 @@
   "NEW_VERSION_LABEL": "New Version",
   "RELEASE_DATE_LABEL": "Release Date",
   "CHANGELOG_LABEL": "Changelog",
+  "PROFILE_NAME_LABEL": "Profile Name",
+  "PROFILE_COPY_LABEL": "Profile to Copy",
+  "EQUALIZER_NAME_LABEL": "Equalizer Name",
+  "EQUALIZER_COPY_LABEL": "Equalizer to Copy",
 
   "CANCEL_ACTION": "Cancel",
   "CLOSE_ACTION": "Close",
@@ -144,6 +148,8 @@
   "CHANGES_DETECTED_TITLE": "Changes Detected",
   "MANAGE_PROFILES_TITLE": "Manage Profiles",
   "ADD_PROFILE_TITLE": "Add Profile",
+  "MANAGE_EQUALIZERS_TITLE": "Manage Equalizers",
+  "ADD_EQUALIZER_TITLE": "Add Equalizer",
 
   "SEARCHING_MESSAGE": "Searching",
   "SAVING_SETTINGS_MESSAGE": "Saving Settings",
@@ -276,9 +282,17 @@
   "SETTINGS_APPEARANCE_DEBUG_DESC": "Enables the app's dev mode. Helpful for debugging",
 
   "SETTINGS_AUDIO_TITLE": "Audio",
-  "SETTINGS_AUTO_PLAY_LABEL": "Auto Play",
+  "SETTINGS_AUDIO_AUTO_PLAY_LABEL": "Auto Play",
   "SETTINGS_AUDIO_CONNECTIONS_LABEL": "Audio Connections",
   "SETTINGS_AUDIO_CONNECTIONS_DESC": "Automatically start playback when an audio devices is connected, and stop it when one disconnects",
+  "SETTINGS_AUDIO_CHANNEL_BALANCE_LABEL": "Channel Balance",
+  "SETTINGS_AUDIO_LR_BALANCE_LABEL": "L/R Balance",
+  "SETTINGS_AUDIO_EQ_LABEL": "Equalizer",
+  "SETTINGS_AUDIO_CURRENT_EQ_LABEL": "Current Equalizer",
+  "SETTINGS_AUDIO_CURRENT_EQ_DESC": "The equalizer that's currently in use",
+  "SETTINGS_AUDIO_MANAGE_EQS_LABEL": "Manage Equalizers",
+  "SETTINGS_AUDIO_MANAGE_EQS_DESC": "Add, rename, and delete equalizers",
+  "SETTINGS_AUDIO_EQ_SETTINGS_LABEL": "Settings",
 
   "SETTINGS_LANGUAGE_TITLE": "Language",
   "SETTINGS_LANGUAGE_CHANGE_LABEL": "Change Language",
