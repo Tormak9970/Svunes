@@ -1,7 +1,4 @@
-// playback::ipc::get_audio_devices,
-// playback::ipc::set_audio_device,
-
-import { activeEq, audioBalance, autoPlayOnConnect, connectedDevices, equalizers, isPaused, playingSongId, selectedDevice, selectedEq, shouldPauseOnEnd, songProgress, songsMap, volumeLevel } from "@stores/State";
+import { activeEq, audioBalance, autoPlayOnConnect, connectedDevices, currentEq, equalizers, isPaused, playingSongId, selectedDevice, shouldPauseOnEnd, songProgress, songsMap, volumeLevel } from "@stores/State";
 import { window } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
 import type { UnlistenFn } from "@tauri-apps/api/event";
@@ -56,7 +53,7 @@ export class AudioPlayer {
       if (id !== "") {
         const song = get(songsMap)[id];
 
-        const equalizer = get(equalizers)[get(selectedEq)];
+        const equalizer = get(equalizers)[get(currentEq)];
 
         const loadPromise = AudioPlayer.loadFile(song.filePath, get(volumeLevel), equalizer, get(songProgress));
 

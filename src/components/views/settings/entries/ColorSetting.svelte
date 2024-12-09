@@ -24,7 +24,7 @@
       </div>
     </div>
     <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class="toggle-container">
+    <label class="color-container">
       <ColorPicker bind:hex={color} />
     </label>
   </div>
@@ -56,10 +56,14 @@
   }
 
   .info {
-    width: calc(100% - 99px);
+    max-width: 50rem;
   }
   
   .description {
     color: rgb(var(--m3-scheme-outline));
+  }
+
+  .color-container {
+    margin-left: auto;
   }
 </style>

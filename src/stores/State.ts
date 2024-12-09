@@ -19,11 +19,11 @@ export const selectedDevice = writable("");
 
 export const audioBalance = writable<number>(0);
 export const equalizers = writable<Record<string, Equalizer>>({});
-export const selectedEq = writable("Default");
+export const currentEq = writable("Default");
 /**
- * Represents the active equalizer. Updates when either the `equalizers` or `selectedEq` store changes.
+ * Represents the active equalizer. Updates when either the `equalizers` or `currentEq` store changes.
  */
-export const activeEq = derived([equalizers, selectedEq], ([$equalizers, $selectedEq]) => $equalizers[$selectedEq]);
+export const activeEq = derived([equalizers, currentEq], ([$equalizers, $currentEq]) => $equalizers[$currentEq]);
 
 export const songIdsToParse = writable<string[]>([]);
 

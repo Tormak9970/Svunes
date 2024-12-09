@@ -23,4 +23,9 @@
 
     z-index: 2;
   }
+
+  .content {
+    height: calc(100% - 50px);
+    overflow: hidden;
+  }
 </style>

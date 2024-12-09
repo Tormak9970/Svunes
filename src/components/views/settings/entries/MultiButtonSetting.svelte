@@ -54,7 +54,7 @@
   }
 
   .info {
-    width: calc(100% - 117px);
+    max-width: 50rem;
   }
   
   .description {

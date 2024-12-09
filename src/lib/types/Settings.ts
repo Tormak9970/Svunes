@@ -134,7 +134,7 @@ export type UserProfile = {
     autoPlay: boolean;
     balance: number;
     equalizers: Record<string, Equalizer>;
-    selectedEq: string;
+    currentEq: string;
   };
 
   personalization: {
@@ -241,7 +241,7 @@ const DEFAULT_PROFILE_MOBILE: UserProfile = {
     "equalizers": {
       "Default": DEFAULT_EQUALIZER
     },
-    "selectedEq": "Default"
+    "currentEq": "Default"
   },
 
   "personalization": {
@@ -343,7 +343,7 @@ const DEFAULT_PROFILE_DESKTOP: UserProfile = {
     "equalizers": {
       "Default": DEFAULT_EQUALIZER
     },
-    "selectedEq": "Default"
+    "currentEq": "Default"
   },
 
   "personalization": {

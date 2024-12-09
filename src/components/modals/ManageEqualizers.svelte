@@ -5,7 +5,7 @@
   import { Button } from "@interactables";
   import { t } from "@stores/Locale";
   import { showAddEq, showManageEqs } from "@stores/Modals";
-  import { equalizers, selectedEq } from "@stores/State";
+  import { currentEq, equalizers } from "@stores/State";
   import { onDestroy, onMount } from "svelte";
   import type { Unsubscriber } from "svelte/store";
 
@@ -14,7 +14,7 @@
   let open = true;
 
   let currentEqs = Object.keys($equalizers);
-  let activeEqIndex = currentEqs.indexOf($selectedEq);
+  let activeEqIndex = currentEqs.indexOf($currentEq);
   let renamedActive = false;
   let editing = false;
 
@@ -41,7 +41,7 @@
     $equalizers = { ...$equalizers };
 
     if (renamedActive) {
-      SettingsController.renameEqualizer($selectedEq, currentEqs[activeEqIndex]);
+      SettingsController.renameEqualizer($currentEq, currentEqs[activeEqIndex]);
     }
 
     open = false;

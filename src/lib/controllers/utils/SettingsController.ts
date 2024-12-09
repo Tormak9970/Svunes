@@ -16,7 +16,7 @@
  */
 import { Playlist, Song, type Album, type Artist } from "@models";
 import { hasShownHelpTranslate, selectedLanguage, t, t as translate } from "@stores/Locale";
-import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, audioBalance, autoPlayOnConnect, blacklistedFolders, currentProfile, debugModeEnabled, dismissMiniPlayerWithSwipe, equalizers, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, profiles, queue, repeatPlayed, selectedEq, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
+import { albumGridSize, albums, albumSortOrder, artistGridSize, artistGridStyle, artists, artistSortOrder, audioBalance, autoPlayOnConnect, blacklistedFolders, currentEq, currentProfile, debugModeEnabled, dismissMiniPlayerWithSwipe, equalizers, extraControl, filterSongDuration, musicDirectories, nowPlayingBackgroundType, nowPlayingList, nowPlayingTheme, nowPlayingType, palette, playingSongId, playlistGridSize, playlists, playlistSortOrder, profiles, queue, repeatPlayed, selectedView, showErrorSnackbar, showExtraSongInfo, showInfoSnackbar, showVolumeControls, shuffle, songGridSize, songProgress, songs, songSortOrder, themePrimaryColor, useAlbumColors, useArtistColors, useOledPalette, viewIndices, viewsToRender, volumeLevel } from "@stores/State";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import * as process from "@tauri-apps/plugin-process";
 import { load as loadStore, Store } from '@tauri-apps/plugin-store';
@@ -90,7 +90,7 @@ export class SettingsController {
   private static autoPlayOnConnectUnsub: Unsubscriber;
   private static balanceUnsub: Unsubscriber;
   private static equalizersUnsub: Unsubscriber;
-  private static selectedEqUnsub: Unsubscriber;
+  private static currentEqUnsub: Unsubscriber;
 
   private static playlistsUnsub: Unsubscriber;
 
@@ -422,7 +422,7 @@ export class SettingsController {
     autoPlayOnConnect.set(audio.autoPlay);
     audioBalance.set(audio.balance);
     equalizers.set(audio.equalizers);
-    selectedEq.set(audio.selectedEq);
+    currentEq.set(audio.currentEq);
 
     blacklistedFolders.set(this.profile.blacklistedFolders);
     filterSongDuration.set(this.profile.filterSongDuration);
@@ -520,7 +520,7 @@ export class SettingsController {
     this.autoPlayOnConnectUnsub = autoPlayOnConnect.subscribe(this.updateStoreIfChanged<boolean>("audio.autoPlay"));
     this.balanceUnsub = audioBalance.subscribe(this.updateStoreIfChanged<number>("audio.balance"));
     this.equalizersUnsub = equalizers.subscribe(this.updateStoreIfChanged<Record<string, Equalizer>>("audio.equalizers"));
-    this.selectedEqUnsub = selectedEq.subscribe(this.updateStoreIfChanged<string>("audio.selectedEq"));
+    this.currentEqUnsub = currentEq.subscribe(this.updateStoreIfChanged<string>("audio.currentEq"));
 
 
     this.playlistsUnsub = playlists.subscribe(this.updateStoreIfChanged<Playlist[]>("playlists"));
@@ -667,12 +667,12 @@ export class SettingsController {
    * @param newName The new name.
    */
   static renameEqualizer(oldName: string, newName: string) {
-    this.profile.audio.selectedEq = newName;
+    this.profile.audio.currentEq = newName;
     this.profile.audio.equalizers[newName] = this.profile.audio.equalizers[oldName];
     delete this.profile.audio.equalizers[oldName];
 
     SettingsController.promptRestartOnProfileChange = false;
-    selectedEq.set(newName);
+    currentEq.set(newName);
 
     equalizers.set(structuredClone(this.profile.audio.equalizers));
 
@@ -750,7 +750,7 @@ export class SettingsController {
     if (this.autoPlayOnConnectUnsub) this.autoPlayOnConnectUnsub();
     if (this.balanceUnsub) this.balanceUnsub();
     if (this.equalizersUnsub) this.equalizersUnsub();
-    if (this.selectedEqUnsub) this.selectedEqUnsub();
+    if (this.currentEqUnsub) this.currentEqUnsub();
 
     if (this.playlistsUnsub) this.playlistsUnsub();
 

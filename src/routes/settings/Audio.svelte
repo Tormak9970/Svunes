@@ -1,7 +1,7 @@
 <script lang="ts">
   import { t } from "@stores/Locale";
   import { showManageEqs } from "@stores/Modals";
-  import { audioBalance, autoPlayOnConnect, equalizers, selectedEq } from "@stores/State";
+  import { audioBalance, autoPlayOnConnect, currentEq, equalizers } from "@stores/State";
   import { pop } from "svelte-spa-router";
 
   import { SectionLabel } from "@layout";
@@ -9,10 +9,14 @@
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
   import BoundedSliderSetting from "@views/settings/entries/BoundedSliderSetting.svelte";
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
+  import EqualizerBandSetting from "@views/settings/entries/EqualizerBandSetting.svelte";
   import SelectSetting from "@views/settings/entries/SelectSetting.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
+  import { isScrolled } from "@directives";
   import { EditAudio, GraphEq, LinearScale, WiredAuto } from "@icons";
+
+  let highlight = false;
 
   $: eqNames = Object.keys($equalizers);
   $: eqOptions = eqNames.map((eq) => {
@@ -25,39 +29,55 @@
 
 <SettingsBody>
   <span slot="header" style="height: 50px;">
-    <SettingsHeader label={$t("SETTINGS_AUDIO_TITLE")} goBack={pop} />
+    <SettingsHeader
+      label={$t("SETTINGS_AUDIO_TITLE")}
+      goBack={pop}
+      highlight={highlight}
+    />
   </span>
-  <span class="content" slot="content">
-    <!-- Gapless playback? -->
-    <SectionLabel label={$t("SETTINGS_AUDIO_AUTO_PLAY_LABEL")} />
-    <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
-    <SectionLabel label={$t("SETTINGS_AUDIO_CHANNEL_BALANCE_LABEL")} />
-    <BoundedSliderSetting
-      label={$t("SETTINGS_AUDIO_LR_BALANCE_LABEL")}
-      description={$t("SETTINGS_AUDIO_LR_BALANCE_DESC")}
-      icon={LinearScale}
-      min={-1}
-      max={1}
-      step={0.05}
-      leftLabel="L"
-      rightLabel="R"
-      bind:value={$audioBalance}
-    />
-    <SectionLabel label={$t("SETTINGS_AUDIO_EQ_LABEL")} />
-    <SelectSetting
-      label={$t("SETTINGS_AUDIO_CURRENT_EQ_LABEL")}
-      description={$t("SETTINGS_AUDIO_CURRENT_EQ_DESC")}
-      icon={GraphEq}
-      options={eqOptions}
-      bind:value={$selectedEq}
-    />
-    <ButtonSetting label={$t("SETTINGS_AUDIO_MANAGE_EQS_LABEL")} description={$t("SETTINGS_AUDIO_MANAGE_EQS_DESC")} icon={EditAudio} on:click={() => { $showManageEqs = true }} />
-    <!-- TODO: equalizer band adjustments here -->
+  <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
+    <div class="content-inner">
+      <!-- Gapless playback? -->
+      <SectionLabel label={$t("SETTINGS_AUDIO_AUTO_PLAY_LABEL")} />
+      <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
+      <SectionLabel label={$t("SETTINGS_AUDIO_CHANNEL_BALANCE_LABEL")} />
+      <BoundedSliderSetting
+        label={$t("SETTINGS_AUDIO_LR_BALANCE_LABEL")}
+        description={$t("SETTINGS_AUDIO_LR_BALANCE_DESC")}
+        icon={LinearScale}
+        min={-1}
+        max={1}
+        step={0.05}
+        leftLabel="L"
+        rightLabel="R"
+        bind:value={$audioBalance}
+      />
+      <SectionLabel label={$t("SETTINGS_AUDIO_EQ_LABEL")} />
+      <SelectSetting
+        label={$t("SETTINGS_AUDIO_CURRENT_EQ_LABEL")}
+        description={$t("SETTINGS_AUDIO_CURRENT_EQ_DESC")}
+        icon={GraphEq}
+        options={eqOptions}
+        bind:value={$currentEq}
+      />
+      <ButtonSetting label={$t("SETTINGS_AUDIO_MANAGE_EQS_LABEL")} description={$t("SETTINGS_AUDIO_MANAGE_EQS_DESC")} icon={EditAudio} on:click={() => { $showManageEqs = true }} />
+      <EqualizerBandSetting label={$t("SETTINGS_AUDIO_EQ_SETTINGS_LABEL")} />
+    </div>
   </span>
 </SettingsBody>
 
 <style>
   .content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .content-inner {
     width: 100%;
     display: flex;
     flex-direction: column;

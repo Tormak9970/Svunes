@@ -1,7 +1,10 @@
 <script lang="ts">
   import { debounce } from "@utils";
+  import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
   import { spring } from "svelte/motion";
+
+  const dispatch = createEventDispatcher();
 
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
   export let extraOptions: HTMLInputAttributes = {};
@@ -15,8 +18,10 @@
   export let trackGap = "0.75rem";
   export let trackContainerColor = "var(--m3-scheme-primary-container)";
   export let trackColor = "var(--m3-scheme-primary)";
+
   function setValue(newValue: number) {
     value = newValue;
+    dispatch("change", newValue);
   }
 
   // @ts-expect-error we're binding context to ensure that the slider's value gets set, but ts won't be happy

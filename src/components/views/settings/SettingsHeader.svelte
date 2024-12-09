@@ -5,10 +5,11 @@
   import { BackArrow } from "@icons";
 
   export let label: string;
+  export let highlight = false;
   export let goBack: () => void;
 </script>
 
-<OverlayHeader highlight={false}>
+<OverlayHeader {highlight}>
   <span slot="left" style="display: flex; align-items: center;">
     <Button type="text" iconType="full" on:click={goBack}>
       <Icon icon={BackArrow} width="20px" height="20px" />

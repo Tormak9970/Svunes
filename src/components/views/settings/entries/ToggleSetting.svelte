@@ -55,8 +55,7 @@
   }
 
   .info {
-    width: calc(100% - 117px);
-    margin-right: 10px;
+    max-width: 50rem;
   }
   
   .description {
@@ -64,6 +63,7 @@
   }
 
   .toggle-container {
+    margin-left: auto;
     align-self: center;
   }
 </style>

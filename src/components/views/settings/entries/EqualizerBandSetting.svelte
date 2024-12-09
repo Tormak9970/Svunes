@@ -1,19 +1,15 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
-  import { Slider } from "@interactables";
   import { Card } from "@layout";
-  import type { Spring } from "svelte/motion";
+
+  import BandsLabel from "./equalizer/BandsLabel.svelte";
+  import BandSpacer from "./equalizer/BandSpacer.svelte";
+  import EqualizerBand from "./equalizer/EqualizerBand.svelte";
 
   export let label: string;
-  export let description: string;
+  export let description: string = "Temp";
   export let icon: IconifyIcon | undefined = undefined;
-  export let value: number;
-  export let min = 0;
-  export let max = 100;
-  export let step = 1;
-
-  let valueDisplayed: Spring<number>;
 </script>
 
 <Card type="transparent" extraOptions={{ style: "width: calc(100% - 10px); display: flex; position: relative; padding: 10px; padding-left: 0px; border-radius: 10px; margin: 2px 0px;" }}>
@@ -28,11 +24,29 @@
       <div class="font-body description">
         {description}
       </div>
-      <div class="slider-container">
-        <div style="width: 90%;">
-          <Slider min={min} max={max} step={step} bind:value={value} bind:valueDisplayed={valueDisplayed} />
+      <div class="equalizer-container">
+        <BandsLabel />
+        <div class="bands-container">
+          <EqualizerBand band="band32" />
+          <BandSpacer />
+          <EqualizerBand band="band64" />
+          <BandSpacer />
+          <EqualizerBand band="band125" />
+          <BandSpacer />
+          <EqualizerBand band="band250" />
+          <BandSpacer />
+          <EqualizerBand band="band500" />
+          <BandSpacer />
+          <EqualizerBand band="band1000" />
+          <BandSpacer />
+          <EqualizerBand band="band2000" />
+          <BandSpacer />
+          <EqualizerBand band="band4000" />
+          <BandSpacer />
+          <EqualizerBand band="band8000" />
+          <BandSpacer />
+          <EqualizerBand band="band16000" />
         </div>
-        <div style="width: 10%;">{$valueDisplayed?.toFixed(0)}</div>
       </div>
     </div>
   </div>
@@ -69,10 +83,18 @@
     color: rgb(var(--m3-scheme-outline));
   }
 
-  .slider-container {
-    width: 100%;
+  .equalizer-container {
+    max-width: 50rem;
+    height: 20rem;
+    display: flex;
+  }
+
+  .bands-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: space-between;
+
+    width: 100%;
+    gap: 0.25rem;
   }
 </style>

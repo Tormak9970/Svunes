@@ -25,17 +25,19 @@
       </div>
     </div>
     <!-- svelte-ignore a11y-label-has-associated-control -->
-    <Select
-      name={label}
-      options={options}
-      bind:value={value}
-      extraWrapperOptions={{
-        style: "height: 3rem; min-width: 12rem"
-      }}
-      extraOptions={{
-        style: ""
-      }}
-    />
+    <div class="action-container">
+      <Select
+        name={label}
+        options={options}
+        bind:value={value}
+        extraWrapperOptions={{
+          style: "height: 3rem; min-width: 12rem;"
+        }}
+        extraOptions={{
+          style: ""
+        }}
+      />
+    </div>
   </div>
 </Card>
 
@@ -64,11 +66,14 @@
   }
 
   .info {
-    width: calc(100% - 117px);
-    margin-right: 10px;
+    max-width: 50rem;
   }
   
   .description {
     color: rgb(var(--m3-scheme-outline));
+  }
+
+  .action-container {
+    margin-left: auto;
   }
 </style>
