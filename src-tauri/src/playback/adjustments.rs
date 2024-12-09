@@ -93,19 +93,26 @@ fn apply_hann_window(buffer: &mut [f32]) {
 }
 
 /// Performs a FFT to figure out the frequencies of each sample.
-pub fn calculate_frequency_bins(buffer: &[f32], sample_rate: u32, fft_size: usize) -> Vec<f32> {
+pub fn calculate_frequency_bins(buffer: &[f32], sample_rate: u32) -> Vec<f32> {
+  let fft_size = buffer.len().next_power_of_two();
+
   let mut samples = buffer.to_vec().clone();
   apply_hann_window(&mut samples);
   
   let mut planner = FftPlanner::<f32>::new();
   let fft = planner.plan_fft_forward(fft_size);
 
-  let mut fft_buffer: Vec<Complex<f32>> = samples.iter().map(|&x| Complex::new(x, 0.0)).collect();
+  let mut fft_buffer: Vec<Complex<f32>> = vec![Complex::new(0.0, 0.0); fft_size];
+
+  for i in 0..(buffer.len()) {
+    fft_buffer[i] = Complex::new(samples[i], 0.0);
+  }
+
   fft.process(&mut fft_buffer);
   
   
   let mut frequencies = Vec::new();
-  for i in 0..(fft_size / 2) {
+  for i in 0..(buffer.len()) {
     let freq = (i as f32 * sample_rate as f32) / fft_size as f32;
     frequencies.push(freq);
   }

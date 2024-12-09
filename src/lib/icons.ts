@@ -117,3 +117,5 @@ export { default as PictureInPicture } from "@ktibow/iconset-material-symbols/pi
 export { default as PictureInPictureExit } from "@ktibow/iconset-material-symbols/pip-exit";
 export { default as Speaker } from "@ktibow/iconset-material-symbols/speaker";
 
+export { default as LinearScale } from "@ktibow/iconset-material-symbols/linear-scale";
+

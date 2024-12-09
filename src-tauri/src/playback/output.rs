@@ -153,9 +153,9 @@ mod cpal {
                   reset_control_receiver,
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
-                  |data, sample_rate, fft_size| {
+                  |data, sample_rate| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                    return calculate_frequency_bins(&buffer, sample_rate);
                   },
                   vol,
                   balance,
@@ -173,9 +173,9 @@ mod cpal {
                   reset_control_receiver,
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as i16,
-                  |data, sample_rate, fft_size| {
+                  |data, sample_rate| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                    return calculate_frequency_bins(&buffer, sample_rate);
                   },
                   vol,
                   balance,
@@ -193,9 +193,9 @@ mod cpal {
                   reset_control_receiver,
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as u16,
-                  |data, sample_rate, fft_size| {
+                  |data, sample_rate| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                    return calculate_frequency_bins(&buffer, sample_rate);
                   },
                   vol,
                   balance,
@@ -213,9 +213,9 @@ mod cpal {
                   reset_control_receiver,
                   device_change_receiver,
                   |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
-                  |data, sample_rate, fft_size| {
+                  |data, sample_rate| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate, fft_size);
+                    return calculate_frequency_bins(&buffer, sample_rate);
                   },
                   vol,
                   balance,
@@ -252,7 +252,7 @@ mod cpal {
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
           packet_change: fn(T, u64, usize, f32, f64, f64, Equalizer) -> T,
-          calculate_frequencies: fn(&[T], u32, usize) -> Vec<f32>,
+          calculate_frequencies: fn(&[T], u32) -> Vec<f32>,
           vol: Option<f64>,
           balance: Option<f64>,
           equalizer: Option<Equalizer>
@@ -379,7 +379,7 @@ mod cpal {
                           // TODO: figure out why data has length 0 sometimes
                           // ! might not need this check, but still need to figure out above
                           if written != 0 {
-                            let frequencies = calculate_frequencies(data, config.sample_rate.0, written * 2);
+                            let frequencies = calculate_frequencies(data, config.sample_rate.0);
 
                             let mut i = 0;
                             for d in &mut *data {

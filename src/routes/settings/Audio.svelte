@@ -1,17 +1,18 @@
 <script lang="ts">
   import { t } from "@stores/Locale";
   import { showManageEqs } from "@stores/Modals";
-  import { autoPlayOnConnect, equalizers, selectedEq } from "@stores/State";
+  import { audioBalance, autoPlayOnConnect, equalizers, selectedEq } from "@stores/State";
   import { pop } from "svelte-spa-router";
 
   import { SectionLabel } from "@layout";
   import SettingsBody from "@views/settings/SettingsBody.svelte";
   import SettingsHeader from "@views/settings/SettingsHeader.svelte";
+  import BoundedSliderSetting from "@views/settings/entries/BoundedSliderSetting.svelte";
   import ButtonSetting from "@views/settings/entries/ButtonSetting.svelte";
   import SelectSetting from "@views/settings/entries/SelectSetting.svelte";
   import ToggleSetting from "@views/settings/entries/ToggleSetting.svelte";
   
-  import { EditAudio, GraphEq, WiredAuto } from "@icons";
+  import { EditAudio, GraphEq, LinearScale, WiredAuto } from "@icons";
 
   $: eqNames = Object.keys($equalizers);
   $: eqOptions = eqNames.map((eq) => {
@@ -30,9 +31,18 @@
     <!-- Gapless playback? -->
     <SectionLabel label={$t("SETTINGS_AUDIO_AUTO_PLAY_LABEL")} />
     <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
-    <!-- <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} /> -->
     <SectionLabel label={$t("SETTINGS_AUDIO_CHANNEL_BALANCE_LABEL")} />
-    <!-- TODO: L/R Channel Balance -->
+    <BoundedSliderSetting
+      label={$t("SETTINGS_AUDIO_LR_BALANCE_LABEL")}
+      description={$t("SETTINGS_AUDIO_LR_BALANCE_DESC")}
+      icon={LinearScale}
+      min={-1}
+      max={1}
+      step={0.05}
+      leftLabel="L"
+      rightLabel="R"
+      bind:value={$audioBalance}
+    />
     <SectionLabel label={$t("SETTINGS_AUDIO_EQ_LABEL")} />
     <SelectSetting
       label={$t("SETTINGS_AUDIO_CURRENT_EQ_LABEL")}

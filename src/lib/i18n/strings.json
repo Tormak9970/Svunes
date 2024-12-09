@@ -287,6 +287,7 @@
   "SETTINGS_AUDIO_CONNECTIONS_DESC": "Automatically start playback when an audio devices is connected, and stop it when one disconnects",
   "SETTINGS_AUDIO_CHANNEL_BALANCE_LABEL": "Channel Balance",
   "SETTINGS_AUDIO_LR_BALANCE_LABEL": "L/R Balance",
+  "SETTINGS_AUDIO_LR_BALANCE_DESC": "Changes the balance of the left and right audio channels",
   "SETTINGS_AUDIO_EQ_LABEL": "Equalizer",
   "SETTINGS_AUDIO_CURRENT_EQ_LABEL": "Current Equalizer",
   "SETTINGS_AUDIO_CURRENT_EQ_DESC": "The equalizer that's currently in use",
