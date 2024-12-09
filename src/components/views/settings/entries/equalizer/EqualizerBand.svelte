@@ -10,7 +10,10 @@
   
   function bandHandler(band: keyof Equalizer) {
     return (event: { detail: any }) => {
-      $equalizers[$currentEq][band] = event.detail;
+      const eq = $equalizers[$currentEq];
+      eq[band] = event.detail;
+      eq.gain = -1 * Math.max(0, eq.band32, eq.band64, eq.band125, eq.band250, eq.band500, eq.band1000, eq.band2000, eq.band4000, eq.band8000, eq.band16000);
+
       $equalizers = { ...$equalizers };
     }
   }

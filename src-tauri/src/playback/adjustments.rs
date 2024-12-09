@@ -121,12 +121,12 @@ pub fn calculate_frequency_bins(buffer: &[f32], sample_rate: u32) -> Vec<f32> {
 }
 
 /// Calculates the linear gain based on the provided decible value.
-fn linear_gain(db: u8) -> f64 {
-  return 10.0f64.powf((db as f64) / 10.0f64);
+fn linear_gain(db: i8) -> f32 {
+  return 10.0f32.powf((db as f32) / 10.0f32);
 }
 
 /// Applies the provided equalizer to the packet.
-fn equalize_packet(packet: f64, frequency: f32, eq: Equalizer) -> f64 {
+fn equalize_packet(packet: f32, frequency: f32, eq: Equalizer) -> f32 {
   let mut gain = 1;
 
   if frequency <= 32.0 {
@@ -151,7 +151,7 @@ fn equalize_packet(packet: f64, frequency: f32, eq: Equalizer) -> f64 {
     gain = eq.band16000;
   }
 
-  return packet * linear_gain(gain);
+  return packet * linear_gain(gain) * linear_gain(eq.gain);
 }
 
 /// Adjusts audio packets based on the volume, balance, and eq
@@ -165,7 +165,7 @@ pub fn adjust_packet(
   eq: Equalizer
 ) -> f64 {
   let balanced = balance_packet(packet, index, channel_count, balance);
-  let equalized = equalize_packet(balanced, frequency, eq);
+  let equalized = equalize_packet(balanced as f32, frequency, eq) as f64;
 
   return equalized * volume;
 }

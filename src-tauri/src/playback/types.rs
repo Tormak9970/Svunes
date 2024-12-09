@@ -7,17 +7,17 @@ pub struct AudioDevice {
 
 #[derive(Serialize, Deserialize, Clone, Copy, Debug)]
 pub struct Equalizer {
-  pub gain: u8,
-  pub band32: u8,
-  pub band64: u8,
-  pub band125: u8,
-  pub band250: u8,
-  pub band500: u8,
-  pub band1000: u8,
-  pub band2000: u8,
-  pub band4000: u8,
-  pub band8000: u8,
-  pub band16000: u8,
+  pub gain: i8,
+  pub band32: i8,
+  pub band64: i8,
+  pub band125: i8,
+  pub band250: i8,
+  pub band500: i8,
+  pub band1000: i8,
+  pub band2000: i8,
+  pub band4000: i8,
+  pub band8000: i8,
+  pub band16000: i8,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
