@@ -1,3 +1,4 @@
+<!-- @component Must be wrapped in a `<label>`. This is because clicking on a label passes the click event to the toggle. -->
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { Checkmark } from "@icons";
@@ -8,7 +9,6 @@
   export let extraOptions: HTMLAttributes<HTMLDivElement> = {};
   export let checked = false;
   export let disabled = false;
-  // MUST BE WRAPPED IN A <label>
 
   let startX: number | undefined;
   const handleMouseUp = (e: MouseEvent) => {

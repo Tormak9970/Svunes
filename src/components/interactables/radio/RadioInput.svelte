@@ -1,3 +1,4 @@
+<!-- @component Must be wrapped in a `<label>`. This is because clicking on a label passes the click event to the radio input. -->
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
