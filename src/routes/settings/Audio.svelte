@@ -37,7 +37,6 @@
   </span>
   <span class="content styled-scrollbar" slot="content" use:isScrolled={{ callback: (isScrolled) => highlight = isScrolled }}>
     <div class="content-inner">
-      <!-- Gapless playback? -->
       <SectionLabel label={$t("SETTINGS_AUDIO_AUTO_PLAY_LABEL")} />
       <ToggleSetting label={$t("SETTINGS_AUDIO_CONNECTIONS_LABEL")} description={$t("SETTINGS_AUDIO_CONNECTIONS_DESC")} icon={WiredAuto} bind:checked={$autoPlayOnConnect} />
       <SectionLabel label={$t("SETTINGS_AUDIO_CHANNEL_BALANCE_LABEL")} />
