@@ -49,8 +49,9 @@ mod cpal {
   use std::sync::mpsc::Receiver;
   use std::sync::{Arc, RwLock};
 
-  use crate::playback::adjustments::{adjust_packet, calculate_frequency_bins};
-  use crate::playback::output::get_device_by_name;
+  use crate::playback::balance::balance_audio;
+  use crate::playback::equalizer::equalize_audio;
+use crate::playback::output::get_device_by_name;
   use crate::playback::types::{Equalizer, VolumeEvent, BalanceEvent, EqualizerEvent, SampleOffsetEvent};
   use crate::playback::resampler::Resampler;
 
@@ -152,10 +153,10 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
-                  |data, sample_rate| {
+                  |packet, channel_index, channel_count, volume, balance| balance_audio(packet as f64, channel_index, channel_count, volume, balance) as f32,
+                  |data, sample_rate, eq| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate);
+                    return equalize_audio(&buffer, sample_rate, eq);
                   },
                   vol,
                   balance,
@@ -172,10 +173,12 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as i16,
-                  |data, sample_rate| {
+                  |packet, channel_index, channel_count, volume, balance| balance_audio(packet as f64, channel_index, channel_count, volume, balance) as i16,
+                  |data, sample_rate, eq| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate);
+                    let equalized = equalize_audio(&buffer, sample_rate, eq);
+                    let casted: Vec<i16> = equalized.iter().map(| s | *s as i16).collect();
+                    return casted;
                   },
                   vol,
                   balance,
@@ -192,10 +195,12 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as u16,
-                  |data, sample_rate| {
+                  |packet, channel_index, channel_count, volume, balance| balance_audio(packet as f64, channel_index, channel_count, volume, balance) as u16,
+                  |data, sample_rate, eq| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate);
+                    let equalized = equalize_audio(&buffer, sample_rate, eq);
+                    let casted: Vec<u16> = equalized.iter().map(| s | *s as u16).collect();
+                    return casted;
                   },
                   vol,
                   balance,
@@ -212,10 +217,10 @@ mod cpal {
                   playback_state_receiver,
                   reset_control_receiver,
                   device_change_receiver,
-                  |packet, channel_index, channel_count, frequency, volume, balance, eq| adjust_packet(packet as f64, channel_index, channel_count, frequency, volume, balance, eq) as f32,
-                  |data, sample_rate| {
+                  |packet, channel_index, channel_count, volume, balance| balance_audio(packet as f64, channel_index, channel_count, volume, balance) as f32,
+                  |data, sample_rate, eq| {
                     let buffer: Vec<f32> = data.iter().map(| s | *s as f32).collect();
-                    return calculate_frequency_bins(&buffer, sample_rate);
+                    return equalize_audio(&buffer, sample_rate, eq);
                   },
                   vol,
                   balance,
@@ -251,8 +256,8 @@ mod cpal {
           playback_state_receiver: Arc<Mutex<Receiver<bool>>>,
           reset_control_receiver: Arc<Mutex<Receiver<bool>>>,
           device_change_receiver: Arc<Mutex<Receiver<String>>>,
-          packet_change: fn(T, u64, usize, f32, f64, f64, Equalizer) -> T,
-          calculate_frequencies: fn(&[T], u32) -> Vec<f32>,
+          balance_audio: fn(T, u64, usize, f64, f64) -> T,
+          equalize_audio: fn(&[T], u32, Equalizer) -> Vec<T>,
           vol: Option<f64>,
           balance: Option<f64>,
           equalizer: Option<Equalizer>
@@ -379,28 +384,26 @@ mod cpal {
                           // TODO: figure out why data has length 0 sometimes
                           // ! might not need this check, but still need to figure out above
                           if written != 0 {
-                            let frequencies = calculate_frequencies(data, config.sample_rate.0);
+                            let equalized = equalize_audio(data, config.sample_rate.0, current_equalizer);
+                            let eq_slice = equalized.as_slice();
 
-                            let mut i = 0;
+                            let mut i: usize = 0;
                             for d in &mut *data {
-                              let channel_index = i % (num_channels as u64);
-                              let frequency = frequencies[i as usize];
+                              let channel_index = (i % num_channels) as u64;
                               
-                              *d = packet_change(
-                                *d,
+                              *d = balance_audio(
+                                eq_slice[i],
                                 channel_index,
                                 num_channels,
-                                frequency,
                                 current_volume,
-                                current_balance,
-                                current_equalizer
+                                current_balance
                               );
 
                               i += 1;
                             }
 
                             let mut sample_offset = frame_idx_state.write().unwrap();
-                            *sample_offset += i;
+                            *sample_offset += i as u64;
                           }
 
                           // Mute any remaining samples.

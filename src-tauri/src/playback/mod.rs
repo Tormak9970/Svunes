@@ -2,6 +2,7 @@ mod types;
 mod audio;
 mod output;
 mod resampler;
-mod adjustments;
+mod balance;
+mod equalizer;
 pub mod ipc;
 pub mod player;
