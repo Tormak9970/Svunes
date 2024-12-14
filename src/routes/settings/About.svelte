@@ -12,10 +12,10 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_ABOUT_TITLE")} goBack={pop} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <!-- svelte-ignore missing-declaration -->
     <TextSetting label={$t("SETTINGS_ABOUT_VERSION_LABEL")} description={APP_VERSION} icon={InfoOutline} />
     <TextSetting label={$t("SETTINGS_ABOUT_DEV_LABEL")} description="Travis Lane" icon={Person} />
@@ -26,12 +26,3 @@
     <ButtonSetting label={$t("SETTINGS_ABOUT_LICENSING_LABEL")} description={$t("SETTINGS_ABOUT_LICENSING_DESC")} icon={License} on:click={() => shell.open("https://github.com/Tormak9970/Svunes/blob/main/LICENSE")} />
   </span>
 </SettingsBody>
-
-<style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

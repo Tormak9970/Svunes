@@ -22,10 +22,10 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_PERSONALIZE_TITLE")} goBack={pop} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <SectionLabel label={$t("SETTINGS_PERSONALIZE_HOME_LABEL")} />
     <!-- svelte-ignore missing-declaration -->
     {#if IS_MOBILE}
@@ -45,12 +45,3 @@
     <ButtonSetting label={$t("SETTINGS_PERSONALIZE_MANAGE_PROFILES_LABEL")} description={$t("SETTINGS_PERSONALIZE_MANAGE_PROFILES_DESC")} icon={Group} on:click={() => $showManageProfiles = true} />
   </span>
 </SettingsBody>
-
-<style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

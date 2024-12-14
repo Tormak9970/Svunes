@@ -21,10 +21,10 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_TITLE")} goBack={goBack} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <SettingsNavButton label={$t("SETTINGS_APPEARANCE_TITLE")} description={$t("SETTINGS_APPEARANCE_PAGE_DESC")} route="/settings/appearance" icon={Palette} color="#42a5f5" />
     {#if !$isLandscape}
       <SettingsNavButton label={$t("SETTINGS_NOW_PLAYING_TITLE")} description={$t("SETTINGS_NOW_PLAYING_PAGE_DESC")} route="/settings/now-playing" icon={PlayCircle} color="#ef5350" />
@@ -37,12 +37,3 @@
     <SettingsNavButton label={$t("SETTINGS_ABOUT_TITLE")} description={$t("SETTINGS_ABOUT_PAGE_DESC")} route="/settings/about" icon={InfoOutline} color="#D4E157" />
   </span>
 </SettingsBody>
-
-<style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

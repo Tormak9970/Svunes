@@ -33,10 +33,10 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_APPEARANCE_TITLE")} goBack={pop} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <SectionLabel label={$t("SETTINGS_APPEARANCE_THEME_LABEL")} />
     <ColorSetting icon={Theme} label={$t("SETTINGS_APPEARANCE_APP_THEME_LABEL")} description={$t("SETTINGS_APPEARANCE_APP_THEME_DESC")} bind:color={$themePrimaryColor} />
     <div class="color-presets">
@@ -61,13 +61,6 @@
 </SettingsBody>
 
 <style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
   .color-presets {
     width: calc(100% - 65px);
     margin-left: 65px;

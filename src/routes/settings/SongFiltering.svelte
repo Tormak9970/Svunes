@@ -14,10 +14,10 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_SONG_FILTERING_TITLE")} goBack={pop} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <ButtonSetting label={$t("SETTINGS_SONG_FILTERING_MUSIC_FOLDER_LABEL")} description={$t("SETTINGS_SONG_FILTERING_MUSIC_FOLDER_DESC")} icon={FolderOpen} on:click={() => $showEditMusicFolders = true} />
     <SectionLabel label={$t("SETTINGS_SONG_FILTERING_BLACKLIST_LABEL")} />
     <ButtonSetting label={$t("SETTINGS_SONG_FILTERING_BLACKLIST_FOLDER_LABEL")} description={$t("SETTINGS_SONG_FILTERING_BLACKLIST_FOLDER_DESC")} icon={VisibilityOff} on:click={() => $showBlacklistFolders = true} />
@@ -25,12 +25,3 @@
     <SliderSetting label={$t("SETTINGS_SONG_FILTERING_MAX_LENGTH_LABEL")} description={$t("SETTINGS_SONG_FILTERING_MAX_LENGTH_DESC")} max={60} bind:value={$filterSongDuration} />
   </span>
 </SettingsBody>
-
-<style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

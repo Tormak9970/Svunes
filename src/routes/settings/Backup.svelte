@@ -70,21 +70,12 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_BACKUP_TITLE")} goBack={pop} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <ButtonSetting label={$t("SETTINGS_BACKUP_DESC")} description={$t("SETTINGS_BACKUP_DESC")} icon={AppShortcut} on:click={makeBackup} />
     <ButtonSetting label={$t("SETTINGS_RESTORE_LABEL")} description={$t("SETTINGS_RESTORE_DESC")} icon={Download} on:click={pickBackup} />
     <ButtonSetting label={$t("SETTINGS_RESET_LABEL")} description={$t("SETTINGS_RESET_DESC")} icon={RestartAlt} on:click={resetSettings} />
   </span>
 </SettingsBody>
-
-<style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

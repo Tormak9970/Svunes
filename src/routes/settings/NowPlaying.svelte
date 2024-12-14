@@ -21,10 +21,10 @@
 </script>
 
 <SettingsBody>
-  <span slot="header" style="height: 50px;">
+  <span slot="header">
     <SettingsHeader label={$t("SETTINGS_NOW_PLAYING_TITLE")} goBack={pop} />
   </span>
-  <span class="content" slot="content">
+  <span slot="content">
     <ButtonSetting label={$t("SETTINGS_NOW_PLAYING_THEME_LABEL")} description={getNowPlayingTheme($nowPlayingTheme)} icon={PlayCircle} on:click={() => $showNowPlayingTheme = true} />
     <ButtonSetting label={$t("SETTINGS_NOW_PLAYING_BACKGROUND_LABEL")} description={getNowPlayingBackgroundType($nowPlayingBackgroundType)} icon={Imagesmode} on:click={() => $showNowPlayingBackground = true} />
     <ToggleSetting label={$t("SETTINGS_NOW_PLAYING_EXTRA_INFO_LABEL")} description={$t("SETTINGS_NOW_PLAYING_EXTRA_INFO_DESC")} bind:checked={$showExtraSongInfo} />
@@ -38,12 +38,3 @@
     </MultiButtonSetting>
   </span>
 </SettingsBody>
-
-<style>
-  .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>
