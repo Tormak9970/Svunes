@@ -3,7 +3,7 @@
   import { LogController } from "@controllers";
   import { MoreVert, SadFace, Search } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import { MenuItem, ViewHeader, VirtualGrid, VirtualList } from "@layout";
+  import { ViewHeader, VirtualGrid, VirtualList } from "@layout";
   import type { Album } from "@models";
   import { t } from "@stores/Locale";
   import { showAlbumSortOrder, showGridSize } from "@stores/Modals";
@@ -19,7 +19,12 @@
   const keyFunction = (entry: { data: Album}) => `${entry.data.artPath}${entry.data.name}${entry.data.releaseYear}${entry.data.songIds.length}${entry.data.lastPlayedOn}`;
 
   let gridSize = $albumGridSize;
-  let menuIsOpen = false;
+  
+  const menuItems = [
+    { id: "grid-size", text: $t("GRID_SIZE_ACTION"), action: () => $showGridSize = true },
+    { id: "sort-order", text: $t("SORT_BY_ACTION"), action: () => $showAlbumSortOrder = true },
+    { id: "settings", text: $t("SETTINGS_ACTION"), action: goToSettings },
+  ]
 
   /**
    * Navigates to the settings view.
@@ -88,11 +93,7 @@
         </Button>
       </div>
       <div slot="right">
-        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-          <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>{$t("GRID_SIZE_ACTION")}</MenuItem>
-          <MenuItem on:click={() => { $showAlbumSortOrder = true; menuIsOpen = false; }}>{$t("SORT_BY_ACTION")}</MenuItem>
-          <MenuItem on:click={goToSettings}>{$t("SETTINGS_ACTION")}</MenuItem>
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={menuItems} />
       </div>
     </ViewHeader>
   </div>

@@ -3,7 +3,7 @@
   import { PlaybackController, QueueController } from "@controllers";
   import { BackArrow, MoreVert } from "@icons";
   import { Button, MenuButton, PlayButton } from "@interactables";
-  import { MenuItem, VirtualList } from "@layout";
+  import { VirtualList } from "@layout";
   import type { Song } from "@models";
   import { t } from "@stores/Locale";
   import { genreToAdd, showAddToPlaylist } from "@stores/Overlays";
@@ -66,6 +66,12 @@
     $genreToAdd = genre!.name;
     $showAddToPlaylist = true;
   }
+  
+  const menuItems = [
+    { id: "play-next", text: $t("PLAY_NEXT_ACTION"), action: playNext },
+    { id: "queue", text: $t("ADD_TO_QUEUE_ACTION"), action: queueGenre },
+    { id: "add-to-playlist", text: $t("ADD_TO_PLAYLIST_ACTION"), action: addToPlaylist }
+  ]
 </script>
 
 <DetailsBody>
@@ -79,11 +85,7 @@
       </span>
       <span slot="right" style="display: flex; flex-direction: row; gap: 5px">
         <PlayButton type="text" name={genre?.name} on:click={playGenre} />
-        <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
-          <MenuItem on:click={queueGenre}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-          <MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={menuItems} />
       </span>
     </OverlayHeader>
   </span>

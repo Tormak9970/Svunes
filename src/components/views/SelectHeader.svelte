@@ -490,7 +490,6 @@
   import type { ContextMenuItem } from "@directives";
   import { AddToQueue, BackArrow, MoreVert, PlaylistAdd, PlaylistRemove, RemoveFromQueue } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import { MenuItem } from "@layout";
   import { fly } from "svelte/transition";
   
   let menuIsOpen = false;
@@ -502,6 +501,7 @@
     menuIsOpen = false;
   }
 
+  $: selectHeaderMenuItems = getSelectContextMenuItems($t);
 </script>
 
 <dialog open class="select-header" transition:fly={{ y: -50, duration: 250 }}>
@@ -531,37 +531,7 @@
     <Button type="text" iconType="full" on:click={() => { addToPlaylist(); closeOptions(); }}>
       <Icon icon={PlaylistAdd} width="36px" height="36px" />
     </Button>
-    <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      {#if !$showQueue}
-        <MenuItem on:click={() => { playNext(); closeOptions(); }}>
-          {$t("PLAY_NEXT_ACTION")}
-        </MenuItem>
-      {/if}
-      {#if $location === "/playlists"}
-        <MenuItem on:click={() => { exportSelected(); closeOptions(); }}>
-          {$t("EXPORT_ACTION")}
-        </MenuItem>
-      {/if}
-      <MenuItem on:click={() => { bulkEdit(); closeOptions(); }}>
-        {$t("BULK_EDIT_ACTION")}
-      </MenuItem>
-      <MenuItem on:click={() => { goToInfoParser(); closeOptions(); }}>
-        {$t("INFO_PARSER_ACTION")}
-      </MenuItem>
-      <MenuItem on:click={() => { share(); closeOptions(); }}>
-        {$t("SHARE_ACTION")}
-      </MenuItem>
-      {#if $location !== "/artists" && !$showQueue}
-        <MenuItem on:click={() => { deleteFromDevice(); closeOptions(); }}>
-          {$t("DELETE_FROM_DEVICE_ACTION")}
-        </MenuItem>
-      {/if}
-      {#if $selectedView !== View.SEARCH}
-        <MenuItem on:click={() => { selectAll(); closeOptions(); }}>
-          {$t("SELECT_ALL_ACTION")}
-        </MenuItem>
-      {/if}
-    </MenuButton>
+    <MenuButton icon={MoreVert} items={selectHeaderMenuItems} />
   </div>
 </dialog>
 

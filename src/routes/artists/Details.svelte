@@ -3,8 +3,8 @@
   import { EditController, LogController, PlaybackController, QueueController } from "@controllers";
   import { isScrolled } from "@directives";
   import { BackArrow, MoreVert, Sort } from "@icons";
-  import { Button, MenuButton, PlayButton, RadioMenuItem, ToggleShuffleButton } from "@interactables";
-  import { AlbumCarouselList, ArtistCarousel, Marquee, MenuItem, SongsList } from "@layout";
+  import { Button, MenuButton, PlayButton, RadioMenuButton, RadioMenuItem, ToggleShuffleButton } from "@interactables";
+  import { AlbumCarouselList, ArtistCarousel, Marquee, SongsList } from "@layout";
   import { Artist, type Song } from "@models";
   import { t } from "@stores/Locale";
   import { onArtOptionsDone, showArtOptions } from "@stores/Modals";
@@ -121,6 +121,12 @@
     }
     $showArtOptions = true;
   }
+  
+  const menuItems = [
+    { id: "play-next", text: $t("PLAY_NEXT_ACTION"), action: playNext },
+    { id: "queue", text: $t("ADD_TO_QUEUE_ACTION"), action: queueArtist },
+    { id: "add-to-playlist", text: $t("ADD_TO_PLAYLIST_ACTION"), action: addToPlaylist }
+  ]
 </script>
 
 {#key key}
@@ -133,11 +139,7 @@
           </Button>
         </span>
         <span slot="right" style="display: flex; flex-direction: row;">
-          <MenuButton icon={MoreVert}>
-            <MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
-            <MenuItem on:click={queueArtist}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-            <MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLISTS_ACTION")}</MenuItem>
-          </MenuButton>
+          <MenuButton icon={MoreVert} items={menuItems} />
         </span>
       </OverlayHeader>
     </span>
@@ -172,12 +174,12 @@
         <div class="songs">
           <div class="section-header">
             <h3 class="label">{$t("SONGS_TITLE")}</h3>
-            <MenuButton icon={Sort}>
+            <RadioMenuButton icon={Sort}>
               <RadioMenuItem name="artistEntriesSort" label={$t("ALPHABETICAL_LABEL")} checked={artistSortMethod === "Alphabetical"} on:input={() => artistSortMethod = "Alphabetical" } />
               <RadioMenuItem name="artistEntriesSort" label={$t("ALBUM_LABEL")} checked={artistSortMethod === "Album"} on:input={() => artistSortMethod = "Album"} />
               <RadioMenuItem name="artistEntriesSort" label={$t("YEAR_LABEL")} checked={artistSortMethod === "Year"} on:input={() => artistSortMethod = "Year"} />
               <RadioMenuItem name="artistEntriesSort" label={$t("SONG_DURATION_LABEL")} checked={artistSortMethod === "Song Duration"} on:input={() => artistSortMethod = "Song Duration"} />
-            </MenuButton>
+            </RadioMenuButton>
           </div>
           <SongsList songs={sortedSongs} />
         </div>

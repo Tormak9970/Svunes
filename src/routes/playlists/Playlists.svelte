@@ -3,7 +3,7 @@
   import { AppController, LogController } from "@controllers";
   import { Add, MoreVert, Search } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import { MenuItem, ViewHeader, VirtualGrid, VirtualList } from "@layout";
+  import { ViewHeader, VirtualGrid, VirtualList } from "@layout";
   import type { Playlist } from "@models";
   import { t } from "@stores/Locale";
   import { showGridSize, showPlaylistSortOrder } from "@stores/Modals";
@@ -21,7 +21,6 @@
   const keyFunction = (entry: { data: Playlist }) => `${entry.data.name}${entry.data.songIds.length}${entry.data.numTimesPlayed}${entry.data.lastPlayedOn}`;
 
   let gridSize = $playlistGridSize;
-  let menuIsOpen = false;
   
   /**
    * Navigates to the settings view.
@@ -100,6 +99,13 @@
       $playlistsIsScrolled = false;
     }
   });
+
+  const menuItems = [
+    { id: "grid-size", text: $t("GRID_SIZE_ACTION"), action: () => $showGridSize = true },
+    { id: "sort-order", text: $t("SORT_BY_ACTION"), action: () => $showPlaylistSortOrder = true },
+    { id: "import-playlist", text: $t("IMPORT_ACTION"), action: importPlaylist },
+    { id: "settings", text: $t("SETTINGS_ACTION"), action: goToSettings },
+  ]
 </script>
 
 <ViewContainer>
@@ -114,12 +120,7 @@
         <Button type="text" iconType="full" on:click={() => { $showCreatePlaylist = true; }}>
           <Icon icon={Add} width="20px" height="20px" />
         </Button>
-        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-          <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>{$t("GRID_SIZE_ACTION")}</MenuItem>
-          <MenuItem on:click={() => { $showPlaylistSortOrder = true; menuIsOpen = false; }}>{$t("SORT_BY_ACTION")}</MenuItem>
-          <MenuItem on:click={importPlaylist}>{$t("IMPORT_ACTION")}</MenuItem>
-          <MenuItem on:click={goToSettings}>{$t("SETTINGS_ACTION")}</MenuItem>
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={menuItems} />
       </div>
     </ViewHeader>
   </div>

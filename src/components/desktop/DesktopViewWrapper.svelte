@@ -3,7 +3,6 @@
   import { AppController } from "@controllers";
   import { Add, Download, GridView, Settings } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import { MenuItem } from "@layout";
   import { DesktopNav } from "@navigation";
   import { desktopSidePanel, isLandscape, SidePanels } from "@stores/Layout";
   import { t } from "@stores/Locale";
@@ -20,7 +19,6 @@
   import SidePanelRouter from "./SidePanelRouter.svelte";
 
   let condenseNav = false;
-  let menuIsOpen = false;
 
   /**
    * Navigates to the settings view.
@@ -72,8 +70,12 @@
       default:
         break;
     }
-    menuIsOpen = false;
   }
+
+  const desktopMenuItems = [
+    { id: "grid-size", text: $t("GRID_SIZE_ACTION"), action: () => $showGridSize = true },
+    { id: "sort-options", text: $t("SORT_BY_ACTION"), action: onSortByClick }
+  ];
 </script>
 
 <MediaQuery query="(max-width: 1100px)" bind:matches={condenseNav} />
@@ -87,10 +89,7 @@
             <Icon icon={Settings} width="20px" height="20px" />
           </Button>
           {#if $selectedView === View.PLAYLISTS || $selectedView === View.ALBUMS || $selectedView === View.SONGS || $selectedView === View.ARTISTS}
-            <MenuButton icon={GridView} bind:open={menuIsOpen}>
-              <MenuItem on:click={() => { $showGridSize = true; menuIsOpen = false; }}>{$t("GRID_SIZE_ACTION")}</MenuItem>
-              <MenuItem on:click={onSortByClick}>{$t("SORT_BY_ACTION")}</MenuItem>
-            </MenuButton>
+            <MenuButton icon={GridView} items={desktopMenuItems} />
           {/if}
           {#if $location === "/playlists"}
             <Button type="text" iconType="full" on:click={() => { $showCreatePlaylist = true; }}>

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
+  import type { ContextMenuItem } from "@directives";
   import type { IconifyIcon } from "@iconify/types";
-  import { onMount } from "svelte";
+  import { contextMenuItems, contextMenuPosition, showContextMenu } from "@stores/ContextMenu";
   import type { HTMLAttributes } from "svelte/elements";
   import Button from "./Button.svelte";
 
@@ -11,38 +12,26 @@
   export let width = "36px";
   export let height = "36px";
   export let icon: IconifyIcon;
+  export let items: ContextMenuItem[];
 
   let buttonElement: any;
-  let menuElement: any;
-
-  export let open = false;
-  $: menuElement && (menuElement.open = open);
 
   function onClick() {
-    open = !open;
+    $contextMenuItems = items;
+
+    $contextMenuPosition = {
+      x: 200,
+      y: 200,
+    };
+    // TODO: calc based on buttonElement.getButtonElement();
+
+    $showContextMenu = true;
   }
-
-  onMount(() => {
-    menuElement.anchorElement = buttonElement.getButtonElement();
-
-    const style = document.createElement("style");
-    style.innerHTML = '.items { scrollbar-color: rgb(var(--m3-scheme-primary)) transparent; scrollbar-width: thin; }';
-    menuElement.shadowRoot?.appendChild(style);
-
-    open = false;
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
-  class="container"
-  on:click|stopImmediatePropagation
-  on:mousedown|stopImmediatePropagation
-  style:--md-menu-container-color="rgb(var(--m3-scheme-surface-container))"
-  style:--md-menu-item-container-color="rgb(var(--m3-scheme-surface-container))"
-  style:--md-menu-item-selected-container-color="rgb(var(--m3-scheme-secondary-container))"
->
+<div on:click|stopImmediatePropagation on:mousedown|stopImmediatePropagation>
   <Button
     type="text"
     iconType="full"
@@ -54,18 +43,4 @@
   >
     <Icon icon={icon} width="{width}" height="{height}" />
   </Button>
-  <md-menu
-    bind:this={menuElement}
-    anchor-corner={"end-end"}
-    menu-corner={"start-end"}
-    on:closing={() => open = false}
-  >
-    <slot />
-  </md-menu>
 </div>
-
-<style>
-  .container {
-    position: relative;
-  }
-</style>
