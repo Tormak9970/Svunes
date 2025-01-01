@@ -16,14 +16,17 @@
 
   let buttonElement: any;
 
+  const menuWidth = 122;
+
   function onClick() {
     $contextMenuItems = items;
 
+    const buttonBB = buttonElement.getButtonElement().getBoundingClientRect() as DOMRect;
+
     $contextMenuPosition = {
-      x: 200,
-      y: 200,
+      x: buttonBB.x + buttonBB.width - menuWidth,
+      y: buttonBB.y + buttonBB.height,
     };
-    // TODO: calc based on buttonElement.getButtonElement();
 
     $showContextMenu = true;
   }
