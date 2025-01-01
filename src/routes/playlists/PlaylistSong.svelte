@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getSelectContextMenuItems, getSongMenuItems } from "@context-menus";
   import { PlaybackController } from "@controllers";
   import { contextMenu, holdEvent } from "@directives";
   import { MoreVert } from "@icons";
@@ -9,8 +10,6 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
-  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
-  import SongOptions, { getContextMenuItems } from "@views/songs/SongOptions.svelte";
   import { location } from "svelte-spa-router";
 
   export let song: Song;
@@ -18,8 +17,8 @@
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
   
-  $: selectCtxItems = getSelectContextMenuItems($t);
-  $: ctxMenuItems = getContextMenuItems(song, $t, $location);
+  $: selectCtxItems = getSelectContextMenuItems($selected, $t, $location);
+  $: songMenuItems = getSongMenuItems(song, $t, $location);
 
   /**
    * Handles when the user clicks on the entry.
@@ -45,12 +44,14 @@
     $selected = [ ...$selected, song.id ];
   }
   
-  let menuIsOpen = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<button class="m3-container playlist-song" use:contextMenu={{ id: "song-options", items: highlight ? selectCtxItems : ctxMenuItems }}>
+<button
+  class="m3-container playlist-song"
+  use:contextMenu={{ id: "song-options", items: highlight ? selectCtxItems : songMenuItems }}
+>
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
@@ -81,9 +82,7 @@
         </div>
       </div>
       <div class="options">
-        <MenuButton icon={MoreVert} bind:open={menuIsOpen} extraOptions={{ style: "display: flex;" }}>
-          <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={songMenuItems} extraOptions={{ style: "display: flex;" }} />
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getSelectContextMenuItems, getSongMenuItems } from "@context-menus";
   import { PlaybackController } from "@controllers";
   import { MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
@@ -8,18 +9,16 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { songGridSize, songSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
   import { location } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import SongOptions, { getContextMenuItems } from "./SongOptions.svelte";
 
   export let song: Song;
 
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlighted = $selected.includes(song.id);
   
-  $: selectCtxItems = getSelectContextMenuItems($t);
-  $: ctxMenuItems = getContextMenuItems(song, $t, $location);
+  $: selectCtxItems = getSelectContextMenuItems($selected, $t, $location);
+  $: songMenuItems = getSongMenuItems(song, $t, $location);
 
   /**
    * Handles when the user clicks on the entry.
@@ -44,8 +43,6 @@
   function select() {
     $selected = [ ...$selected, song.id ];
   }
-  
-  let menuIsOpen = false;
 </script>
 
 <GridEntry
@@ -55,7 +52,7 @@
   convertedPath={convertedPath}
   holdable={!$inSelectMode}
   ctxMenuId="song-options"
-  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : songMenuItems}
   on:click={onClick}
   on:hold={select}
 >
@@ -75,8 +72,6 @@
     {/if}
   </span>
   <span slot="options">
-    <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      <SongOptions bind:menuIsOpen={menuIsOpen} song={song} />
-    </MenuButton>
+    <MenuButton icon={MoreVert} items={songMenuItems} />
   </span>
 </GridEntry>

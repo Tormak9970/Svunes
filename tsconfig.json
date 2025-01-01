@@ -25,6 +25,7 @@
       "@controllers": ["./src/lib/controllers"],
       "@models": ["./src/lib/models"],
       "@directives": ["./src/lib/directives"],
+      "@context-menus": ["./src/lib/context-menus"],
       "@utils": ["./src/lib/utils"],
       "@types": ["./src/lib/types"],
       "@icons": ["./src/lib/icons"]

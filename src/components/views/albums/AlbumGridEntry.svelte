@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getAlbumMenuItems, getSelectContextMenuItems } from "@context-menus";
   import { GridEntry } from "@layout";
   import type { Album } from "@models";
   import { renderDate, t } from "@stores/Locale";
@@ -6,10 +7,8 @@
   import { albumGridSize, albumSortOrder } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { GridSize } from "@types";
-  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
-  import { push } from "svelte-spa-router";
+  import { location, push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import { getContextMenuItems } from "./AlbumOptions.svelte";
 
   export let album: Album;
 
@@ -17,8 +16,8 @@
   $: highlighted = $selected.includes(album.name);
   $: size = $albumGridSize === GridSize.MEDIUM ? 40 : 60;
   
-  $: selectCtxItems = getSelectContextMenuItems($t);
-  $: ctxMenuItems = getContextMenuItems(album, $t);
+  $: selectCtxItems = getSelectContextMenuItems($selected, $t, $location);
+  $: albumMenuItems = getAlbumMenuItems(album, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -52,7 +51,7 @@
   convertedPath={convertedPath}
   holdable={!$inSelectMode}
   ctxMenuId="album-options"
-  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : albumMenuItems}
   on:click={onClick}
   on:hold={select}
 >

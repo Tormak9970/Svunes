@@ -1,13 +1,14 @@
 <script lang="ts">
   import { Icon, MediaQuery } from "@component-utils";
+  import { getNowPlayingDesktopMenuItems } from "@context-menus";
   import { PlaybackController } from "@controllers";
   import { tooltip } from "@directives";
   import { FavoriteOff, FavoriteOn, MoreVert, PictureInPicture, PictureInPictureExit, QueueMusic, Speaker, VolumeDown, VolumeOff, VolumeUp } from "@icons";
   import { Button, MenuButton } from "@interactables";
-  import { Marquee, MenuItem } from "@layout";
+  import { Marquee } from "@layout";
   import { showPopoutPlayer } from "@stores/Layout";
   import { t } from "@stores/Locale";
-  import { showAddToPlaylist, showNowPlaying } from "@stores/Overlays";
+  import { showNowPlaying } from "@stores/Overlays";
   import { albumsMap, playingSongId, playlists, songsMap, volumeLevel } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { goToQueue, goToSongDetails, hash64 } from "@utils";
@@ -86,6 +87,8 @@
       });
     }
   });
+  
+  $: menuItems = getNowPlayingDesktopMenuItems(song, $t, hideQueue, hideTogglePopout, $showPopoutPlayer);
 </script>
 
 <MediaQuery query="(max-width: 1000px)" bind:matches={hideQueue} />
@@ -162,22 +165,7 @@
         <Icon icon={$volumeLevel === 0 ? VolumeOff : ($volumeLevel <= 0.5 ? VolumeDown : VolumeUp)} width="20px" height="20px" />
       </Button>
     </span>
-    <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      <MenuItem on:click={() => { $showAddToPlaylist = true; menuIsOpen = false; }}>{$t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
-      {#if song?.album}
-        <MenuItem on:click={goToAlbum}>{$t("GO_TO_ALBUM_ACTION")}</MenuItem>
-      {/if}
-      {#if song?.artist}
-        <MenuItem on:click={goToArtist}>{$t("GO_TO_ARTIST_ACTION")}</MenuItem>
-      {/if}
-      {#if hideQueue}
-        <MenuItem on:click={goToQueue}>{$t("GO_TO_QUEUE_ACTION")}</MenuItem>
-      {/if}
-      <MenuItem on:click={clearNowPlaying}>{$t("CLEAR_QUEUE_ACTION")}</MenuItem>
-      {#if hideTogglePopout}
-        <MenuItem on:click={() => $showPopoutPlayer = !$showPopoutPlayer}>{$t($showPopoutPlayer ? "CLOSE_POPOUT_ACTION" : "OPEN_POPOUT_ACTION")}</MenuItem>
-      {/if}
-    </MenuButton>
+    <MenuButton icon={MoreVert} items={menuItems} />
   </div>
 </div>
 

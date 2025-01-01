@@ -1,17 +1,17 @@
 <script lang="ts">
+  import { getGenreMenuItems } from "@context-menus";
   import { ListEntry } from "@layout";
   import type { Genre } from "@models";
   import { t } from "@stores/Locale";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
-  import { getContextMenuItems } from "./GenreOptions.svelte";
 
   export let genre: Genre;
 
   $: convertedPath = genre.imagePreviewPath ? convertFileSrc(genre.imagePreviewPath) : "";
   
-  $: ctxMenuItems = getContextMenuItems(genre, $t);
+  $: genreMenuItems = getGenreMenuItems(genre, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -26,7 +26,7 @@
   convertedPath={convertedPath}
   highlighted={false}
   ctxMenuId="genre-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={genreMenuItems}
   on:click={onClick}
 >
   <span slot="details">

@@ -7,14 +7,13 @@
   import { nowPlayingBackgroundType, songProgress } from "@stores/State";
   import { NowPlayingBackgroundType } from "@types";
   import { formatTime } from "@utils";
-  import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
   
+  import { getNowPlayingMenuItems } from "@context-menus";
   import { FavoriteOff, FavoriteOn, KeyboardArrowDown, MoreVert } from "@icons";
   import { t } from "@stores/Locale";
   
-  let menuIsOpen = false;
   
   export let song: Song | undefined;
   $: songLength = song?.length ?? 0;
@@ -24,6 +23,8 @@
   export let bottomBackgroundColor: string;
 
   $: label = song?.title ?? song?.fileName;
+
+  $: menuItems = getNowPlayingMenuItems(song, $t, true, true, true);
 </script>
 
 <div
@@ -68,9 +69,7 @@
           <Icon icon={FavoriteOn} />
         {/if}
       </Button>
-      <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" bind:open={menuIsOpen}>
-        <NowPlayingOptions song={song} showQueueOption showBothExtras bind:menuIsOpen={menuIsOpen} />
-      </MenuButton>
+      <MenuButton icon={MoreVert} size="3rem" iconSize="1.75rem" items={menuItems} />
     </div>
   </div>
 </div>

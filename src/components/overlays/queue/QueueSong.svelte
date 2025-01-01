@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getQueueSongMenuItems, getSelectContextMenuItems } from "@context-menus";
   import { PlaybackController } from "@controllers";
   import { contextMenu, holdEvent } from "@directives";
   import { MoreVert } from "@icons";
@@ -9,8 +10,7 @@
   import { inSelectMode, selected } from "@stores/Select";
   import { convertFileSrc } from "@tauri-apps/api/core";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
-  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
-  import QueueSongOptions, { getContextMenuItems } from "./QueueSongOptions.svelte";
+  import { location } from "svelte-spa-router";
 
   export let song: Song;
   export let index: number;
@@ -18,8 +18,8 @@
   $: convertedPath = song.artPath ? convertFileSrc(song.artPath) : "";
   $: highlight = $selected.includes(song.id);
   
-  $: selectCtxItems = getSelectContextMenuItems($t);
-  $: ctxMenuItems = getContextMenuItems(song, index, $t);
+  $: selectCtxItems = getSelectContextMenuItems($selected, $t, $location);
+  $: queueSongMenuItems = getQueueSongMenuItems(song, index, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -50,7 +50,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<button class="m3-container queue-songs" use:contextMenu={{ id: "queue-options", items: highlight ? selectCtxItems : ctxMenuItems }}>
+<button class="m3-container queue-songs" use:contextMenu={{ id: "queue-options", items: highlight ? selectCtxItems : queueSongMenuItems }}>
   <div class="layer" class:highlight />
   <div class="content-wrapper">
     <slot />
@@ -81,9 +81,7 @@
         </div>
       </div>
       <div class="options">
-        <MenuButton icon={MoreVert} bind:open={menuIsOpen} extraOptions={{ style: "display: flex;" }}>
-          <QueueSongOptions bind:menuIsOpen={menuIsOpen} song={song} index={index} />
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={queueSongMenuItems} extraOptions={{ style: "display: flex;" }} />
       </div>
     </div>
   </div>

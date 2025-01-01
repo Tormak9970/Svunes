@@ -1,21 +1,20 @@
 <script lang="ts">
+  import { getArtistMenuItems, getSelectContextMenuItems } from "@context-menus";
   import { GridEntry } from "@layout";
   import type { Artist } from "@models";
   import { t } from "@stores/Locale";
   import { inSelectMode, selected } from "@stores/Select";
   import { artistGridSize } from "@stores/State";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
-  import { push } from "svelte-spa-router";
-  import { getContextMenuItems } from "./ArtistOptions.svelte";
+  import { location, push } from "svelte-spa-router";
 
   export let artist: Artist;
 
   $: convertedPath = artist.imagePath ? convertFileSrc(artist.imagePath) : "";
   $: highlighted = $selected.includes(artist.name);
   
-  $: selectCtxItems = getSelectContextMenuItems($t);
-  $: ctxMenuItems = getContextMenuItems(artist, $t);
+  $: selectCtxItems = getSelectContextMenuItems($selected, $t, $location);
+  $: artistMenuItems = getArtistMenuItems(artist, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -51,7 +50,7 @@
   borderRadius="50%"
   holdable={!$inSelectMode}
   ctxMenuId="artist-options"
-  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : artistMenuItems}
   on:click={onClick}
   on:hold={select}
 />

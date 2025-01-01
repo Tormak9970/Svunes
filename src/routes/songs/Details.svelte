@@ -5,19 +5,18 @@
   import { songsMap } from "@stores/State";
   import DetailsField from "./DetailsField.svelte";
   
+  import { getSongMenuItems } from "@context-menus";
   import { isScrolled } from "@directives";
   import { isLandscape } from "@stores/Layout";
   import { t } from "@stores/Locale";
   import { goToSongEdit } from "@utils";
-  import SongOptions from "@views/songs/SongOptions.svelte";
-  import { pop } from "svelte-spa-router";
+  import { location, pop } from "svelte-spa-router";
   import SidePanelBackButton from "../../components/desktop/SidePanelBackButton.svelte";
   
   export let params: { id?: string } = {};
   $: song = params.id ? $songsMap[params.id] : null;
 
   let highlight = false;
-  let menuIsOpen = false;
 
   /**
    * Closes the details overlay.
@@ -32,6 +31,8 @@
   function showSongEdit() {
     goToSongEdit(song!.id);
   }
+
+  $: songMenuItems = song ? getSongMenuItems(song, $t, $location, true) : [];
 </script>
 
 <DetailsBody>
@@ -45,11 +46,7 @@
           <Icon icon={Edit} width="20px" height="20px" />
         </Button>
         <div style="height: 100%; width: 5px;" />
-        <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-          {#if song}
-            <SongOptions bind:menuIsOpen={menuIsOpen} song={song} hideEditOption />
-          {/if}
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={songMenuItems} />
       </span>
     </OverlayHeader>
   </span>

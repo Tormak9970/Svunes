@@ -4,19 +4,17 @@
   import { Marquee } from "@layout";
   import type { Song } from "@models";
   import { showMiniPlayer } from "@stores/Overlays";
-  import { nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
+  import { extraControl, nowPlayingBackgroundType, showExtraSongInfo } from "@stores/State";
   import { NowPlayingBackgroundType } from "@types";
-  import NowPlayingOptions from "../NowPlayingOptions.svelte";
   import PlayerControls from "../PlayerControls.svelte";
   import ProgressControls from "../ProgressControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
 
+  import { getNowPlayingMenuItems } from "@context-menus";
   import { FavoriteOff, FavoriteOn, KeyboardArrowDown, MoreVert, QueueMusic } from "@icons";
   import { t } from "@stores/Locale";
   import { goToQueue } from "@utils";
   import ExtraControl from "../ExtraControl.svelte";
-  
-  let menuIsOpen = false;
   
   export let song: Song | undefined;
   $: songLength = song?.length ?? 0;
@@ -28,6 +26,10 @@
   export let bottomBackgroundColor: string;
 
   $: label = song?.title ?? song?.fileName;
+  
+  $: showCarMode = $extraControl === "Sleep Timer" ||  $extraControl === "None";
+  $: showSleepTimer = $extraControl === "Car Mode" ||  $extraControl === "None";
+  $: menuItems = getNowPlayingMenuItems(song, $t, false, showCarMode, showSleepTimer);
 </script>
 
 <div
@@ -68,9 +70,7 @@
       <Button type="text" iconType="full" on:click={() => { goToQueue(); $showMiniPlayer = true; }}>
         <Icon icon={QueueMusic} />
       </Button>
-      <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-        <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} />
-      </MenuButton>
+      <MenuButton icon={MoreVert} items={menuItems} />
     </div>
   </div>
   <div class="card-container">

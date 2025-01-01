@@ -4,17 +4,15 @@
   import { Marquee } from "@layout";
   import type { Song } from "@models";
   import { showMiniPlayer } from "@stores/Overlays";
-  import { showExtraSongInfo } from "@stores/State";
-  import NowPlayingOptions from "../NowPlayingOptions.svelte";
+  import { extraControl, showExtraSongInfo } from "@stores/State";
   import PlayerControls from "../PlayerControls.svelte";
   import ProgressControls from "../ProgressControls.svelte";
   import VolumeControls from "../VolumeControls.svelte";
 
+  import { getNowPlayingMenuItems } from "@context-menus";
   import { FavoriteOff, FavoriteOn, KeyboardArrowDown, MoreVert } from "@icons";
   import { t } from "@stores/Locale";
   import ExtraControl from "../ExtraControl.svelte";
-  
-  let menuIsOpen = false;
   
   export let song: Song | undefined;
   $: songLength = song?.length ?? 0;
@@ -26,6 +24,10 @@
   export let bottomBackgroundColor: string;
 
   $: label = song?.title ?? song?.fileName;
+  
+  $: showCarMode = $extraControl === "Sleep Timer" ||  $extraControl === "None";
+  $: showSleepTimer = $extraControl === "Car Mode" ||  $extraControl === "None";
+  $: menuItems = getNowPlayingMenuItems(song, $t, false, showCarMode, showSleepTimer);
 </script>
 
 <div
@@ -67,9 +69,7 @@
         </div>
         <div class="font-body artist">{song?.artist ?? $t("UNKOWN_VALUE")}</div>
       </div>
-      <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-        <NowPlayingOptions bind:menuIsOpen={menuIsOpen} song={song} showQueueOption />
-      </MenuButton>
+      <MenuButton icon={MoreVert} items={menuItems} />
     </div>
     <ProgressControls songLength={songLength} useTextColor />
     <PlayerControls useTextColor />

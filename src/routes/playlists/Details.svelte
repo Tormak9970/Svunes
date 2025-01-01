@@ -4,7 +4,7 @@
   import { isScrolled } from "@directives";
   import { BackArrow, Edit, MoreVert } from "@icons";
   import { Button, MenuButton, PlayButton, ToggleShuffleButton } from "@interactables";
-  import { Marquee, MenuItem } from "@layout";
+  import { Marquee } from "@layout";
   import { t } from "@stores/Locale";
   import { playlistToAdd, showAddToPlaylist } from "@stores/Overlays";
   import { isPaused, nowPlayingList, playlistsMap, shuffle } from "@stores/State";
@@ -76,6 +76,16 @@
   function deletePlaylist() {
     EditController.deletePlaylistsFromDevice([playlist!.id]);
   }
+  
+  const menuItems = [
+    { id: "play-next", text: $t("PLAY_NEXT_ACTION"), action: playNext },
+    { id: "queue", text: $t("ADD_TO_QUEUE_ACTION"), action: queuePlaylist },
+    { id: "add-to-playlist", text: $t("ADD_TO_PLAYLIST_ACTION"), action: addToPlaylist },
+  ]
+
+  $: if (playlist?.isUserPlaylist && menuItems.length === 3) {
+    menuItems.push({ id: "delete", text: $t("DELETE_ACTION"), action: deletePlaylist });
+  }
 </script>
 
 <DetailsBody>
@@ -93,14 +103,7 @@
           </Button>
         {/if}
         <div style="height: 100%; width: 5px;" />
-        <MenuButton icon={MoreVert}>
-          <MenuItem on:click={playNext}>{$t("PLAY_NEXT_ACTION")}</MenuItem>
-          <MenuItem on:click={queuePlaylist}>{$t("ADD_TO_QUEUE_ACTION")}</MenuItem>
-          <MenuItem on:click={addToPlaylist}>{$t("ADD_TO_PLAYLIST_ACTION")}</MenuItem>
-          {#if playlist?.isUserPlaylist}
-            <MenuItem on:click={deletePlaylist}>{$t("DELETE_ACTION")}</MenuItem>
-          {/if}
-        </MenuButton>
+        <MenuButton icon={MoreVert} items={menuItems} />
       </span>
     </OverlayHeader>
   </span>

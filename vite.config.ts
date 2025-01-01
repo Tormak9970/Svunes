@@ -63,6 +63,7 @@ export default defineConfig({
       "@controllers": resolve(__dirname, "./src/lib/controllers"),
       "@models": resolve(__dirname, "./src/lib/models"),
       "@directives": resolve(__dirname, "./src/lib/directives"),
+      "@context-menus": resolve(__dirname, "./src/lib/context-menus"),
       "@utils": resolve(__dirname, "./src/lib/utils"),
       "@types": resolve(__dirname, "./src/lib/types"),
       "@icons": resolve(__dirname, "./src/lib/icons")

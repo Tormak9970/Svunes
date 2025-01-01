@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { getAlbumMenuItems } from "@context-menus";
   import type { Album } from "@models";
   import { t } from "@stores/Locale";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  import { getContextMenuItems } from "@views/albums/AlbumOptions.svelte";
   import { push } from "svelte-spa-router";
   import CardClickable from "../CardClickable.svelte";
   import Lazy from "../Lazy.svelte";
@@ -14,7 +14,7 @@
 
   $: convertedPath = album.artPath ? convertFileSrc(album.artPath) : "";
   
-  $: ctxMenuItems = getContextMenuItems(album, $t);
+  $: albumMenuItems = getAlbumMenuItems(album, $t);
 
   /**
    * Handles when the user clicks on the entry.
@@ -29,7 +29,7 @@
 <CardClickable
   type="transparent"
   ctxMenuId="album-options"
-  ctxMenuItems={ctxMenuItems}
+  ctxMenuItems={albumMenuItems}
   on:click={onClick}
   holdable={false}
   extraOptions={{

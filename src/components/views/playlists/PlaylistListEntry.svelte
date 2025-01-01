@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
+  import { getPlaylistMenuItems, getSelectContextMenuItems } from "@context-menus";
   import { Keep, MoreVert } from "@icons";
   import { MenuButton } from "@interactables";
   import { ListEntry } from "@layout";
@@ -8,11 +9,9 @@
   import { inSelectMode, selected } from "@stores/Select";
   import type { PlaylistSortOrder } from "@types";
   import { LIST_IMAGE_DIMENSIONS } from "@utils";
-  import { getSelectContextMenuItems } from "@views/SelectHeader.svelte";
-  import { push } from "svelte-spa-router";
+  import { location, push } from "svelte-spa-router";
   import { fade } from "svelte/transition";
   import PlaylistImage from "./PlaylistImage.svelte";
-  import PlaylistOptions, { getContextMenuItems } from "./PlaylistOptions.svelte";
 
   export let playlist: Playlist;
   export let detailType: PlaylistSortOrder;
@@ -21,8 +20,8 @@
   $: highlighted = $selected.includes(playlist.id);
   $: pinned = playlist.pinned;
   
-  $: selectCtxItems = getSelectContextMenuItems($t);
-  $: ctxMenuItems = getContextMenuItems(playlist, $t, pinned);
+  $: selectCtxItems = getSelectContextMenuItems($selected, $t, $location);
+  $: playlistMenuItems = getPlaylistMenuItems(playlist, $t, pinned);
 
   /**
    * Handles when the user clicks on the entry.
@@ -56,7 +55,7 @@
   highlighted={highlighted}
   holdable={!$inSelectMode && isSelectable}
   ctxMenuId="playlist-options"
-  ctxMenuItems={highlighted ? selectCtxItems : ctxMenuItems}
+  ctxMenuItems={highlighted ? selectCtxItems : playlistMenuItems}
   on:click={onClick}
   on:hold={select}
 >
@@ -78,9 +77,7 @@
     {/if}
   </span>
   <span slot="options">
-    <MenuButton icon={MoreVert} bind:open={menuIsOpen}>
-      <PlaylistOptions bind:menuIsOpen={menuIsOpen} playlist={playlist} />
-    </MenuButton>
+    <MenuButton icon={MoreVert} items={playlistMenuItems} />
   </span>
 </ListEntry>
 

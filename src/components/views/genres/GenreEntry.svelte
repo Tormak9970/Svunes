@@ -3,18 +3,18 @@
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
 
+  import { getGenreMenuItems } from "@context-menus";
   import { RustInterop } from "@controllers";
   import { CardClickable, Lazy, MusicNotePlaceholder } from "@layout";
   import type { Genre } from "@models";
   import { t } from "@stores/Locale";
   import { TILTED_DIMENSIONS } from "@utils";
-  import { getContextMenuItems } from "./GenreOptions.svelte";
   
 
   export let genre: Genre;
   $: convertedPath = genre.imagePreviewPath ? convertFileSrc(genre.imagePreviewPath) : "";
   
-  $: ctxMenuItems = getContextMenuItems(genre, $t);
+  $: genreMenuItems = getGenreMenuItems(genre, $t);
 
   $: backgroundColor = genre.backgroundColor ?? "var(--m3-scheme-on-primary)";
   $: textColor = genre.textColor ?? "var(--m3-scheme-primary)";
@@ -38,7 +38,7 @@
 <CardClickable
   type="transparent"
   ctxMenuId="genre-options"
-  ctxMenuItems={ctxMenuItems ?? []}
+  ctxMenuItems={genreMenuItems ?? []}
   on:click={goToGenre}
   extraOptions={{
     style: "width: 100%; max-width: 200px; height: 100px; padding: 5px;"
